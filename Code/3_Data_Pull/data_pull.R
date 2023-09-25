@@ -2,7 +2,7 @@
 
 ##Written by: Hannah Ferriby
 ##Date created: 9-22-2023
-##Date updated:
+##Date updated: 9-25-2023
 
 ####Set Up####
 library(TADA)
@@ -46,8 +46,8 @@ all <- est_data_pull %>% rbind(lri_data_pull) %>%
 
 
 ####Export Data####
-write_csv(est_data_pull, 'data_pull_estuary.csv')
-write_csv(lri_data_pull, 'data_pull_lri.csv')
-write_csv(ocean_data_pull, 'data_pull_ocean.csv')
-write_csv(stream_data_pull, 'data_pull_stream.csv')
-write_csv(all, 'data_pull_all.csv')
+write_csv(est_data_pull, 'Data/data_pull_estuary.csv')
+write_csv(lri_data_pull, 'Data/data_pull_lri.csv')
+write_csv(ocean_data_pull, 'Data/data_pull_ocean.csv')
+write_csv(stream_data_pull, 'Data/data_pull_stream.csv')
+write_csv(all, 'Data/data_pull_all.csv')
