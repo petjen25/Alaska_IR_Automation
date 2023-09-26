@@ -41,8 +41,11 @@ stream_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
 
 
 ####Combine####
-all <- est_data_pull %>% rbind(lri_data_pull) %>%
-  rbind(ocean_data_pull) %>% rbind(stream_data_pull)
+all <- awue_data_pull %>% 
+  rbind(est_data_pull) %>%
+  rbind(lri_data_pull) %>%
+  rbind(ocean_data_pull) %>%
+  rbind(stream_data_pull)
 
 
 ####Export Data####
