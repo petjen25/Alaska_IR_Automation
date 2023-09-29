@@ -14,30 +14,35 @@ library(tidyverse)
 #Aggregate water-use establishment
 awue_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
                                         siteType = 'Aggregate water-use establishment',
-                                        statecode = 'AK')
+                                        statecode = 'AK',
+                                        applyautoclean = T)
 
 #Estuary
 est_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
                                        siteType = 'Estuary',
-                                       statecode = 'AK')
+                                       statecode = 'AK',
+                                       applyautoclean = T)
 
 
 #Lake, Reservoir, Impoundment
 lri_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
                                        siteType = 'Lake, Reservoir, Impoundment',
-                                       statecode = 'AK')
+                                       statecode = 'AK',
+                                       applyautoclean = T)
 
 
 #Ocean
 ocean_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
                                          siteType = 'Ocean',
-                                         statecode = 'AK')
+                                         statecode = 'AK',
+                                         applyautoclean = T)
 
 
 #Stream
 stream_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
                                           siteType = 'Stream',
-                                          statecode = 'AK')
+                                          statecode = 'AK',
+                                          applyautoclean = T)
 
 
 ####Combine####
