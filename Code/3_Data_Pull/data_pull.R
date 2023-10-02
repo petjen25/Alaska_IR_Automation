@@ -2,44 +2,51 @@
 
 ##Written by: Hannah Ferriby
 ##Date created: 9-22-2023
-##Date updated: 9-29-2023
+##Date updated: 10-2-2023
 
 ####Set Up####
 library(TADA)
 library(tidyverse)
 
+startDate <- '2018-02-01'
+endDate <- '2023-02-01'
 
 ####Data Download####
 #Download by water body type
 #Aggregate water-use establishment
-awue_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
+awue_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
+                                        endDate = endDate,
                                         siteType = 'Aggregate water-use establishment',
                                         statecode = 'AK',
                                         applyautoclean = T)
 
 #Estuary
-est_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
+est_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
+                                       endDate = endDate,
                                        siteType = 'Estuary',
                                        statecode = 'AK',
                                        applyautoclean = T)
 
 
 #Lake, Reservoir, Impoundment
-lri_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
+lri_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
+                                       endDate = endDate,
                                        siteType = 'Lake, Reservoir, Impoundment',
                                        statecode = 'AK',
                                        applyautoclean = T)
 
 
 #Ocean
-ocean_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
+ocean_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
+                                         endDate = endDate,
                                          siteType = 'Ocean',
                                          statecode = 'AK',
                                          applyautoclean = T)
 
 
 #Stream
-stream_data_pull <- TADA_BigDataRetrieval(startDate = '2018-01-01',
+stream_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
+                                          endDate = endDate,
                                           siteType = 'Stream',
                                           statecode = 'AK',
                                           applyautoclean = T)
