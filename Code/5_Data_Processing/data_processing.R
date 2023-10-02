@@ -2,7 +2,7 @@
 
 #Written by: Hannah Ferriby
 #Date Created: 9-29-2023
-#Date of Last Updated:
+#Date of Last Updated: 10-2-2023
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
@@ -45,27 +45,29 @@ data_4 <- TADA_HarmonizeSynonyms(data_3)
 
 ####5. Flag unrealistic values####
 data_5a <- TADA_FlagAboveThreshold(data_4, clean = F)
-data_5b <- TADA_FlagBelowThreshold(data_4, clean = F)
+data_5b <- TADA_FlagBelowThreshold(data_5a, clean = F)
 
-####6. Convert all depth to meters####
-data_6 <- TADA_ConvertDepthUnits(data_5b, unit = 'm', transform = T)
+####6. Find continuous data####
+data_6 <- TADA_FindContinuousData(data_5b, clean = F)
 
-####7. Find continuous data####
-data_7 <- TADA_FindContinuousData(data_6, clean = F)
+####7. Check method flags####
+data_7 <- TADA_FlagMethod(data_6, clean = F)
 
-####8. Check method flags####
-data_8 <- TADA_FlagMethod(data_7, clean = F)
-
-####9. Find potential duplictes####
+####8. Find potential duplictes####
 #Buffer distance set to 50 m, can change
-data_9a <- TADA_FindPotentialDuplicatesMultipleOrgs(data_7, dist_buffer = 50) 
-data_9b <- TADA_FindPotentialDuplicatesSingleOrg(data_9a, handling_method = 'none')
+data_8a <- TADA_FindPotentialDuplicatesMultipleOrgs(data_7, dist_buffer = 50) 
+data_8b <- TADA_FindPotentialDuplicatesSingleOrg(data_8a, handling_method = 'none')
 
-####10. Find QC samples####
-data_10 <- TADA_FindQCActivities(data_9b, clean = F)
+####9. Find QC samples####
+data_9 <- TADA_FindQCActivities(data_8b, clean = F)
 
-####11. Flag invalid coordinates####
-data_11 <- TADA_FlagCoordinates(data_10, clean_outsideUSA = 'no')
+####10. Flag invalid coordinates####
+data_10 <- TADA_FlagCoordinates(data_9, clean_outsideUSA = 'no')
 
-####12. Find any 'SUSPECT' samples####
-data_12 <- TADA_FlagMeasureQualifierCode(data_11, clean = F)
+####11. Find any 'SUSPECT' samples####
+data_11 <- TADA_FlagMeasureQualifierCode(data_10, clean = F)
+
+####12. Replace non-detects####
+data_12 <- TADA_SimpleCensoredMethods(data_11, 
+                                      nd_method = 'multiplier',
+                                      nd_multiplier = 0.5)
