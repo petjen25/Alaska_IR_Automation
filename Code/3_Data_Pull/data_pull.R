@@ -2,7 +2,7 @@
 
 ##Written by: Hannah Ferriby
 ##Date created: 9-22-2023
-##Date updated: 10-2-2023
+##Date updated: 10-3-2023
 
 ####Set Up####
 library(TADA)
@@ -13,10 +13,10 @@ endDate <- '2023-02-01'
 
 ####Data Download####
 #Download by water body type
-#Aggregate water-use establishment
-awue_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
+#Aggregate surface-water-use
+aswu_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
                                         endDate = endDate,
-                                        siteType = 'Aggregate water-use establishment',
+                                        siteType = 'Aggregate surface-water-use',
                                         statecode = 'AK',
                                         applyautoclean = T)
 
@@ -53,7 +53,7 @@ stream_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
 
 
 ####Combine####
-all <- awue_data_pull %>% 
+all <- aswu_data_pull %>% 
   rbind(est_data_pull) %>%
   rbind(lri_data_pull) %>%
   rbind(ocean_data_pull) %>%
@@ -64,5 +64,5 @@ all <- awue_data_pull %>%
 write_csv(est_data_pull, 'Data/data_pull/data_pull_estuary.csv')
 write_csv(lri_data_pull, 'Data/data_pull/data_pull_lri.csv')
 write_csv(ocean_data_pull, 'Data/data_pull/data_pull_ocean.csv')
-write_csv(stream_data_pull, 'Data/data_pull/data_pull_stream.csv')
-write_csv(all, 'Data/data_pull/data_pull_all.csv')
+write_csv(stream_data_pull, 'Data/data_pull/data_pull_stream.csv') #Too big for GitHub
+write_csv(all, 'Data/data_pull/data_pull_all.csv') #Too big for GitHub
