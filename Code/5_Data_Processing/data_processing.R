@@ -1,8 +1,8 @@
 #Data cleaning and processing of Alaska WQP pull 
 
-#Written by: Hannah Ferriby
+#Written by: Hannah Ferriby and Ben Block
 #Date Created: 9-29-2023
-#Date of Last Updated: 10-2-2023
+#Date of Last Updated: 10-10-2023
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
@@ -11,6 +11,7 @@
 ####Set Up####
 library(TADA)
 library(tidyverse)
+myDate <- format(Sys.Date(), "%Y%m%d")
 
 
 ####Load Data####
@@ -73,8 +74,98 @@ data_12 <- TADA_SimpleCensoredMethods(data_11,
                                       nd_method = 'multiplier',
                                       nd_multiplier = 0.5)
 
+#####13. Identify columns with all NA values#####
+# Check whether you expect data in any of the columns listed below.
+(cols_NA <- data_12 %>% 
+   keep(~all(is.na(.x))) %>% 
+   names)
+
+# Eliminate any columns with all NA values
+data_13 <- data_12 %>% 
+  select(where(~sum(!is.na(.x)) > 0))
+
 #Export data with flags
-write_csv(data_12, 'Data/all_data_with_flags.csv')
+write.table(data_13, file.path('Output', paste0("Original_data_with_flags_"
+                                                ,myDate, ".csv"))
+            , row.names = FALSE, sep = ",", na = "")
+
+#Clean up environment
+rm(data_1, data_2, data_3, data_4, data_5a, data_5b, data_6, data_7,data_8a
+   , data_8b, data_9, data_10, data_11, data_12, cols_NA, all_input_data)
+
+####Evaluate and trim data ####
+#####14. Data summary ######
+# for loop to evaluate unique values per column
+result_list <- list() # loop infrastructure
+counter <- 0 # loop infrastructure
+
+for(i in names(data_13)){
+  counter <- counter + 1 # loop infrastructure
+  print(i) # loop infrastructure
+  ColumnName <- i # obtain column name
+  data_loop <- data_13[,i] # filter data by column name
+  Class <- paste(class(data_loop), collapse = "; ") # obtain class of column
+  NumberUniqueValues <- n_distinct(data_loop) # obtain number of unique values
+  
+  # list unique values if <= 10
+  if(NumberUniqueValues > 10){
+    UniqueValues <- "Too Many to list!"
+  } else {
+    UniqueValues <- paste(unique(data_loop), collapse = "; ")
+  }# end if/else statement
+  
+  # combine results
+  results <- c(ColumnName, Class, NumberUniqueValues, UniqueValues)
+  names(results) <- c("ColumnName", "Class", "NumberUniqueValues"
+                      , "UniqueValues")
+  result_list[[counter]] <- results
+    
+}# End of for loop
+df_loop_results <- do.call("rbind", result_list) # combine results from for loop
+data_summary <- as.data.frame(df_loop_results) # convert to data frame
+data_summary$NumberUniqueValues <- as.numeric(data_summary$NumberUniqueValues) # change to numeric
+data_summary$UniqueValues <-gsub(",", ";", data_summary$UniqueValues)  # get rid of commas
+data_summary <- data_summary[order(data_summary$NumberUniqueValues),] # order
+
+#Export data summary
+write.table(data_summary, file.path('Output', paste0("WQ_data_summary_"
+                                                ,myDate, ".csv"))
+            , row.names = FALSE, sep = ",", na = "")
+
+#####15. Trim columns ######
+# Columns trimmed using Data/data_processing/WQ_Column_Manager.csv
+# Update 'Keep_YN' field for a given 'Col_Name' to retain.
+# Note: TADA versions of columns supersede original columns
+## (e.g.,'TADA.ActivityMediaName' supersedes 'ActivityMediaName')
+
+df_ColManager <- read_csv("Data/data_processing/WQ_Column_Manager.csv")
+Keep_cols <- df_ColManager %>% 
+  filter(Keep_YN == "Yes") %>% 
+  pull(Col_Name)
+
+data_15 <- data_13 %>% 
+  select(one_of(Keep_cols))
+
+#####16. Remove Flags#####
+data_wo_flags <- data_12 %>%
+  #Remove QC samples
+  filter(TADA.ActivityType.Flag == 'Non_QC') %>%
+  #Remove non-water samples
+  filter(TADA.ActivityMediaName == 'WATER') %>%
+  #Remove censored data
+  filter(TADA.CensoredData.Flag == 'Uncensored') %>%
+  #Remove duplicate data
+  case_when()
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -119,20 +210,3 @@ data_c_11 <- TADA_FlagMeasureQualifierCode(data_c_10, clean = T)
 data_c_12 <- TADA_SimpleCensoredMethods(data_c_11, 
                                         nd_method = 'multiplier',
                                         nd_multiplier = 0.5)
-
-
-
-
-
-
-
-####Remove Flags####
-data_wo_flags <- data_12 %>%
-  #Remove QC samples
-  filter(TADA.ActivityType.Flag == 'Non_QC') %>%
-  #Remove non-water samples
-  filter(TADA.ActivityMediaName == 'WATER') %>%
-  #Remove censored data
-  filter(TADA.CensoredData.Flag == 'Uncensored') %>%
-  #Remove duplicate data
-  case_when()
