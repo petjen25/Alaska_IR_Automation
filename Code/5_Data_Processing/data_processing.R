@@ -11,6 +11,7 @@
 ####Set Up####
 library(TADA)
 library(tidyverse)
+library(leaflet)
 myDate <- format(Sys.Date(), "%Y%m%d")
 
 
@@ -245,52 +246,152 @@ write_csv(data_16, file = file.path('Output/data_processing'
 #Clean up environment
 rm(data_15)
 
+#####17. Visualize data distributions#####
+
+# For loop to plot distribution of TADA.CharacteristicName
+Unique_CharName <- unique(data_16$TADA.CharacteristicName)
+plot_list <- list()
+counter <- 0
+myPal <- c("Lake, Reservoir, Impoundment" = "#d7191c"
+           , "Lake" = "#4575b4"
+           , "BEACH Program Site-Ocean" = "#fc8d59"
+           , "Estuary" = "#e0f3f8"
+           , "Ocean" = "#fee090")
+
+data_4loop <- data_16 %>% 
+  filter(!is.na(TADA.ResultMeasureValue))%>% # remove NA values
+  select(MonitoringLocationTypeName, TADA.CharacteristicName
+         , TADA.ResultMeasureValue, TADA.ResultMeasure.MeasureUnitCode)
+
+for(i in Unique_CharName){
+  i # print name of current characteristic
+  counter <- counter + 1
+  
+  #filter data
+  df_subset <- data_4loop %>% 
+    filter(TADA.CharacteristicName == i)
+  
+  #boxplot
+  plot <- ggplot(data = df_subset, aes(x = MonitoringLocationTypeName
+                                       , y = TADA.ResultMeasureValue
+                                       , fill = MonitoringLocationTypeName))+
+    geom_boxplot()+
+    labs(y = df_subset$TADA.ResultMeasure.MeasureUnitCode
+         , title = df_subset$TADA.CharacteristicName)+
+    scale_fill_manual(values = myPal)+
+    theme_classic()+
+    theme(legend.position = "none")
+  
+  plot_list[[counter]] <- plot
+  counter <- counter + 1
+  
+  #log boxplot
+  logplot <- ggplot(data = df_subset, aes(x = MonitoringLocationTypeName
+                                       , y = TADA.ResultMeasureValue
+                                       , fill = MonitoringLocationTypeName))+
+    geom_boxplot()+
+    scale_y_log10()+
+    labs(y = paste0(df_subset$TADA.ResultMeasure.MeasureUnitCode, " (Log10 Y-Axis)")
+         , title = df_subset$TADA.CharacteristicName)+
+    scale_fill_manual(values = myPal)+
+    theme_classic()+
+    theme(legend.position = "none")
+  
+  plot_list[[counter]] <- logplot
+} # end of for loop
+
+# Export plots
+pdf(file = file.path("Output/data_processing"
+                     , paste0("WQ_Boxplots_"
+                              , myDate, ".pdf")))
+for (i in 1:length(plot_list)) {
+  print(plot_list[[i]])
+}
+dev.off()
+
+#Clean up environment
+rm(data_4loop, df_subset, logplot, plot, plot_list, counter, i
+   , myPal, Unique_CharName)
+
+#####18. Ultra trim data#####
+data_18 <- data_16 %>% 
+  select(OrganizationIdentifier
+         ,ActivityStartDate
+         ,MonitoringLocationIdentifier
+         ,MonitoringLocationTypeName
+         ,TADA.CharacteristicName
+         ,TADA.ResultMeasureValue
+         ,TADA.ResultMeasure.MeasureUnitCode
+         ,TADA.LatitudeMeasure
+         ,TADA.LongitudeMeasure)
+
+#####19. Match data to AUs #####
+# Match using Data/data_processing/ML_AU_Crosswalk.CSV
+df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk.CSV")
+df_ML_AU_Crosswalk <- df_ML_AU_Crosswalk %>% 
+  select(-c(OrganizationIdentifier))
+
+# join data
+data_19 <- left_join(data_18, df_ML_AU_Crosswalk
+                     , by = "MonitoringLocationIdentifier")
+
+
+# interactive map for all monitoring locations
+## subset data to unique ML info
+df_ML <- data_19 %>% 
+  select(MonitoringLocationIdentifier, MonitoringLocationTypeName
+         , TADA.LatitudeMeasure, TADA.LongitudeMeasure) %>% 
+  distinct()
+
+## create palette
+ML_Type <- factor(c("Lake, Reservoir, Impoundment"
+                    , "Lake"
+                    , "BEACH Program Site-Ocean"
+                    , "Estuary"
+                    , "Ocean"))
+
+pal <- colorFactor(
+  palette = c("#d7191c", "#4575b4", "#fc8d59", "#e0f3f8", "#fee090"),
+  domain = ML_Type,
+  ordered = TRUE)
+
+map <- leaflet() %>% 
+  addTiles() %>%
+  addProviderTiles(providers$Esri.NatGeoWorldMap) %>% 
+  addCircleMarkers(data = df_ML, lat = ~TADA.LatitudeMeasure
+                   , lng = ~TADA.LongitudeMeasure
+                   , popup = paste("MonitoringLocationIdentifier:", df_ML$MonitoringLocationIdentifier, "<br>"
+                                   ,"MonitoringLocationTypeName:", df_ML$MonitoringLocationTypeName, "<br>"
+                                   , "TADA.LatitudeMeasure:", df_ML$TADA.LatitudeMeasure, "<br>"
+                                   , "TADA.LongitudeMeasure:", df_ML$TADA.LongitudeMeasure)
+                   , color = "black", fillColor = ~pal(MonitoringLocationTypeName), fillOpacity = 1, stroke = TRUE
+                   )%>%
+  addLegend("bottomright", pal = pal, values = df_ML$MonitoringLocationTypeName,
+            title = "ML Type", opacity = 1)
+
+map # view map
+
+# check for missing ML in crosswalk table (i.e., new ones)
+ML_in_crosswalk <- unique(df_ML_AU_Crosswalk$MonitoringLocationIdentifier)
+
+(missing_ML <- df_ML %>% 
+  filter(!MonitoringLocationIdentifier %in% ML_in_crosswalk))
+
+# interactive map for missing monitoring locations
+missing_ML_map <- leaflet() %>% 
+  addTiles() %>%
+  addProviderTiles(providers$Esri.NatGeoWorldMap) %>% 
+  addCircleMarkers(data = missing_ML, lat = ~TADA.LatitudeMeasure
+                   , lng = ~TADA.LongitudeMeasure
+                   , popup = paste("MonitoringLocationIdentifier:", missing_ML$MonitoringLocationIdentifier, "<br>"
+                                   ,"MonitoringLocationTypeName:", missing_ML$MonitoringLocationTypeName, "<br>"
+                                   , "TADA.LatitudeMeasure:", missing_ML$TADA.LatitudeMeasure, "<br>"
+                                   , "TADA.LongitudeMeasure:", missing_ML$TADA.LongitudeMeasure)
+                   , color = "black", fillColor = ~pal(MonitoringLocationTypeName), fillOpacity = 1, stroke = TRUE
+  )%>%
+  addLegend("bottomright", pal = pal, values = missing_ML$MonitoringLocationTypeName,
+            title = "ML Type", opacity = 1)
+missing_ML_map # view map
 
 
 
-
-
-
-
-
-# ####Remove Flags####
-# #####1. Check Result Unit Validity#####
-# data_c_1 <- TADA_FlagResultUnit(all_input_data, clean = 'both') #required
-# 
-# #####2. Check Sample Fraction Validity#####
-# data_c_2 <- TADA_FlagFraction(data_c_1, clean = T) #required
-# 
-# #####3. Check Method Speciation Validity#####
-# data_c_3 <- TADA_FlagSpeciation(data_c_2, clean = 'both') #required
-# 
-# #####4. Harmonize Characteristic Names#####
-# data_c_4 <- TADA_HarmonizeSynonyms(data_c_3)
-# 
-# #####5. Flag unrealistic values#####
-# data_c_5a <- TADA_FlagAboveThreshold(data_c_4, clean = T)
-# data_c_5b <- TADA_FlagBelowThreshold(data_c_5a, clean = T)
-# 
-# #####6. Find continuous data#####
-# data_c_6 <- TADA_FindContinuousData(data_c_5b, clean = T)
-# 
-# #####7. Check method flags#####
-# data_c_7 <- TADA_FlagMethod(data_c_6, clean = T)
-# 
-# #####8. Find potential duplictes#####
-# #Buffer distance set to 50 m, can change
-# data_c_8a <- TADA_FindPotentialDuplicatesMultipleOrgs(data_c_7, dist_buffer = 50) 
-# data_c_8b <- TADA_FindPotentialDuplicatesSingleOrg(data_c_8a, handling_method = 'pick_one')
-# 
-# #####9. Find QC samples#####
-# data_c_9 <- TADA_FindQCActivities(data_c_8b, clean = T)
-# 
-# #####10. Flag invalid coordinates#####
-# data_c_10 <- TADA_FlagCoordinates(data_c_9, clean_outsideUSA = 'no')
-# 
-# #####11. Find any 'SUSPECT' samples#####
-# data_c_11 <- TADA_FlagMeasureQualifierCode(data_c_10, clean = T)
-# 
-# #####12. Replace non-detects#####
-# data_c_12 <- TADA_SimpleCensoredMethods(data_c_11, 
-#                                         nd_method = 'multiplier',
-#                                         nd_multiplier = 0.5)
