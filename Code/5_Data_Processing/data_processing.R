@@ -12,6 +12,7 @@
 library(TADA)
 library(tidyverse)
 library(leaflet)
+library(scales)
 myDate <- format(Sys.Date(), "%Y%m%d")
 
 
@@ -98,19 +99,29 @@ data_10 <- TADA_FlagCoordinates(data_9, clean_outsideUSA = 'no')
 #####11. Find any 'SUSPECT' samples#####
 # This function adds the TADA.MeasureQualifierCode.Flag to the dataframe.
 data_11a <- TADA_FlagMeasureQualifierCode(data_10, clean = F)
-uncategorized_qualifiers <- data_11a %>% 
+  
+# list uncategorized qualifiers in data
+(uncategorized_qualifiers <- data_11a %>% 
   select(MeasureQualifierCode, TADA.MeasureQualifierCode.Flag) %>% 
   filter(TADA.MeasureQualifierCode.Flag == "uncategorized") %>% 
-  distinct()
+  distinct())
 
+# update qualifiers using 'IR DATA QA .xlsx'
+# add any changes by making a new row below
 data_11b <- data_11a %>% 
-  mutate(TADA.MeasureQualifierCode.Flag = case_when((MeasureQualifierCode == "H;U")
-                                                    ~ "Filler_BenB"
-                   , (MeasureQualifierCode == "RC;U") ~ "Filler_BenB"
-                   , (MeasureQualifierCode == "H;RC;U") ~ "Filler_BenB"
-                   , (MeasureQualifierCode == "J-R;TOC") ~ "Filler_BenB"
-                   , (MeasureQualifierCode == "TOC;U") ~ "Filler_BenB"
+  mutate(TADA.MeasureQualifierCode.Flag = 
+           case_when((MeasureQualifierCode == "H;U") ~ "Suspect"
+                   , (MeasureQualifierCode == "RC;U") ~ "Non-Detect"
+                   , (MeasureQualifierCode == "H;RC;U") ~ "Suspect"
+                   , (MeasureQualifierCode == "J-R;TOC") ~ "Pass"
+                   , (MeasureQualifierCode == "TOC;U") ~ "Non-Detect"
                    , TRUE ~ TADA.MeasureQualifierCode.Flag))
+
+# re-check for uncategorized qualifiers
+(uncategorized_qualifiers <- data_11b %>% 
+  select(MeasureQualifierCode, TADA.MeasureQualifierCode.Flag) %>% 
+  filter(TADA.MeasureQualifierCode.Flag == "uncategorized") %>% 
+  distinct())
 
 #####12. Replace non-detects#####
 # This function adds the following columns to the dataframe:
@@ -150,7 +161,6 @@ counter <- 0 # loop infrastructure
 
 for(i in names(data_13)){
   counter <- counter + 1 # loop infrastructure
-  print(i) # loop infrastructure
   ColumnName <- i # obtain column name
   data_loop <- data_13[,i] # filter data by column name
   Class <- paste(class(data_loop), collapse = "; ") # obtain class of column
@@ -234,6 +244,7 @@ data_16 <- data_15 %>%
   filter(TADA.MethodSpeciation.Flag != "Rejected") %>% # Step 3
   filter(TADA.AnalyticalMethod.Flag != "Rejected") %>% # Step 7
   filter(TADA.ActivityType.Flag == 'Non_QC') %>% # Step 9
+  filter(TADA.MeasureQualifierCode.Flag != 'Suspect') %>% # Step 11
   filter(TADA.ActivityMediaName == 'WATER') # Remove non-water samples
   # filter(TADA.CensoredData.Flag == 'Uncensored') #Remove censored data
 
@@ -325,11 +336,16 @@ data_18 <- data_16 %>%
          ,TADA.LatitudeMeasure
          ,TADA.LongitudeMeasure)
 
-#####19. Match data to AUs #####
+#Clean up environment
+rm(data_16)
+
+#### Match data to AUs ####
+#####19. ML to AUs #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
 df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk.CSV")
 df_ML_AU_Crosswalk <- df_ML_AU_Crosswalk %>% 
-  select(-c(OrganizationIdentifier))
+  select(-c(OrganizationIdentifier)) %>% 
+  rename(AU_Type = Type)
 
 # join data
 data_19 <- left_join(data_18, df_ML_AU_Crosswalk
@@ -389,9 +405,142 @@ missing_ML_map <- leaflet() %>%
                                    , "TADA.LongitudeMeasure:", missing_ML$TADA.LongitudeMeasure)
                    , color = "black", fillColor = ~pal(MonitoringLocationTypeName), fillOpacity = 1, stroke = TRUE
   )%>%
-  addLegend("bottomright", pal = pal, values = missing_ML$MonitoringLocationTypeName,
-            title = "ML Type", opacity = 1)
+  addLegend("bottomright", pal = pal
+            , values = missing_ML$MonitoringLocationTypeName, title = "ML Type"
+            , opacity = 1)
 missing_ML_map # view map
 
+#Clean up environment
+rm(data_18, df_ML, df_ML_AU_Crosswalk, map, missing_ML, missing_ML_map
+   , ML_in_crosswalk, ML_Type, pal)
+#### Organize data by AUs####
+##### 20. AU data summary #####
+data_20 <- data_19 %>% 
+  filter(!is.na(AUID_ATTNS))
 
+# Number of monitoring locations per AU
+df_AU_summary1 <- data_20 %>% 
+  select(AUID_ATTNS, MonitoringLocationIdentifier) %>% 
+  distinct() %>% 
+  count(AUID_ATTNS) %>% 
+  rename(n_MonitoringLocations = n)
 
+ggplot(data = df_AU_summary1, aes(x = n_MonitoringLocations))+
+  geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8)+ 
+  scale_y_continuous(breaks= pretty_breaks())+
+  scale_x_continuous(breaks= pretty_breaks())+
+  labs(title = "Distribution of the # of monitoring locations per AU"
+       , x = "Number of Monitoring Locations", y = "Density")+
+  theme_classic()
+
+# Summary of WQ data by AU and pollutant
+df_AU_summary2 <- data_20 %>% 
+  group_by(AUID_ATTNS, TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode) %>% 
+  summarize(n_Samples = n()
+            , min = min(TADA.ResultMeasureValue)
+            , q25 = quantile(TADA.ResultMeasureValue, 0.25, na.rm = TRUE)
+            , med = quantile(TADA.ResultMeasureValue, 0.50, na.rm = TRUE)
+            , q75 = quantile(TADA.ResultMeasureValue, 0.75, na.rm = TRUE)
+            , max = max(TADA.ResultMeasureValue))
+
+#Clean up environment
+rm(df_AU_summary1, df_AU_summary2, data_19)
+
+#### Data sufficiency ####
+##### 21. AU/pollutant data sufficiency #####
+# Match using Data/data_processing/ML_AU_Crosswalk.CSV
+df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20231012.csv")
+df_data_sufficiency2 <- df_data_sufficiency %>% 
+  select(-c(`Constituent Group`, Constituent, `Use Description`, `Other Requirements`
+            , `Listing methodology`, Notes))
+
+# test for missing constituents in df_data_sufficiency
+constituents <- unique(df_data_sufficiency2$TADA.Constituent)
+WQ_CharacteristicNames <- unique(data_20$TADA.CharacteristicName)
+
+(missing_constituents <- WQ_CharacteristicNames[!(WQ_CharacteristicNames %in% constituents)])
+
+# clean environment
+rm(df_data_sufficiency, constituents, WQ_CharacteristicNames)
+# join data sufficency data by:
+# TADA.Constituent (TADA.CharacteristicName)
+# Waterbody Type
+data_21 <- data_20 %>% 
+  mutate(ActivityStartYear = year(ActivityStartDate)) %>% 
+  select(AUID_ATTNS, MonitoringLocationTypeName, AU_Type, ActivityStartYear
+         , TADA.CharacteristicName, TADA.ResultMeasureValue
+         , TADA.ResultMeasure.MeasureUnitCode)%>% 
+  group_by(AUID_ATTNS, MonitoringLocationTypeName, AU_Type
+           , TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode) %>% 
+  summarize(n_Samples = n()
+            , n_Years = n_distinct(ActivityStartYear)) %>% 
+  filter(!TADA.CharacteristicName %in% missing_constituents) %>% 
+  ungroup()
+
+# loop for data sufficiency for each AU
+Unique_AUIDs <- unique(data_21$AUID_ATTNS)
+result_list <- list()
+counter <- 0
+
+for(i in Unique_AUIDs){
+  print(i) # print name of current AU
+  counter <- counter + 1
+  
+  # filter data
+  df_subset <- data_21 %>% 
+    filter(AUID_ATTNS == i)
+  
+  # obtain AU_Type
+  my_AU_Type <- unique(df_subset$AU_Type)
+  
+  # use AU_Type to choose Waterbody Type in data sufficiency table
+  if(my_AU_Type == "Beach" | my_AU_Type == "Marine"){
+    my_WtrBdy_Type <- "Marine"
+  } else if (my_AU_Type == "Lake"){
+    my_WtrBdy_Type <- "Freshwater"
+  } else {
+    my_WtrBdy_Type <- c("Freshwater", "Freshwater streams and rivers")
+  } # end if/else statement
+  
+  # obtain unique constituents from WQ dataset for the AU
+  my_constituents <- unique(df_subset$TADA.CharacteristicName)
+  
+  # trim data sufficiency table to only relevant information
+  my_data_sufficiency <- df_data_sufficiency2 %>% 
+    filter(TADA.Constituent %in% my_constituents) %>% 
+    filter(`Waterbody Type` %in% my_WtrBdy_Type)
+    # filter(!is.na(`Minimum Assessment Period`))
+  
+  # join trimmed data sufficiency table to AU data
+  df_join <- left_join(df_subset, my_data_sufficiency
+                     , by = c("TADA.CharacteristicName" = "TADA.Constituent")
+                     , relationship = "many-to-many")
+  
+  # determine data sufficiency based on # years and # samples of data for AU
+  # Note: at this time, all uses and types are applied for every AU.
+  results <- df_join %>% 
+    mutate(Min_Period_Pass = case_when((n_Years >= Min_Assess_Period_Yrs) ~ "Yes"
+                                       , (n_Years < Min_Assess_Period_Yrs) ~ "No")
+           , Min_Data_Pass = case_when((n_Samples >= Min_Num_Pts)~ "Yes"
+                                       , (n_Samples < Min_Num_Pts)~ "No")
+           , Data_Sufficient = case_when((Min_Period_Pass == "Yes"
+                                          & Min_Data_Pass == "Yes")~"Yes"
+                                         , TRUE ~ "No"))
+  
+  result_list[[counter]] <- results
+} # end of for loop
+df_loop_results <- do.call("rbind", result_list) # combine results from for loop
+df_AU_data_sufficiency <- as.data.frame(df_loop_results) # convert to data frame
+df_AU_data_sufficiency <- df_AU_data_sufficiency %>% 
+  distinct()
+
+# clean environment
+rm(data_20, df_data_sufficiency2, df_join, df_loop_results, df_subset,
+   my_data_sufficiency, result_list, results, counter, i, missing_constituents
+   , my_WtrBdy_Type, my_AU_Type, my_constituents, Unique_AUIDs)
+
+#Export data summary
+write_csv(df_AU_data_sufficiency
+          , file = file.path('Output/data_processing'
+                             , paste0("WQ_data_trimmed_data_sufficient_"
+                                      ,myDate, ".csv")), na = "")
