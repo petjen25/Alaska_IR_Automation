@@ -2,11 +2,14 @@
 
 #Written by: Hannah Ferriby and Ben Block
 #Date Created: 9-29-2023
-#Date of Last Updated: 10-10-2023
+#Date of Last Updated: 10-17-2023
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
-
+#2. 'WQ_Column_Manager.csv' to quickly subset WQ dataset fields
+#3. 'ML_AU_Crosswalk.csv' to crosswalk Monitoring Locations with AUs
+#4. 'AK_DataSufficiency_Crosswalk_20231012.csv' to crosswalk WQ dataset with 
+#     data sufficiency table
 
 ####Set Up####
 library(TADA)
@@ -188,7 +191,7 @@ data_summary <- data_summary[order(data_summary$NumberUniqueValues),] # order
 
 #Export data summary
 write_csv(data_summary, file = file.path('Output/data_processing'
-                                    , paste0("WQ_data_summary_",myDate, ".csv")))
+                                    , paste0("WQ_metadata_summary_",myDate, ".csv")))
 
 #Clean up environment
 rm(data_summary, df_loop_results, result_list, Class, ColumnName, counter
@@ -246,7 +249,7 @@ data_16 <- data_15 %>%
   filter(TADA.ActivityType.Flag == 'Non_QC') %>% # Step 9
   filter(TADA.MeasureQualifierCode.Flag != 'Suspect') %>% # Step 11
   filter(TADA.ActivityMediaName == 'WATER') # Remove non-water samples
-  # filter(TADA.CensoredData.Flag == 'Uncensored') #Remove censored data
+# censored data are retained in this dataset.
 
 #Export data summary
 write_csv(data_16, file = file.path('Output/data_processing'
@@ -260,6 +263,7 @@ rm(data_15)
 #####17. Visualize data distributions#####
 
 # For loop to plot distribution of TADA.CharacteristicName
+# CAUTION: This loop takes about a minute to run.
 Unique_CharName <- unique(data_16$TADA.CharacteristicName)
 plot_list <- list()
 counter <- 0
@@ -426,22 +430,22 @@ df_AU_summary1 <- data_20 %>%
   rename(n_MonitoringLocations = n)
 
 ggplot(data = df_AU_summary1, aes(x = n_MonitoringLocations))+
-  geom_density(fill="#69b3a2", color="#e9ecef", alpha=0.8)+ 
+  geom_bar(fill="#69b3a2", color="#e9ecef", alpha=0.8)+ 
   scale_y_continuous(breaks= pretty_breaks())+
   scale_x_continuous(breaks= pretty_breaks())+
   labs(title = "Distribution of the # of monitoring locations per AU"
-       , x = "Number of Monitoring Locations", y = "Density")+
+       , x = "Number of Monitoring Locations", y = "Count")+
   theme_classic()
 
 # Summary of WQ data by AU and pollutant
 df_AU_summary2 <- data_20 %>% 
   group_by(AUID_ATTNS, TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode) %>% 
   summarize(n_Samples = n()
-            , min = min(TADA.ResultMeasureValue)
-            , q25 = quantile(TADA.ResultMeasureValue, 0.25, na.rm = TRUE)
-            , med = quantile(TADA.ResultMeasureValue, 0.50, na.rm = TRUE)
-            , q75 = quantile(TADA.ResultMeasureValue, 0.75, na.rm = TRUE)
-            , max = max(TADA.ResultMeasureValue))
+            , min = round(min(TADA.ResultMeasureValue),3)
+            , q25 = round(quantile(TADA.ResultMeasureValue, 0.25, na.rm = TRUE),3)
+            , med = round(quantile(TADA.ResultMeasureValue, 0.50, na.rm = TRUE),3)
+            , q75 = round(quantile(TADA.ResultMeasureValue, 0.75, na.rm = TRUE),3)
+            , max = round(max(TADA.ResultMeasureValue),3))
 
 #Clean up environment
 rm(df_AU_summary1, df_AU_summary2, data_19)
@@ -542,5 +546,5 @@ rm(data_20, df_data_sufficiency2, df_join, df_loop_results, df_subset,
 #Export data summary
 write_csv(df_AU_data_sufficiency
           , file = file.path('Output/data_processing'
-                             , paste0("WQ_data_trimmed_data_sufficient_"
+                             , paste0("WQ_metadata_trimmed_with_data_sufficiency_"
                                       ,myDate, ".csv")), na = "")
