@@ -118,6 +118,17 @@ data_11b <- data_11a %>%
                    , (MeasureQualifierCode == "H;RC;U") ~ "Suspect"
                    , (MeasureQualifierCode == "J-R;TOC") ~ "Pass"
                    , (MeasureQualifierCode == "TOC;U") ~ "Non-Detect"
+                   , (MeasureQualifierCode == "RC;SUS") ~ "Suspect"
+                   , (MeasureQualifierCode == "O;RC") ~ "Pass"
+                   , (MeasureQualifierCode == "H;RC") ~ "Suspect"
+                   , (MeasureQualifierCode == "B;J-R") ~ "Pass"
+                   , (MeasureQualifierCode == "H;J-R") ~ "Suspect"
+                   , (MeasureQualifierCode == "IQCOL;U") ~ "Pass"
+                   , (MeasureQualifierCode == "IQCOL;J-R") ~ "Pass"
+                   , (MeasureQualifierCode == "LL;RC") ~ "Pass"
+                   , (MeasureQualifierCode == "BQL;RC") ~ "Pass"
+                   , (MeasureQualifierCode == "B;D") ~ "Pass"
+                   , (MeasureQualifierCode == "SDROL;U") ~ "Suspect"
                    , TRUE ~ TADA.MeasureQualifierCode.Flag))
 
 # re-check for uncategorized qualifiers
@@ -148,8 +159,7 @@ data_13 <- data_12 %>%
 #Export data with flags
 write_csv(data_13, file = file.path('Output/data_processing'
                                     , paste0("Original_data_with_flags_"
-                                             ,myDate, ".csv"))
-          , na = "")
+                                             ,myDate, ".csv")), na = "")
 
 #Clean up environment
 rm(data_1, data_2, data_3, data_4, data_5a, data_5b, data_6, data_7,data_8a
@@ -191,7 +201,7 @@ data_summary <- data_summary[order(data_summary$NumberUniqueValues),] # order
 
 #Export data summary
 write_csv(data_summary, file = file.path('Output/data_processing'
-                                    , paste0("WQ_metadata_summary_",myDate, ".csv")))
+                                    , paste0("WQ_column_summary_",myDate, ".csv")))
 
 #Clean up environment
 rm(data_summary, df_loop_results, result_list, Class, ColumnName, counter
@@ -267,11 +277,13 @@ rm(data_15)
 Unique_CharName <- unique(data_16$TADA.CharacteristicName)
 plot_list <- list()
 counter <- 0
-myPal <- c("Lake, Reservoir, Impoundment" = "#d7191c"
-           , "Lake" = "#4575b4"
-           , "BEACH Program Site-Ocean" = "#fc8d59"
-           , "Estuary" = "#e0f3f8"
-           , "Ocean" = "#fee090")
+myPal <- c("Lake, Reservoir, Impoundment" = "#7fc97f"
+           , "Lake" = "#beaed4"
+           , "BEACH Program Site-Ocean" = "#fdc086"
+           , "Estuary" = "#ffff99"
+           , "Ocean" = "#386cb0"
+           , "Stream" = "#f0027f"
+           , "River/Stream" = "#bf5b17")
 
 data_4loop <- data_16 %>% 
   filter(!is.na(TADA.ResultMeasureValue))%>% # remove NA values
@@ -295,7 +307,8 @@ for(i in Unique_CharName){
          , title = df_subset$TADA.CharacteristicName)+
     scale_fill_manual(values = myPal)+
     theme_classic()+
-    theme(legend.position = "none")
+    theme(legend.position = "none"
+          , axis.text.x = element_text(angle = 10, vjust = 0.9, hjust = 0.5))
   
   plot_list[[counter]] <- plot
   counter <- counter + 1
@@ -310,7 +323,8 @@ for(i in Unique_CharName){
          , title = df_subset$TADA.CharacteristicName)+
     scale_fill_manual(values = myPal)+
     theme_classic()+
-    theme(legend.position = "none")
+    theme(legend.position = "none"
+          , axis.text.x = element_text(angle = 10, vjust = 0.9, hjust = 0.5))
   
   plot_list[[counter]] <- logplot
 } # end of for loop
@@ -368,10 +382,13 @@ ML_Type <- factor(c("Lake, Reservoir, Impoundment"
                     , "Lake"
                     , "BEACH Program Site-Ocean"
                     , "Estuary"
-                    , "Ocean"))
+                    , "Ocean"
+                    , "Stream"
+                    , "River/Stream"))
 
 pal <- colorFactor(
-  palette = c("#d7191c", "#4575b4", "#fc8d59", "#e0f3f8", "#fee090"),
+  palette = c("#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0"
+              , "#f0027f", "#bf5b17"),
   domain = ML_Type,
   ordered = TRUE)
 

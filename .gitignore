@@ -48,3 +48,4 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 Data/data_pull/data_pull_stream.csv
+Output/data_processing/Original_data_with_flags_20231017.csv
