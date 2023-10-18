@@ -16,6 +16,7 @@ library(TADA)
 library(tidyverse)
 library(leaflet)
 library(scales)
+library(sf)
 myDate <- format(Sys.Date(), "%Y%m%d")
 
 
@@ -347,6 +348,7 @@ data_18 <- data_16 %>%
   select(OrganizationIdentifier
          ,ActivityStartDate
          ,MonitoringLocationIdentifier
+         ,MonitoringLocationName
          ,MonitoringLocationTypeName
          ,TADA.CharacteristicName
          ,TADA.ResultMeasureValue
@@ -373,8 +375,9 @@ data_19 <- left_join(data_18, df_ML_AU_Crosswalk
 # interactive map for all monitoring locations
 ## subset data to unique ML info
 df_ML <- data_19 %>% 
-  select(MonitoringLocationIdentifier, MonitoringLocationTypeName
-         , TADA.LatitudeMeasure, TADA.LongitudeMeasure) %>% 
+  select(MonitoringLocationIdentifier, MonitoringLocationName
+         , MonitoringLocationTypeName, TADA.LatitudeMeasure
+         , TADA.LongitudeMeasure) %>% 
   distinct()
 
 ## create palette
@@ -408,16 +411,254 @@ map <- leaflet() %>%
 
 map # view map
 
+#####20. Assign missing MLs to AUs #####
 # check for missing ML in crosswalk table (i.e., new ones)
+# Use spatial joins to assign monitoring locations to AUs
+# Note: use the interactive map below to QC results.
+# Finally, update 'ML_AU_Crosswalk.CSV' with new matches.
+
 ML_in_crosswalk <- unique(df_ML_AU_Crosswalk$MonitoringLocationIdentifier)
 
-(missing_ML <- df_ML %>% 
+(missing_ML <- df_ML %>%  # these are MLs not in the crosswalk table
   filter(!MonitoringLocationIdentifier %in% ML_in_crosswalk))
 
+######20a. Setup #####
+fn_shp <- file.path(getwd(), "Data", "data_GIS")
+beach_shp <- sf::st_read(dsn = paste0(fn_shp,"/Beaches"), layer = "Beaches")%>% 
+  sf::st_transform(3338)
+lake_shp <- sf::st_read(dsn = paste0(fn_shp,"/Lakes"), layer = "Lakes")%>% 
+  sf::st_transform(3338) %>% 
+  sf::st_zm()
+marine_shp <- sf::st_read(dsn = paste0(fn_shp,"/Marine"), layer = "MAUs_FINAL_2023")%>% 
+  sf::st_transform(3338)
+river_shp <- sf::st_read(dsn = paste0(fn_shp,"/Rivers"), layer = "Rivers")%>% 
+  sf::st_transform(3338) %>% 
+  sf::st_zm()
+USA_shp <- sf::st_read(dsn = paste0(fn_shp,"/cb_2018_us_state_500k")
+                       , layer = "cb_2018_us_state_500k")
+AK_shp <- USA_shp %>% 
+  filter(STUSPS == "AK") %>% 
+  sf::st_transform(3338)
+
+# split by MonitoringLocationTypeName
+######20b. Beaches #####
+miss_ML_beaches <- missing_ML %>% # filter appropriate sites
+  filter(MonitoringLocationTypeName == "BEACH Program Site-Ocean")
+
+### convert to geospatial layer (sf object)
+beach_pts <- sf::st_as_sf(x = miss_ML_beaches, coords = c("TADA.LongitudeMeasure"
+                                                          ,"TADA.LatitudeMeasure")
+                          , crs = "+proj=longlat +datum=WGS84")%>% 
+  sf::st_transform(st_crs(beach_shp))
+
+### plot to see how they relate
+ggplot() +
+  geom_sf(data = AK_shp)+
+  geom_sf(data = beach_shp, color = "red") +
+  geom_sf(data = beach_pts, color = "red") +
+  theme_minimal()
+
+### spatial join
+beach_SpatJoin <- sf::st_join(beach_pts, beach_shp, join = st_nearest_feature) %>% # join points and AUs
+  select(MonitoringLocationIdentifier, MonitoringLocationName
+         , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10) # trim unneccessary columns
+
+### determine distance (m) between points and nearest feature
+near_feat <- sf::st_nearest_feature(beach_pts, beach_shp)
+dist_to_AU_m <- sf::st_distance(beach_pts, beach_shp[near_feat,], by_element = TRUE)
+
+### join distance measurements to join results
+beach_SpatJoin2 <- cbind(beach_SpatJoin, dist_to_AU_m)
+
+### results and export data
+miss_ML_beach_results <- beach_SpatJoin2 %>%
+  sf::st_transform(4326) %>% 
+  mutate(Longitude = unlist(map(geometry,1)),
+         Latitude = unlist(map(geometry,2))) %>% 
+  sf::st_drop_geometry()
+
+write_csv(miss_ML_beach_results, file = file.path('Output/data_processing'
+                                    , paste0("Missing_MonLoc_Beaches_SpatJoin_"
+                                             ,myDate, ".csv"))
+          , na = "")
+
+### Clean up environment
+rm(beach_pts, beach_SpatJoin, beach_SpatJoin2, miss_ML_beach_results
+   , miss_ML_beaches, near_feat, dist_to_AU_m)
+
+######20c. Lakes #####
+miss_ML_lakes <- missing_ML %>%
+  filter(MonitoringLocationTypeName == "Lake"
+         |MonitoringLocationTypeName == "Lake, Reservoir, Impoundment")
+
+### convert to geospatial layer (sf object)
+lake_pts <- sf::st_as_sf(x = miss_ML_lakes, coords = c("TADA.LongitudeMeasure"
+                                                          ,"TADA.LatitudeMeasure")
+                          , crs = "+proj=longlat +datum=WGS84")%>% 
+  sf::st_transform(st_crs(lake_shp))
+
+### plot to see how they relate
+ggplot() + # takes ~15 seconds to load all the lakes
+  geom_sf(data = AK_shp)+
+  geom_sf(data = lake_shp, color = "blue") +
+  geom_sf(data = lake_pts, color = "red") +
+  theme_minimal()
+
+### spatial join
+lake_SpatJoin <- sf::st_join(lake_pts, lake_shp, join = st_nearest_feature) %>% # join points and AUs
+  select(MonitoringLocationIdentifier, MonitoringLocationName
+         , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10_ID) # trim unneccessary columns
+
+### determine distance (m) between points and nearest feature
+near_feat <- sf::st_nearest_feature(lake_pts, lake_shp)
+dist_to_AU_m <- sf::st_distance(lake_pts, lake_shp[near_feat,], by_element = TRUE)
+
+### join distance measurements to join results
+lake_SpatJoin2 <- cbind(lake_SpatJoin, dist_to_AU_m)
+
+### results and export data
+miss_ML_lake_results <- lake_SpatJoin2 %>%
+  sf::st_transform(4326) %>% 
+  mutate(Longitude = unlist(map(geometry,1)),
+         Latitude = unlist(map(geometry,2))) %>% 
+  sf::st_drop_geometry()
+
+write_csv(miss_ML_lake_results, file = file.path('Output/data_processing'
+                                                  , paste0("Missing_MonLoc_Lakes_SpatJoin_"
+                                                           ,myDate, ".csv"))
+          , na = "")
+
+### Clean up environment
+rm(lake_pts, lake_SpatJoin, lake_SpatJoin2, miss_ML_lake_results
+   , miss_ML_lakes, near_feat, dist_to_AU_m)
+
+######20d. Marine #####
+miss_ML_marine <- missing_ML %>%
+  filter(MonitoringLocationTypeName == "Estuary"
+         |MonitoringLocationTypeName == "Ocean")
+
+### convert to geospatial layer (sf object)
+marine_pts <- sf::st_as_sf(x = miss_ML_marine, coords = c("TADA.LongitudeMeasure"
+                                                       ,"TADA.LatitudeMeasure")
+                         , crs = "+proj=longlat +datum=WGS84")%>% 
+  sf::st_transform(st_crs(marine_shp))
+
+### plot to see how they relate
+ggplot() + # takes ~15 seconds to load all the lakes
+  geom_sf(data = AK_shp)+
+  geom_sf(data = marine_shp, color = "blue") +
+  geom_sf(data = marine_pts, color = "red") +
+  theme_minimal()
+
+### spatial join
+marine_SpatJoin <- sf::st_join(marine_pts, marine_shp, join = st_nearest_feature) %>% # join points and AUs
+  select(MonitoringLocationIdentifier, MonitoringLocationName
+         , MonitoringLocationTypeName, AUID_ATTNS, HUC10_ID) # trim unneccessary columns
+
+### determine distance (m) between points and nearest feature
+near_feat <- sf::st_nearest_feature(marine_pts, marine_shp)
+dist_to_AU_m <- sf::st_distance(marine_pts, marine_shp[near_feat,], by_element = TRUE)
+
+### join distance measurements to join results
+marine_SpatJoin2 <- cbind(marine_SpatJoin, dist_to_AU_m)
+
+### results and export data
+miss_ML_marine_results <- marine_SpatJoin2 %>%
+  sf::st_transform(4326) %>% 
+  mutate(Longitude = unlist(map(geometry,1)),
+         Latitude = unlist(map(geometry,2))) %>% 
+  sf::st_drop_geometry()
+
+write_csv(miss_ML_marine_results, file = file.path('Output/data_processing'
+                                                 , paste0("Missing_MonLoc_Marine_SpatJoin_"
+                                                          ,myDate, ".csv"))
+          , na = "")
+
+### Clean up environment
+rm(marine_pts, marine_SpatJoin, marine_SpatJoin2, miss_ML_marine_results
+   , miss_ML_marine, near_feat, dist_to_AU_m)
+
+######20e. Rivers #####
+miss_ML_rivers <- missing_ML %>%
+  filter(MonitoringLocationTypeName == "River/Stream"
+         |MonitoringLocationTypeName == "Stream")
+
+### convert to geospatial layer (sf object)
+river_pts <- sf::st_as_sf(x = miss_ML_rivers, coords = c("TADA.LongitudeMeasure"
+                                                          ,"TADA.LatitudeMeasure")
+                           , crs = "+proj=longlat +datum=WGS84")%>% 
+  sf::st_transform(st_crs(river_shp))
+
+### plot to see how they relate
+ggplot() + # WARNING::takes ~1 minute to load all the rivers
+  geom_sf(data = AK_shp)+
+  geom_sf(data = river_shp, color = "blue") +
+  geom_sf(data = river_pts, color = "red") +
+  theme_minimal()
+
+### spatial join
+river_SpatJoin <- sf::st_join(river_pts, river_shp, join = st_nearest_feature) %>% # join points and AUs
+  select(MonitoringLocationIdentifier, MonitoringLocationName
+         , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10_ID) # trim unneccessary columns
+
+### determine distance (m) between points and nearest feature
+near_feat <- sf::st_nearest_feature(river_pts, river_shp)
+dist_to_AU_m <- sf::st_distance(river_pts, river_shp[near_feat,], by_element = TRUE)
+
+### join distance measurements to join results
+river_SpatJoin2 <- cbind(river_SpatJoin, dist_to_AU_m)
+
+### results and export data
+miss_ML_rivers_results <- river_SpatJoin2 %>%
+  sf::st_transform(4326) %>% 
+  mutate(Longitude = unlist(map(geometry,1)),
+         Latitude = unlist(map(geometry,2))) %>% 
+  sf::st_drop_geometry()
+
+write_csv(miss_ML_rivers_results, file = file.path('Output/data_processing'
+                                                   , paste0("Missing_MonLoc_River_SpatJoin_"
+                                                            ,myDate, ".csv"))
+          , na = "")
+
+### Clean up environment
+rm(river_pts, river_SpatJoin, river_SpatJoin2, miss_ML_rivers_results
+   , miss_ML_rivers, near_feat, dist_to_AU_m)
+
+######20f. Mapping #####
 # interactive map for missing monitoring locations
-missing_ML_map <- leaflet() %>% 
+# reconfigure shapefiles
+beach_shp2 <- beach_shp %>%
+  sf::st_transform('+proj=longlat +datum=WGS84')
+  
+lake_shp2 <- lake_shp %>%
+  sf::st_transform('+proj=longlat +datum=WGS84')
+
+marine_shp2 <- marine_shp %>%
+  sf::st_transform('+proj=longlat +datum=WGS84')
+
+river_shp2 <- river_shp %>%
+  sf::st_transform('+proj=longlat +datum=WGS84')
+
+# setup palette
+ML_Type <- factor(levels = c("Lake, Reservoir, Impoundment"
+                    , "Lake"
+                    , "BEACH Program Site-Ocean"
+                    , "Estuary"
+                    , "Ocean"
+                    , "Stream"
+                    , "River/Stream"))
+
+pal <- colorFactor(
+  palette = c("#a6cee3", "#a6cee3", "#1f78b4", "#b2df8a", "#b2df8a"
+              , "#33a02c", "#33a02c"),
+  domain = ML_Type,
+  ordered = TRUE)
+
+# make map [WARNING! MAP TAKES TWO MINUTES TO LOAD]
+missing_ML_map <- leaflet() %>%
+  fitBounds(-180, 50, -120, 70) %>%
   addTiles() %>%
-  addProviderTiles(providers$Esri.NatGeoWorldMap) %>% 
+  addProviderTiles(providers$Esri.NatGeoWorldMap) %>%
   addCircleMarkers(data = missing_ML, lat = ~TADA.LatitudeMeasure
                    , lng = ~TADA.LongitudeMeasure
                    , popup = paste("MonitoringLocationIdentifier:", missing_ML$MonitoringLocationIdentifier, "<br>"
@@ -425,22 +666,46 @@ missing_ML_map <- leaflet() %>%
                                    , "TADA.LatitudeMeasure:", missing_ML$TADA.LatitudeMeasure, "<br>"
                                    , "TADA.LongitudeMeasure:", missing_ML$TADA.LongitudeMeasure)
                    , color = "black", fillColor = ~pal(MonitoringLocationTypeName), fillOpacity = 1, stroke = TRUE
-  )%>%
+                   ) %>%
+  addPolygons(data = beach_shp2, color = "black", weight = 1, opacity = 1
+              , popup = paste("AUID_ATTNS:", beach_shp2$AUID_ATTNS, "<br>"
+                              , "Name_AU:", beach_shp2$Name_AU)
+              , fillColor = "#1f78b4", fillOpacity = 0.5, group = "Beaches"
+              ) %>%
+  addPolygons(data = lake_shp2, color = "black", weight = 1, opacity = 1
+              , popup = paste("AUID_ATTNS:", lake_shp2$AUID_ATTNS, "<br>"
+                              , "Name_AU:", lake_shp2$Name_AU)
+              , fillColor = "#a6cee3", fillOpacity = 0.5, group = "Lakes"
+  ) %>%
+  addPolygons(data = marine_shp2, color = "black", weight = 1, opacity = 1
+              , popup = paste("AUID_ATTNS:", marine_shp2$AUID_ATTNS)
+              , fillColor = "#b2df8a", fillOpacity = 0.5, group = "Marine"
+  ) %>%
+  addPolylines(data = river_shp2, color = "#33a02c", weight = 3
+               , label = river_shp2$AUID_ATTNS, group = "Rivers"
+               , popup = paste("AUID_ATTNS:", river_shp2$AUID_ATTNS, "<br>"
+                               , "Name_AU:", river_shp2$Name_AU)) %>%
   addLegend("bottomright", pal = pal
             , values = missing_ML$MonitoringLocationTypeName, title = "ML Type"
-            , opacity = 1)
-missing_ML_map # view map
+            , opacity = 1) %>%
+  addLayersControl(overlayGroups = c("Lakes", "Rivers", "Beaches", "Marine")
+                   ,options = layersControlOptions(collapsed = TRUE)) %>%
+  hideGroup(c("Lakes", "Rivers", "Beaches", "Marine"))
+
+missing_ML_map # view map [WARNING! MAP TAKES TWO MINUTES TO LOAD]
 
 #Clean up environment
 rm(data_18, df_ML, df_ML_AU_Crosswalk, map, missing_ML, missing_ML_map
-   , ML_in_crosswalk, ML_Type, pal)
+   , ML_in_crosswalk, ML_Type, pal, AK_shp, beach_shp, beach_shp2, lake_shp
+   , lake_shp2, marine_shp, marine_shp2, river_shp, river_shp2, USA_shp
+   , fn_shp)
 #### Organize data by AUs####
-##### 20. AU data summary #####
-data_20 <- data_19 %>% 
+##### 21. AU data summary #####
+data_21 <- data_19 %>% 
   filter(!is.na(AUID_ATTNS))
 
 # Number of monitoring locations per AU
-df_AU_summary1 <- data_20 %>% 
+df_AU_summary1 <- data_21 %>% 
   select(AUID_ATTNS, MonitoringLocationIdentifier) %>% 
   distinct() %>% 
   count(AUID_ATTNS) %>% 
@@ -455,7 +720,7 @@ ggplot(data = df_AU_summary1, aes(x = n_MonitoringLocations))+
   theme_classic()
 
 # Summary of WQ data by AU and pollutant
-df_AU_summary2 <- data_20 %>% 
+df_AU_summary2 <- data_21 %>% 
   group_by(AUID_ATTNS, TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode) %>% 
   summarize(n_Samples = n()
             , min = round(min(TADA.ResultMeasureValue),3)
@@ -468,7 +733,7 @@ df_AU_summary2 <- data_20 %>%
 rm(df_AU_summary1, df_AU_summary2, data_19)
 
 #### Data sufficiency ####
-##### 21. AU/pollutant data sufficiency #####
+##### 22. AU/pollutant data sufficiency #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
 df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20231012.csv")
 df_data_sufficiency2 <- df_data_sufficiency %>% 
@@ -477,7 +742,7 @@ df_data_sufficiency2 <- df_data_sufficiency %>%
 
 # test for missing constituents in df_data_sufficiency
 constituents <- unique(df_data_sufficiency2$TADA.Constituent)
-WQ_CharacteristicNames <- unique(data_20$TADA.CharacteristicName)
+WQ_CharacteristicNames <- unique(data_21$TADA.CharacteristicName)
 
 (missing_constituents <- WQ_CharacteristicNames[!(WQ_CharacteristicNames %in% constituents)])
 
@@ -486,7 +751,7 @@ rm(df_data_sufficiency, constituents, WQ_CharacteristicNames)
 # join data sufficency data by:
 # TADA.Constituent (TADA.CharacteristicName)
 # Waterbody Type
-data_21 <- data_20 %>% 
+data_22 <- data_21 %>% 
   mutate(ActivityStartYear = year(ActivityStartDate)) %>% 
   select(AUID_ATTNS, MonitoringLocationTypeName, AU_Type, ActivityStartYear
          , TADA.CharacteristicName, TADA.ResultMeasureValue
@@ -499,7 +764,7 @@ data_21 <- data_20 %>%
   ungroup()
 
 # loop for data sufficiency for each AU
-Unique_AUIDs <- unique(data_21$AUID_ATTNS)
+Unique_AUIDs <- unique(data_22$AUID_ATTNS)
 result_list <- list()
 counter <- 0
 
@@ -508,7 +773,7 @@ for(i in Unique_AUIDs){
   counter <- counter + 1
   
   # filter data
-  df_subset <- data_21 %>% 
+  df_subset <- data_22 %>% 
     filter(AUID_ATTNS == i)
   
   # obtain AU_Type
@@ -556,7 +821,7 @@ df_AU_data_sufficiency <- df_AU_data_sufficiency %>%
   distinct()
 
 # clean environment
-rm(data_20, df_data_sufficiency2, df_join, df_loop_results, df_subset,
+rm(data_22, df_data_sufficiency2, df_join, df_loop_results, df_subset,
    my_data_sufficiency, result_list, results, counter, i, missing_constituents
    , my_WtrBdy_Type, my_AU_Type, my_constituents, Unique_AUIDs)
 

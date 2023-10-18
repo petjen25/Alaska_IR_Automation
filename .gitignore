@@ -49,3 +49,11 @@ po/*~
 rsconnect/
 Data/data_pull/data_pull_stream.csv
 Output/data_processing/Original_data_with_flags_20231017.csv
+Data/data_GIS/Rivers/Rivers.cpg
+Data/data_GIS/Rivers/Rivers.dbf
+Data/data_GIS/Rivers/Rivers.prj
+Data/data_GIS/Rivers/Rivers.sbn
+Data/data_GIS/Rivers/Rivers.sbx
+Data/data_GIS/Rivers/Rivers.shp
+Data/data_GIS/Rivers/Rivers.shp.xml
+Data/data_GIS/Rivers/Rivers.shx
