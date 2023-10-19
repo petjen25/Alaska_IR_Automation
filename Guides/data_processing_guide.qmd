@@ -5,23 +5,23 @@ format: docx
 editor: visual
 ---
 
-## Quarto
+## Required Packages
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+The required packages for the data_pull.R code are *TADA*, *tidyverse, leaflet, scales,* and *sf.* Installation for the *TADA* and *tidyverse* packages can be found in the Data Pull Guide. Here are the lines to install and load these packages:
 
 ```{r}
-1 + 1
+#| output: false
+# install.packages('leaflet')
+library(leaflet)
+
+# install.packages('scales')
+library(scales)
+
+# install.packages('sf')
+library(sf)
+
+library(TADA)
+library(sf)
 ```
 
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+## 
