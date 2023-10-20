@@ -1,0 +1,27 @@
+---
+title: "Data Processing User Guide"
+author: "Tetra Tech"
+format: docx
+editor: visual
+---
+
+## Required Packages
+
+The required packages for the data_pull.R code are *TADA*, *tidyverse, leaflet, scales,* and *sf.* Installation for the *TADA* and *tidyverse* packages can be found in the Data Pull Guide. Here are the lines to install and load these packages:
+
+```{r}
+#| output: false
+# install.packages('leaflet')
+library(leaflet)
+
+# install.packages('scales')
+library(scales)
+
+# install.packages('sf')
+library(sf)
+
+library(TADA)
+library(sf)
+```
+
+## 

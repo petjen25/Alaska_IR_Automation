@@ -1,0 +1,79 @@
+---
+title: "Data Pull User Guide"
+author: "Tetra Tech"
+format: docx
+editor: visual
+---
+
+## Required Packages
+
+The required packages for the data_pull.R code are *TADA* and *tidyverse*. In order to install the *TADA* package, you will also need the *remotes* package. The *remotes* package is not required otherwise. Here are the lines to install these packages:
+
+```{r}
+#| output: false
+# install.packages('tidyverse')
+library(tidyverse)
+
+# install.packages("remotes",
+#   repos = "http://cran.us.r-project.org")
+library(remotes)
+
+# remotes::install_github("USEPA/TADA",
+#   ref = "develop",
+#   dependencies = TRUE)
+library(TADA)
+```
+
+## Define Date Parameters
+
+The only necessary input for the data pull is the start and end dates. Change the dates using the format 'YYYY-MM-DD' for startDate and endDate for whatever is required.
+
+```{r}
+#| output: false
+startDate <- '2018-02-01'
+endDate <- '2023-02-01'
+```
+
+## Data Pull/Download
+
+The data download section is broken into five different pulls. Each different pull is for a specific site type that we identified as relevant come straight from the [Water Quality Portal](https://www.waterqualitydata.us/) (see 'Site Type' under the 'Basic' option). The actual download is performed using the TADA_BigDataRetrieval function. Documentation on this function can be found by running the code below:
+
+```{r}
+#| eval: false
+?TADA_BigDataRetrieval
+```
+
+The inputs into the TADA_BigDataRetrieval are the dates defined in the previous section, the specific site type we're doing the pull for, the state code, and applying auto clean. The TADA_BigDataRetrieval function will not return a TADA object without the applyautoclean = T.
+
+```{r}
+#| output: false
+#Estuary
+est_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
+                                       endDate = endDate,
+                                       siteType = 'Estuary',
+                                       statecode = 'AK',
+                                       applyautoclean = T)
+```
+
+The auto-cleaning applies the functions TADA_ConvertSpecialChars, TADA_ConvertResultUnit, TADA_ConvertDepthUnits, and TADA_IDCensoredData. For more information on the auto-cleaning functions run the following lines of code to review the documentation:
+
+```{r}
+#| eval: false
+?TADA_ConvertSpecialChars
+?TADA_ConvertResultUnits
+?TADA_ConvertDepthUnits
+?TADA_IDCensoredData
+```
+
+The output of the TADA_BigDataRetrieval function is a WQP data table with an additional 27 columns that contain the TADA-specific edits and flags.
+
+## Exporting as CSV
+
+The resulting tables from TADA_BigDataRetrieval can either be combined using rbind into one large table for export and/or be exported individually by site type. Exporting to csv is performed using write_csv from the *dplyr* package (loaded in with *tidyverse*). Change the export file location if needed.
+
+```{r}
+#| output: false
+#| eval: false
+write_csv(est_data_pull, 'Data/data_pull/data_pull_estuary.csv')
+
+```
