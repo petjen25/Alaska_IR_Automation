@@ -2,7 +2,7 @@
 
 #Written by: Hannah Ferriby and Ben Block
 #Date Created: 9-29-2023
-#Date of Last Updated: 10-17-2023
+#Date of Last Updated: 10-19-2023
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
@@ -42,18 +42,21 @@ names(all_input_data %>%
         select(starts_with("TADA")))
 
 ####Identify Flags####
+# Complete the following code steps in order. 
+## Steps 1-3 are special in that they are required by the TADA package
+### before subsequent functions can be run.
 
 #####1. Check Result Unit Validity#####
 # This function adds the TADA.ResultUnit.Flag to the dataframe.
-data_1 <- TADA_FlagResultUnit(all_input_data, clean = 'none') #required
+data_1 <- TADA_FlagResultUnit(all_input_data, clean = 'none')
 
 #####2. Check Sample Fraction Validity#####
 # This function adds the TADA.SampleFraction.Flag to the dataframe.
-data_2 <- TADA_FlagFraction(data_1, clean = F) #required
+data_2 <- TADA_FlagFraction(data_1, clean = F)
 
 #####3. Check Method Speciation Validity#####
 # This function adds the TADA.MethodSpeciation.Flag to the dataframe.
-data_3 <- TADA_FlagSpeciation(data_2, clean = 'none') #required
+data_3 <- TADA_FlagSpeciation(data_2, clean = 'none')
 
 #####4. Harmonize Characteristic Names#####
 # This function adds the following columns to the dataframe:
@@ -85,7 +88,7 @@ data_7 <- TADA_FlagMethod(data_6, clean = F)
 # TADA.MultipleOrgDuplicate
 # TADA.MultipleOrgDupGroupID
 # TADA.ResultSelectedMultipleOrgs
-data_8a <- TADA_FindPotentialDuplicatesMultipleOrgs(data_7, dist_buffer = 50)
+data_8a <- TADA_FindPotentialDuplicatesMultipleOrgs(data_7, dist_buffer = 50) # Buffer distance can be changed.
 
 # This function adds the following columns to the dataframe:
 # TADA.SingleOrgDupGroupID
@@ -169,6 +172,8 @@ rm(data_1, data_2, data_3, data_4, data_5a, data_5b, data_6, data_7,data_8a
 
 ####Evaluate and trim data ####
 #####14. Data summary ######
+# NOTE: This step creates its own unique output but does not produce data_14 object.
+
 # for loop to evaluate unique values per column
 result_list <- list() # loop infrastructure
 counter <- 0 # loop infrastructure
@@ -272,6 +277,7 @@ write_csv(data_16, file = file.path('Output/data_processing'
 rm(data_15)
 
 #####17. Visualize data distributions#####
+# NOTE: This step creates its own unique output but does not produce data_17 object.
 
 # For loop to plot distribution of TADA.CharacteristicName
 # CAUTION: This loop takes about a minute to run.
@@ -289,7 +295,9 @@ myPal <- c("Lake, Reservoir, Impoundment" = "#7fc97f"
 data_4loop <- data_16 %>% 
   filter(!is.na(TADA.ResultMeasureValue))%>% # remove NA values
   select(MonitoringLocationTypeName, TADA.CharacteristicName
-         , TADA.ResultMeasureValue, TADA.ResultMeasure.MeasureUnitCode)
+         , TADA.ResultMeasureValue, TADA.ResultMeasure.MeasureUnitCode) %>% 
+  mutate(TADA.ResultMeasureValue_Log10 = case_when((TADA.ResultMeasureValue == 0)~ log10(0.01)
+                                                   , TRUE ~ log10(TADA.ResultMeasureValue)))
 
 for(i in Unique_CharName){
   i # print name of current characteristic
@@ -316,10 +324,9 @@ for(i in Unique_CharName){
   
   #log boxplot
   logplot <- ggplot(data = df_subset, aes(x = MonitoringLocationTypeName
-                                       , y = TADA.ResultMeasureValue
+                                       , y = TADA.ResultMeasureValue_Log10
                                        , fill = MonitoringLocationTypeName))+
     geom_boxplot()+
-    scale_y_log10()+
     labs(y = paste0(df_subset$TADA.ResultMeasure.MeasureUnitCode, " (Log10 Y-Axis)")
          , title = df_subset$TADA.CharacteristicName)+
     scale_fill_manual(values = myPal)+
@@ -364,7 +371,7 @@ rm(data_16)
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
 df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk.CSV")
 df_ML_AU_Crosswalk <- df_ML_AU_Crosswalk %>% 
-  select(-c(OrganizationIdentifier)) %>% 
+  select(-c(OrganizationIdentifier)) %>% # removed to avoid duplication in join
   rename(AU_Type = Type)
 
 # join data
@@ -445,6 +452,17 @@ AK_shp <- USA_shp %>%
 miss_ML_beaches <- missing_ML %>% # filter appropriate sites
   filter(MonitoringLocationTypeName == "BEACH Program Site-Ocean")
 
+### QC check
+num_sites <- nrow(miss_ML_beaches)
+
+if(num_sites == 0){
+  print(paste("There are NO beach monitoring locations missing AU data."
+              ,"Skip to the next section."))
+} else {
+  print(paste("There ARE", num_sites, "beach monitoring locations missing AU data."
+              ,"Continue to assign MLs to AUs using spatial joins."))
+}# end if/else statement
+
 ### convert to geospatial layer (sf object)
 beach_pts <- sf::st_as_sf(x = miss_ML_beaches, coords = c("TADA.LongitudeMeasure"
                                                           ,"TADA.LatitudeMeasure")
@@ -483,13 +501,24 @@ write_csv(miss_ML_beach_results, file = file.path('Output/data_processing'
           , na = "")
 
 ### Clean up environment
-rm(beach_pts, beach_SpatJoin, beach_SpatJoin2, miss_ML_beach_results
+rm(num_sites, beach_pts, beach_SpatJoin, beach_SpatJoin2, miss_ML_beach_results
    , miss_ML_beaches, near_feat, dist_to_AU_m)
 
 ######20c. Lakes #####
 miss_ML_lakes <- missing_ML %>%
   filter(MonitoringLocationTypeName == "Lake"
          |MonitoringLocationTypeName == "Lake, Reservoir, Impoundment")
+
+### QC check
+num_sites <- nrow(miss_ML_lakes)
+
+if(num_sites == 0){
+  print(paste("There are NO lake monitoring locations missing AU data."
+              ,"Skip to the next section."))
+} else {
+  print(paste("There ARE", num_sites, "lake monitoring locations missing AU data."
+              ,"Continue to assign MLs to AUs using spatial joins."))
+}# end if/else statement
 
 ### convert to geospatial layer (sf object)
 lake_pts <- sf::st_as_sf(x = miss_ML_lakes, coords = c("TADA.LongitudeMeasure"
@@ -529,13 +558,24 @@ write_csv(miss_ML_lake_results, file = file.path('Output/data_processing'
           , na = "")
 
 ### Clean up environment
-rm(lake_pts, lake_SpatJoin, lake_SpatJoin2, miss_ML_lake_results
+rm(num_sites, lake_pts, lake_SpatJoin, lake_SpatJoin2, miss_ML_lake_results
    , miss_ML_lakes, near_feat, dist_to_AU_m)
 
 ######20d. Marine #####
 miss_ML_marine <- missing_ML %>%
   filter(MonitoringLocationTypeName == "Estuary"
          |MonitoringLocationTypeName == "Ocean")
+
+### QC check
+num_sites <- nrow(miss_ML_marine)
+
+if(num_sites == 0){
+  print(paste("There are NO marine monitoring locations missing AU data."
+              ,"Skip to the next section."))
+} else {
+  print(paste("There ARE", num_sites, " marine monitoring locations missing AU data."
+              ,"Continue to assign MLs to AUs using spatial joins."))
+}# end if/else statement
 
 ### convert to geospatial layer (sf object)
 marine_pts <- sf::st_as_sf(x = miss_ML_marine, coords = c("TADA.LongitudeMeasure"
@@ -544,7 +584,7 @@ marine_pts <- sf::st_as_sf(x = miss_ML_marine, coords = c("TADA.LongitudeMeasure
   sf::st_transform(st_crs(marine_shp))
 
 ### plot to see how they relate
-ggplot() + # takes ~15 seconds to load all the lakes
+ggplot() + # takes ~15 seconds to load all the marine locations
   geom_sf(data = AK_shp)+
   geom_sf(data = marine_shp, color = "blue") +
   geom_sf(data = marine_pts, color = "red") +
@@ -575,13 +615,24 @@ write_csv(miss_ML_marine_results, file = file.path('Output/data_processing'
           , na = "")
 
 ### Clean up environment
-rm(marine_pts, marine_SpatJoin, marine_SpatJoin2, miss_ML_marine_results
+rm(num_sites, marine_pts, marine_SpatJoin, marine_SpatJoin2, miss_ML_marine_results
    , miss_ML_marine, near_feat, dist_to_AU_m)
 
 ######20e. Rivers #####
 miss_ML_rivers <- missing_ML %>%
   filter(MonitoringLocationTypeName == "River/Stream"
          |MonitoringLocationTypeName == "Stream")
+
+### QC check
+num_sites <- nrow(miss_ML_rivers)
+
+if(num_sites == 0){
+  print(paste("There are NO river monitoring locations missing AU data."
+              ,"Skip to the next section."))
+} else {
+  print(paste("There ARE", num_sites, "river monitoring locations missing AU data."
+              ,"Continue to assign MLs to AUs using spatial joins."))
+}# end if/else statement
 
 ### convert to geospatial layer (sf object)
 river_pts <- sf::st_as_sf(x = miss_ML_rivers, coords = c("TADA.LongitudeMeasure"
@@ -621,7 +672,7 @@ write_csv(miss_ML_rivers_results, file = file.path('Output/data_processing'
           , na = "")
 
 ### Clean up environment
-rm(river_pts, river_SpatJoin, river_SpatJoin2, miss_ML_rivers_results
+rm(num_sites, river_pts, river_SpatJoin, river_SpatJoin2, miss_ML_rivers_results
    , miss_ML_rivers, near_feat, dist_to_AU_m)
 
 ######20f. Mapping #####
@@ -746,8 +797,16 @@ WQ_CharacteristicNames <- unique(data_21$TADA.CharacteristicName)
 
 (missing_constituents <- WQ_CharacteristicNames[!(WQ_CharacteristicNames %in% constituents)])
 
+# export data
+df_missing_constituents <- as.data.frame(cbind(missing_constituents, "Not in data sufficiency table"))
+write_csv(df_missing_constituents
+          , file = file.path('Output/data_processing'
+                             , paste0("Missing_constituents_in_data_sufficiency_table_"
+                                      ,myDate, ".csv")), na = "")
+
 # clean environment
-rm(df_data_sufficiency, constituents, WQ_CharacteristicNames)
+rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constituents)
+
 # join data sufficency data by:
 # TADA.Constituent (TADA.CharacteristicName)
 # Waterbody Type
