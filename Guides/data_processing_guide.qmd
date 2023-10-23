@@ -11,6 +11,7 @@ The required packages for the data_pull.R code are *TADA*, *tidyverse, leaflet, 
 
 ```{r}
 #| output: false
+#| eval: false
 # install.packages('leaflet')
 library(leaflet)
 
@@ -24,4 +25,219 @@ library(TADA)
 library(sf)
 ```
 
-## 
+## Required Inputs
+
+This code has specific exterior files that are required in order for it to run. These inputs are not all loaded in at the beginning, but instead are read in when they are needed. The inputs are as follows:
+
+1.  Csv outputs from data_pull.R - broken up by site type
+
+2.  'WQ_Column_Manager.csv' to quickly subset WQ dataset fields
+
+3.  'ML_AU_Crosswalk.csv' to crosswalk Monitoring Locations with AUs
+
+4.  'AK_DataSufficiency_Crosswalk_20231012.csv' to crosswalk WQ dataset with data sufficiency table
+
+## Load Data
+
+The data processing in this file is being applied to the csv outputs from data_pull.R. The following lines read in the csvs broken up by site type and purposefully excluding the 'data_pull_all.csv' to allow for this code to be used for different combinations of files:
+
+```{r}
+#| eval: false
+#Find all file names that end in .csv from the data_pull output folder
+csv_names1 <- list.files('Data/data_pull', pattern = '.csv', full.names = T)
+csv_names <- csv_names1[!str_detect(csv_names1, pattern = 'all')]
+  
+#Read in csvs and combine into one table
+all_input_data <- tibble()
+for(i in 1:length(csv_names)) {
+  csv <- read_csv(csv_names[i])
+  all_input_data <- all_input_data %>%
+    rbind(csv)
+  remove(csv)
+}
+```
+
+## Section 1: Identifying TADA Flags
+
+After the initial setup and data read, the data processing is broken up into numbered steps that are divided into 5 different sections. Steps #1 through #13 are in the 'Identify Flags' section. These steps are made up of different *TADA* functions that scan the input dataset for a given error or lack thereof and produce a new column or columns with the prefix 'TADA' that identifies the flag for each row. The comments under each step name list the column names that the *TADA* function adds to the data. Here is the example for Step #1:
+
+```{r}
+#| eval: false
+#####1. Check Result Unit Validity#####
+# This function adds the TADA.ResultUnit.Flag to the dataframe.
+data_1 <- TADA_FlagResultUnit(all_input_data, clean = 'none')
+```
+
+The specifics for each TADA function can be found using the '?' function in R or by reading through the [Module 1 TADA vignette](https://github.com/USEPA/TADA/blob/develop/vignettes/TADAModule1.Rmd). The following functions are used to flag potential issues in the data:
+
+1.  TADA_FlagResultUnit: checks for errors in units
+
+2.  TADA_FlagFraction: checks for invalid characteristic-fraction combinations
+
+3.  TADA_FlagSpeciation: checks for invalid characteristic-method speciation
+
+4.  TADA_HarmonizeSynonyms: checks for duplicate naming and assigns a name based on a synonym reference table
+
+5.  TADA_FlagAboveThreshold/TADA_FlagBelowThreshold: checks for values above or below the threshold for that 'CharacteristicName'
+
+6.  TADA_FindContinuousData: checks metadata to flag any potential aggregated continuous data submitted to WQP
+
+7.  TADA_FlagMethod: checks for invalid characteristic-analytical method combinations
+
+8.  TADA_FindpotentialDuplicatesMultipleOrgs/TADA_FindPotentialDuplicatesSingleOrg: checks for duplicate samples within other organizations/within the same organization
+
+9.  TADA_FindQCActivities: identifies QC samples
+
+10. TADA_FlagCoordinates: checks for coordinates outside of the United States
+
+11. TADA_FlagMeasureQualifierCode: checks the 'MeasureQualifierCode' for any known suspect codes
+
+12. TADA_SimpleCensoredMethods: determines if a sample is non-detect and if it needs to reassigned - currently set to assign non-detects to 0.5 the detection limit
+
+Step #11 is reliant on a list of known codes from AKDEC that the TADA package cannot identify. The codes from AK can be found in 'IR Data QA .xlsx'. Any further unknown qualifier codes are labeled as 'uncategorized'. After these functions are applied Step #13 removes any columns that are entirely NA from the dataset.
+
+```{r}
+#| eval: false
+#####13. Identify columns with all NA values#####
+# Check whether you expect data in any of the columns listed below.
+(cols_NA <- data_12 %>% 
+   keep(~all(is.na(.x))) %>% 
+   names)
+
+# Eliminate any columns with all NA values
+data_13 <- data_12 %>% 
+  select(where(~sum(!is.na(.x)) > 0))
+
+```
+
+## Section 2: Evaluate and Trim Data
+
+The second section aims to use the flags from Section 1 to remove data. This section is composed of Steps #14 through #18. The following is a breakdown of each step:
+
+14. Create a data summary table with each row being a column from the Step #13 output in Section 1. The columns include the column name, class, number of unique values, and a list of those unique values if the list is 10 or less in length. The data_summary table provides the values for data processing and removal.
+
+    ![](images/summary_data_table_head.PNG){width="815"}
+
+15. The WQ_Column_Manager.csv is read in and the 'Keep_YN' column is used to filter out unnecessary columns. If the columns in the manager csv do not match those from the output of Step #13, an error message is printed instead.
+
+16. Using the data_summary table values, flags with values that need to be removed are filtered out. Some *TADA* outputs do not match their vignettes and so the following is assumed:
+
+    ```{r}
+    #| eval: false
+    # Assume the following:
+    # Not Reviewed <- "Not Reviewed" 
+    # Valid <- c("Accepted", "Y")
+    # Invalid <- c("Rejected", "Rejected ", "N")
+    # NonStandardized <- c("NonStandardized",
+    #                  "InvalidMediaUnit",
+    #                  "InvalidChar",
+    #                  "MethodNeeded")
+
+    data_16 <- data_15 %>% 
+      filter(TADA.ResultUnit.Flag != "Rejected") %>% # Step 1
+      filter(TADA.SampleFraction.Flag != "Rejected") %>% # Step 2
+      filter(TADA.MethodSpeciation.Flag != "Rejected") %>% # Step 3
+      filter(TADA.AnalyticalMethod.Flag != "Rejected") %>% # Step 7
+      filter(TADA.ActivityType.Flag == 'Non_QC') %>% # Step 9
+      filter(TADA.MeasureQualifierCode.Flag != 'Suspect') %>% # Step 11
+      filter(TADA.ActivityMediaName == 'WATER') # Remove non-water samples
+    # censored data are retained in this dataset.
+    ```
+
+17. Create boxplots and log10 boxplots of each unique 'TADA.CharacteristicName' and site type through a for loop. Before the boxplots are created, NA values in 'TADA.ResultMeasureValue' are filtered out. Each site type is manually assigned a different color. These boxplots are exported to pdf for visual review. The following is an example boxplot for water temperature:
+
+    ![](images/ak_boxplot_watertemp.PNG){width="491"}
+
+18. Create an 'ultra trim' dataset that only contains the columns 'OrganizerIdentifier', 'ActivityStartDate', 'MonitoringLocationIdentifier', 'MonitoringLocationName', 'MonitoringLocationTypeName', 'TADA.CharacteristicName', 'TADA.ResultMeasureValue', 'TADA.LatitudeMeasure', and 'TADA.LongitudeMeasure'.
+
+    ```{r}
+    #| eval: false
+    #####18. Ultra trim data#####
+    data_18 <- data_16 %>% 
+      select(OrganizationIdentifier
+             ,ActivityStartDate
+             ,MonitoringLocationIdentifier
+             ,MonitoringLocationName
+             ,MonitoringLocationTypeName
+             ,TADA.CharacteristicName
+             ,TADA.ResultMeasureValue
+             ,TADA.ResultMeasure.MeasureUnitCode
+             ,TADA.LatitudeMeasure
+             ,TADA.LongitudeMeasure)
+    ```
+
+## Section 3: Match Data to AUs
+
+This section matches the processed data with the proper Assessment Unit (AU) for the site type and location. This section is made up of Steps #19 through #20, although Step #20 is broken into six sub-steps.
+
+19. Read in 'ML_AU_Crosswalk.csv' and join that with the output of Section 2. Use *leaflet* to create an interactive map in the 'Viewer' tab of the samples by monitoring location type.
+20. Assigning sample locations to their appropriate AU if it is not specified in the crosswalk from Step #19.
+    a.   Read in the AU shapefiles and transform each of them to EPSG: 3338
+
+    b.  Break the sample locations with missing AUs into their appropriate site type (beach, lake, marine, or river). Select beach locations and find the nearest beach AU and calculate the distance. Join the neartest AU and calculated distance to the beach site locations. The following code is for the beach site type:
+
+        ```{r}
+        #| eval: false
+        ######20b. Beaches #####
+        miss_ML_beaches <- missing_ML %>% # filter appropriate sites
+          filter(MonitoringLocationTypeName == "BEACH Program Site-Ocean")
+
+        ### QC check
+        num_sites <- nrow(miss_ML_beaches)
+
+        if(num_sites == 0){
+          print(paste("There are NO beach monitoring locations missing AU data."
+                      ,"Skip to the next section."))
+        } else {
+          print(paste("There ARE", num_sites, "beach monitoring locations missing AU data."
+                      ,"Continue to assign MLs to AUs using spatial joins."))
+        }# end if/else statement
+
+        ### convert to geospatial layer (sf object)
+        beach_pts <- sf::st_as_sf(x = miss_ML_beaches, coords = c("TADA.LongitudeMeasure"
+                                                                  ,"TADA.LatitudeMeasure")
+                                  , crs = "+proj=longlat +datum=WGS84")%>% 
+          sf::st_transform(st_crs(beach_shp))
+
+        ### plot to see how they relate
+        ggplot() +
+          geom_sf(data = AK_shp)+
+          geom_sf(data = beach_shp, color = "red") +
+          geom_sf(data = beach_pts, color = "red") +
+          theme_minimal()
+
+        ### spatial join
+        beach_SpatJoin <- sf::st_join(beach_pts, beach_shp, join = st_nearest_feature) %>% # join points and AUs
+          select(MonitoringLocationIdentifier, MonitoringLocationName
+                 , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10) # trim unneccessary columns
+
+        ### determine distance (m) between points and nearest feature
+        near_feat <- sf::st_nearest_feature(beach_pts, beach_shp)
+        dist_to_AU_m <- sf::st_distance(beach_pts, beach_shp[near_feat,], by_element = TRUE)
+
+        ### join distance measurements to join results
+        beach_SpatJoin2 <- cbind(beach_SpatJoin, dist_to_AU_m)
+
+        ### results and export data
+        miss_ML_beach_results <- beach_SpatJoin2 %>%
+          sf::st_transform(4326) %>% 
+          mutate(Longitude = unlist(map(geometry,1)),
+                 Latitude = unlist(map(geometry,2))) %>% 
+          sf::st_drop_geometry()
+        ```
+
+    c.  Repeat for each site type.
+
+    d.  Create an interactive map using *leaflet* with each of the AU types and the sample locations that were just assigned to them.
+
+## Section 4: Organize Data by AU
+
+This section aims to explore the data within each AU and provide summary statistics for each.
+
+21. Create a boxplot of the frequency of a given number of monitoring locations within an AU. Create a summary table by AU and 'TADA.CharacteristicName' that provides the number of samples, minimum, median, maximum, 25th quantile, and 75th quantile values for each.
+
+## Section 5: Data Sufficiency
+
+The final section of the code compares the data sufficiency needs for Alaska with the actual samples taken. This section aims to provide a final output that designates whether for a given AU and characteristic if there is enough data to draw conclusions on that AU.
+
+22. Read in 'AK_DataSufficiency_Crosswalk_20231012.csv', look for any constituents that aren't in the sufficiency crosswalk or the processed data, summarize the output of Section 4 into number of samples and number of distinct years in which a sample was taken by AU and constituent, compare the summarized data to the sufficiency requirements
