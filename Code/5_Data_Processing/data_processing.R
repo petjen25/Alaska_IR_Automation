@@ -9,7 +9,12 @@
 #2. 'WQ_Column_Manager.csv' to quickly subset WQ dataset fields
 #3. 'ML_AU_Crosswalk.csv' to crosswalk Monitoring Locations with AUs
 #4. 'AK_DataSufficiency_Crosswalk_20231012.csv' to crosswalk WQ dataset with 
-#     data sufficiency table
+     # data sufficiency table
+#5. 'Beaches.shp' Beaches AU shapefile
+#6. 'Lakes.shp' Lakes AU shapefile
+#7. 'MAUs_FINAL_2023.shp' Marine AU shapefile
+#8. 'Rivers.shp' Rivers AU shapefile
+#9. 'cb_2018_us_state_500k.shp' US States shapefile
 
 ####Set Up####
 library(TADA)
@@ -81,7 +86,7 @@ data_6 <- TADA_FindContinuousData(data_5b, clean = F)
 # This function adds the TADA.AnalyticalMethod.Flag to the dataframe.
 data_7 <- TADA_FlagMethod(data_6, clean = F)
 
-#####8. Find potential duplictes#####
+#####8. Find potential duplicates#####
 #Buffer distance set to 50 m, can change
 # This function adds the following columns to the dataframe:
 # TADA.NearbySiteGroups
@@ -141,10 +146,11 @@ data_11b <- data_11a %>%
   filter(TADA.MeasureQualifierCode.Flag == "uncategorized") %>% 
   distinct())
 
-#####12. Replace non-detects#####
+#####12. Replace non-detects #####
 # This function adds the following columns to the dataframe:
 # TADA.CensoredMethod
 # TADA.CensoredData.Flag
+# NOTE: This function uses the method detection limit
 
 data_12 <- TADA_SimpleCensoredMethods(data_11b, 
                                       nd_method = 'multiplier',
@@ -780,8 +786,13 @@ df_AU_summary2 <- data_21 %>%
             , q75 = round(quantile(TADA.ResultMeasureValue, 0.75, na.rm = TRUE),3)
             , max = round(max(TADA.ResultMeasureValue),3))
 
+# Multiple results for a given date
+df_AU_summary3 <- data_21 %>% 
+  count(AUID_ATTNS, ActivityStartDate, TADA.CharacteristicName) %>% 
+  filter(n >1)
+
 #Clean up environment
-rm(df_AU_summary1, df_AU_summary2, data_19)
+rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 
 #### Data sufficiency ####
 ##### 22. AU/pollutant data sufficiency #####
