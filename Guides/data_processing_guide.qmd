@@ -172,7 +172,7 @@ This section matches the processed data with the proper Assessment Unit (AU) for
 
 19. Read in 'ML_AU_Crosswalk.csv' and join that with the output of Section 2. Use *leaflet* to create an interactive map in the 'Viewer' tab of the samples by monitoring location type.
 20. Assigning sample locations to their appropriate AU if it is not specified in the crosswalk from Step #19.
-    a.   Read in the AU shapefiles and transform each of them to EPSG: 3338
+    a.  Read in the AU shapefiles and transform each of them to EPSG: 3338
 
     b.  Break the sample locations with missing AUs into their appropriate site type (beach, lake, marine, or river). Select beach locations and find the nearest beach AU and calculate the distance. Join the neartest AU and calculated distance to the beach site locations. The following code is for the beach site type:
 
