@@ -17,7 +17,7 @@ The purpose of the *data_pull.R* script is to remotely download Water Quality Po
 
 ## Required Packages
 
-The required packages for the *data_pull.R* code are [*TADA*](https://github.com/USEPA/TADA) and [*tidyverse*](https://www.tidyverse.org/). To install the *TADA* package, you will also need the [*remotes*](https://cran.r-project.org/web/packages/remotes/index.html) package. Note, the *remotes* package is not required beyond installation of the *TADA* package. Below is a code chunk that demonstrates how to install these packages.
+The required packages for the *data_pull.R* code are [*TADA*](https://github.com/USEPA/TADA) and [*tidyverse*](https://www.tidyverse.org/). To install the *TADA* package, you will also need the [*remotes*](https://cran.r-project.org/web/packages/remotes/index.html) package. Note, the *remotes* package is not required beyond installation of the *TADA* package. Below is a code chunk that demonstrates how to install and load these packages.
 
 ```{r}
 #| output: false
