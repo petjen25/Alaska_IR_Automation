@@ -37,19 +37,25 @@ library(sf)
 
 ## Required Inputs
 
-This code has specific exterior files that are required in order for it to run. These inputs are not all loaded in at the beginning, but instead are read in when they are needed. The inputs are as follows:
+This code has specific exterior files that are required for it to run. The inputs are listed below. Note, only the outputs from *data_pull.R* are loaded at the beginning of the script, whereas all others are loaded when needed farther into the script.
 
-1.  Csv outputs from data_pull.R - broken up by site type
+| File Name                                              | Purpose                                      | Source                   |
+|--------------------------------------------------------|----------------------------------------------|--------------------------|
+| .CSV outputs (varies by site types from *data_pull.R*) | WQ data to be processed.                     | WQP (via *data_pull.R*). |
+| WQ_Column_Manager.csv                                  | Quickly subset WQ dataset fields.            | Tetra Tech               |
+| ML_AU_Crosswalk.csv                                    | Crosswalk Monitoring Locations with AUs/     | AK DEC                   |
+| AK_DataSufficiency_Crosswalk_20231012.csv              | Determine data sufficiency per AU/pollutant. | AK DEC                   |
+| Beaches.shp                                            | Beaches AU shapefile for mapping.            | AK DEC                   |
+| Lakes.shp                                              | Lakes AU shapefile for mapping.              | AK DEC                   |
+| MAUs_FINAL_2023.shp                                    | Marine AU shapefile for mapping.             | AK DEC                   |
+| Rivers.shp                                             | Rivers AU shapefile for mapping.             | AK DEC                   |
+| cb_2018_us_state_500k.shp                              | US States shapefile for mapping.             | Tetra Tech               |
 
-2.  'WQ_Column_Manager.csv' to quickly subset WQ dataset fields
-
-3.  'ML_AU_Crosswalk.csv' to crosswalk Monitoring Locations with AUs
-
-4.  'AK_DataSufficiency_Crosswalk_20231012.csv' to crosswalk WQ dataset with data sufficiency table
+: Exterior files required by data_processing.R to function properly, the purpose of each file within the code, and their source.
 
 ## Load Data
 
-The data processing in this file is being applied to the csv outputs from data_pull.R. The following lines read in the csvs broken up by site type and purposefully excluding the 'data_pull_all.csv' to allow for this code to be used for different combinations of files:
+Data pulled from the WQP via the *data_pull.R* script are read in to the *data_processing.R* script for processing and quality control. The following lines read in the .CSVs by site type and explicitly excludes the composite dataset ('data_pull_all.csv') which allows for this code to be used for different combinations of files from *data_pull.R*. Data are then combined into a single dataset.
 
 ```{r}
 #| eval: false
@@ -69,7 +75,9 @@ for(i in 1:length(csv_names)) {
 
 ## Section 1: Identifying TADA Flags
 
-After the initial setup and data read, the data processing is broken up into numbered steps that are divided into 5 different sections. Steps #1 through #13 are in the 'Identify Flags' section. These steps are made up of different *TADA* functions that scan the input dataset for a given error or lack thereof and produce a new column or columns with the prefix 'TADA' that identifies the flag for each row. The comments under each step name list the column names that the *TADA* function adds to the data. Here is the example for Step #1:
+After the initial setup and data read, the data processing is broken up into numbered steps that are divided into five different sections. Steps #1 through #13 are in the 'Identify TADA Flags' section. Each step represents a different *TADA* function that scans the input dataset for quality control issues. Note, every *TADA* function has an argument that asks whether the data should be "cleaned" which automatically removes erroneous or suspect data. We did not use the "clean" arguments to ensure that the WQ data could be reviewed by an analyst at the end.
+
+Each *TADA* function appends one or more columns to the input dataset and are either updated versions of existing columns or flags for potential erroneous data points (every new *TADA* field has a 'TADA.' prefix). Within *data_processing.R*, the comments under each step name list the column names that the *TADA* function adds to the data. Here is the example for Step #1:
 
 ```{r}
 #| eval: false
@@ -78,33 +86,57 @@ After the initial setup and data read, the data processing is broken up into num
 data_1 <- TADA_FlagResultUnit(all_input_data, clean = 'none')
 ```
 
-The specifics for each TADA function can be found using the '?' function in R or by reading through the [Module 1 TADA vignette](https://github.com/USEPA/TADA/blob/develop/vignettes/TADAModule1.Rmd). The following functions are used to flag potential issues in the data:
+The specifics for each *TADA* function can be found using the '?' function in R or by reading through the [Module 1 TADA vignette](https://github.com/USEPA/TADA/blob/develop/vignettes/TADAModule1.Rmd). The following functions are used to flag potential issues in the data (in order of appearance in *data_processing.R*):
 
-1.  TADA_FlagResultUnit: checks for errors in units
+1.  *TADA_FlagResultUnit*: Checks for errors in units
 
-2.  TADA_FlagFraction: checks for invalid characteristic-fraction combinations
+2.  *TADA_FlagFraction*: Checks for invalid characteristic-fraction combinations
 
-3.  TADA_FlagSpeciation: checks for invalid characteristic-method speciation
+3.  *TADA_FlagSpeciation*: Checks for invalid characteristic-method speciation
 
-4.  TADA_HarmonizeSynonyms: checks for duplicate naming and assigns a name based on a synonym reference table
+4.  *TADA_HarmonizeSynonyms*: Checks for duplicate naming and assigns a name based on a synonym reference table
 
-5.  TADA_FlagAboveThreshold/TADA_FlagBelowThreshold: checks for values above or below the threshold for that 'CharacteristicName'
+5.  *TADA_FlagAboveThreshold/TADA_FlagBelowThreshold*: Checks for values above or below the threshold for that 'CharacteristicName'
 
-6.  TADA_FindContinuousData: checks metadata to flag any potential aggregated continuous data submitted to WQP
+6.  *TADA_FindContinuousData*: Checks metadata to flag any potential aggregated continuous data submitted to WQP
 
-7.  TADA_FlagMethod: checks for invalid characteristic-analytical method combinations
+7.  *TADA_FlagMethod*: Checks for invalid characteristic-analytical method combinations
 
-8.  TADA_FindpotentialDuplicatesMultipleOrgs/TADA_FindPotentialDuplicatesSingleOrg: checks for duplicate samples within other organizations/within the same organization
+8.  *TADA_FindpotentialDuplicatesMultipleOrgs/TADA_FindPotentialDuplicatesSingleOrg*: Checks for duplicate samples within other organizations/within the same organization
 
-9.  TADA_FindQCActivities: identifies QC samples
+9.  *TADA_FindQCActivities*: Identifies QC samples
 
-10. TADA_FlagCoordinates: checks for coordinates outside of the United States
+10. *TADA_FlagCoordinates*: Checks for coordinates outside of the United States
 
-11. TADA_FlagMeasureQualifierCode: checks the 'MeasureQualifierCode' for any known suspect codes
+11. *TADA_FlagMeasureQualifierCode*: Checks the 'MeasureQualifierCode' for any known suspect codes. Note, that any Measure Qualifier Codes not recognized by this function are flagged as 'uncategorized'. A sub-step in Step #11 manually replaces 'uncategorized' flags with appropriate flags based on a list of known Measure Qualifier Codes from AK DEC (see code chunk below). Any new flags encountered after the development of *data_processing.R* will require the analyst to manually append new flags into the code chunk.
 
-12. TADA_SimpleCensoredMethods: determines if a sample is non-detect and if it needs to reassigned - currently set to assign non-detects to 0.5 the detection limit
+    ```{r}
+    #| eval: false
+    # add any changes by making a new row below
+    data_11b <- data_11a %>% 
+      mutate(TADA.MeasureQualifierCode.Flag = 
+            case_when((MeasureQualifierCode == "H;U") ~ "Suspect"
+                , (MeasureQualifierCode == "RC;U") ~ "Non-Detect"
+                , (MeasureQualifierCode == "H;RC;U") ~ "Suspect"
+                , (MeasureQualifierCode == "J-R;TOC") ~ "Pass"
+                , (MeasureQualifierCode == "TOC;U") ~ "Non-Detect"
+                , (MeasureQualifierCode == "RC;SUS") ~ "Suspect"
+                , (MeasureQualifierCode == "O;RC") ~ "Pass"
+                , (MeasureQualifierCode == "H;RC") ~ "Suspect"
+                , (MeasureQualifierCode == "B;J-R") ~ "Pass"
+                , (MeasureQualifierCode == "H;J-R") ~ "Suspect"
+                , (MeasureQualifierCode == "IQCOL;U") ~ "Pass"
+                , (MeasureQualifierCode == "IQCOL;J-R") ~ "Pass"
+                , (MeasureQualifierCode == "LL;RC") ~ "Pass"
+                , (MeasureQualifierCode == "BQL;RC") ~ "Pass"
+                , (MeasureQualifierCode == "B;D") ~ "Pass"
+                , (MeasureQualifierCode == "SDROL;U") ~ "Suspect"
+                , TRUE ~ TADA.MeasureQualifierCode.Flag))
+    ```
 
-Step #11 is reliant on a list of known codes from AKDEC that the TADA package cannot identify. The codes from AK can be found in 'IR Data QA .xlsx'. Any further unknown qualifier codes are labeled as 'uncategorized'. After these functions are applied Step #13 removes any columns that are entirely NA from the dataset.
+12. *TADA_SimpleCensoredMethods*: Determines if a sample is non-detect and if it needs to reassigned - currently set to assign non-detects to 0.5 the detection limit
+
+After the *TADA* functions are applied, Step #13 removes any columns that are entirely NA from the dataset.
 
 ```{r}
 #| eval: false
@@ -122,15 +154,15 @@ data_13 <- data_12 %>%
 
 ## Section 2: Evaluate and Trim Data
 
-The second section aims to use the flags from Section 1 to remove data. This section is composed of Steps #14 through #18. The following is a breakdown of each step:
+Section #2 uses the flags from Section #1 to remove erroneous data. This section is composed of Steps #14 through #18. The following is a breakdown of each step.
 
-14. Create a data summary table with each row being a column from the Step #13 output in Section 1. The columns include the column name, class, number of unique values, and a list of those unique values if the list is 10 or less in length. The data_summary table provides the values for data processing and removal.
+14. Create a data summary table with each row being a column from the Step #13 output in Section 1 (see screenshot of example output below). The fields within the summary table include the column name, class, number of unique values, and a list of those unique values (if the list is 10 or less in length). The data summary table provides the user with the means to quickly review field attributes which can be used to identify and remove suspect data.
 
-    ![](images/summary_data_table_head.PNG){width="815"}
+    ![Example output from Step #14 'for loop' in data_processing.R](images/summary_data_table_head.PNG){width="815"}
 
-15. The WQ_Column_Manager.csv is read in and the 'Keep_YN' column is used to filter out unnecessary columns. If the columns in the manager csv do not match those from the output of Step #13, an error message is printed instead.
+15. The *WQ_Column_Manager.csv* is read in and the 'Keep_YN' column is used to filter out unnecessary columns. A quality control check ensures that the external manager file is up to date and prompts the user for an update if any new columns are detected in the WQ dataset.
 
-16. Using the data_summary table values, flags with values that need to be removed are filtered out. Some *TADA* outputs do not match their vignettes and so the following is assumed:
+16. The WQ dataset is trimmed by removing invalid data (mainly from *TADA* function fields) (see the code chunk below). The user can also review the data summary table generated in Step #14 to inform additional trimming steps. Note, that at the time of development, outputs from some *TADA* functions did not match the outputs described in the R documentation, therefore, the following crosswalk was assumed (see comments):
 
     ```{r}
     #| eval: false
@@ -158,7 +190,7 @@ The second section aims to use the flags from Section 1 to remove data. This sec
 
     ![](images/ak_boxplot_watertemp.PNG){width="491"}
 
-18. Create an 'ultra trim' dataset that only contains the columns 'OrganizerIdentifier', 'ActivityStartDate', 'MonitoringLocationIdentifier', 'MonitoringLocationName', 'MonitoringLocationTypeName', 'TADA.CharacteristicName', 'TADA.ResultMeasureValue', 'TADA.LatitudeMeasure', and 'TADA.LongitudeMeasure'.
+18. Create an 'ultra trim' dataset to remove any unnecessary columns. At the time of development, only the columns listed in the code chunk below were kept. The user is welcome to retain any additional columns by appending their name to the code.
 
     ```{r}
     #| eval: false
@@ -178,13 +210,15 @@ The second section aims to use the flags from Section 1 to remove data. This sec
 
 ## Section 3: Match Data to AUs
 
-This section matches the processed data with the proper Assessment Unit (AU) for the site type and location. This section is made up of Steps #19 through #20, although Step #20 is broken into six sub-steps.
+This section matches the processed WQ data with the appropriate AK DEC Assessment Unit (AU). This section is made up of Steps #19 through #20, although Step #20 is broken into six sub-steps.
 
-19. Read in 'ML_AU_Crosswalk.csv' and join that with the output of Section 2. Use *leaflet* to create an interactive map in the 'Viewer' tab of the samples by monitoring location type.
-20. Assigning sample locations to their appropriate AU if it is not specified in the crosswalk from Step #19.
-    a.  Read in the AU shapefiles and transform each of them to EPSG: 3338
+19. Read in *ML_AU_Crosswalk.csv* and join that with the output of Section 2 using the 'MonitoringLocationIdentifier' field. Monitoring locations from the WQ dataset that are already in the crosswalk table will be assigned an AU. This step also has optional code that uses *leaflet* to create an interactive map of the monitoring locations by waterbody type (displays in the RStudio 'Viewer' tab).
+20. Assigning monitoring locations to their appropriate AU if it is not specified in the crosswalk from Step #19.
+    a.  Read in the AU shapefiles and transform them to NAD83 Alaska Albers (EPSG: 3338).
 
-    b.  Break the sample locations with missing AUs into their appropriate site type (beach, lake, marine, or river). Select beach locations and find the nearest beach AU and calculate the distance. Join the neartest AU and calculated distance to the beach site locations. The following code is for the beach site type:
+    b.  Separate monitoring locations with missing AUs by waterbody type (beach, lake, marine, or river). Note, the waterbody types listed in 'MonitoringLocationTypeName' from WQP do not exactly match the waterbody types listed in *ML_AU_Crosswalk.csv*.
+
+    c.  Select beach monitoring locations and assign them to the nearest beach AU using a spatial join. Distance between the monitoring location points and the AU polygons are calculated. The following code is for the beach waterbody type:
 
         ```{r}
         #| eval: false
@@ -236,9 +270,11 @@ This section matches the processed data with the proper Assessment Unit (AU) for
           sf::st_drop_geometry()
         ```
 
-    c.  Repeat for each site type.
+    d.  Repeat for each waterbody type.
 
-    d.  Create an interactive map using *leaflet* with each of the AU types and the sample locations that were just assigned to them.
+    e.  Create an interactive map using *leaflet* with each of the AU waterbody types and the monitoring locations with missing AU assignments. Use this map and the outputs from the spatial joins to evaluate whether montioring locations were correctly assigned to AUs.
+
+    f.  Update *ML_AU_Crosswalk.csv* with correct monitoring location and AU information based on the results from the previous sub-steps.
 
 ## Section 4: Organize Data by AU
 
@@ -248,6 +284,6 @@ This section aims to explore the data within each AU and provide summary statist
 
 ## Section 5: Data Sufficiency
 
-The final section of the code compares the data sufficiency needs for Alaska with the actual samples taken. This section aims to provide a final output that designates whether for a given AU and characteristic if there is enough data to draw conclusions on that AU.
+The final section of the code compares the data sufficiency needs for AK DEC's Integrated Reporting process with the WQ data actually available. This section provides a final output that designates whether there is sufficient data for a given AU and pollutant combinations for assessment purposes.
 
-22. Read in 'AK_DataSufficiency_Crosswalk_20231012.csv', look for any constituents that aren't in the sufficiency crosswalk or the processed data, summarize the output of Section 4 into number of samples and number of distinct years in which a sample was taken by AU and constituent, compare the summarized data to the sufficiency requirements
+22. Read in *AK_DataSufficiency_Crosswalk_20231012.csv*. For each AU in the WQ dataset, the data sufficiency table is filtered by waterbody type and the corresponding constituents. The number of samples and number of years of data for each constituent within a given AU is compared to the minimum requirements. If sufficient data is available, that constituent can be used at the assessment level for the given AU. Conversely, if insufficient, the data can only be used at the screening level.
