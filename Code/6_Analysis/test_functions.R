@@ -9,7 +9,7 @@ library(sf)
 library(RColorBrewer)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_withAU_20231024.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20231026.csv')
 input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20231020.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20231025.csv')
 
@@ -28,8 +28,10 @@ simplePull <- function(data, AU_num, constituent){ #AU & constituent are optiona
   return(filt)
 }
 
-simplePull(data = input_sufficiency, AU_num = 'AK_B_1010203_001', constituent = 'FECAL COLIFORM')
-test_pull <- simplePull(data = input_samples, AU_num = 'AK_B_1010203_001', constituent = 'FECAL COLIFORM')
+simplePull(data = input_sufficiency, AU_num = 'AK_B_1010203_001'
+           , constituent = 'FECAL COLIFORM')
+test_pull <- simplePull(data = input_samples, AU_num = 'AK_B_1010203_001'
+                        , constituent = 'FECAL COLIFORM')
 
 
 #Time series function
@@ -61,10 +63,14 @@ timeSeries <- function(data, AU_num, constituent) {
                                        color = TADA.CharacteristicName),
                  size = 2, alpha = 0.8) +
       xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')'))) +
+      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
+                                                 , ' ('
+                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
+                                                 , ')'))) +
       theme_classic() +
       scale_color_manual(values = pal, name = 'Constituent') +
-      scale_shape_discrete(name = 'Constituent') 
+      scale_shape_discrete(name = 'Constituent')
+    
   } else if (length(AU_num) > 1 & length(constituent) == 1){
     plt<-ggplot() +
       geom_point(data = filt, aes(x = ActivityStartDate,
@@ -74,13 +80,17 @@ timeSeries <- function(data, AU_num, constituent) {
                  size = 2, alpha = 0.8) +
       facet_wrap(~AUID_ATTNS) +
       xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')'))) +
+      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
+                                                 , ' ('
+                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
+                                                 , ')'))) +
       theme_bw() +
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             strip.background = element_rect(fill = 'gray95')) +
       scale_color_manual(values = pal, name = 'Constituent') +
-      scale_shape_discrete(name = 'Constituent') 
+      scale_shape_discrete(name = 'Constituent')
+    
   } else if(length(AU_num) == 1 & length(constituent) > 1){
     plt<-ggplot() +
       geom_point(data = filt, aes(x = ActivityStartDate,
@@ -90,13 +100,17 @@ timeSeries <- function(data, AU_num, constituent) {
                  size = 2, alpha = 0.8) +
       facet_wrap(~TADA.CharacteristicName) +
       xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')'))) +
+      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
+                                                 , ' ('
+                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
+                                                 , ')'))) +
       theme_bw() +
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             strip.background = element_rect(fill = 'gray95')) +
       scale_color_manual(values = pal, name = 'Constituent') +
-      scale_shape_discrete(name = 'Constituent') 
+      scale_shape_discrete(name = 'Constituent')
+    
   } else {
     plt<-ggplot() +
       geom_point(data = filt, aes(x = ActivityStartDate,
@@ -106,7 +120,10 @@ timeSeries <- function(data, AU_num, constituent) {
                  size = 2, alpha = 0.8) +
       facet_wrap(~TADA.CharacteristicName) +
       xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')'))) +
+      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
+                                                 , ' ('
+                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
+                                                 , ')'))) +
       theme_bw() +
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
@@ -119,10 +136,17 @@ timeSeries <- function(data, AU_num, constituent) {
 }
 
 
-timeSeries(data = input_samples, AU_num = c('AK_R_1010504_005'), constituent = c('PH'))
-timeSeries(data = input_samples, AU_num = c('AK_R_1010504_005', 'AK_B_1010203_001'), constituent = c('TEMPERATURE, WATER'))
-timeSeries(data = input_samples, AU_num = c('AK_R_1010504_005'), constituent = c('PH', 'TEMPERATURE, WATER'))
-timeSeries(data = input_samples, AU_num = c('AK_R_1010504_005', 'AK_B_1010203_001'), constituent = c('PH', 'TEMPERATURE, WATER'))
+timeSeries(data = input_samples, AU_num = c('AK_R_1010504_005')
+           , constituent = c('PH'))
+
+timeSeries(data = input_samples, AU_num = c('AK_R_1010504_005', 'AK_B_1010203_001')
+           , constituent = c('TEMPERATURE, WATER'))
+
+timeSeries(data = input_samples, AU_num = c('AK_R_1010504_005')
+           , constituent = c('PH', 'TEMPERATURE, WATER'))
+
+timeSeries(data = input_samples, AU_num = c('AK_R_1010504_005', 'AK_B_1010203_001')
+           , constituent = c('PH', 'TEMPERATURE, WATER'))
 
 
 #Boxplot function
@@ -152,7 +176,10 @@ boxPlot <- function(data, AU_num, constituent) {
                                     y = TADA.ResultMeasureValue,
                                     color = TADA.CharacteristicName)) +
       xlab('AU ID') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')'))) +
+      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
+                                                 , ' ('
+                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
+                                                 , ')'))) +
       theme_classic() +
       scale_color_manual(values = pal)+
       theme(legend.position = "none")
@@ -163,7 +190,10 @@ boxPlot <- function(data, AU_num, constituent) {
                                     color = TADA.CharacteristicName)) +
       facet_wrap(~AUID_ATTNS) +
       xlab('Constituent') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')'))) +
+      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
+                                                 , ' ('
+                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
+                                                 , ')'))) +
       theme_bw() +
       scale_color_manual(values = pal)+
       theme(panel.grid.major = element_blank(),
@@ -177,7 +207,10 @@ boxPlot <- function(data, AU_num, constituent) {
                                     color = AUID_ATTNS)) +
       facet_wrap(~TADA.CharacteristicName, scales = 'free_y') +
       xlab('AU ID') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')'))) +
+      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
+                                                 , ' ('
+                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
+                                                 , ')'))) +
       theme_bw() +
       scale_color_manual(values = pal)+
       theme(panel.grid.major = element_blank(),
@@ -191,9 +224,15 @@ boxPlot <- function(data, AU_num, constituent) {
                                     color = AUID_ATTNS)) +
       facet_wrap(~TADA.CharacteristicName, scales = 'free_y') +
       xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')'))) +
+      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
+                                                 , ' ('
+                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
+                                                 , ')'))) +
       xlab('AU ID') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')'))) +
+      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
+                                                 , ' ('
+                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
+                                                 , ')'))) +
       theme_bw() +
       scale_color_manual(values = pal)+
       theme(panel.grid.major = element_blank(),
@@ -206,10 +245,14 @@ boxPlot <- function(data, AU_num, constituent) {
   return(plt)
 }
 
-boxPlot(data = input_samples, AU_num = c('AK_R_1010504_005'), constituent = c('PH'))
-boxPlot(data = input_samples, AU_num = c('AK_R_1010504_005', 'AK_B_1010203_001'), constituent = c('TEMPERATURE, WATER'))
-boxPlot(data = input_samples, AU_num = c('AK_R_1010504_005'), constituent = c('PH', 'TEMPERATURE, WATER'))
-boxPlot(data = input_samples, AU_num = c('AK_R_1010504_005', 'AK_B_1010203_001'), constituent = c('PH', 'TEMPERATURE, WATER'))
+boxPlot(data = input_samples, AU_num = c('AK_R_1010504_005')
+        , constituent = c('PH'))
+boxPlot(data = input_samples, AU_num = c('AK_R_1010504_005', 'AK_B_1010203_001')
+        , constituent = c('TEMPERATURE, WATER'))
+boxPlot(data = input_samples, AU_num = c('AK_R_1010504_005')
+        , constituent = c('PH', 'TEMPERATURE, WATER'))
+boxPlot(data = input_samples, AU_num = c('AK_R_1010504_005', 'AK_B_1010203_001')
+        , constituent = c('PH', 'TEMPERATURE, WATER'))
 
 
 #Remove insufficient data
@@ -218,7 +261,8 @@ removeCat3samples <- function(data_samples, data_sufficiency) {
     select(AUID_ATTNS, TADA.CharacteristicName) %>% unique()
   
   remove_samples <- data_samples %>% anti_join(insuff_sites,
-                                               by = join_by('AUID_ATTNS', 'TADA.CharacteristicName'))
+                                               by = join_by('AUID_ATTNS'
+                                                            , 'TADA.CharacteristicName'))
     
   return(remove_samples)
 }
@@ -231,7 +275,8 @@ removeCat3sites <- function(data_sufficiency) {
   return(insuff_sites)
 }
 
-removeCat3samples(data_samples = input_samples, data_sufficiency = input_sufficiency)
+removeCat3samples(data_samples = input_samples
+                  , data_sufficiency = input_sufficiency)
 removeCat3sites(input_sufficiency)
 
 
@@ -240,7 +285,8 @@ removeCat3sites(input_sufficiency)
 
 ##Magnitude, Frequency, Duration
 #Filter out Cat 3
-input_samples_filtered <- removeCat3samples(data_samples = input_samples, data_sufficiency = input_sufficiency)
+input_samples_filtered <- removeCat3samples(data_samples = input_samples
+                                            , data_sufficiency = input_sufficiency)
 
 
 # for loop to evaluate unique values per column
@@ -323,9 +369,12 @@ for(i in Unique_AUIDs){
 connect_info <- input_sufficiency %>%
   select(AUID_ATTNS, TADA.CharacteristicName, `Waterbody Type`) %>%
   unique() %>%
-  mutate(`Waterbody Type` = ifelse(str_detect(`Waterbody Type`, 'streams and rivers'), 'Freshwater', `Waterbody Type`))
+  mutate(`Waterbody Type` = ifelse(str_detect(`Waterbody Type`
+                                              , 'streams and rivers')
+                                   , 'Freshwater', `Waterbody Type`))
 
 #Creates duplicates depending on if a site has both marine and freshwater requirements
 join_info_samples <- input_samples %>%
-  left_join(connect_info, by = join_by('AUID_ATTNS', 'TADA.CharacteristicName')) %>%
+  left_join(connect_info, by = join_by('AUID_ATTNS'
+                                       , 'TADA.CharacteristicName')) %>%
   unique()
