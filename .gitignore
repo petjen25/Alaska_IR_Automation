@@ -58,3 +58,5 @@ Data/data_GIS/Rivers/Rivers.shp
 Data/data_GIS/Rivers/Rivers.shp.xml
 Data/data_GIS/Rivers/Rivers.shx
 Output/data_processing/Original_data_with_flags_20231020.csv
+Output/data_processing/WQ_data_trimmed_20231113.csv
+Output/data_processing/Original_data_with_flags_20231113.csv

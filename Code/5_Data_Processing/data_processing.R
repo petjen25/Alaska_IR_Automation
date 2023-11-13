@@ -2,7 +2,7 @@
 
 #Written by: Hannah Ferriby and Ben Block
 #Date Created: 9-29-2023
-#Date of Last Updated: 10-19-2023
+#Date of Last Updated: 11-13-2023
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
@@ -17,11 +17,12 @@
 #9. 'cb_2018_us_state_500k.shp' US States shapefile
 
 ####Set Up####
-library(TADA)
+library(TADA) # check for latest updates (https://github.com/USEPA/TADA)!
 library(tidyverse)
 library(leaflet)
 library(scales)
 library(sf)
+library(stringdist)
 myDate <- format(Sys.Date(), "%Y%m%d")
 
 
@@ -63,6 +64,11 @@ data_2 <- TADA_FlagFraction(data_1, clean = F)
 # This function adds the TADA.MethodSpeciation.Flag to the dataframe.
 data_3 <- TADA_FlagSpeciation(data_2, clean = 'none')
 
+# Cristina Mullin (USEPA/TADA) on October 30, 2023 (also in R Documentation): 
+# "The “Not Reviewed” value means that the EPA WQX team has not yet reviewed the
+## combinations (see https://cdx.epa.gov/wqx/download/DomainValues/QAQCCharacteristicValidation.CSV).
+### The WQX team plans to review and update these new combinations quarterly.
+
 #####4. Harmonize Characteristic Names#####
 # This function adds the following columns to the dataframe:
 # TADA.CharacteristicNameAssumptions
@@ -75,8 +81,12 @@ data_4 <- TADA_HarmonizeSynonyms(data_3)
 # This function adds the TADA.ResultValueAboveUpperThreshold.Flag to the dataframe.
 data_5a <- TADA_FlagAboveThreshold(data_4, clean = F)
 
+# See comment from Crstina Mullin above (Step 3)
+
 # This function adds the TADA.ResultValueBelowLowerThreshold.Flag to the dataframe.
 data_5b <- TADA_FlagBelowThreshold(data_5a, clean = F)
+
+# See comment from Crstina Mullin above (Step 3)
 
 #####6. Find continuous data#####
 # This function adds the TADA.AggregatedContinuousData.Flag to the dataframe.
@@ -97,8 +107,8 @@ data_8a <- TADA_FindPotentialDuplicatesMultipleOrgs(data_7, dist_buffer = 50) # 
 
 # This function adds the following columns to the dataframe:
 # TADA.SingleOrgDupGroupID
-# TADA.ResultSelectedSingleOrg
-data_8b <- TADA_FindPotentialDuplicatesSingleOrg(data_8a, handling_method = 'none')
+# TADA.SingleOrgDup.Flag
+data_8b <- TADA_FindPotentialDuplicatesSingleOrg(data_8a)
 
 #####9. Find QC samples#####
 # This function adds the TADA.ActivityType.Flag to the dataframe.
@@ -232,9 +242,10 @@ Keep_cols <- df_ColManager %>%
 
 # QC check for updated df_ColManager
 Cols_data_13 <- names(data_13)
-QC_Check <- df_ColManager %>% 
-  filter(!Col_Name %in% Cols_data_13) %>% 
-  pull(Col_Name)
+Cols_Manager <- df_ColManager$Col_Name
+
+
+(QC_Check <- Cols_data_13[!(Cols_data_13 %in% Cols_Manager)])
 
 if(length(QC_Check) > 0){
   print(paste("df_ColManager is out of date and needs updating."
@@ -249,7 +260,7 @@ data_15 <- data_13 %>%
   select(one_of(Keep_cols))
 
 #Clean up environment
-rm(data_13, df_ColManager, Cols_data_13, QC_Check, Keep_cols)
+rm(data_13, df_ColManager, Cols_data_13, QC_Check, Keep_cols, Cols_Manager)
 
 #####16. Remove Flags#####
 # Flags not well explained. Vignettes don't match unique values.
@@ -264,14 +275,19 @@ rm(data_13, df_ColManager, Cols_data_13, QC_Check, Keep_cols)
 #                  "MethodNeeded")
 
 data_16 <- data_15 %>% 
-  filter(TADA.ResultUnit.Flag != "Rejected") %>% # Step 1
-  filter(TADA.SampleFraction.Flag != "Rejected") %>% # Step 2
-  filter(TADA.MethodSpeciation.Flag != "Rejected") %>% # Step 3
-  filter(TADA.AnalyticalMethod.Flag != "Rejected") %>% # Step 7
+  filter(TADA.ResultUnit.Flag != "Rejected" 
+         & TADA.ResultUnit.Flag != "Invalid") %>% # Step 1
+  filter(TADA.SampleFraction.Flag != "Rejected" 
+         & TADA.SampleFraction.Flag != "Invalid") %>% # Step 2
+  filter(TADA.MethodSpeciation.Flag != "Rejected" 
+         & TADA.MethodSpeciation.Flag != "Invalid") %>% # Step 3
+  filter(TADA.AnalyticalMethod.Flag != "Rejected" 
+         & TADA.AnalyticalMethod.Flag != "Invalid") %>% # Step 7
   filter(TADA.ActivityType.Flag == 'Non_QC') %>% # Step 9
   filter(TADA.MeasureQualifierCode.Flag != 'Suspect') %>% # Step 11
   filter(TADA.ActivityMediaName == 'WATER') # Remove non-water samples
 # censored data are retained in this dataset.
+
 
 #Export data summary
 write_csv(data_16, file = file.path('Output/data_processing'
@@ -369,7 +385,6 @@ data_18 <- data_16 %>%
          ,TADA.LatitudeMeasure
          ,TADA.LongitudeMeasure)
 
-
 #### Match data to AUs ####
 #####19. ML to AUs #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
@@ -400,7 +415,7 @@ write_csv(data_19_long, file = file.path('Output/data_processing'
 # interactive map for all monitoring locations
 ## subset data to unique ML info
 df_ML <- data_19 %>% 
-  select(MonitoringLocationIdentifier, MonitoringLocationName
+  select(OrganizationIdentifier, MonitoringLocationIdentifier, MonitoringLocationName
          , MonitoringLocationTypeName, TADA.LatitudeMeasure
          , TADA.LongitudeMeasure) %>% 
   distinct()
@@ -426,9 +441,9 @@ map <- leaflet() %>%
   addCircleMarkers(data = df_ML, lat = ~TADA.LatitudeMeasure
                    , lng = ~TADA.LongitudeMeasure
                    , popup = paste("MonitoringLocationIdentifier:", df_ML$MonitoringLocationIdentifier, "<br>"
-                                   ,"MonitoringLocationTypeName:", df_ML$MonitoringLocationTypeName, "<br>"
-                                   , "TADA.LatitudeMeasure:", df_ML$TADA.LatitudeMeasure, "<br>"
-                                   , "TADA.LongitudeMeasure:", df_ML$TADA.LongitudeMeasure)
+                                   ,"MonitoringLocationName:", df_ML$MonitoringLocationName, "<br>"
+                                   ,"OrganizationIdentifier:", df_ML$OrganizationIdentifier, "<br>"
+                                   ,"MonitoringLocationTypeName:", df_ML$MonitoringLocationTypeName)
                    , color = "black", fillColor = ~pal(MonitoringLocationTypeName), fillOpacity = 1, stroke = TRUE
                    )%>%
   addLegend("bottomright", pal = pal, values = df_ML$MonitoringLocationTypeName,
@@ -511,7 +526,10 @@ miss_ML_beach_results <- beach_SpatJoin2 %>%
   sf::st_transform(4326) %>% 
   mutate(Longitude = unlist(map(geometry,1)),
          Latitude = unlist(map(geometry,2))) %>% 
-  sf::st_drop_geometry()
+  sf::st_drop_geometry() %>% 
+  mutate(NameSimilarityScore = round(stringdist::stringsim(MonitoringLocationName # name similarity
+                                                 , Name_AU
+                                                 , method='jw'),2))
 
 write_csv(miss_ML_beach_results, file = file.path('Output/data_processing'
                                     , paste0("Missing_MonLoc_Beaches_SpatJoin_"
@@ -568,7 +586,10 @@ miss_ML_lake_results <- lake_SpatJoin2 %>%
   sf::st_transform(4326) %>% 
   mutate(Longitude = unlist(map(geometry,1)),
          Latitude = unlist(map(geometry,2))) %>% 
-  sf::st_drop_geometry()
+  sf::st_drop_geometry() %>% 
+  mutate(NameSimilarityScore = round(stringdist::stringsim(MonitoringLocationName # name similarity
+                                                           , Name_AU
+                                                           , method='jw'),2))
 
 write_csv(miss_ML_lake_results, file = file.path('Output/data_processing'
                                                   , paste0("Missing_MonLoc_Lakes_SpatJoin_"
@@ -625,7 +646,10 @@ miss_ML_marine_results <- marine_SpatJoin2 %>%
   sf::st_transform(4326) %>% 
   mutate(Longitude = unlist(map(geometry,1)),
          Latitude = unlist(map(geometry,2))) %>% 
-  sf::st_drop_geometry()
+  sf::st_drop_geometry() %>% 
+  mutate(NameSimilarityScore = round(stringdist::stringsim(MonitoringLocationName # name similarity
+                                                           , Name_AU
+                                                           , method='jw'),2))
 
 write_csv(miss_ML_marine_results, file = file.path('Output/data_processing'
                                                  , paste0("Missing_MonLoc_Marine_SpatJoin_"
@@ -682,7 +706,10 @@ miss_ML_rivers_results <- river_SpatJoin2 %>%
   sf::st_transform(4326) %>% 
   mutate(Longitude = unlist(map(geometry,1)),
          Latitude = unlist(map(geometry,2))) %>% 
-  sf::st_drop_geometry()
+  sf::st_drop_geometry() %>% 
+  mutate(NameSimilarityScore = round(stringdist::stringsim(MonitoringLocationName # name similarity
+                                                           , Name_AU
+                                                           , method='jw'),2))
 
 write_csv(miss_ML_rivers_results, file = file.path('Output/data_processing'
                                                    , paste0("Missing_MonLoc_River_SpatJoin_"
@@ -731,9 +758,9 @@ missing_ML_map <- leaflet() %>%
   addCircleMarkers(data = missing_ML, lat = ~TADA.LatitudeMeasure
                    , lng = ~TADA.LongitudeMeasure
                    , popup = paste("MonitoringLocationIdentifier:", missing_ML$MonitoringLocationIdentifier, "<br>"
-                                   ,"MonitoringLocationTypeName:", missing_ML$MonitoringLocationTypeName, "<br>"
-                                   , "TADA.LatitudeMeasure:", missing_ML$TADA.LatitudeMeasure, "<br>"
-                                   , "TADA.LongitudeMeasure:", missing_ML$TADA.LongitudeMeasure)
+                                   ,"MonitoringLocationName:", missing_ML$MonitoringLocationName, "<br>"
+                                   ,"OrganizationIdentifier:", missing_ML$OrganizationIdentifier, "<br>"
+                                   ,"MonitoringLocationTypeName:", missing_ML$MonitoringLocationTypeName)
                    , color = "black", fillColor = ~pal(MonitoringLocationTypeName), fillOpacity = 1, stroke = TRUE
                    ) %>%
   addPolygons(data = beach_shp2, color = "black", weight = 1, opacity = 1
@@ -835,12 +862,13 @@ rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constit
 # Waterbody Type
 data_22 <- data_21 %>% 
   mutate(ActivityStartYear = year(ActivityStartDate)) %>% 
-  select(AUID_ATTNS, MonitoringLocationTypeName, AU_Type, ActivityStartYear
+  select(AUID_ATTNS, MonitoringLocationTypeName, AU_Type, ActivityStartYear, ActivityStartDate
          , TADA.CharacteristicName, TADA.ResultMeasureValue
-         , TADA.ResultMeasure.MeasureUnitCode)%>% 
+         , TADA.ResultMeasure.MeasureUnitCode) %>% 
   group_by(AUID_ATTNS, MonitoringLocationTypeName, AU_Type
            , TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode) %>% 
   summarize(n_Samples = n()
+            , n_SampDates = n_distinct(ActivityStartDate)
             , n_Years = n_distinct(ActivityStartYear)) %>% 
   filter(!TADA.CharacteristicName %in% missing_constituents) %>% 
   ungroup()
@@ -877,7 +905,6 @@ for(i in Unique_AUIDs){
   my_data_sufficiency <- df_data_sufficiency2 %>% 
     filter(TADA.Constituent %in% my_constituents) %>% 
     filter(`Waterbody Type` %in% my_WtrBdy_Type)
-    # filter(!is.na(`Minimum Assessment Period`))
   
   # join trimmed data sufficiency table to AU data
   df_join <- left_join(df_subset, my_data_sufficiency
@@ -889,8 +916,8 @@ for(i in Unique_AUIDs){
   results <- df_join %>% 
     mutate(Min_Period_Pass = case_when((n_Years >= Min_Assess_Period_Yrs) ~ "Yes"
                                        , (n_Years < Min_Assess_Period_Yrs) ~ "No")
-           , Min_Data_Pass = case_when((n_Samples >= Min_Num_Pts)~ "Yes"
-                                       , (n_Samples < Min_Num_Pts)~ "No")
+           , Min_Data_Pass = case_when((n_SampDates >= Min_Num_Pts)~ "Yes"
+                                       , (n_SampDates < Min_Num_Pts)~ "No")
            , Data_Sufficient = case_when((Min_Period_Pass == "Yes"
                                           & Min_Data_Pass == "Yes")~"Yes"
                                          , TRUE ~ "No"))
