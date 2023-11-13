@@ -384,6 +384,20 @@ df_ML_AU_Crosswalk <- df_ML_AU_Crosswalk %>%
 data_19 <- left_join(data_18, df_ML_AU_Crosswalk
                      , by = "MonitoringLocationIdentifier")
 
+#Create object for export, remove columns of mostly NAs to make file small enough
+#for github
+data_19_long <- left_join(data_16, df_ML_AU_Crosswalk
+                          , by = "MonitoringLocationIdentifier") %>%
+  select(!c(HydrologicEvent, HydrologicCondition, StatisticalBaseCode, ResultTimeBasisText, 
+            ActivityEndDateTime, MonitoringLocationDescriptionText,
+            SamplingDesignTypeCode, QAPPApprovedIndicator, QAPPApprovalAgencyName,
+            TADA.CharacteristicNameAssumptions))
+
+#Export data summary
+write_csv(data_19_long, file = file.path('Output/data_processing'
+                                         , paste0("WQ_data_trimmed_long_withAU"
+                                                  ,myDate, ".csv"))
+          , na = "")
 
 # interactive map for all monitoring locations
 ## subset data to unique ML info
@@ -508,7 +522,7 @@ write_csv(miss_ML_beach_results, file = file.path('Output/data_processing'
 
 ### Clean up environment
 rm(num_sites, beach_pts, beach_SpatJoin, beach_SpatJoin2, miss_ML_beach_results
-   , miss_ML_beaches, near_feat, dist_to_AU_m)
+   , miss_ML_beaches, near_feat, dist_to_AU_m, data_19_long)
 
 ######20c. Lakes #####
 miss_ML_lakes <- missing_ML %>%
