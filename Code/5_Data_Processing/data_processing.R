@@ -369,8 +369,6 @@ data_18 <- data_16 %>%
          ,TADA.LatitudeMeasure
          ,TADA.LongitudeMeasure)
 
-#Clean up environment
-rm(data_16)
 
 #### Match data to AUs ####
 #####19. ML to AUs #####
@@ -522,7 +520,7 @@ write_csv(miss_ML_beach_results, file = file.path('Output/data_processing'
 
 ### Clean up environment
 rm(num_sites, beach_pts, beach_SpatJoin, beach_SpatJoin2, miss_ML_beach_results
-   , miss_ML_beaches, near_feat, dist_to_AU_m, data_19_long)
+   , miss_ML_beaches, near_feat, dist_to_AU_m, data_19_long, data_16)
 
 ######20c. Lakes #####
 miss_ML_lakes <- missing_ML %>%
