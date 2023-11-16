@@ -2,7 +2,7 @@
 
 #Written by: Hannah Ferriby and Ben Block
 #Date Created: 9-29-2023
-#Date of Last Updated: 11-13-2023
+#Date of Last Updated: 11-16-2023
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
@@ -283,11 +283,13 @@ data_16 <- data_15 %>%
          & TADA.MethodSpeciation.Flag != "Invalid") %>% # Step 3
   filter(TADA.AnalyticalMethod.Flag != "Rejected" 
          & TADA.AnalyticalMethod.Flag != "Invalid") %>% # Step 7
+  # filter(TADA.SingleOrgDupGroupID == "Not a duplicate" 
+  #        | (TADA.SingleOrgDupGroupID != "Not a duplicate" 
+  #           & TADA.SingleOrgDup.Flag == "Unique")) %>% # Step 8
   filter(TADA.ActivityType.Flag == 'Non_QC') %>% # Step 9
   filter(TADA.MeasureQualifierCode.Flag != 'Suspect') %>% # Step 11
   filter(TADA.ActivityMediaName == 'WATER') # Remove non-water samples
 # censored data are retained in this dataset.
-
 
 #Export data summary
 write_csv(data_16, file = file.path('Output/data_processing'
