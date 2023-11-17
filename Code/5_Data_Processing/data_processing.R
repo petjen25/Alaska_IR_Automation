@@ -384,6 +384,8 @@ data_18 <- data_16 %>%
          ,TADA.CharacteristicName
          ,TADA.ResultMeasureValue
          ,TADA.ResultMeasure.MeasureUnitCode
+         ,TADA.ComparableDataIdentifier
+         ,TADA.ResultSampleFractionText
          ,TADA.LatitudeMeasure
          ,TADA.LongitudeMeasure)
 
