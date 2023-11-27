@@ -395,7 +395,7 @@ data_18 <- data_16 %>%
 df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk.CSV")
 df_ML_AU_Crosswalk <- df_ML_AU_Crosswalk %>% 
   select(-c(OrganizationIdentifier)) %>% # removed to avoid duplication in join
-  rename(AU_Type = Type)
+  dplyr::rename(AU_Type = Type)
 
 # join data
 data_19 <- left_join(data_18, df_ML_AU_Crosswalk
@@ -809,7 +809,7 @@ df_AU_summary1 <- data_21 %>%
   select(AUID_ATTNS, MonitoringLocationIdentifier) %>% 
   distinct() %>% 
   count(AUID_ATTNS) %>% 
-  rename(n_MonitoringLocations = n)
+  dplyr::rename(n_MonitoringLocations = n)
 
 ggplot(data = df_AU_summary1, aes(x = n_MonitoringLocations))+
   geom_bar(fill="#69b3a2", color="#e9ecef", alpha=0.8)+ 
@@ -840,7 +840,7 @@ rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 #### Data sufficiency ####
 ##### 22. AU/pollutant data sufficiency #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20231012.csv")
+df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20231127.csv")
 df_data_sufficiency2 <- df_data_sufficiency %>% 
   select(-c(`Constituent Group`, Constituent, `Use Description`, `Other Requirements`
             , `Listing methodology`, Notes))
