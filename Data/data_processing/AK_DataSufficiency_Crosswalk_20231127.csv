@@ -284,8 +284,8 @@ Marine,Toxics,Zinc,ZINC,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Marine,Toxics,Zinc,ZINC,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
 Marine,Toxics,Zinc,ZINC,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Freshwater,Turbidity,Turbidity,TURBIDITY,,Primary Contact Recreation,,,2 years,20 days,Characterizes an annual period of concern of at least 3 weeks,Turbidity,"Years of assessment need not be consecutive but should be within a reasonably short timeframe (i.e., within 5 years if possible)",2,20
-Freshwater,Toxics,"(Trichloro-phenoxy 2, 4, 5-TP)-Proprionic Acid (2, 4, 5-TP)",#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Acenapthene,#N/A,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,"(Trichloro-phenoxy 2, 4, 5-TP)-Proprionic Acid (2, 4, 5-TP)",Silvex,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Acenapthene,Acenaphthene,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Acrolein,ACROLEIN,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Acrolein,ACROLEIN,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Alachor,ALACHLOR,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
@@ -316,7 +316,7 @@ Freshwater,Toxics,Bis(2-chloro-isoproply) Ether,BIS(2-CHLOROISOPROPYL) ETHER,Dis
 Freshwater,Toxics,Bis-chloromethyl Ether,BIS(CHLOROMETHYL) ETHER,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Bis-chloromethyl Ether,BIS(CHLOROMETHYL) ETHER,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Bromate,BROMATE,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Acenapthene,#N/A,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Acenapthene,Acenaphthene,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,beta-Endosulfan,BETA-ENDOSULFAN-D4,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Freshwater,Toxics,Carbofuran,CARBOFURAN,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Carbon Tetrachloride,CARBON TETRACHLORIDE,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
@@ -327,25 +327,25 @@ Marine,Toxics,Chlordane,CHLORDANE,Dissolved,Aquatic Life,,Acute,2 years,5,"15 re
 Marine,Toxics,Chlordane,CHLORDANE,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Freshwater,Toxics,Chlorite,CHLORITE,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Marine,Toxics,beta-Endosulfan,BETA-ENDOSULFAN-D4,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
-Freshwater,Toxics,Butylbenzyl Phthalate,#N/A,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Butylbenzyl Phthalate,Butyl benzyl phthalate,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Chlorophenol, 2-",CHLOROPHENOL,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Chlorophenol, 2-",CHLOROPHENOL,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Butylbenzyl Phthalate,#N/A,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,"Chloro-napthalene, 2-",#N/A,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,"Chloro-napthalene, 2-",#N/A,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Chloropyrifos,#N/A,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
+Freshwater,Toxics,Butylbenzyl Phthalate,Butyl benzyl phthalate,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,"Chloro-napthalene, 2-",2-Chloronaphthalene,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,"Chloro-napthalene, 2-",2-Chloronaphthalene,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Chloropyrifos,Chlorpyrifos,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
 Freshwater,Toxics,Dalapon,DALAPON,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Chloropyrifos,#N/A,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Marine,Toxics,Chloropyrifos,#N/A,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
-Marine,Toxics,Chloropyrifos,#N/A,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Freshwater,Toxics,Chloropyrifos,#N/A,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Freshwater,Toxics,Chloropyrifos,Chlorpyrifos,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Marine,Toxics,Chloropyrifos,Chlorpyrifos,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
+Marine,Toxics,Chloropyrifos,Chlorpyrifos,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Freshwater,Toxics,Chloropyrifos,Chlorpyrifos,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Freshwater,Toxics,Demeton,DEMETON,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Marine,Toxics,Demeton,DEMETON,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Freshwater,Toxics,Diazinon,DIAZINON,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
 Freshwater,Toxics,Diazinon,DIAZINON,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Marine,Toxics,Diazinon,DIAZINON,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
 Marine,Toxics,Diazinon,DIAZINON,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Marine,Toxics,Chloropyrifos,#N/A,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Marine,Toxics,Chloropyrifos,Chlorpyrifos,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Freshwater,Toxics,"Dichlorobenzene 1,2-","1,2-DICHLOROBENZENE-D4",Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dichlorobenzene 1,2-","1,2-DICHLOROBENZENE-D4",Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dichlorobenzene 1,2-","1,2-DICHLOROBENZENE-D4",Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
@@ -354,12 +354,12 @@ Freshwater,Toxics,"Dichlorobenzene 1,3-","1,3-DICHLOROBENZENE",Dissolved,Human H
 Freshwater,Toxics,"Dichlorobenzene 1,4-","1,4-DICHLOROBENZENE-D4",Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dichlorobenzene 1,4-","1,4-DICHLOROBENZENE-D4",Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dichlorobenzene 1,4-","1,4-DICHLOROBENZENE-D4",Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,"DDT, 4,4'-",#N/A,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
-Freshwater,Toxics,"DDT, 4,4'-",#N/A,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Marine,Toxics,"DDT, 4,4'-",#N/A,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
-Marine,Toxics,"DDT, 4,4'-",#N/A,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Freshwater,Toxics,"DDT, 4,4'-",#N/A,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
-Marine,Toxics,"DDT, 4,4'-",#N/A,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Freshwater,Toxics,"DDT, 4,4'-","p,p'-DDT",Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
+Freshwater,Toxics,"DDT, 4,4'-","p,p'-DDT",Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Marine,Toxics,"DDT, 4,4'-","p,p'-DDT",Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
+Marine,Toxics,"DDT, 4,4'-","p,p'-DDT",Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Freshwater,Toxics,"DDT, 4,4'-","p,p'-DDT",Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Marine,Toxics,"DDT, 4,4'-","p,p'-DDT",Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Freshwater,Toxics,Di(2-ethylhexyl Adipate,"2,4-DICHLOROPHENOL",Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Dibromo-chloropropane,DIBROMOCHLOROPROPANE,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dichloroethane 1,2-","1,2-DICHLOROETHANE",Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
@@ -378,8 +378,8 @@ Freshwater,Toxics,Dimethyl Phthalate,DIMETHYL PHTHALATE,Dissolved,Human Health,W
 Freshwater,Toxics,Dimethyl Phthalate,DIMETHYL PHTHALATE,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dichloroethylene trans-1,2-","TRANS-1,2-DICHLOROETHYLENE",Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dichlorophenol 2, 4-","2,4-DICHLOROPHENOL",Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,"Dichlorophenol 2, 4-",#N/A,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,"Dichlorophenoxy 2, 4-Acetic Acid (2,4-D)",#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,"Dichlorophenol 2, 4-","2,4-Dichlorophenol",Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,"Dichlorophenoxy 2, 4-Acetic Acid (2,4-D)","2,4-D",Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Dinoseb,DINOSEB,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dichloropropane 1, 2-","1,2-DICHLOROPROPANE",Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Diquat,DIQUAT,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
@@ -402,8 +402,8 @@ Freshwater,Toxics,Fluorene,FLUORENE,Dissolved,Human Health,Aquatic Organisms Onl
 Freshwater,Toxics,Glyphosate,GLYPHOSATE,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dimethylphenol 2, 4-","2,4-DIMETHYLPHENOL",Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dimethylphenol 2, 4-","2,4-DIMETHYLPHENOL",Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Di-n-butyl Phthalate,#N/A,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Di-n-butyl Phthalate,#N/A,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Di-n-butyl Phthalate,Dibutyl phthalate,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Di-n-butyl Phthalate,Dibutyl phthalate,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,"Dinitrophenol 2, 4-","2,4-DINITROPHENOL",Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Heptachlor,HEPTACHLOR,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Heptachlor,HEPTACHLOR,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
@@ -416,12 +416,12 @@ Freshwater,Toxics,Heptachlor Epoxide,HEPTACHLOR EPOXIDE,Dissolved,Aquatic Life,,
 Marine,Toxics,Heptachlor Epoxide,HEPTACHLOR EPOXIDE,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
 Marine,Toxics,Heptachlor Epoxide,HEPTACHLOR EPOXIDE,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Freshwater,Toxics,"Dinitrophenol 2, 4-","2,4-DINITROPHENOL",Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Dioxin,#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Dioxin,"2,3,7,8-Tetrachlorodibenzo-p-dioxin",Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Gross alpha,#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Gross beta,#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Guthion,#N/A,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Marine,Toxics,Guthion,#N/A,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Freshwater,Toxics,Guthion,#N/A,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Freshwater,Toxics,Guthion,Azinphos-methyl,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Marine,Toxics,Guthion,Azinphos-methyl,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Freshwater,Toxics,Guthion,Azinphos-methyl,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Freshwater,Toxics,Lithium,LITHIUM,Dissolved,Water Supply,Irrigation,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Malathion,MALATHION,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Marine,Toxics,Malathion,MALATHION,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
@@ -430,8 +430,8 @@ Freshwater,Toxics,Methoxychlor,METHOXYCHLOR,Dissolved,Aquatic Life,,Chronic,2 ye
 Marine,Toxics,Methoxychlor,METHOXYCHLOR,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Freshwater,Toxics,Methyl Bromide,METHYL BROMIDE,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Methyl Bromide,METHYL BROMIDE,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Marine,Toxics,Guthion,#N/A,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
-Freshwater,Toxics,Halocetic Acids (HAA5)(five),#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Marine,Toxics,Guthion,Azinphos-methyl,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Freshwater,Toxics,Halocetic Acids (HAA5)(five),Haloacetic acids,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Hexachloro-benzene,HEXACHLOROBENZENE,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Mirex,MIREX,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Marine,Toxics,Mirex,MIREX,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
@@ -447,17 +447,19 @@ Freshwater,Toxics,Hexachloro-cyclopentadiene,HEXACHLOROCYCLOPENTADIENE,Dissolved
 Freshwater,Toxics,Parathion,PARATHION,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
 Freshwater,Toxics,Parathion,PARATHION,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Freshwater,Toxics,Hexachloro-cyclopentadiene,HEXACHLOROCYCLOPENTADIENE,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Lindane (gamma-BHC),#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Lindane (gamma-BHC),#N/A,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
-Marine,Toxics,Lindane (gamma-BHC),#N/A,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
-Freshwater,Toxics,"Methyl-4, 6-dinitrophenol, 2-",#N/A,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,"Methyl-4, 6-dinitrophenol, 2-",#N/A,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Lindane (gamma-BHC),Lindane,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Lindane (gamma-BHC),Lindane,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
+Marine,Toxics,Lindane (gamma-BHC),Lindane,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
+Freshwater,Toxics,"Methyl-4, 6-dinitrophenol, 2-","4,6-Dinitro-o-cresol",Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,"Methyl-4, 6-dinitrophenol, 2-","4,6-Dinitro-o-cresol",Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Phenol,PHENOL,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Phenol,PHENOL,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Picloram,PICLORAM,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Methylene Chloride (Dichloromethane),#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Monochloro-benzene,#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Oxamyl (Vydate),#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,"Methyl-4, 6-dinitrophenol, 2-","4,6-Dinitro-2-methylphenol-d2",Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,"Methyl-4, 6-dinitrophenol, 2-","4,6-Dinitro-2-methylphenol-d2",Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Methylene Chloride (Dichloromethane),Methylene chloride,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Monochloro-benzene,Chlorobenzene,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Oxamyl (Vydate),Oxamyl,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Pyrene,PYRENE,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Pyrene,PYRENE,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Pentachloro-benzene,PENTACHLOROBENZENE,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
@@ -481,12 +483,12 @@ Marine,Toxics,Pentachloro-phenol,PENTACHLOROPHENOL,Dissolved,Aquatic Life,,Acute
 Marine,Toxics,Pentachloro-phenol,PENTACHLOROPHENOL,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
 Freshwater,Toxics,Pentachloro-phenol,PENTACHLOROPHENOL,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Marine,Toxics,Pentachloro-phenol,PENTACHLOROPHENOL,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
-Freshwater,Toxics,Polychlorinated Biphenyls (PCBs),#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Polychlorinated Biphenyls (PCBs),#N/A,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Marine,Toxics,Polychlorinated Biphenyls (PCBs),#N/A,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Freshwater,Toxics,Polychlorinated Biphenyls (PCBs),#N/A,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
-Marine,Toxics,Polychlorinated Biphenyls (PCBs),#N/A,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
-Freshwater,Toxics,Radium-226 and -228 (combined),#N/A,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Polychlorinated Biphenyls (PCBs),Polychlorinated biphenyls,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Polychlorinated Biphenyls (PCBs),Polychlorinated biphenyls,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Marine,Toxics,Polychlorinated Biphenyls (PCBs),Polychlorinated biphenyls,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Freshwater,Toxics,Polychlorinated Biphenyls (PCBs),Polychlorinated biphenyls,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Marine,Toxics,Polychlorinated Biphenyls (PCBs),Polychlorinated biphenyls,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Freshwater,Toxics,Radium-226 and -228 (combined),Radium-226/228,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Tetrachloro-ethylene,TETRACHLOROETHYLENE,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Total Trihalomethanes,"TRIHALOMETHANES (FOUR), TOTAL",Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Tritium,TRITIUM,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
