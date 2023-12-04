@@ -2,7 +2,7 @@
 
 #Written by: Hannah Ferriby and Ben Block
 #Date Created: 9-29-2023
-#Date of Last Updated: 11-16-2023
+#Date of Last Updated: 12-04-2023
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
@@ -132,7 +132,9 @@ data_11a <- TADA_FlagMeasureQualifierCode(data_10, clean = F)
 # add any changes by making a new row below
 data_11b <- data_11a %>% 
   mutate(TADA.MeasureQualifierCode.Flag = 
-           case_when((MeasureQualifierCode == "H;U") ~ "Suspect"
+           case_when(
+                    # The following were uncategorized by TADA
+                     (MeasureQualifierCode == "H;U") ~ "Suspect"
                    , (MeasureQualifierCode == "RC;U") ~ "Non-Detect"
                    , (MeasureQualifierCode == "H;RC;U") ~ "Suspect"
                    , (MeasureQualifierCode == "J-R;TOC") ~ "Pass"
@@ -148,6 +150,33 @@ data_11b <- data_11a %>%
                    , (MeasureQualifierCode == "BQL;RC") ~ "Pass"
                    , (MeasureQualifierCode == "B;D") ~ "Pass"
                    , (MeasureQualifierCode == "SDROL;U") ~ "Suspect"
+                   # The following are AK DEC specific updates to TADA flags
+                   , (MeasureQualifierCode == "*") ~ "Suspect"
+                   , (MeasureQualifierCode == "A") ~ "Reject"
+                   , (MeasureQualifierCode == "B") ~ "Suspect"
+                   , (MeasureQualifierCode == "CAN") ~ "Reject"
+                   , (MeasureQualifierCode == "CBC") ~ "Reject"
+                   , (MeasureQualifierCode == "CNT") ~ "Suspect"
+                   , (MeasureQualifierCode == "EER") ~ "Reject"
+                   , (MeasureQualifierCode == "J-1") ~ "Suspect"
+                   , (MeasureQualifierCode == "LAC") ~ "Reject"
+                   , (MeasureQualifierCode == "LBF") ~ "Reject"
+                   , (MeasureQualifierCode == "NA") ~ "Pass"
+                   , (MeasureQualifierCode == "NAI") ~ "Reject"
+                   , (MeasureQualifierCode == "NLBL") ~ "Reject"
+                   , (MeasureQualifierCode == "NLRO") ~ "Reject"
+                   , (MeasureQualifierCode == "NRP") ~ "Reject"
+                   , (MeasureQualifierCode == "NRR") ~ "Reject"
+                   , (MeasureQualifierCode == "NRS") ~ "Reject"
+                   , (MeasureQualifierCode == "NSQ") ~ "Reject"
+                   , (MeasureQualifierCode == "OUT") ~ "Suspect"
+                   , (MeasureQualifierCode == "PNQ") ~ "Reject"
+                   , (MeasureQualifierCode == "PPD") ~ "Suspect"
+                   , (MeasureQualifierCode == "PRE") ~ "Suspect"
+                   , (MeasureQualifierCode == "R") ~ "Reject"
+                   , (MeasureQualifierCode == "SUS") ~ "Reject"
+                   , (MeasureQualifierCode == "UDQ") ~ "Suspect"
+                   , (MeasureQualifierCode == "UNC") ~ "Suspect"
                    , TRUE ~ TADA.MeasureQualifierCode.Flag))
 
 # re-check for uncategorized qualifiers
@@ -283,11 +312,12 @@ data_16 <- data_15 %>%
          & TADA.MethodSpeciation.Flag != "Invalid") %>% # Step 3
   filter(TADA.AnalyticalMethod.Flag != "Rejected" 
          & TADA.AnalyticalMethod.Flag != "Invalid") %>% # Step 7
-  # filter(TADA.SingleOrgDupGroupID == "Not a duplicate" 
-  #        | (TADA.SingleOrgDupGroupID != "Not a duplicate" 
-  #           & TADA.SingleOrgDup.Flag == "Unique")) %>% # Step 8
+  filter(TADA.SingleOrgDupGroupID == "Not a duplicate"
+         | (TADA.SingleOrgDupGroupID != "Not a duplicate"
+            & TADA.SingleOrgDup.Flag == "Unique")) %>% # Step 8
   filter(TADA.ActivityType.Flag == 'Non_QC') %>% # Step 9
-  filter(TADA.MeasureQualifierCode.Flag != 'Suspect') %>% # Step 11
+  filter(TADA.MeasureQualifierCode.Flag != 'Suspect'
+         & TADA.MeasureQualifierCode.Flag != 'Reject') %>% # Step 11
   filter(TADA.ActivityMediaName == 'WATER') # Remove non-water samples
 # censored data are retained in this dataset.
 
@@ -842,8 +872,10 @@ rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
 df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20231127.csv")
 df_data_sufficiency2 <- df_data_sufficiency %>% 
-  select(-c(`Constituent Group`, Constituent, `Use Description`, `Other Requirements`
-            , `Listing methodology`, Notes))
+  select(-c(`Constituent Group`, Constituent, `Use Description`
+            , `Other Requirements`, `Listing methodology`, Notes)) %>% 
+  mutate(TADA.Fraction = toupper(Fraction)) %>% 
+  select(`Waterbody Type`, TADA.Constituent, Fraction, TADA.Fraction, everything())
 
 # test for missing constituents in df_data_sufficiency
 constituents <- unique(df_data_sufficiency2$TADA.Constituent)
@@ -858,36 +890,97 @@ write_csv(df_missing_constituents
                              , paste0("Missing_constituents_in_data_sufficiency_table_"
                                       ,myDate, ".csv")), na = "")
 
-# clean environment
-rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constituents)
+###### 22a. Reconcile fractions ####
+unique(data_21$TADA.ResultSampleFractionText)
+unique(df_data_sufficiency2$TADA.Fraction)
 
+data_22a <- data_21 %>% 
+  mutate(TADA.ResultSampleFractionText_new = case_when((TADA.ResultSampleFractionText == "UNFILTERED"
+                                                           |TADA.ResultSampleFractionText == "UNFILTERED, FIELD"
+                                                           |TADA.ResultSampleFractionText == "TOTAL") 
+                                                          ~ "TOTAL"
+                                                        , (TADA.ResultSampleFractionText == "FILTERED"
+                                                           | TADA.ResultSampleFractionText == "FILTERED, LAB"
+                                                           | TADA.ResultSampleFractionText == "FILTERED, FIELD"
+                                                           | TADA.ResultSampleFractionText == "VOLATILE"
+                                                           | TADA.ResultSampleFractionText == "DISSOLVED") 
+                                                          ~ "DISSOLVED"
+                                                        , (TADA.ResultSampleFractionText == "SUSPENDED"
+                                                           | TADA.ResultSampleFractionText == "NON-FILTERABLE (PARTICLE)"
+                                                           | TADA.ResultSampleFractionText == "NON-FILTERABLE"
+                                                           | TADA.ResultSampleFractionText == "SETTLEABLE") 
+                                                          ~ "TOTAL RESIDUAL"
+                                                        , (TADA.ResultSampleFractionText == "RECOVERABLE") 
+                                                          ~ "TOTAL RECOVERABLE"
+                                                        , (TADA.ResultSampleFractionText == "FIELD") ~ NA
+                                                        , TRUE ~ NA))
+
+# test mismatches in fractions for each constituent (not the missing ones)
+ConstFract_WaterChem <- data_22a %>% 
+  filter(TADA.CharacteristicName %in% constituents) %>% 
+  select(TADA.CharacteristicName, TADA.ResultSampleFractionText_new, TADA.ResultSampleFractionText) %>% 
+  distinct() %>% 
+  mutate(TADA.ResultSampleFractionText_Updated = TADA.ResultSampleFractionText_new)
+
+length(unique(ConstFract_WaterChem$TADA.CharacteristicName))
+
+ConstFract_DataSuff <- df_data_sufficiency2 %>% 
+  filter(TADA.Constituent %in% ConstFract_WaterChem$TADA.CharacteristicName) %>%
+  select(TADA.Constituent, TADA.Fraction) %>% 
+  distinct()
+
+length(unique(ConstFract_DataSuff$TADA.Constituent))
+
+ConstFract_Compare <- left_join(ConstFract_DataSuff, ConstFract_WaterChem
+                                , by = c("TADA.Constituent" = "TADA.CharacteristicName"
+                                         , "TADA.Fraction" = "TADA.ResultSampleFractionText_new")) %>% 
+  select(TADA.Constituent, TADA.Fraction, TADA.ResultSampleFractionText_Updated
+         , TADA.ResultSampleFractionText)
+
+# clean environment
+rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constituents
+   , ConstFract_DataSuff, ConstFract_WaterChem, ConstFract_Compare)
+
+###### 22b. Join data sufficiency ####
 # join data sufficency data by:
 # TADA.Constituent (TADA.CharacteristicName)
 # Waterbody Type
-data_22 <- data_21 %>% 
+# Fraction
+data_22b <- data_22a %>% 
   mutate(ActivityStartYear = year(ActivityStartDate)) %>% 
   select(AUID_ATTNS, MonitoringLocationTypeName, AU_Type, ActivityStartYear, ActivityStartDate
          , TADA.CharacteristicName, TADA.ResultMeasureValue
-         , TADA.ResultMeasure.MeasureUnitCode) %>% 
+         , TADA.ResultMeasure.MeasureUnitCode, TADA.ResultSampleFractionText_new) %>% 
   group_by(AUID_ATTNS, MonitoringLocationTypeName, AU_Type
-           , TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode) %>% 
+           , TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode
+           , TADA.ResultSampleFractionText_new) %>% 
   summarize(n_Samples = n()
             , n_SampDates = n_distinct(ActivityStartDate)
             , n_Years = n_distinct(ActivityStartYear)) %>% 
-  filter(!TADA.CharacteristicName %in% missing_constituents) %>% 
+  filter((!TADA.CharacteristicName %in% missing_constituents)
+         | TADA.CharacteristicName == "HARDNESS, CA, MG"
+         | TADA.CharacteristicName == "HARDNESS, CARBONATE"
+         | TADA.CharacteristicName ==  "HARDNESS"
+         | TADA.CharacteristicName ==  "TOTAL HARDNESS") %>% 
   ungroup()
 
 # loop for data sufficiency for each AU
-Unique_AUIDs <- unique(data_22$AUID_ATTNS)
-result_list <- list()
+Unique_AUIDs <- unique(data_22b$AUID_ATTNS)
+result_complete_list <- list()
+result_incomplete_list <- list()
 counter <- 0
 
+hardness_dependents <- c("CADMIUM", "CHROMIUM", "COPPER", "LEAD", "NICKEL"
+                         , "SILVER", "ZINC")
+hardness_constituents <- c("HARDNESS, CARBONATE", "HARDNESS, CA, MG", "HARDNESS"
+                           , "TOTAL HARDNESS")
+
 for(i in Unique_AUIDs){
-  print(i) # print name of current AU
+  i # print name of current AU
   counter <- counter + 1
   
   # filter data
-  df_subset <- data_22 %>% 
+  df_subset <- data_22b %>% 
     filter(AUID_ATTNS == i)
   
   # obtain AU_Type
@@ -912,25 +1005,74 @@ for(i in Unique_AUIDs){
   
   # join trimmed data sufficiency table to AU data
   df_join <- left_join(df_subset, my_data_sufficiency
-                     , by = c("TADA.CharacteristicName" = "TADA.Constituent")
+                     , by = c("TADA.CharacteristicName" = "TADA.Constituent"
+                              , "TADA.ResultSampleFractionText_new" = "TADA.Fraction")
                      , relationship = "many-to-many")
+  
   
   # determine data sufficiency based on # years and # samples of data for AU
   # Note: at this time, all uses and types are applied for every AU.
-  results <- df_join %>% 
+  results1 <- df_join %>% 
     mutate(Min_Period_Pass = case_when((n_Years >= Min_Assess_Period_Yrs) ~ "Yes"
                                        , (n_Years < Min_Assess_Period_Yrs) ~ "No")
            , Min_Data_Pass = case_when((n_SampDates >= Min_Num_Pts)~ "Yes"
                                        , (n_SampDates < Min_Num_Pts)~ "No")
            , Data_Sufficient = case_when((Min_Period_Pass == "Yes"
                                           & Min_Data_Pass == "Yes")~"Yes"
+                                         ,(is.na(Min_Period_Pass)
+                                          & is.na(Min_Data_Pass)) ~ NA
                                          , TRUE ~ "No"))
   
-  result_list[[counter]] <- results
+  # hardness check
+  hardness_params <- results1 %>% 
+    filter(TADA.CharacteristicName %in% hardness_constituents) %>% 
+    distinct() %>% 
+    pull(TADA.CharacteristicName)
+  
+  if(length(hardness_params) >0){
+    hardness_check <- "Yes"
+  } else {
+    hardness_check <- "No"
+  } # end if/else
+  
+  # make hardness flag if appropriate (ALU and specific constituents)
+  results2 <- results1 %>% 
+    mutate(Hardness_Dependency = case_when((Use != "Aquatic Life"
+                                            | is.na(Use)
+                                            |!(TADA.CharacteristicName %in% hardness_dependents))
+                                                ~ "Hardness dependency not applicable."
+                                           , (hardness_check == "Yes"
+                                              & Use == "Aquatic Life"
+                                              & TADA.CharacteristicName %in% hardness_dependents)
+                                                ~ "Hardness data available to assess data sufficiency."
+                                           , (hardness_check == "No"
+                                              & Use == "Aquatic Life"
+                                              & TADA.CharacteristicName %in% hardness_dependents)
+                                                ~ "Hardness data not available to assess data sufficiency."))
+  
+  # WQ data WITH successful joins from data sufficiency
+  results_complete <- results2 %>% 
+    filter(!is.na(Data_Sufficient))
+  
+  # WQ data WITHOUT successful joins from data sufficiency
+  results_incomplete <- results2 %>% 
+    filter(is.na(Data_Sufficient))
+  
+  result_complete_list[[counter]] <- results_complete
+  result_incomplete_list[[counter]] <- results_incomplete
+  
 } # end of for loop
-df_loop_results <- do.call("rbind", result_list) # combine results from for loop
+
+# results complete
+df_loop_results <- do.call("rbind", result_complete_list) # combine results from for loop
 df_AU_data_sufficiency <- as.data.frame(df_loop_results) # convert to data frame
 df_AU_data_sufficiency <- df_AU_data_sufficiency %>% 
+  distinct()
+
+# results complete
+df_loop_results_incomplete <- do.call("rbind", result_incomplete_list) # combine results from for loop
+df_AU_missing_sufficiency <- as.data.frame(df_loop_results_incomplete) # convert to data frame
+df_AU_missing_sufficiency <- df_AU_missing_sufficiency %>% 
   distinct()
 
 # clean environment
@@ -942,4 +1084,9 @@ rm(data_22, df_data_sufficiency2, df_join, df_loop_results, df_subset,
 write_csv(df_AU_data_sufficiency
           , file = file.path('Output/data_processing'
                              , paste0("WQ_metadata_trimmed_with_data_sufficiency_"
+                                      ,myDate, ".csv")), na = "")
+
+write_csv(df_AU_missing_sufficiency
+          , file = file.path('Output/data_processing'
+                             , paste0("WQ_metadata_trimmed_MISSING_data_sufficiency_"
                                       ,myDate, ".csv")), na = "")
