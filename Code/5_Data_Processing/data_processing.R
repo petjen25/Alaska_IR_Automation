@@ -891,8 +891,14 @@ write_csv(df_missing_constituents
                                       ,myDate, ".csv")), na = "")
 
 ###### 22a. Reconcile fractions ####
+# Constituent and fraction harmonization
 unique(data_21$TADA.ResultSampleFractionText)
 unique(df_data_sufficiency2$TADA.Fraction)
+
+blank_fractions <- c("ASBESTOS", "BENZENE", "COLOR", "DISSOLVED OXYGEN (DO)"
+                     , "ENTEROCOCCUS", "ESCHERICHIA COLI", "FECAL COLIFORM"
+                     , "PH", "SEDIMENT", "SULFATE", "TEMPERATURE, WATER"
+                     , "TOTAL DISSOLVED SOLIDS", "TURBIDITY") # from data sufficiency table
 
 data_22a <- data_21 %>% 
   mutate(TADA.ResultSampleFractionText_new = case_when((TADA.ResultSampleFractionText == "UNFILTERED"
@@ -909,37 +915,17 @@ data_22a <- data_21 %>%
                                                            | TADA.ResultSampleFractionText == "NON-FILTERABLE (PARTICLE)"
                                                            | TADA.ResultSampleFractionText == "NON-FILTERABLE"
                                                            | TADA.ResultSampleFractionText == "SETTLEABLE") 
-                                                          ~ "TOTAL RESIDUAL"
+                                                          ~ "PARTICULATE"
                                                         , (TADA.ResultSampleFractionText == "RECOVERABLE") 
                                                           ~ "TOTAL RECOVERABLE"
                                                         , (TADA.ResultSampleFractionText == "FIELD") ~ NA
-                                                        , TRUE ~ NA))
-
-# test mismatches in fractions for each constituent (not the missing ones)
-ConstFract_WaterChem <- data_22a %>% 
-  filter(TADA.CharacteristicName %in% constituents) %>% 
-  select(TADA.CharacteristicName, TADA.ResultSampleFractionText_new, TADA.ResultSampleFractionText) %>% 
-  distinct() %>% 
-  mutate(TADA.ResultSampleFractionText_Updated = TADA.ResultSampleFractionText_new)
-
-length(unique(ConstFract_WaterChem$TADA.CharacteristicName))
-
-ConstFract_DataSuff <- df_data_sufficiency2 %>% 
-  filter(TADA.Constituent %in% ConstFract_WaterChem$TADA.CharacteristicName) %>%
-  select(TADA.Constituent, TADA.Fraction) %>% 
-  distinct()
-
-length(unique(ConstFract_DataSuff$TADA.Constituent))
-
-ConstFract_Compare <- left_join(ConstFract_DataSuff, ConstFract_WaterChem
-                                , by = c("TADA.Constituent" = "TADA.CharacteristicName"
-                                         , "TADA.Fraction" = "TADA.ResultSampleFractionText_new")) %>% 
-  select(TADA.Constituent, TADA.Fraction, TADA.ResultSampleFractionText_Updated
-         , TADA.ResultSampleFractionText)
+                                                        , TRUE ~ NA)) %>% 
+  mutate(TADA.ResultSampleFractionText_new = case_when((TADA.CharacteristicName %in% blank_fractions) ~ NA
+                                                       , TRUE ~ TADA.ResultSampleFractionText_new))
 
 # clean environment
 rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constituents
-   , ConstFract_DataSuff, ConstFract_WaterChem, ConstFract_Compare)
+   , blank_fractions)
 
 ###### 22b. Join data sufficiency ####
 # join data sufficency data by:
@@ -1076,9 +1062,12 @@ df_AU_missing_sufficiency <- df_AU_missing_sufficiency %>%
   distinct()
 
 # clean environment
-rm(data_22, df_data_sufficiency2, df_join, df_loop_results, df_subset,
-   my_data_sufficiency, result_list, results, counter, i, missing_constituents
-   , my_WtrBdy_Type, my_AU_Type, my_constituents, Unique_AUIDs)
+rm(data_22a, data_22b, df_data_sufficiency2, df_join, df_loop_results, 
+   df_loop_results_incomplete, df_subset, results_complete, results_incomplete
+   , my_data_sufficiency, result_complete_list, result_incomplete_list
+   , counter, i, missing_constituents, my_WtrBdy_Type, my_AU_Type, my_constituents
+   , Unique_AUIDs, results1, results2, hardness_check, hardness_constituents
+   , hardness_dependents, hardness_params)
 
 #Export data summary
 write_csv(df_AU_data_sufficiency

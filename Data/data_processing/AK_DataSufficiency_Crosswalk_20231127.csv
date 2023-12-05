@@ -24,7 +24,7 @@ Marine,Bacteria,Fecal Coliform,FECAL COLIFORM,,Water Supply,Industrial,,2 years,
 Marine,Bacteria,Fecal Coliform,FECAL COLIFORM,,Water Supply,Aquaculture,,2 years,10,"5 samples w/in 30 days, each year",Pathogens,,2,10
 Marine,Bacteria,Fecal Coliform,FECAL COLIFORM,,Water Supply,Seafood Processing,,2 years,10,"5 samples w/in 30 days, each year",Pathogens,,2,10
 Marine,Bacteria,Fecal Coliform,FECAL COLIFORM,,Water Supply,Industrial,,2 years,10,"5 samples w/in 30 days, each year",Pathogens,,2,10
-Freshwater,Conventional,Chloride,CHLORIDE,,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Conventional,Chloride,CHLORIDE,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Conventional,Color,COLOR,,Aquatic Life,"Growth and Propagation of Fish, Shellfish, Other Aquatic Life, and Wildlife",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Conventional,Color,COLOR,,Primary Contact Recreation,,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Conventional,Color,COLOR,,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
@@ -67,7 +67,7 @@ Marine,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Water Supply,Aquacu
 Marine,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Water Supply,Aquaculture,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Marine,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Water Supply,Aquaculture,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Marine,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Water Supply,Aquaculture,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Dissolved Inorganic Substances,Chloride,CHLORIDE,,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Dissolved Inorganic Substances,Chloride,CHLORIDE,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Dissolved Inorganic Substances,Sulfate,SULFATE,,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Dissolved Inorganic Substances,Total Dissolved Solids,TOTAL DISSOLVED SOLIDS,,Aquatic Life,"Growth and Propagation of Fish, Shellfish, Other Aquatic Life, and Wildlife",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Dissolved Inorganic Substances,Total Dissolved Solids,TOTAL DISSOLVED SOLIDS,,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
