@@ -454,6 +454,9 @@ df_ML <- data_19 %>%
          , TADA.LongitudeMeasure) %>% 
   distinct()
 
+# cleanup
+rm(data_19_long, data_16)
+
 ## create palette
 ML_Type <- factor(c("Lake, Reservoir, Impoundment"
                     , "Lake"
@@ -572,7 +575,7 @@ write_csv(miss_ML_beach_results, file = file.path('Output/data_processing'
 
 ### Clean up environment
 rm(num_sites, beach_pts, beach_SpatJoin, beach_SpatJoin2, miss_ML_beach_results
-   , miss_ML_beaches, near_feat, dist_to_AU_m, data_19_long, data_16)
+   , miss_ML_beaches, near_feat, dist_to_AU_m)
 
 ######20c. Lakes #####
 miss_ML_lakes <- missing_ML %>%
@@ -680,10 +683,10 @@ miss_ML_marine_results <- marine_SpatJoin2 %>%
   sf::st_transform(4326) %>% 
   mutate(Longitude = unlist(map(geometry,1)),
          Latitude = unlist(map(geometry,2))) %>% 
-  sf::st_drop_geometry() %>% 
-  mutate(NameSimilarityScore = round(stringdist::stringsim(MonitoringLocationName # name similarity
-                                                           , Name_AU
-                                                           , method='jw'),2))
+  sf::st_drop_geometry() 
+  # mutate(NameSimilarityScore = round(stringdist::stringsim(MonitoringLocationName # name similarity
+  #                                                          , Name_AU
+  #                                                          , method='jw'),2))
 
 write_csv(miss_ML_marine_results, file = file.path('Output/data_processing'
                                                  , paste0("Missing_MonLoc_Marine_SpatJoin_"
@@ -883,11 +886,17 @@ WQ_CharacteristicNames <- unique(data_21$TADA.CharacteristicName)
 
 (missing_constituents <- WQ_CharacteristicNames[!(WQ_CharacteristicNames %in% constituents)])
 
+# filter out and save WQ data not carried over to data sufficiency
+
+df_missing_constituents <- data_21 %>% 
+  filter(TADA.CharacteristicName %in% missing_constituents) %>% 
+  mutate(Data_Note = "Characteristic is not listed in AK DEC data sufficiency table") %>% 
+  select(Data_Note, everything())
+
 # export data
-df_missing_constituents <- as.data.frame(cbind(missing_constituents, "Not in data sufficiency table"))
 write_csv(df_missing_constituents
           , file = file.path('Output/data_processing'
-                             , paste0("Missing_constituents_in_data_sufficiency_table_"
+                             , paste0("WQ_data_not_in_data_sufficiency_table_"
                                       ,myDate, ".csv")), na = "")
 
 ###### 22a. Reconcile fractions ####
