@@ -8,8 +8,8 @@
 library(TADA)
 library(tidyverse)
 
-startDate <- '2018-02-01'
-endDate <- '2023-02-01'
+startDate <- '2017-10-01'
+endDate <- '2023-09-30'
 
 ####Data Download####
 #Download by water body type
