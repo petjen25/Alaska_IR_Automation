@@ -2,7 +2,7 @@
 
 #Written by: Hannah Ferriby and Ben Block
 #Date Created: 9-29-2023
-#Date of Last Updated: 12-04-2023
+#Date of Last Updated: 01-05-2024
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
@@ -430,6 +430,7 @@ df_ML_AU_Crosswalk <- df_ML_AU_Crosswalk %>%
 # join data
 data_19 <- left_join(data_18, df_ML_AU_Crosswalk
                      , by = "MonitoringLocationIdentifier")
+
 
 #Create object for export, remove columns of mostly NAs to make file small enough
 #for github
@@ -904,7 +905,7 @@ write_csv(df_missing_constituents
 unique(data_21$TADA.ResultSampleFractionText)
 unique(df_data_sufficiency2$TADA.Fraction)
 
-blank_fractions <- c("ASBESTOS", "BENZENE", "COLOR", "DISSOLVED OXYGEN (DO)"
+blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "COLOR", "DISSOLVED OXYGEN (DO)"
                      , "ENTEROCOCCUS", "ESCHERICHIA COLI", "FECAL COLIFORM"
                      , "PH", "SEDIMENT", "SULFATE", "TEMPERATURE, WATER"
                      , "TOTAL DISSOLVED SOLIDS", "TURBIDITY") # from data sufficiency table
@@ -930,8 +931,12 @@ data_22a <- data_21 %>%
                                                         , (TADA.ResultSampleFractionText == "FIELD") ~ NA
                                                         , TRUE ~ NA)) %>% 
   mutate(TADA.ResultSampleFractionText_new = case_when((TADA.CharacteristicName %in% blank_fractions) ~ NA
-                                                       , TRUE ~ TADA.ResultSampleFractionText_new))
-
+                                                       , TRUE ~ TADA.ResultSampleFractionText_new)) %>% 
+  mutate(TADA.CharacteristicName = case_when((TADA.CharacteristicName == "HARDNESS, CA, MG"
+                                              | TADA.CharacteristicName == "HARDNESS, CARBONATE"
+                                              | TADA.CharacteristicName ==  "HARDNESS"
+                                              | TADA.CharacteristicName ==  "TOTAL HARDNESS") ~ "HARDNESS"
+                                             , TRUE ~ TADA.CharacteristicName))
 # clean environment
 rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constituents
    , blank_fractions)
@@ -942,8 +947,11 @@ rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constit
 # Waterbody Type
 # Fraction
 data_22b <- data_22a %>% 
-  mutate(ActivityStartYear = year(ActivityStartDate)) %>% 
-  select(AUID_ATTNS, MonitoringLocationTypeName, AU_Type, ActivityStartYear, ActivityStartDate
+  mutate(ActivityStartYear = year(ActivityStartDate),
+         ActivityStartMonth = month(ActivityStartDate),
+         ActivityWaterYear = ifelse(ActivityStartMonth < 10, ActivityStartYear
+                                    , ActivityStartYear+1)) %>% 
+  select(AUID_ATTNS, MonitoringLocationTypeName, AU_Type, ActivityWaterYear, ActivityStartDate
          , TADA.CharacteristicName, TADA.ResultMeasureValue
          , TADA.ResultMeasure.MeasureUnitCode, TADA.ResultSampleFractionText_new) %>% 
   group_by(AUID_ATTNS, MonitoringLocationTypeName, AU_Type
@@ -951,12 +959,9 @@ data_22b <- data_22a %>%
            , TADA.ResultSampleFractionText_new) %>% 
   summarize(n_Samples = n()
             , n_SampDates = n_distinct(ActivityStartDate)
-            , n_Years = n_distinct(ActivityStartYear)) %>% 
+            , n_WaterYears = n_distinct(ActivityWaterYear)) %>% 
   filter((!TADA.CharacteristicName %in% missing_constituents)
-         | TADA.CharacteristicName == "HARDNESS, CA, MG"
-         | TADA.CharacteristicName == "HARDNESS, CARBONATE"
-         | TADA.CharacteristicName ==  "HARDNESS"
-         | TADA.CharacteristicName ==  "TOTAL HARDNESS") %>% 
+         | TADA.CharacteristicName ==  "HARDNESS") %>% 
   ungroup()
 
 # loop for data sufficiency for each AU
@@ -967,8 +972,7 @@ counter <- 0
 
 hardness_dependents <- c("CADMIUM", "CHROMIUM", "COPPER", "LEAD", "NICKEL"
                          , "SILVER", "ZINC")
-hardness_constituents <- c("HARDNESS, CARBONATE", "HARDNESS, CA, MG", "HARDNESS"
-                           , "TOTAL HARDNESS")
+hardness_constituent <- c("HARDNESS")
 
 for(i in Unique_AUIDs){
   i # print name of current AU
@@ -1008,8 +1012,8 @@ for(i in Unique_AUIDs){
   # determine data sufficiency based on # years and # samples of data for AU
   # Note: at this time, all uses and types are applied for every AU.
   results1 <- df_join %>% 
-    mutate(Min_Period_Pass = case_when((n_Years >= Min_Assess_Period_Yrs) ~ "Yes"
-                                       , (n_Years < Min_Assess_Period_Yrs) ~ "No")
+    mutate(Min_Period_Pass = case_when((n_WaterYears >= Min_Assess_Period_Yrs) ~ "Yes"
+                                       , (n_WaterYears < Min_Assess_Period_Yrs) ~ "No")
            , Min_Data_Pass = case_when((n_SampDates >= Min_Num_Pts)~ "Yes"
                                        , (n_SampDates < Min_Num_Pts)~ "No")
            , Data_Sufficient = case_when((Min_Period_Pass == "Yes"
@@ -1020,7 +1024,7 @@ for(i in Unique_AUIDs){
   
   # hardness check
   hardness_params <- results1 %>% 
-    filter(TADA.CharacteristicName %in% hardness_constituents) %>% 
+    filter(TADA.CharacteristicName %in% hardness_constituent) %>% 
     distinct() %>% 
     pull(TADA.CharacteristicName)
   
@@ -1075,7 +1079,7 @@ rm(data_22a, data_22b, df_data_sufficiency2, df_join, df_loop_results,
    df_loop_results_incomplete, df_subset, results_complete, results_incomplete
    , my_data_sufficiency, result_complete_list, result_incomplete_list
    , counter, i, missing_constituents, my_WtrBdy_Type, my_AU_Type, my_constituents
-   , Unique_AUIDs, results1, results2, hardness_check, hardness_constituents
+   , Unique_AUIDs, results1, results2, hardness_check, hardness_constituent
    , hardness_dependents, hardness_params)
 
 #Export data summary

@@ -126,15 +126,15 @@ Freshwater,Toxics,Aluminum,ALUMINUM,Total Recoverable  ,Aquatic Life,,Chronic,2 
 Freshwater,Toxics,Aluminum,ALUMINUM,Total Recoverable  ,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
 Freshwater,Toxics,Aluminum,ALUMINUM,Total Recoverable  ,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Freshwater,Toxics,Aluminum,ALUMINUM,Total Recoverable  ,Water Supply,"Agriculture, Including Irrigation and Stock Watering",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
-Freshwater,Toxics,Ammonia,AMMONIA,Total,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Freshwater,Toxics,Ammonia,AMMONIA,Total,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
-Freshwater,Toxics,Ammonia,AMMONIA,Total,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
-Marine,Toxics,Ammonia,AMMONIA,Total,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
-Marine,Toxics,Ammonia,AMMONIA,Total,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Marine,Toxics,Ammonia,AMMONIA,Total,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
-Marine,Toxics,"Ammonia, un-ionized",AMMONIA,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
-Marine,Toxics,"Ammonia, un-ionized",AMMONIA,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
-Marine,Toxics,"Ammonia, un-ionized",AMMONIA,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Freshwater,Toxics,Ammonia,AMMONIA,,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Freshwater,Toxics,Ammonia,AMMONIA,,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
+Freshwater,Toxics,Ammonia,AMMONIA,,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Marine,Toxics,Ammonia,AMMONIA,,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
+Marine,Toxics,Ammonia,AMMONIA,,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Marine,Toxics,Ammonia,AMMONIA,,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
+Marine,Toxics,"Ammonia, un-ionized",AMMONIA,,Aquatic Life,,Chronic,2 years,10,,CALM,,2,10
+Marine,Toxics,"Ammonia, un-ionized",AMMONIA,,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
+Marine,Toxics,"Ammonia, un-ionized",AMMONIA,,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Freshwater,Toxics,Antimony,ANTIMONY,Dissolved,Human Health,Water and Aquatic Organisms,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Antimony,ANTIMONY,Dissolved,Human Health,Aquatic Organisms Only,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Antimony,ANTIMONY,Dissolved,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
