@@ -2,13 +2,13 @@
 
 #Written by: Hannah Ferriby and Ben Block
 #Date Created: 9-29-2023
-#Date of Last Updated: 01-05-2024
+#Date of Last Updated: 01-17-2024
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
 #2. 'WQ_Column_Manager.csv' to quickly subset WQ dataset fields
 #3. 'ML_AU_Crosswalk.csv' to crosswalk Monitoring Locations with AUs
-#4. 'AK_DataSufficiency_Crosswalk_20231012.csv' to crosswalk WQ dataset with 
+#4. 'AK_DataSufficiency_Crosswalk_20240117.csv' to crosswalk WQ dataset with 
      # data sufficiency table
 #5. 'Beaches.shp' Beaches AU shapefile
 #6. 'Lakes.shp' Lakes AU shapefile
@@ -874,7 +874,7 @@ rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 #### Data sufficiency ####
 ##### 22. AU/pollutant data sufficiency #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20231127.csv")
+df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20240117.csv")
 df_data_sufficiency2 <- df_data_sufficiency %>% 
   select(-c(`Constituent Group`, Constituent, `Use Description`
             , `Other Requirements`, `Listing methodology`, Notes)) %>% 
@@ -900,7 +900,7 @@ write_csv(df_missing_constituents
                              , paste0("WQ_data_not_in_data_sufficiency_table_"
                                       ,myDate, ".csv")), na = "")
 
-###### 22a. Reconcile fractions ####
+###### 22a. Reconcile constituents ####
 # Constituent and fraction harmonization
 unique(data_21$TADA.ResultSampleFractionText)
 unique(df_data_sufficiency2$TADA.Fraction)
@@ -909,6 +909,17 @@ blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "COLOR", "DISSOLVED OXYGE
                      , "ENTEROCOCCUS", "ESCHERICHIA COLI", "FECAL COLIFORM"
                      , "PH", "SEDIMENT", "SULFATE", "TEMPERATURE, WATER"
                      , "TOTAL DISSOLVED SOLIDS", "TURBIDITY") # from data sufficiency table
+
+TAqH <- c("2-METHYLNAPHTHALENE", "ACENAPHTHYLENE", "ACENAPHTHENE", "FLUORENE"
+          , "PHENANTHRENE", "ANTHRACENE", "FLUORANTHENE", "PYRENE"
+          , "BENZ[A]ANTHRACENE", "CHRYSENE", "DI-N-OCTYL PHTHALATE"
+          , "BENZO(B)FLUORANTHENE", "BENZO[K]FLUORANTHENE", "BENZO[A]PYRENE"
+          , "INDENO (1,2,3-CD) PERYLENE", "INDENO[1,2,3-CD]PYRENE"
+          , "DIBENZ[A,H]ANTHRACENE", "BENZO[GHI]PERYLENE") # Total Aqueous Hydrocarbons list
+
+TAH <- c("BENZENE", "P-BROMOFLUOROBENZENE", "ETHYLBENZENE", "M,P-XYLENE"
+         , "O-XYLENE", "TOTAL XYLENES", "TOLUENE") # Total Aromatic Hydrocarbons list
+
 
 data_22a <- data_21 %>% 
   mutate(TADA.ResultSampleFractionText_new = case_when((TADA.ResultSampleFractionText == "UNFILTERED"
@@ -937,9 +948,60 @@ data_22a <- data_21 %>%
                                               | TADA.CharacteristicName ==  "HARDNESS"
                                               | TADA.CharacteristicName ==  "TOTAL HARDNESS") ~ "HARDNESS"
                                              , TRUE ~ TADA.CharacteristicName))
+
+# deal with TAH and TAqH
+# NOTE: TAH and TAqH summation does not account for non-detects.
+df_TAH <- data_22a %>% 
+  filter(TADA.CharacteristicName %in% TAH) %>% 
+  group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
+           , MonitoringLocationName, MonitoringLocationTypeName
+           , TADA.ResultMeasure.MeasureUnitCode
+           , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
+           , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus
+           , TADA.CharacteristicName, TADA.ComparableDataIdentifier
+           , TADA.ResultSampleFractionText, TADA.ResultSampleFractionText_new) %>%
+  summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
+  group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
+           , MonitoringLocationName, MonitoringLocationTypeName
+           , TADA.ResultMeasure.MeasureUnitCode
+           , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
+           , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus) %>%
+  #TADA.CharacteristicName, TADA.ResultMeasureValue, TADA.ComparableDataIdentifier
+  #, TADA.ResultSampleFractionText, and TADA.ResultSampleFractionText_new not included
+  summarize(TADA.ResultMeasureValue = sum(Avg_TADA.ResultMeasureValue)) %>% 
+  mutate(TADA.CharacteristicName = "TOTAL AROMATIC HYDROCARBONS"
+         , TADA.ComparableDataIdentifier = NA
+         , TADA.ResultSampleFractionText = NA
+         , TADA.ResultSampleFractionText_new = "TOTAL")
+
+df_TAqH <- data_22a %>% 
+  filter(TADA.CharacteristicName %in% TAqH) %>% 
+  group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
+           , MonitoringLocationName, MonitoringLocationTypeName
+           , TADA.ResultMeasure.MeasureUnitCode
+           , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
+           , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus
+           , TADA.CharacteristicName, TADA.ComparableDataIdentifier
+           , TADA.ResultSampleFractionText, TADA.ResultSampleFractionText_new) %>%
+  summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
+  group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
+           , MonitoringLocationName, MonitoringLocationTypeName
+           , TADA.ResultMeasure.MeasureUnitCode
+           , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
+           , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus) %>%
+  #TADA.CharacteristicName, TADA.ResultMeasureValue, TADA.ComparableDataIdentifier
+  #, TADA.ResultSampleFractionText, and TADA.ResultSampleFractionText_new not included
+  summarize(TADA.ResultMeasureValue = sum(Avg_TADA.ResultMeasureValue)) %>% 
+  mutate(TADA.CharacteristicName = "TOTAL AQUEOUS HYDROCARBONS"
+         , TADA.ComparableDataIdentifier = NA
+         , TADA.ResultSampleFractionText = NA
+         , TADA.ResultSampleFractionText_new = "TOTAL")
+
+data_22a <- rbind(data_22a, df_TAH, df_TAqH)
+
 # clean environment
 rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constituents
-   , blank_fractions)
+   , blank_fractions, df_TAH, df_TAqH, TAH, TAqH)
 
 ###### 22b. Join data sufficiency ####
 # join data sufficency data by:
@@ -973,6 +1035,10 @@ counter <- 0
 hardness_dependents <- c("CADMIUM", "CHROMIUM", "COPPER", "LEAD", "NICKEL"
                          , "SILVER", "ZINC")
 hardness_constituent <- c("HARDNESS")
+
+# df_subset <- data_22b %>% 
+#   filter(TADA.CharacteristicName == "TOTAL AROMATIC HYDROCARBONS") %>% 
+#   filter(AUID_ATTNS == "AK_R_1030106_014")
 
 for(i in Unique_AUIDs){
   i # print name of current AU
