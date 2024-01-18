@@ -860,8 +860,9 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           hardness <- input_samples %>%
             dplyr::filter(AUID_ATTNS == i) %>%
             dplyr::filter(TADA.CharacteristicName == "HARDNESS") %>%
-            dplyr::rename(Hardness = TADA.ResultMeasureValue) %>%
-            dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, Hardness)%>%
+            dplyr::rename(Hardness = TADA.ResultMeasureValue,
+                          Hardness.Date = ActivityStartDate) %>%
+            dplyr::select(Hardness.Date, ActivityStartTime.Time, AUID_ATTNS, Hardness)%>%
             dplyr::group_by(Hardness.Date) %>%
             dplyr::reframe(Hardness.Date = Hardness.Date,
                            Hardness = mean(Hardness)) %>%
