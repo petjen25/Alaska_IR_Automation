@@ -566,38 +566,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
-        } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
-                 filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == F &
-                 stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == T){
-        #Method: Maximum, 1 in most recent 3 years, 1 hour average, magnitude dependent on equations
-        #Acute
-        #Pull matching pH and temperature samples
-        pH <- df_subset %>%
-          dplyr::filter(TADA.CharacteristicName == "pH") %>%
-          rename(pH = TADA.ResultMeasureValue) %>%
-          dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, pH)
-        
-        if(filter_by$Constituent == 'Pentachloro-phenol') {
-          #Combine matching pH & calculate magnitude
-          joined <- filt %>%
-            inner_join(pH, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(1.005*pH-4.869)) #Equation from WQS sheet
-          
-        }
-        
-        max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
-        results <- joined %>%
-          dplyr::filter(w_year >= max_year - 3) %>%
-          dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0)) 
-        
-        bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-        bad_sum <- sum(bad_tot$bad_samp)
-        
-        filter_by$AUID_ATTNS <- i
-        filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-        
-      }  else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
+        } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == F){
         #Method: Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 1 hour average, magnitude listed
         
@@ -665,18 +634,19 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   
   df_AU_data_WQS %>% dplyr::select(Exceed) %>% dplyr::group_by(Exceed) %>% dplyr::mutate(n = n()) %>% unique()
   
-  # test <- df_AU_data_WQS %>% dplyr::filter(is.na(Exceed))
+  #combine with relevant WQS table
+  relevant_wqs <- input_sufficiency %>%
+    dplyr::filter(!(TADA.CharacteristicName %in% c('(?i)Cadmium', '(?i)Chromium (III)', '(?i)Copper', '(?i)Lead',
+                                                 '(?i)Nickel', '(?i)Silver', '(?i)Zinc') & Use == 'Aquatic Life')) %>%
+    dplyr::filter(TADA.CharacteristicName != 'AMMONIA' | TADA.CharacteristicName != 'PENTACHLORO-PHENOL') %>%
+    dplyr::filter(TADA.CharacteristicName != 'TURBIDITY')
   
-  #Find methods not coded:
-  # not_coded <- df_AU_data_WQS %>% dplyr::filter(Exceed == 'Method not coded!')
-  
-  # no_samps_not_coded <- no_samps %>% dplyr::right_join(not_coded)
-  
-  #combine with data sufficiency table
   data_suff_WQS <- df_AU_data_WQS %>%
-    rename(TADA.CharacteristicName = TADA.Constituent) %>%
-    full_join(input_sufficiency, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
-                                        'Fraction', 'Type'))
+    dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
+    dplyr::full_join(relevant_wqs, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
+                                        'Fraction', 'Type'),
+                     relationship = "many-to-many") %>%
+    dplyr::relocate(Exceed, .after = last_col())
   
   return(data_suff_WQS)
 
@@ -719,7 +689,10 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     
     # dplyr::filter data
     df_subset <- input_samples_filtered_relevant %>% 
-      dplyr::filter(AUID_ATTNS == i) 
+      dplyr::filter(AUID_ATTNS == i) %>%
+      dplyr::mutate(year = year(ActivityStartDate),
+                    month = month(ActivityStartDate),
+                    w_year = ifelse(month < 10, year, year+1))
     
     # obtain AU_Type
     my_AU_Type <- unique(df_subset$AU_Type)
@@ -740,7 +713,10 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     my_data_magfreqdur <- wqs_crosswalk %>% 
       dplyr::filter(TADA.Constituent %in% my_constituents) %>% 
       dplyr::filter(`Waterbody Type` %in% my_WtrBdy_Type) %>%
-      dplyr::select(!c(Magnitude_Text))
+      dplyr::select(!c(Magnitude_Text)) %>%
+      dplyr::filter(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
+                                       'Nickel', 'Silver', 'Zinc')) %>% 
+      dplyr::filter(Use == 'Aquatic Life')
     
     #If no relevant samples, skip AU
     if(nrow(my_data_magfreqdur)==0){
@@ -761,150 +737,253 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
         #Hardness dependent magnitudes - NOT pH DEPENDENT
         #Chronic
         
-        #Pull matching hardness samples
+        #Pull matching hardness samples from all samples
         hardness <- input_samples %>%
           dplyr::filter(AUID_ATTNS == i) %>%
           dplyr::filter(TADA.CharacteristicName == "HARDNESS") %>%
-          rename(Hardness = TADA.ResultMeasureValue) %>%
-          dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, Hardness)
+          dplyr::rename(Hardness = TADA.ResultMeasureValue,
+                        Hardness.Date = ActivityStartDate) %>%
+          dplyr::select(Hardness.Date, ActivityStartTime.Time, AUID_ATTNS, Hardness) %>%
+          dplyr::group_by(Hardness.Date) %>%
+          dplyr::reframe(Hardness.Date = Hardness.Date,
+                         Hardness = mean(Hardness)) %>%
+          unique()
         
-        #Need to make magnitude for: Chromium (III), copper, lead, nickel, zinc - all chronic
-        if(filter_by$Constituent == 'Chromium (III)'){
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(0.819*(log(Hardness))+0.6848)*0.860)
-          
-        } else if(filter_by$Constituent == 'Copper') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(0.8545*(log(Hardness))-1.702)*0.960)
-          
-        } else if(filter_by$Constituent == 'Lead') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(1.273*(log(Hardness))-4.705)*(1.46203-log(Hardness)*0.145712))
-          
-        } else if(filter_by$Constituent == 'Nickel') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(0.846*(log(Hardness))+0.0584)*0.997)
-          
-        } else if(filter_by$Constituent == 'Zinc') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(0.8473*(log(Hardness))+0.884)*0.986)
-          
-        } else if(filter_by$Constituent == 'Cadmium') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(0.7409*(log(Hardness))-4.719)*(1.101672-log(Hardness)*0.041838))
-          
-        }
         
-        results <- joined %>%
-          dplyr::group_by(ActivityStartDate) %>%
-          dplyr::arrange(ActivityStartDate) %>%
-          dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate, 
-                                          ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])), 
-                 bad_samp = ifelse(roll_4day_mean >= magnitude, 1, 0)) 
-        
-        bad_tot <- results %>% 
-          dplyr::ungroup() %>%
-          dplyr::select(year, ActivityStartDate, bad_samp) %>%
-          unique() %>%
-          #If more than 2 exceedances in 3 years assign value of 1, else 0
-          #Left bound is date - 3 years, right bound is date
-          dplyr::mutate(Exceedances = ifelse(map_dbl(ActivityStartDate, 
-                                              ~sum(bad_samp[between(ActivityStartDate, .x - years(3), .x)]))>=2, 1, 0),
-                 #Give every samples a count of 1
-                 r_count = 1.0,
-                 #Total up number of samples in last 3 years
-                 num_samples_3yrs = map_dbl(ActivityStartDate, 
-                                            ~sum(r_count[between(ActivityStartDate, .x - years(3), .x)])),
-                 #Calculate exceedance frequency
-                 Exceed_Freq = Exceedances/num_samples_3yrs,
-                 #Determine if exceedance criteria met
-                 tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
-        
-        bad_sum <- sum(bad_tot$tot_exceed)
-        
-        filter_by$AUID_ATTNS <- i
-        filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-        
-      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
-                 filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == T &
-                 stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){
-        #Method: Maximum, 1 in most recent 3 years, 1 hour average, magnitude dependent on equations
-        #Hardness dependent magnitudes - NOT pH DEPENDENT
-        #Acute
-        
-        #Pull matching hardness samples
-        hardness <- df_subset %>%
-          dplyr::filter(TADA.CharacteristicName == "HARDNESS") %>%
-          rename(Hardness = TADA.ResultMeasureValue) %>%
-          dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, Hardness)
-        #Need to make magnitude for: Chromium (III), copper, lead, nickel, zinc - all chronic
-        if(filter_by$Constituent == 'Chromium (III)'){
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(0.819*(log(Hardness))+3.7256)*0.316)
+        #Mark result as insufficient if no hardness available
+        if(nrow(hardness) == 0) {
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed <- "Insufficient hardness"
+        } else {
+          #Need to make magnitude for: Chromium (III), copper, lead, nickel, zinc - all chronic
+          if(filter_by$Constituent == 'Chromium (III)'){
+            #Combine matching hardness & calculate magnitude
+            data.table::setDT(filt)
+            data.table::setDT(hardness)
+            
+            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            
+            joined <- match_dates %>%
+              dplyr::mutate(magnitude = exp(0.819*(log(Hardness))+0.6848)*0.860)
+            
+          } else if(filter_by$Constituent == 'Copper') {
+            #Combine matching hardness & calculate magnitude
+            
+            data.table::setDT(filt)
+            data.table::setDT(hardness)
+            
+            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            
+            joined <- match_dates %>%
+              dplyr::mutate(magnitude = exp(0.8545*(log(Hardness))-1.702)*0.960)
+            
+          } else if(filter_by$Constituent == 'Lead') {
+            #Combine matching hardness & calculate magnitude
+            data.table::setDT(filt)
+            data.table::setDT(hardness)
+            
+            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            
+            joined <- match_dates %>%
+              dplyr::mutate(magnitude = exp(1.273*(log(Hardness))-4.705)*(1.46203-log(Hardness)*0.145712))
+            
+          } else if(filter_by$Constituent == 'Nickel') {
+            #Combine matching hardness & calculate magnitude
+            data.table::setDT(filt)
+            data.table::setDT(hardness)
+            
+            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            
+            joined <- match_dates %>%
+              dplyr::mutate(magnitude = exp(0.846*(log(Hardness))+0.0584)*0.997)
+            
+          } else if(filter_by$Constituent == 'Zinc') {
+            #Combine matching hardness & calculate magnitude
+            data.table::setDT(filt)
+            data.table::setDT(hardness)
+            
+            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            
+            joined <- match_dates %>%
+              dplyr::mutate(magnitude = exp(0.8473*(log(Hardness))+0.884)*0.986)
+            
+          } else if(filter_by$Constituent == 'Cadmium') {
+            #Combine matching hardness & calculate magnitude
+            data.table::setDT(filt)
+            data.table::setDT(hardness)
+            
+            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            
+            joined <- match_dates %>%
+              dplyr::mutate(magnitude = exp(0.7409*(log(Hardness))-4.719)*(1.101672-log(Hardness)*0.041838))
+            
+          }
           
-        } else if(filter_by$Constituent == 'Copper') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(0.9422*(log(Hardness))-1.700)*0.960)
+          results <- joined %>%
+            dplyr::group_by(ActivityStartDate) %>%
+            dplyr::arrange(ActivityStartDate) %>%
+            dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate, 
+                                                   ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])), 
+                          bad_samp = ifelse(roll_4day_mean >= magnitude, 1, 0)) 
           
-        } else if(filter_by$Constituent == 'Lead') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(1.273*(log(Hardness))-1.460)*(1.46203-log(Hardness)*0.145712))
+          bad_tot <- results %>% 
+            dplyr::ungroup() %>%
+            dplyr::select(year, ActivityStartDate, bad_samp) %>%
+            unique() %>%
+            #If more than 2 exceedances in 3 years assign value of 1, else 0
+            #Left bound is date - 3 years, right bound is date
+            dplyr::mutate(Exceedances = ifelse(map_dbl(ActivityStartDate, 
+                                                       ~sum(bad_samp[between(ActivityStartDate, .x - years(3), .x)]))>=2, 1, 0),
+                          #Give every samples a count of 1
+                          r_count = 1.0,
+                          #Total up number of samples in last 3 years
+                          num_samples_3yrs = map_dbl(ActivityStartDate, 
+                                                     ~sum(r_count[between(ActivityStartDate, .x - years(3), .x)])),
+                          #Calculate exceedance frequency
+                          Exceed_Freq = Exceedances/num_samples_3yrs,
+                          #Determine if exceedance criteria met
+                          tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
           
-        } else if(filter_by$Constituent == 'Nickel') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(0.846*(log(Hardness))+2.255)*0.998)
+          bad_sum <- sum(bad_tot$tot_exceed)
           
-        } else if(filter_by$Constituent == 'Zinc') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(0.8473*(log(Hardness))+0.884)*0.978)
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        } 
+        } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
+                  filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == T &
+                  stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){
+          #Method: Maximum, 1 in most recent 3 years, 1 hour average, magnitude dependent on equations
+          #Hardness dependent magnitudes - NOT pH DEPENDENT
+          #Acute
           
-        } else if(filter_by$Constituent == 'Cadmium') {
-          #Combine matching hardness & calculate magnitude
-          joined <- filt %>%
-            inner_join(hardness, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-            dplyr::mutate(magnitude = exp(1.0166*(log(Hardness))-3.924)*(1.136672-log(Hardness)*0.041838))
+          #Pull matching hardness samples
+          hardness <- input_samples %>%
+            dplyr::filter(AUID_ATTNS == i) %>%
+            dplyr::filter(TADA.CharacteristicName == "HARDNESS") %>%
+            dplyr::rename(Hardness = TADA.ResultMeasureValue) %>%
+            dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, Hardness)%>%
+            dplyr::group_by(Hardness.Date) %>%
+            dplyr::reframe(Hardness.Date = Hardness.Date,
+                           Hardness = mean(Hardness)) %>%
+            unique()
+          #Need to make magnitude for: Chromium (III), copper, lead, nickel, zinc - all chronic
           
-        }
+          #Mark result as insufficient if no hardness available
+          if(nrow(hardness) == 0) {
+            filter_by$AUID_ATTNS <- i
+            filter_by$Exceed <- "Insufficient hardness"
+          } else {
+            if(filter_by$Constituent == 'Chromium (III)'){
+              #Combine matching hardness & calculate magnitude
+              data.table::setDT(filt)
+              data.table::setDT(hardness)
+              
+              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              
+              joined <- match_dates %>%
+                dplyr::mutate(magnitude = exp(0.819*(log(Hardness))+3.7256)*0.316)
+              
+            } else if(filter_by$Constituent == 'Copper') {
+              #Combine matching hardness & calculate magnitude
+              data.table::setDT(filt)
+              data.table::setDT(hardness)
+              
+              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              
+              joined <- match_dates %>%
+                dplyr::mutate(magnitude = exp(0.9422*(log(Hardness))-1.700)*0.960)
+              
+            } else if(filter_by$Constituent == 'Lead') {
+              #Combine matching hardness & calculate magnitude
+              data.table::setDT(filt)
+              data.table::setDT(hardness)
+              
+              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              
+              joined <- match_dates %>%
+                dplyr::mutate(magnitude = exp(1.273*(log(Hardness))-1.460)*(1.46203-log(Hardness)*0.145712))
+              
+            } else if(filter_by$Constituent == 'Nickel') {
+              #Combine matching hardness & calculate magnitude
+              data.table::setDT(filt)
+              data.table::setDT(hardness)
+              
+              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              
+              joined <- match_dates %>%
+                dplyr::mutate(magnitude = exp(0.846*(log(Hardness))+2.255)*0.998)
+              
+            } else if(filter_by$Constituent == 'Zinc') {
+              #Combine matching hardness & calculate magnitude
+              data.table::setDT(filt)
+              data.table::setDT(hardness)
+              
+              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              
+              joined <- match_dates %>%
+                dplyr::mutate(magnitude = exp(0.8473*(log(Hardness))+0.884)*0.978)
+              
+            } else if(filter_by$Constituent == 'Cadmium') {
+              #Combine matching hardness & calculate magnitude
+              data.table::setDT(filt)
+              data.table::setDT(hardness)
+              
+              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              
+              joined <- match_dates %>%
+                dplyr::mutate(magnitude = exp(1.0166*(log(Hardness))-3.924)*(1.136672-log(Hardness)*0.041838))
+              
+            }
+            
+            max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
+            
+            results <- joined %>%
+              dplyr::filter(w_year >= max_year - 3) %>%
+              dplyr::group_by(ActivityStartDate) %>%
+              dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0))
+            
+            bad_tot <- results %>%
+              dplyr::ungroup() %>%
+              dplyr::select(bad_samp) %>%
+              unique() 
+            
+            bad_sum <- sum(bad_tot$bad_samp)
+            
+            filter_by$AUID_ATTNS <- i
+            filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+          } #End of hardness check
+        } else {
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed <- 'Method not coded!'
+        } #End of methods if/else
         
-        max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
-        results <- joined %>%
-          dplyr::filter(w_year >= max_year - 3) %>%
-          dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0))
+        result_list[[counter]] <- filter_by
+      } #End of MagDurFreq loop
         
-        bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
-        bad_sum <- sum(bad_tot$bad_samp)
-        
-        filter_by$AUID_ATTNS <- i
-        filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-        
-      } 
-    }
-    
-  }
-}
+    } #End of AU loop 
+  
+  df_loop_results <- do.call("rbind", result_list) # combine results from for loop
+  df_AU_data_WQS <- as.data.frame(df_loop_results) # convert to data frame
+  df_AU_data_WQS <- df_AU_data_WQS %>% 
+    distinct()
+  
+  #combine with relevant data standards table
+  relevant_wqs <- input_sufficiency %>%
+    dplyr::filter(TADA.CharacteristicName %in% c('(?i)Cadmium', '(?i)Chromium (III)', '(?i)Copper', '(?i)Lead',
+                                     '(?i)Nickel', '(?i)Silver', '(?i)Zinc')) %>% 
+    dplyr::filter(Use == 'Aquatic Life')
+  
+  data_suff_WQS <- df_AU_data_WQS %>%
+    dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
+    dplyr::full_join(relevant_wqs, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
+                                        'Fraction', 'Type'),
+              relationship = "many-to-many") %>%
+    dplyr::relocate(Exceed, .after = last_col())
+  
+  return(data_suff_WQS)
+} #End of hardness dependent function
+
+output_hardness <- MagDurFreq_hardnessDependent(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency)
 
 
 
@@ -933,6 +1012,39 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
   Unique_AUIDs <- unique(input_samples_filtered$AUID_ATTNS) %>% stats::na.omit()
   result_list <- list()
   counter <- 0
+  
+  if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
+          filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == F &
+          stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == T){
+    #Method: Maximum, 1 in most recent 3 years, 1 hour average, magnitude dependent on equations
+    #Acute
+    #Pull matching pH and temperature samples
+    pH <- df_subset %>%
+      dplyr::filter(TADA.CharacteristicName == "pH") %>%
+      rename(pH = TADA.ResultMeasureValue) %>%
+      dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, pH)
+    
+    if(filter_by$Constituent == 'Pentachloro-phenol') {
+      #Combine matching pH & calculate magnitude
+      joined <- filt %>%
+        inner_join(pH, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
+        dplyr::mutate(magnitude = exp(1.005*pH-4.869)) #Equation from WQS sheet
+      
+    }
+    
+    max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
+    results <- joined %>%
+      dplyr::filter(w_year >= max_year - 3) %>%
+      dplyr::group_by(ActivityStartDate) %>%
+      dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0)) 
+    
+    bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
+    bad_sum <- sum(bad_tot$bad_samp)
+    
+    filter_by$AUID_ATTNS <- i
+    filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+    
+  }
 }
 
 
