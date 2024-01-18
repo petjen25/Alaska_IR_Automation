@@ -11,9 +11,9 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240105.csv')
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240105.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20231205.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240117.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240117.csv')
 
 
 
@@ -72,12 +72,15 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     
     # dplyr::filter data
     df_subset <- input_samples_filtered %>% 
-      dplyr::filter(AUID_ATTNS == i) 
+      dplyr::filter(AUID_ATTNS == i) %>%
+      mutate(year = lubridate::year(ActivityStartDate),
+             month = lubridate::month(ActivityStartDate),
+             w_year = ifelse(month < 10, year, year+1))
     
     # obtain AU_Type
     my_AU_Type <- unique(df_subset$AU_Type)
     
-    # use AU_Type to choose Waterbody Type in data sufficiency table
+    # use AU_Type to choose Waterbody Type in data standards table
     if(my_AU_Type == "Beach" | my_AU_Type == "Marine"){
       my_WtrBdy_Type <- "Marine"
     } else if (my_AU_Type == "Lake"){
@@ -93,7 +96,12 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     my_data_magfreqdur <- wqs_crosswalk %>% 
       dplyr::filter(TADA.Constituent %in% my_constituents) %>% 
       dplyr::filter(`Waterbody Type` %in% my_WtrBdy_Type) %>%
-      dplyr::select(!c(Magnitude_Text))
+      dplyr::select(!c(Magnitude_Text))  %>%
+      dplyr::filter(Constituent != 'Ammonia') %>% #Filter out special cases
+      dplyr::filter(Constituent != 'Pentachloro-phenol') %>%
+      dplyr::filter(Constituent != 'Turbidity') %>%
+      dplyr::filter(!(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
+                                         'Nickel', 'Silver', 'Zinc') & Use == 'Aquatic Life'))
     
     #If no relevant samples, skip AU
     if(nrow(my_data_magfreqdur)==0){
@@ -125,7 +133,22 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
         
-      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10% of samples' &
+      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
+         filter_by$Duration == 'Water year average' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
+        #Method: Maximum, Not to exceed, water year average, geometric mean
+        results <- filt %>%
+          dplyr::group_by(w_year) %>%
+          dplyr::mutate(geo_mean_1yr = psych::geometric.mean(TADA.ResultMeasureValue),
+                        Exceed = ifelse(geo_mean_1yr >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
+          dplyr::select(!geo_mean_1yr)
+        
+        filter_by$AUID_ATTNS <- i
+        
+        bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
+        
+        filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
+        
+      }else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10% of samples' &
                 filter_by$Duration == 'Water year average') {
         #Method: Maximum, 10% of samples, Water year average
         
@@ -346,11 +369,26 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'Frequency - harmonic mean of most recent 3 years') == T){
         #Method: Maximum, not to exceed, arithmetic Mean of last 3 years
         
-        max_year <- filt %>% dplyr::select(year) %>% max() %>% unique()
+        max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
         results <- filt %>%
-          dplyr::filter(year >= max_year - 3) %>%
+          dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::mutate(mean_samps = mean(TADA.ResultMeasureValue), 
                  bad_samp = ifelse(mean_samps >= filter_by$Magnitude_Numeric, 1, 0))
+        
+        bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
+        bad_sum <- sum(bad_tot$bad_samp)
+        
+        filter_by$AUID_ATTNS <- i
+        filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
+                 filter_by$Duration == 'Arithmetic mean'){
+        #Method: Maximum, not to exceed, arithmetic mean
+        #ISSUE
+        max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
+        results <- filt %>%
+          dplyr::filter(w_year >= max_year - 3) %>%
+          dplyr::mutate(mean_samps = mean(TADA.ResultMeasureValue), 
+                        bad_samp = ifelse(mean_samps >= filter_by$Magnitude_Numeric, 1, 0))
         
         bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -361,9 +399,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                 filter_by$Duration == '24-hour max'){
         #Method: Maximum, 1 instance in previous 3 years, 24 hour max
         
-        max_year <- results %>% dplyr::select(year) %>% max() %>% unique()
+        max_year <- results %>% dplyr::select(w_year) %>% max() %>% unique()
         results <- filt %>%
-          dplyr::filter(year >= max_year - 3) %>%
+          dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(max_samps = max(TADA.ResultMeasureValue), 
                  bad_samp = ifelse(max_samps >= filter_by$Magnitude_Numeric, 1, 0)) 
@@ -480,9 +518,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Method: Maximum, 1 in most recent 3 years, 1 hour average,
         #Acute
         
-        max_year <- filt %>% dplyr::select(year) %>% max() %>% unique()
+        max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
         results <- filt %>%
-          dplyr::filter(year >= max_year - 3) %>%
+          dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0)) 
         
@@ -547,9 +585,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           
         }
         
-        max_year <- joined %>% dplyr::select(year) %>% max() %>% unique()
+        max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
         results <- joined %>%
-          dplyr::filter(year >= max_year - 3) %>%
+          dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0)) 
         
@@ -597,9 +635,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                 filter_by$Duration == '24-hour average'){
         #Method: Maximum, 1 in most recent 3 years, 24 hour average
         
-        max_year <- filt %>% dplyr::select(year) %>% max() %>% unique()
+        max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
         results <- filt %>%
-          dplyr::filter(year >= max_year - 3) %>%
+          dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
                  bad_samp = ifelse(daily_avg >= magnitude, 1, 0)) 
@@ -630,9 +668,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   # test <- df_AU_data_WQS %>% dplyr::filter(is.na(Exceed))
   
   #Find methods not coded:
-  not_coded <- df_AU_data_WQS %>% dplyr::filter(Exceed == 'Method not coded!')
+  # not_coded <- df_AU_data_WQS %>% dplyr::filter(Exceed == 'Method not coded!')
   
-  no_samps_not_coded <- no_samps %>% dplyr::right_join(not_coded)
+  # no_samps_not_coded <- no_samps %>% dplyr::right_join(not_coded)
   
   #combine with data sufficiency table
   data_suff_WQS <- df_AU_data_WQS %>%
@@ -647,11 +685,11 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
 
 output <- MagDurFreq(wqs_crosswalk, input_samples_filtered, input_sufficiency)
 
-categorize <- output %>%
-  dplyr::mutate(Overall_Category = case_when(Data_Sufficient == "(?i)No" ~ '3',
-                                      Exceed == 'Yes' ~ '5',
-                                      Exceed == 'No' ~ '2',
-                                      T ~ NA))
+# categorize <- output %>%
+#   dplyr::mutate(Overall_Category = case_when(Data_Sufficient == "(?i)No" ~ '3',
+#                                       Exceed == 'Yes' ~ '5',
+#                                       Exceed == 'No' ~ '2',
+#                                       T ~ NA))
 
 
 
@@ -850,9 +888,9 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           
         }
         
-        max_year <- filt %>% dplyr::select(year) %>% max() %>% unique()
+        max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
         results <- joined %>%
-          dplyr::filter(year >= max_year - 3) %>%
+          dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0))
         
