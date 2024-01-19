@@ -1231,8 +1231,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
             dplyr::reframe(temp.Date = temp.Date,
                            temp = mean(temp)) %>%
             unique()
-          data.table::setDT(filt)
-          data.table::setDT(pH)
+
           
           #Pull matching salinity
           salinity <- input_samples %>%
@@ -1254,17 +1253,29 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           
           #Get only same-day matches for temp and ammonia
           match_dates <- match_dates2 %>%
-            dplyr::inner_join(temp, by = dplyr::join_by(ActivityStartDate == temp.Date))
+            dplyr::inner_join(temp, by = dplyr::join_by(ActivityStartDate == temp.Date)) 
           
+          options(scipen=999)
           
-          cross_table <- readr::read_csv("Data/data_analysis/chronic_marine_ammonia.csv")
+          cross_table <- readr::read_csv("Data/data_analysis/chronic_marine_ammonia.csv") %>%
+            dplyr::mutate(Salinity = DescTools::RoundTo(Salinity, 10000000),
+                          Salinity = as.character(Salinity),
+                          Temperature = as.character(Temperature),
+                          pH = as.character(pH))
           
-          match_dates_rounded <- match_dates %>%
-            mutate(salinity_round = DescTools::RoundTo(salinity, 10),
+          #Convert numerics to character in order to get join to work 
+          joined <- match_dates %>%
+            dplyr::mutate(salinity_round = DescTools::RoundTo(salinity, 10000000),
                    temp_round = DescTools::RoundTo(temp, 5),
-                   pH_round = DescTools::RoundTo(pH, 0.2))
-          
-          joined <- match_dates 
+                   pH_round = DescTools::RoundTo(pH, 0.2),
+                   salinity_round = as.character(salinity_round),
+                   temp_round = as.character(temp_round),
+                   pH_round = as.character(pH_round)) %>%
+            dplyr::left_join(cross_table, by = dplyr::join_by(salinity_round == Salinity,
+                                                               temp_round == Temperature,
+                                                               pH_round == pH)) %>%
+            filter(!is.na(Magnitude)) #Get rid of values with no Magnitude match
+
         }
 
         max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
@@ -1273,7 +1284,9 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
           #MAKE ROLLING 4 DAY AVERAGE
-          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0)) 
+          dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate,
+                                                 ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])),
+                        bad_samp = ifelse(roll_4day_mean >= Magnitude, 1, 0))
         
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
         bad_sum <- sum(bad_tot$bad_samp)
