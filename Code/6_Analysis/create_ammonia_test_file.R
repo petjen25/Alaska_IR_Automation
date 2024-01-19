@@ -8,6 +8,8 @@ library(tidyverse)
 # library(zoo)
 # library(psych)
 
+set.seed(42)
+
 ####Load in data####
 input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
 
