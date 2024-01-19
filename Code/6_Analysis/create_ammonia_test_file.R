@@ -4,9 +4,6 @@
 
 ####Set up####
 library(tidyverse)
-# library(sf)
-# library(zoo)
-# library(psych)
 
 set.seed(42)
 
@@ -26,7 +23,8 @@ ammonia_au <- pull_ammonia_pent %>%
   select(AUID_ATTNS) %>%
   unique() 
 
-ammonia_au <- ammonia_au[2,1] %>% pull
+ammonia_au1 <- ammonia_au[2,1] %>% pull
+ammonia_au2 <- ammonia_au[3,1] %>% pull
 
 #Assign all samples to one AU and resample pH, temp, and salinity to match ammonia samples
 length_ammonia <- pull_ammonia_pent %>%
@@ -34,8 +32,20 @@ length_ammonia <- pull_ammonia_pent %>%
   nrow()
 
 define_au <- pull_ammonia_pent %>%
-  mutate(AUID_ATTNS = ammonia_au[1]) %>%
+  mutate(AUID_ATTNS = ammonia_au1,
+         AU_Type = 'River') %>%
   group_by(TADA.CharacteristicName) %>%
   slice_sample(n = length_ammonia)
 
-write_csv(define_au, "Output/data_analysis/ammonia_test_file.csv")
+define_au_marine <- pull_ammonia_pent %>%
+  mutate(AUID_ATTNS = ammonia_au2,
+         AU_Type = 'Marine') %>%
+  group_by(TADA.CharacteristicName) %>%
+  slice_sample(n = length_ammonia) %>%
+  mutate(TADA.ResultMeasureValue = case_when(TADA.CharacteristicName == 'SALINITY' ~
+                                               TADA.ResultMeasureValue + 10000000,
+                                             T ~ TADA.ResultMeasureValue))
+
+output <- define_au %>% rbind(define_au_marine)
+
+write_csv(output, "Output/data_analysis/ammonia_test_file.csv")
