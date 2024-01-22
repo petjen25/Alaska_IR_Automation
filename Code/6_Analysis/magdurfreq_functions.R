@@ -14,7 +14,7 @@ library(psych)
 input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
 input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240117.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240117.csv')
-
+#Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
 
 #Remove insufficient data
@@ -49,7 +49,8 @@ input_samples_filtered <- removeCat3samples(data_samples = input_samples, data_s
 
 MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency) {
   
-  ##Magnitude, Frequency, Duration
+  ##Magnitude, Frequency, Duration - unique combinations
+  #This is not used in the code, but instead used as reference for making the methods
   unique_methods <- wqs_crosswalk %>%
     dplyr::filter(Constituent != 'Ammonia') %>%
     dplyr::filter(!(Constituent == 'Pentachloro-phenol' & `Waterbody Type` == 'Freshwater')) %>%
@@ -61,7 +62,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   
   # write_csv(unique_methods, 'Output/data_analysis/wqs_unique_methods.csv')
 
-  # use AU_Type to choose Waterbody Type in data sufficiency table
+  # use AU_Type to choose Waterbody Type in WQS table
   Unique_AUIDs <- unique(input_samples_filtered$AUID_ATTNS) %>% stats::na.omit()
   result_list <- list()
   counter <- 0
@@ -70,7 +71,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   for(i in Unique_AUIDs){
     print(i) # print name of current AU
     
-    # dplyr::filter data
+    # Filter data for just AU and make water year
     df_subset <- input_samples_filtered %>% 
       dplyr::filter(AUID_ATTNS == i) %>%
       mutate(year = lubridate::year(ActivityStartDate),
@@ -93,6 +94,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     my_constituents <- unique(df_subset$TADA.CharacteristicName)
     
     # trim data WQS table to only relevant information
+    #remove information for instances found in the special case functions
     my_data_magfreqdur <- wqs_crosswalk %>% 
       dplyr::filter(TADA.Constituent %in% my_constituents) %>% 
       dplyr::filter(`Waterbody Type` %in% my_WtrBdy_Type) %>%
@@ -111,8 +113,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     #Cycle through each parameter to calculate the mag/freq/dur
     for(j in 1:nrow(my_data_magfreqdur)) {
       counter <- counter + 1
+      #Pull relevant methods
       filter_by <- my_data_magfreqdur[j,]
       
+      #Pull just that constituent data
       filt <- df_subset %>% dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent)
       
       #Method: Maximum, not to exceed, 30-day geometric mean
@@ -659,6 +663,7 @@ output <- MagDurFreq(wqs_crosswalk, input_samples_filtered, input_sufficiency)
 
 MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency) {
   ##Magnitude, Frequency, Duration
+  #Not used in code, but as a resource for creating/updating methods
   unique_methods <- wqs_crosswalk %>%
     dplyr::filter(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
                               'Nickel', 'Silver', 'Zinc')) %>% 
@@ -667,6 +672,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     dplyr::select(Directionality, Frequency, Duration, Details) %>%
     unique()
   
+  #Find just the required samples
   input_samples_filtered_relevant <- input_samples_filtered %>%
     dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
                                           'NICKEL', 'SILVER', 'ZINC'))
@@ -676,7 +682,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     return(print("Insufficient site samples for hardness dependent variables. No analysis performed."))
   }
   
-  # use AU_Type to choose Waterbody Type in data sufficiency table
+  # use AU_Type to choose Waterbody Type in data WQS table
   Unique_AUIDs <- unique(input_samples_filtered_relevant$AUID_ATTNS) %>% stats::na.omit()
   result_list <- list()
   counter <- 0
@@ -685,7 +691,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
   for(i in Unique_AUIDs){
     print(i) # print name of current AU
     
-    # dplyr::filter data
+    # filter data
     df_subset <- input_samples_filtered_relevant %>% 
       dplyr::filter(AUID_ATTNS == i) %>%
       dplyr::mutate(year = year(ActivityStartDate),
@@ -695,7 +701,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     # obtain AU_Type
     my_AU_Type <- unique(df_subset$AU_Type)
     
-    # use AU_Type to choose Waterbody Type in data sufficiency table
+    # use AU_Type to choose Waterbody Type in WQS table
     if(my_AU_Type == "Beach" | my_AU_Type == "Marine"){
       my_WtrBdy_Type <- "Marine"
     } else if (my_AU_Type == "Lake"){
