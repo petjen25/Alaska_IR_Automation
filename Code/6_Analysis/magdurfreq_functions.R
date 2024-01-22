@@ -655,12 +655,6 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
 
 output <- MagDurFreq(wqs_crosswalk, input_samples_filtered, input_sufficiency)
 
-# categorize <- output %>%
-#   dplyr::mutate(Overall_Category = case_when(Data_Sufficient == "(?i)No" ~ '3',
-#                                       Exceed == 'Yes' ~ '5',
-#                                       Exceed == 'No' ~ '2',
-#                                       T ~ NA))
-
 
 
 MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency) {
@@ -1087,37 +1081,42 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
         
         if(filter_by$Constituent == 'Pentachloro-phenol') {
           #Combine matching pH & calculate magnitude
-          data.table::setDT(filt)
-          data.table::setDT(pH)
           
-          match_dates <- dplyr::as_tibble(filt[pH, on=.(ActivityStartDate=pH.Date), roll="nearest"])
-          
+          match_dates <- filt %>%
+            dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
+            dplyr::filter(!is.na(pH.Date))
+
           joined <- match_dates %>%
             dplyr::mutate(magnitude = exp(1.005*pH-4.869)) #Equation from WQS sheet
           
         } else {#Acute freshwater ammonia
-          data.table::setDT(filt)
-          data.table::setDT(pH)
           
-          match_dates <- dplyr::as_tibble(filt[pH, on=.(ActivityStartDate=pH.Date), roll="nearest"])
+          match_dates <- filt %>%
+            dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
+            dplyr::filter(!is.na(pH.Date))
           
           joined <- match_dates %>%
             dplyr::mutate(magnitude = ((0.411/(1+10^(7.204-pH)))+(58.4/(1+10^(pH-7.204)))))
           #Equation from toxics table - no salmonids
         }
 
-        max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
-        
-        results <- joined %>%
-          dplyr::filter(w_year >= max_year - 3) %>%
-          dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0)) 
-        
-        bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
-        bad_sum <- sum(bad_tot$bad_samp)
-        
-        filter_by$AUID_ATTNS <- i
-        filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        if(nrow(joined) == 0) {
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed <- 'Insufficient dependent data'
+        } else {
+          max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
+          
+          results <- joined %>%
+            dplyr::filter(w_year >= max_year - 3) %>%
+            dplyr::group_by(ActivityStartDate) %>%
+            dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0)) 
+          
+          bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
+          bad_sum <- sum(bad_tot$bad_samp)
+          
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        }
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '30-day average' & is.na(filter_by$Magnitude_Numeric) == T){
@@ -1146,52 +1145,56 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
                          temp = mean(temp)) %>%
           unique()
         
-        data.table::setDT(filt)
-        data.table::setDT(pH)
-        
         #Get nearest pH sample to ammonia sample date
-        #Removes ~10-15 ammonia samples and don't know why
-        match_dates1 <- dplyr::as_tibble(filt[pH, on=.(ActivityStartDate=pH.Date), roll="nearest"])
+        match_dates1 <- filt %>%
+          dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
+          dplyr::filter(!is.na(pH.Date))
         
         #Get only same-day matches for temp and ammonia
         match_dates <- match_dates1 %>%
           dplyr::inner_join(temp, by = dplyr::join_by(ActivityStartDate == temp.Date))
         
-        #Calculate the min() part of the equation
-        match_dates_w_min <- match_dates %>%
-          mutate(Min_Value = ifelse(1.45*10^(0.028*(25-temp)) > 2.85, 2.85, 1.45*10^(0.028*(25-temp))))
-        
-        #Calculate magnitude, rolling 30 day average, and if something is a "bad sample" 
-        joined <- match_dates_w_min %>%
-          dplyr::mutate(magnitude = ((0.0577/(1+10^(7.688-pH)))+(2.487/(1+10^(pH-7.688))))*Min_Value,
-                        #Rolling 30 day average
-                        average_30_day = zoo::rollapplyr(TADA.ResultMeasureValue, 
-                                                   seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
-                                                   mean),
-                        bad_samp = ifelse(average_30_day >= magnitude, 1, 0))
-        
-        bad_tot <- joined %>% 
-          dplyr::ungroup() %>%
-          dplyr::select(w_year, ActivityStartDate, bad_samp) %>%
-          unique() %>%
-          #If more than 2 exceedances in 3 years assign value of 1, else 0
-          #Left bound is date - 3 years, right bound is date
-          dplyr::mutate(Exceedances = ifelse(map_dbl(ActivityStartDate, 
-                                                     ~sum(bad_samp[between(ActivityStartDate, .x - years(3), .x)]))>=2, 1, 0),
-                        #Give every samples a count of 1
-                        r_count = 1.0,
-                        #Total up number of samples in last 3 years
-                        num_samples_3yrs = map_dbl(ActivityStartDate, 
-                                                   ~sum(r_count[between(ActivityStartDate, .x - years(3), .x)])),
-                        #Calculate exceedance frequency
-                        Exceed_Freq = Exceedances/num_samples_3yrs,
-                        #Determine if exceedance criteria met
-                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
-        
-        bad_sum <- sum(bad_tot$tot_exceed)
-        
-        filter_by$AUID_ATTNS <- i
-        filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        if(nrow(match_dates) == 0) {
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed <- 'Insufficient dependent data'
+        } else {
+          #Calculate the min() part of the equation
+          match_dates_w_min <- match_dates %>%
+            mutate(Min_Value = ifelse(1.45*10^(0.028*(25-temp)) > 2.85, 2.85, 1.45*10^(0.028*(25-temp))))
+          
+          #Calculate magnitude, rolling 30 day average, and if something is a "bad sample" 
+          joined <- match_dates_w_min %>%
+            dplyr::arrange(ActivityStartDate) %>%
+            dplyr::mutate(magnitude = ((0.0577/(1+10^(7.688-pH)))+(2.487/(1+10^(pH-7.688))))*Min_Value,
+                          #Rolling 30 day average
+                          average_30_day = zoo::rollapplyr(TADA.ResultMeasureValue, 
+                                                     seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
+                                                     mean),
+                          bad_samp = ifelse(average_30_day >= magnitude, 1, 0))
+          
+          bad_tot <- joined %>% 
+            dplyr::ungroup() %>%
+            dplyr::select(w_year, ActivityStartDate, bad_samp) %>%
+            unique() %>%
+            #If more than 2 exceedances in 3 years assign value of 1, else 0
+            #Left bound is date - 3 years, right bound is date
+            dplyr::mutate(Exceedances = ifelse(map_dbl(ActivityStartDate, 
+                                                       ~sum(bad_samp[between(ActivityStartDate, .x - years(3), .x)]))>=2, 1, 0),
+                          #Give every samples a count of 1
+                          r_count = 1.0,
+                          #Total up number of samples in last 3 years
+                          num_samples_3yrs = map_dbl(ActivityStartDate, 
+                                                     ~sum(r_count[between(ActivityStartDate, .x - years(3), .x)])),
+                          #Calculate exceedance frequency
+                          Exceed_Freq = Exceedances/num_samples_3yrs,
+                          #Determine if exceedance criteria met
+                          tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
+          
+          bad_sum <- sum(bad_tot$tot_exceed)
+          
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        }
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '96-hour average' & is.na(filter_by$Magnitude_Numeric) == T) {
@@ -1211,13 +1214,33 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
         
         if(filter_by$Constituent == 'Pentachloro-phenol') {
           #Combine matching pH & calculate magnitude
-          data.table::setDT(filt)
-          data.table::setDT(pH)
-          
-          match_dates <- dplyr::as_tibble(filt[pH, on=.(ActivityStartDate=pH.Date), roll="nearest"])
+          match_dates <- filt %>%
+            dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
+            dplyr::filter(!is.na(pH.Date))
           
           joined <- match_dates %>%
             dplyr::mutate(magnitude = exp(1.005*pH-5.134)) #Equation from WQS sheet
+          
+          if(nrow(joined) == 0) {
+            filter_by$AUID_ATTNS <- i
+            filter_by$Exceed <- 'Insufficient dependent data'
+          } else {
+            
+            max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
+            
+            results <- joined %>%
+              dplyr::filter(w_year >= max_year - 3) %>%
+              dplyr::group_by(ActivityStartDate) %>%
+              dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate,
+                                                     ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])),
+                            bad_samp = ifelse(roll_4day_mean >= magnitude, 1, 0))
+            
+            bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
+            bad_sum <- sum(bad_tot$bad_samp)
+            
+            filter_by$AUID_ATTNS <- i
+            filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+          }
           
         } else {#Chronic marine ammonia
           
@@ -1244,18 +1267,18 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
                            salinity = mean(salinity)) %>%
             unique()
           
-          data.table::setDT(filt)
-          data.table::setDT(pH)
-          data.table::setDT(salinity)
           
-          match_dates1 <- filt[pH, on=.(ActivityStartDate=pH.Date), roll="nearest"]
-          match_dates2 <- dplyr::as_tibble(match_dates1[salinity, on=.(ActivityStartDate=salinity.Date), roll="nearest"])
+          match_dates1 <- filt %>%
+            dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
+            dplyr::filter(!is.na(pH.Date))
+          
+          match_dates2 <- match_dates1 %>%
+            dplyr::left_join(salinity, by = join_by(closest(ActivityStartDate >= salinity.Date))) %>%
+            dplyr::filter(!is.na(salinity.Date))
           
           #Get only same-day matches for temp and ammonia
           match_dates <- match_dates2 %>%
             dplyr::inner_join(temp, by = dplyr::join_by(ActivityStartDate == temp.Date)) 
-          
-          options(scipen=999)
           
           cross_table <- readr::read_csv("Data/data_analysis/chronic_marine_ammonia.csv") %>%
             dplyr::mutate(Salinity = DescTools::RoundTo(Salinity, 10000000),
@@ -1274,26 +1297,120 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
             dplyr::left_join(cross_table, by = dplyr::join_by(salinity_round == Salinity,
                                                                temp_round == Temperature,
                                                                pH_round == pH)) %>%
-            filter(!is.na(Magnitude)) #Get rid of values with no Magnitude match
+            dplyr::filter(!is.na(Magnitude)) #Get rid of values with no Magnitude match
+          
+          if(nrow(joined) == 0) {
+            filter_by$AUID_ATTNS <- i
+            filter_by$Exceed <- 'Insufficient dependent data'
+          } else {
+            
+            max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
+            
+            results <- joined %>%
+              dplyr::filter(w_year >= max_year - 3) %>%
+              dplyr::group_by(ActivityStartDate) %>%
+              dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate,
+                                                     ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])),
+                            bad_samp = ifelse(roll_4day_mean >= Magnitude, 1, 0))
+            
+            bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
+            bad_sum <- sum(bad_tot$bad_samp)
+            
+            filter_by$AUID_ATTNS <- i
+            filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+          }
 
         }
-
-        max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
         
-        results <- joined %>%
-          dplyr::filter(w_year >= max_year - 3) %>%
-          dplyr::group_by(ActivityStartDate) %>%
-          #MAKE ROLLING 4 DAY AVERAGE
-          dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate,
-                                                 ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])),
-                        bad_samp = ifelse(roll_4day_mean >= Magnitude, 1, 0))
+      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
+                filter_by$Duration == '30-day average' & is.na(filter_by$Magnitude_Numeric) == T) {
+        #Acute marine ammonia
         
-        bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
-        bad_sum <- sum(bad_tot$bad_samp)
+        #Pull matching pH 
+        pH <- input_samples %>%
+          dplyr::filter(TADA.CharacteristicName == "PH") %>%
+          dplyr::rename(pH = TADA.ResultMeasureValue,
+                        pH.Date = ActivityStartDate) %>%
+          dplyr::select(pH.Date, ActivityStartTime.Time, AUID_ATTNS, pH) %>%
+          dplyr::group_by(pH.Date) %>%
+          dplyr::reframe(pH.Date = pH.Date,
+                         pH = mean(pH)) %>%
+          unique()
+        #Pull matching temperature
+        temp <- input_samples %>%
+          dplyr::filter(TADA.CharacteristicName == "TEMPERATURE, WATER") %>%
+          dplyr::rename(temp = TADA.ResultMeasureValue,
+                        temp.Date = ActivityStartDate) %>%
+          dplyr::select(temp.Date, ActivityStartTime.Time, AUID_ATTNS, temp) %>%
+          dplyr::group_by(temp.Date) %>%
+          dplyr::reframe(temp.Date = temp.Date,
+                         temp = mean(temp)) %>%
+          unique()
         
-        filter_by$AUID_ATTNS <- i
-        filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
+        #Pull matching salinity
+        salinity <- input_samples %>%
+          dplyr::filter(TADA.CharacteristicName == "SALINITY") %>%
+          dplyr::rename(salinity = TADA.ResultMeasureValue,
+                        salinity.Date = ActivityStartDate) %>%
+          dplyr::select(salinity.Date, ActivityStartTime.Time, AUID_ATTNS, salinity) %>%
+          dplyr::group_by(salinity.Date) %>%
+          dplyr::reframe(salinity.Date = salinity.Date,
+                         salinity = mean(salinity)) %>%
+          unique()
+        
+        
+        match_dates1 <- filt %>%
+          dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
+          dplyr::filter(!is.na(pH.Date))
+        
+        match_dates2 <- match_dates1 %>%
+          dplyr::left_join(salinity, by = join_by(closest(ActivityStartDate >= salinity.Date))) %>%
+          dplyr::filter(!is.na(salinity.Date))
+        
+        #Get only same-day matches for temp and ammonia
+        match_dates <- match_dates2 %>%
+          dplyr::inner_join(temp, by = dplyr::join_by(ActivityStartDate == temp.Date)) 
+        
+        cross_table <- readr::read_csv("Data/data_analysis/acute_marine_ammonia.csv") %>%
+          dplyr::mutate(Salinity = DescTools::RoundTo(Salinity, 10000000),
+                        Salinity = as.character(Salinity),
+                        Temperature = as.character(Temperature),
+                        pH = as.character(pH))
+        
+        #Convert numerics to character in order to get join to work 
+        joined <- match_dates %>%
+          dplyr::mutate(salinity_round = DescTools::RoundTo(salinity, 10000000),
+                        temp_round = DescTools::RoundTo(temp, 5),
+                        pH_round = DescTools::RoundTo(pH, 0.2),
+                        salinity_round = as.character(salinity_round),
+                        temp_round = as.character(temp_round),
+                        pH_round = as.character(pH_round)) %>%
+          dplyr::left_join(cross_table, by = dplyr::join_by(salinity_round == Salinity,
+                                                            temp_round == Temperature,
+                                                            pH_round == pH)) %>%
+          dplyr::filter(!is.na(Magnitude)) #Get rid of values with no Magnitude match
+        
+        if(nrow(joined) == 0) {
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed <- 'Insufficient dependent data'
+        } else {
+        
+          max_year <- joined %>% dplyr::select(w_year) %>% max() %>% unique()
+          
+          results <- joined %>%
+            dplyr::filter(w_year >= max_year - 3) %>%
+            dplyr::group_by(ActivityStartDate) %>%
+            dplyr::mutate(roll_30day_mean = map_dbl(ActivityStartDate,
+                                                   ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(30), .x)])),
+                          bad_samp = ifelse(roll_30day_mean >= Magnitude, 1, 0))
+          
+          bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
+          bad_sum <- sum(bad_tot$bad_samp)
+          
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        } 
       } else {
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- 'Method not coded!'
@@ -1325,161 +1442,12 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
 
 output_pH <- MagDurFreq_pHDependent(wqs_crosswalk, ammonia_test, ammonia_test_filtered, input_sufficiency)
 
+combine_MagDurFreq <- function(standard_output, hardness_output, pH_output) {#Add turbidity
+  output <- standard_output %>%
+    rbind(hardness_output) %>%
+    rbind(pH_output) #ADD TURBIDITY
+  
+  return(output)
+}
 
-#Marine Ammonia stuff
-
-# else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
-#         filter_by$Duration == '96-hour average' & is.na(filter_by$Magnitude_Numeric) == T &
-#         stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == T){
-#   #Method: Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude dependent on equations
-#   #pH Dependent 
-#   #Chronic
-#   
-#   #Pull matching pH and temperature samples
-#   pH <- df_subset %>%
-#     dplyr::filter(TADA.CharacteristicName == "pH") %>%
-#     rename(pH = TADA.ResultMeasureValue) %>%
-#     dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, pH)
-#   
-#   if(filter_by$Constituent == 'Pentachloro-phenol') {
-#     #Combine matching pH & calculate magnitude
-#     joined <- filt %>%
-#       inner_join(pH, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-#       dplyr::mutate(magnitude = exp(1.005*pH-5.134)) #Equation from WQS sheet
-#     
-#   }
-#   
-#   results <- joined %>%
-#     dplyr::group_by(ActivityStartDate) %>%
-#     dplyr::arrange(ActivityStartDate) %>%
-#     dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate, 
-#                                     ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])), 
-#            bad_samp = ifelse(roll_4day_mean >= magnitude, 1, 0)) 
-#   
-#   bad_tot <- results %>% 
-#     dplyr::ungroup() %>%
-#     dplyr::select(year, ActivityStartDate, bad_samp) %>%
-#     unique() %>%
-#     #If more than 2 exceedances in 3 years assign value of 1, else 0
-#     #Left bound is date - 3 years, right bound is date
-#     dplyr::mutate(Exceedances = ifelse(map_dbl(ActivityStartDate, 
-#                                         ~sum(bad_samp[between(ActivityStartDate, .x - years(3), .x)]))>=2, 1, 0),
-#            #Give every samples a count of 1
-#            r_count = 1.0,
-#            #Total up number of samples in last 3 years
-#            num_samples_3yrs = map_dbl(ActivityStartDate, 
-#                                       ~sum(r_count[between(ActivityStartDate, .x - years(3), .x)])),
-#            #Calculate exceedance frequency
-#            Exceed_Freq = Exceedances/num_samples_3yrs,
-#            #Determine if exceedance criteria met
-#            tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
-#   
-#   bad_sum <- sum(bad_tot$tot_exceed)
-#   
-#   filter_by$AUID_ATTNS <- i
-#   filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#   
-# }
-
-
-# else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
-#         filter_by$Duration == '96-hour average' & is.na(filter_by$Magnitude_Numeric) == T &
-#         stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == T){
-#   #Method: Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude dependent on equations
-#   #pH Dependent & Temperature Dependent & Salinity dependent
-#   #Chronic
-#   
-#   #Pull matching pH and temperature samples
-#   pH <- df_subset %>%
-#     dplyr::filter(TADA.CharacteristicName == "pH") %>%
-#     rename(pH = TADA.ResultMeasureValue) %>%
-#     dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, pH)
-#   
-#   temperature <- df_subset %>%
-#     dplyr::filter(TADA.CharacteristicName == "TEMPERATURE, WATER") %>%
-#     rename(Temperature = TADA.ResultMeasureValue) %>%
-#     dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, Temperature)
-#   
-#   salinity <- df_subset %>%
-#     dplyr::filter(TADA.CharacteristicName == "SALINITY") %>%
-#     rename(Salinity = TADA.ResultMeasureValue) %>%
-#     dplyr::select(ActivityStartDate, ActivityStartTime.Time, AUID_ATTNS, Salinity)
-#   
-#   #Need to make magnitude for: Ammonia & Pentachloro-phenol
-#   if(filter_by$Constituent == 'Ammonia'){
-#     #Combine matching matching pH and temperature & calculate magnitude
-#     #Table from Toxics manual - Appendix G
-#     marine_ammonia_table <- read_csv('Data/data_analysis/chronic_marine_ammonia.csv') 
-#     
-#     joined <- filt %>%
-#       inner_join(pH, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-#       inner_join(temperature, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-#       inner_join(salinity, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-#       dplyr::mutate(pH_lookup = plyr::round_any(pH, 0.2),
-#              temp_lookup = plyr::round_any(Temperature, 5),
-#              salinity_lookup = plyr::round_any(Salinity, 10)) 
-#     
-#   } else if(filter_by$Constituent == 'Pentachloro-phenol') {
-#     #Combine matching pH & calculate magnitude
-#     joined <- filt %>%
-#       inner_join(pH, by = c('ActivityStartDate', 'ActivityStartTime.Time', 'AUID_ATTNS')) %>%
-#       dplyr::mutate(magnitude = exp(1.005*pH-5.134)) #Equation from WQS sheet
-#     
-#   }
-#   
-#   results <- joined %>%
-#     dplyr::group_by(ActivityStartDate) %>%
-#     dplyr::arrange(ActivityStartDate) %>%
-#     dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate, 
-#                                     ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - hours(96), .x)])), 
-#            bad_samp = ifelse(roll_4day_mean >= magnitude, 1, 0)) 
-#   
-#   bad_tot <- results %>% 
-#     dplyr::ungroup() %>%
-#     dplyr::select(year, ActivityStartDate, bad_samp) %>%
-#     unique() %>%
-#     #If more than 2 exceedances in 3 years assign value of 1, else 0
-#     #Left bound is date - 3 years, right bound is date
-#     dplyr::mutate(Exceedances = ifelse(map_dbl(ActivityStartDate, 
-#                                         ~sum(bad_samp[between(ActivityStartDate, .x - years(3), .x)]))>=2, 1, 0),
-#            #Give every samples a count of 1
-#            r_count = 1.0,
-#            #Total up number of samples in last 3 years
-#            num_samples_3yrs = map_dbl(ActivityStartDate, 
-#                                       ~sum(r_count[between(ActivityStartDate, .x - years(3), .x)])),
-#            #Calculate exceedance frequency
-#            Exceed_Freq = Exceedances/num_samples_3yrs,
-#            #Determine if exceedance criteria met
-#            tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
-#   
-#   bad_sum <- sum(bad_tot$tot_exceed)
-#   
-#   filter_by$AUID_ATTNS <- i
-#   filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#   
-# } 
-
-
-
-
-
-
-
-
-
-
-
-#Connecting samples to Magnitude, Frequency, and Duration requirements
-connect_info <- input_sufficiency %>%
-  dplyr::select(AUID_ATTNS, TADA.CharacteristicName, `Waterbody Type`) %>%
-  unique() %>%
-  dplyr::mutate(`Waterbody Type` = ifelse(stringr::str_detect(`Waterbody Type`
-                                              , 'streams and rivers')
-                                   , 'Freshwater', `Waterbody Type`))
-
-#Creates duplicates depending on if a site has both marine and freshwater requirements
-join_info_samples <- input_samples %>%
-  dplyr::left_join(connect_info, by = join_by('AUID_ATTNS'
-                                       , 'TADA.CharacteristicName')) %>%
-  unique()
-
+final_output <- combine_MagDurFreq(output, output_hardness, output_pH)
