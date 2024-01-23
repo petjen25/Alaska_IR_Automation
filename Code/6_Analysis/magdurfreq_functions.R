@@ -858,7 +858,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           #Method: Maximum, 1 in most recent 3 years, 1 hour average, magnitude dependent on equations
           #Hardness dependent magnitudes 
           #Acute
-          #Could not do 1 hour average as some samples do not have a time recoreded
+          #Could not do 1 hour average as some samples do not have a time recorded
           #Assumed no samples were taken within 1 hour of each other at the same location
           
           #Pull matching hardness samples
@@ -1456,3 +1456,5 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output) {#Ad
 }
 
 final_output <- combine_MagDurFreq(output, output_hardness, output_pH)
+
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output.csv')
