@@ -762,61 +762,60 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           #Need to make magnitude for: Chromium (III), copper, lead, nickel, zinc - all chronic
           if(filter_by$Constituent == 'Chromium (III)'){
             #Combine matching hardness & calculate magnitude
-            data.table::setDT(filt)
-            data.table::setDT(hardness)
             
-            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            match_dates <- filt %>%
+              dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+              dplyr::filter(!is.na(Hardness.Date))
             
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.819*(log(Hardness))+0.6848)*0.860)
             
           } else if(filter_by$Constituent == 'Copper') {
             #Combine matching hardness & calculate magnitude
-            
-            data.table::setDT(filt)
-            data.table::setDT(hardness)
-            
-            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+
+            match_dates <- filt %>%
+              dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+              dplyr::filter(!is.na(Hardness.Date))
             
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.8545*(log(Hardness))-1.702)*0.960)
             
           } else if(filter_by$Constituent == 'Lead') {
             #Combine matching hardness & calculate magnitude
-            data.table::setDT(filt)
-            data.table::setDT(hardness)
             
-            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            match_dates <- filt %>%
+              dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+              dplyr::filter(!is.na(Hardness.Date))
             
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(1.273*(log(Hardness))-4.705)*(1.46203-log(Hardness)*0.145712))
             
           } else if(filter_by$Constituent == 'Nickel') {
             #Combine matching hardness & calculate magnitude
-            data.table::setDT(filt)
-            data.table::setDT(hardness)
             
-            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            match_dates <- filt %>%
+              dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+              dplyr::filter(!is.na(Hardness.Date))
             
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.846*(log(Hardness))+0.0584)*0.997)
             
           } else if(filter_by$Constituent == 'Zinc') {
             #Combine matching hardness & calculate magnitude
-            data.table::setDT(filt)
-            data.table::setDT(hardness)
             
-            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            match_dates <- filt %>%
+              dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+              dplyr::filter(!is.na(Hardness.Date))
             
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.8473*(log(Hardness))+0.884)*0.986)
             
           } else if(filter_by$Constituent == 'Cadmium') {
             #Combine matching hardness & calculate magnitude
-            data.table::setDT(filt)
-            data.table::setDT(hardness)
             
-            match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+            match_dates <- filt %>%
+              dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+              dplyr::filter(!is.na(Hardness.Date))
             
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.7409*(log(Hardness))-4.719)*(1.101672-log(Hardness)*0.041838))
@@ -882,60 +881,60 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           } else {
             if(filter_by$Constituent == 'Chromium (III)'){
               #Combine matching hardness & calculate magnitude
-              data.table::setDT(filt)
-              data.table::setDT(hardness)
               
-              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              match_dates <- filt %>%
+                dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+                dplyr::filter(!is.na(Hardness.Date))
               
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(0.819*(log(Hardness))+3.7256)*0.316)
               
             } else if(filter_by$Constituent == 'Copper') {
               #Combine matching hardness & calculate magnitude
-              data.table::setDT(filt)
-              data.table::setDT(hardness)
               
-              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              match_dates <- filt %>%
+                dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+                dplyr::filter(!is.na(Hardness.Date))
               
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(0.9422*(log(Hardness))-1.700)*0.960)
               
             } else if(filter_by$Constituent == 'Lead') {
               #Combine matching hardness & calculate magnitude
-              data.table::setDT(filt)
-              data.table::setDT(hardness)
               
-              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              match_dates <- filt %>%
+                dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+                dplyr::filter(!is.na(Hardness.Date))
               
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(1.273*(log(Hardness))-1.460)*(1.46203-log(Hardness)*0.145712))
               
             } else if(filter_by$Constituent == 'Nickel') {
               #Combine matching hardness & calculate magnitude
-              data.table::setDT(filt)
-              data.table::setDT(hardness)
               
-              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              match_dates <- filt %>%
+                dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+                dplyr::filter(!is.na(Hardness.Date))
               
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(0.846*(log(Hardness))+2.255)*0.998)
               
             } else if(filter_by$Constituent == 'Zinc') {
               #Combine matching hardness & calculate magnitude
-              data.table::setDT(filt)
-              data.table::setDT(hardness)
               
-              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              match_dates <- filt %>%
+                dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+                dplyr::filter(!is.na(Hardness.Date))
               
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(0.8473*(log(Hardness))+0.884)*0.978)
               
             } else if(filter_by$Constituent == 'Cadmium') {
               #Combine matching hardness & calculate magnitude
-              data.table::setDT(filt)
-              data.table::setDT(hardness)
               
-              match_dates <- dplyr::as_tibble(filt[hardness, on=.(ActivityStartDate=Hardness.Date), roll="nearest"])
+              match_dates <- filt %>%
+                dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
+                dplyr::filter(!is.na(Hardness.Date))
               
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(1.0166*(log(Hardness))-3.924)*(1.136672-log(Hardness)*0.041838))
