@@ -12,9 +12,20 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20231113.csv')
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20231113.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20231122.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240117.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240117.csv')
+
+
+#Determine max amount of constituents in an AU
+input_samples %>%
+  group_by(AUID_ATTNS) %>%
+  select(AUID_ATTNS, TADA.CharacteristicName) %>%
+  unique() %>%
+  reframe(AUID_ATTNS = AUID_ATTNS,
+          n_constituents = n()) %>%
+  unique() %>%
+  arrange(desc(n_constituents))
 
 ####Function ideas####
 
@@ -38,213 +49,78 @@ test_pull <- simplePull(data = input_samples, AU_ID = 'AK_B_1010203_001'
 
 
 #Time series function 
-timeSeries <- function(data, AU_ID, constituent) {
+timeSeries <- function(data, WQS_table, AU_ID, y_axis_log) {
   
-  if(missing(AU_ID)) {
-    filt <- data %>% filter(TADA.CharacteristicName %in% constituent)
-  } else if(missing(constituent)) {
-    filt <- data %>% filter(AUID_ATTNS %in% AU_ID)
-  } else {
-    filt <- data %>% filter(AUID_ATTNS %in% AU_ID) %>%
-      filter(TADA.CharacteristicName %in% constituent)
+  relevant_constituents <- WQS_table %>%
+    dplyr::select(TADA.Constituent) %>%
+    unique() %>%
+    dplyr::pull()
+  
+  relevant_data <- data %>%
+    dplyr::filter(TADA.CharacteristicName %in% relevant_constituents) %>%
+    dplyr::filter(AUID_ATTNS == AU_ID)
+    
+  constituents <- relevant_data %>%
+    dplyr::select(TADA.CharacteristicName) %>%
+    unique() %>%
+    dplyr::pull()
+  
+  results <- list()
+  counter <- 0
+  #Loop through constituents
+  for(j in constituents) {
+    
+    counter<- counter+1
+    
+    filt <- relevant_data %>%
+      dplyr::filter(TADA.CharacteristicName == j)
+    
+    if(y_axis_log == F) {
+    plt<-ggplot2::ggplot() +
+      ggplot2::geom_point(data = filt,
+                          aes(x = ActivityStartDate,
+                              y = TADA.ResultMeasureValue,
+                              fill = MonitoringLocationIdentifier),
+                          color = 'black',
+                          shape = 21,
+                          size = 2,
+                          alpha = 0.8) +
+      ggplot2::xlab('Time') +
+      ggplot2::ylab(paste0(j, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')')) +
+      ggplot2::theme_classic() +
+      viridis::scale_fill_viridis(discrete = T,
+                                   option = "mako") +
+      ggplot2::labs(fill = 'Monitoring Location') +
+      ggplot2::theme(legend.position="top")
+    
+    results[[counter]] <- plt
+    } else {
+      plt<-ggplot2::ggplot() +
+        ggplot2::geom_point(data = filt,
+                            aes(x = ActivityStartDate,
+                                y = TADA.ResultMeasureValue,
+                                fill = MonitoringLocationIdentifier),
+                            color = 'black',
+                            shape = 21,
+                            size = 2,
+                            alpha = 0.8) +
+        ggplot2::xlab('Time') +
+        ggplot2::scale_y_log10() +
+        ggplot2::ylab(paste0(j, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')')) +
+        ggplot2::theme_classic() +
+        viridis::scale_fill_viridis(discrete = T,
+                                    option = "mako") +
+        ggplot2::labs(fill = 'Monitoring Location') +
+        ggplot2::theme(legend.position="top")
+      
+      results[[counter]] <- plt
+    }
   }
-  
-  val_name <- filt %>% select(TADA.CharacteristicName) %>% unique() %>% nrow()
-  
-  
-  if(length(AU_ID) == 1 & length(constituent) == 1) {
-    plt<-ggplot() +
-      geom_point(data = filt, aes(x = ActivityStartDate,
-                                       y = TADA.ResultMeasureValue),
-                 color = 'black',
-                 size = 2, alpha = 0.8) +
-      xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
-                                                 , ' ('
-                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
-                                                 , ')'))) +
-      ggtitle(paste0(AU_ID)) +
-      theme_classic() +
-      theme(legend.position="none")
-    
-  } else if (length(AU_ID) > 1 & length(constituent) == 1){
-    plt<-ggplot() +
-      geom_point(data = filt, aes(x = ActivityStartDate,
-                                  y = TADA.ResultMeasureValue),
-                 color = 'black',
-                 size = 2, alpha = 0.8) +
-      facet_wrap(~AUID_ATTNS) +
-      xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
-                                                 , ' ('
-                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
-                                                 , ')'))) +
-      theme_bw() +
-      theme(panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            strip.background = element_rect(fill = 'gray95'),
-            legend.position="none")
-    
-  } else if(length(AU_ID) == 1 & length(constituent) > 1){
-    plt<-ggplot() +
-      geom_point(data = filt, aes(x = ActivityStartDate,
-                                  y = TADA.ResultMeasureValue),
-                 color = 'black',
-                 size = 2, alpha = 0.8) +
-      facet_wrap(~TADA.CharacteristicName, scale = "free_y") +
-      xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
-                                                 , ' ('
-                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
-                                                 , ')'))) +
-      ggtitle(paste0(AU_ID)) +
-      theme_bw() +
-      theme(panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            strip.background = element_rect(fill = 'gray95'),
-            legend.position="none")
-    
-  } else {
-    plt<-ggplot() +
-      geom_point(data = filt, aes(x = ActivityStartDate,
-                                  y = TADA.ResultMeasureValue),
-                 color = 'black', 
-                 size = 2, alpha = 0.8) +
-      facet_grid(cols = vars(AUID_ATTNS),
-                 rows = vars(TADA.CharacteristicName), 
-                 scales = "free_y") +
-      xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
-                                                 , ' ('
-                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
-                                                 , ')'))) +
-      theme_bw() +
-      theme(panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            strip.background = element_rect(fill = 'gray95'))
-  }
-  
-  return(plt)
+  return(results)
 }
 
-timeSeries(data = input_samples, AU_ID = c('AK_R_1010504_005')
-           , constituent = c('PH'))
-
-timeSeries(data = input_samples, AU_ID = c('AK_R_1010504_005', 'AK_B_1010203_001')
-           , constituent = c('TEMPERATURE, WATER'))
-
-timeSeries(data = input_samples, AU_ID = c('AK_R_1010504_005')
-           , constituent = c('PH', 'TEMPERATURE, WATER'))
-
-timeSeries(data = input_samples, AU_ID = c('AK_R_1010504_005', 'AK_B_1010203_001')
-           , constituent = c('PH', 'TEMPERATURE, WATER'))
-
-
-timeSerieslog10 <- function(data, AU_ID, constituent) {
-  
-  if(missing(AU_ID)) {
-    filt <- data %>% filter(TADA.CharacteristicName %in% constituent)
-  } else if(missing(constituent)) {
-    filt <- data %>% filter(AUID_ATTNS %in% AU_ID)
-  } else {
-    filt <- data %>% filter(AUID_ATTNS %in% AU_ID) %>%
-      filter(TADA.CharacteristicName %in% constituent)
-  }
-  
-  val_name <- filt %>% select(TADA.CharacteristicName) %>% unique() %>% nrow()
-  
-  
-  if(length(AU_ID) == 1 & length(constituent) == 1) {
-    plt<-ggplot() +
-      geom_point(data = filt, aes(x = ActivityStartDate,
-                                  y = TADA.ResultMeasureValue),
-                 color = 'gray20',
-                 size = 2, alpha = 0.8) +
-      scale_y_log10() +
-      xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
-                                                 , ' ('
-                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
-                                                 , ')'))) +
-      ggtitle(paste0(AU_ID)) +
-      theme_classic() +
-      theme(legend.position="none")
-    
-  } else if (length(AU_ID) > 1 & length(constituent) == 1){
-    plt<-ggplot() +
-      geom_point(data = filt, aes(x = ActivityStartDate,
-                                  y = TADA.ResultMeasureValue),
-                 color = 'gray20',
-                 size = 2, alpha = 0.8) +
-      facet_wrap(~AUID_ATTNS) +
-      scale_y_log10() +
-      xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
-                                                 , ' ('
-                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
-                                                 , ')'))) +
-      theme_bw() +
-      theme(panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            strip.background = element_rect(fill = 'gray95'),
-            legend.position="none")
-    
-  } else if(length(AU_ID) == 1 & length(constituent) > 1){
-    plt<-ggplot() +
-      geom_point(data = filt, aes(x = ActivityStartDate,
-                                  y = TADA.ResultMeasureValue),
-                 color = 'gray20',
-                 size = 2, alpha = 0.8) +
-      facet_wrap(~TADA.CharacteristicName, scale = "free_y") +
-      scale_y_log10() +
-      xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
-                                                 , ' ('
-                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
-                                                 , ')'))) +
-      ggtitle(paste0(AU_ID)) +
-      theme_bw() +
-      theme(panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            strip.background = element_rect(fill = 'gray95'),
-            legend.position="none")
-    
-  } else {
-    plt<-ggplot() +
-      geom_point(data = filt, aes(x = ActivityStartDate,
-                                  y = TADA.ResultMeasureValue),
-                 color = 'gray20', 
-                 size = 2, alpha = 0.8) +
-      facet_grid(cols = vars(AUID_ATTNS),
-                 rows = vars(TADA.CharacteristicName), 
-                 scales = "free_y") +
-      scale_y_log10() +
-      xlab('Time') +
-      ylab(ifelse(val_name > 1, 'Result', paste0(filt$TADA.CharacteristicName
-                                                 , ' ('
-                                                 , filt$TADA.ResultMeasure.MeasureUnitCode
-                                                 , ')'))) +
-      theme_bw() +
-      theme(panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            strip.background = element_rect(fill = 'gray95'))
-  }
-  
-  return(plt)
-}
-
-
-timeSerieslog10(data = input_samples, AU_ID = c('AK_R_1010504_005')
-           , constituent = c('PH'))
-
-timeSerieslog10(data = input_samples, AU_ID = c('AK_R_1010504_005', 'AK_B_1010203_001')
-           , constituent = c('TEMPERATURE, WATER'))
-
-timeSerieslog10(data = input_samples, AU_ID = c('AK_R_1010504_005')
-           , constituent = c('PH', 'TEMPERATURE, WATER'))
-
-timeSerieslog10(data = input_samples, AU_ID = c('AK_R_1010504_005', 'AK_B_1010203_001')
-           , constituent = c('PH', 'TEMPERATURE, WATER'))
+timeseries_example <- timeSeries(data = input_samples, WQS_table = wqs_crosswalk,
+                                 AU_ID = c('AK_R_1010504_005'), y_axis_log = F)
 
 
 #Boxplot function --- Make duplicate but log10
