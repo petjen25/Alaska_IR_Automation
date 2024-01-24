@@ -7,10 +7,10 @@
 library(tidyverse)
 
 #Test data
-# mdf_output <- read_csv('Output/data_analysis/final_magdurfreq_output.csv')
-wqs_table <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240117.csv')
+categorize_output <- read_csv('Output/results/categorized_aus.csv')
+# wqs_table <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240117.csv')
 
-summarize_AU <- function(categorize_output, wqs_table, AU_ID) {
+summarize_AU <- function(categorize_output, AU_ID) {
   
   filt_data <- categorize_output %>%
     dplyr::filter(AUID_ATTNS == AU_ID) %>%
@@ -22,3 +22,5 @@ summarize_AU <- function(categorize_output, wqs_table, AU_ID) {
     unique()
 
 }
+
+output <- summarize_AU(categorize_output, AU_ID = 'AK_B_1010203_001')
