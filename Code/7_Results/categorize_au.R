@@ -15,7 +15,7 @@ options <- input_analysis %>%
 
 
 
-summarizeAU <- function(input_analysis){ 
+categorize_AU <- function(input_analysis){ 
   
   calc_individual <- input_analysis %>%
     mutate(Individual_Category = case_when(Data_Sufficient == "(?i)No" ~ '3',
@@ -40,4 +40,4 @@ summarizeAU <- function(input_analysis){
   
 }
 
-output <- summarizeAU(input_analysis)
+output <- categorize_AU(input_analysis)
