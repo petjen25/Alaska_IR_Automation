@@ -41,3 +41,5 @@ categorize_AU <- function(input_analysis){
 }
 
 output <- categorize_AU(input_analysis)
+
+write_csv(output, 'Output/results/categorized_aus.csv')
