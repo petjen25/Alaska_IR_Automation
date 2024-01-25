@@ -303,6 +303,19 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- "Natural conditions less than or equal to 50 NTU"
         
+      }  else if(is.na(filter_by$Details) == T){
+        #Marine turbidity - if 24-hour average turbidity is larger than specified magnitude
+        results <- filt %>%
+          dplyr::group_by(ActivityStartDate) %>%
+          dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
+                        bad_samp = ifelse(daily_avg >= filter_by$Magnitude_Numeric, 1, 0)) 
+        
+        bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
+        bad_sum <- sum(bad_tot$bad_samp)
+        
+        filter_by$AUID_ATTNS <- i
+        filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        
       } else {
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- 'Method not coded!'
@@ -331,3 +344,5 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
   
   return(data_suff_WQS)
 } #End of turbidity function
+
+output <- MagDurFreq_turbidity(wqs_crosswalk, input_samples_filtered, input_sufficiency, reference_sites)
