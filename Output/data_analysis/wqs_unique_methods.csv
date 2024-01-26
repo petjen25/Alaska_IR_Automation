@@ -1,0 +1,68 @@
+Directionality,Frequency,Duration,Details,Directionality_Condensed,Stat_Method,Method_Num
+Maximum,Not to exceed,30-day period,Geometric mean,Maximum,geometric mean,1
+Maximum,10% of samples,Water year average,NA,Maximum,NA,2
+Not to exceed,Not to exceed,30-day period,Geometric mean; groundwater; using membrane filter technique,Maximum,geometric mean,3
+Not to exceed,Not to exceed,30-day period,Geometric mean; groundwater; using most probable number (MPN) technique,Maximum,geometric mean,4
+Maximum,10% of samples,Water year average,Twelve-tube single dilution test,Maximum,NA,5
+Maximum,10% of samples,Water year average,Membrane filtration test,Maximum,NA,6
+Maximum,10% of samples,Water year average,Five-tube decimal dilution test,Maximum,NA,7
+Maximum,10% of samples,Water year average,Three-tube decimal dilution test,Maximum,NA,8
+Maximum,Not to exceed,30-day period,Geometric mean; for products normally cooked,Maximum,geometric mean,9
+Maximum,10% of samples,Water year average,For products normally cooked,Maximum,NA,10
+Maximum,10% of samples,Water year average,For products not normally cooked,Maximum,NA,11
+Maximum,Not to exceed,30-day period,"Geometric mean, for products not normally cooked",Maximum,geometric mean,12
+Maximum,Not to exceed,Water year average,Geometric mean,Maximum,geometric mean,13
+Maximum,Not to exceed,Daily average,NA,Maximum,arithmetic mean,14
+Maximum,10%,Daily average,NA,Maximum,arithmetic mean,15
+Minimum,10%,Daily average,NA,Minimum,arithmetic mean,16
+Minimum,10%,Daily average,Does not apply to lakes below thermocline or groundwater,Minimum,arithmetic mean,17
+Minimum,10%,Daily average,At any depth,Minimum,arithmetic mean,18
+Minimum,10%,Daily average,Estuaries and tidal tributaries,Minimum,arithmetic mean,19
+Minimum,10%,Daily average,1m Depth,Minimum,arithmetic mean,20
+Maximum,Not to exceed,Daily average,Mean of most recent 3 years not to exceed,Maximum,arithmetic mean,21
+Minimum,10%,Daily minimum,NA,Minimum,NA,22
+Maximum,10%,Daily maximum,NA,Maximum,NA,23
+May not be increased by more than,5% by weight,Not to exceed,Too complicated for table?,May not be increased by more than,NA,24
+Maximum,30% by weight,Not to exceed,Too complicated for table?,Maximum,NA,25
+Maximum,10%,Not to exceed,"For sprinker irrigation, water must be free of particles >.074mm",Maximum,NA,26
+Maximum,10%,Daily average,Not to exceed for extended period of time,Maximum,arithmetic mean,27
+Maximum,Not to exceed,Not to exceed,Spawning areas; no listing methodology,Maximum,NA,28
+Maximum,Not to exceed,Not to exceed,Egg & fry incubation; no listing methodology,Maximum,NA,29
+Maximum,Not to exceed,Not to exceed,Migration routes; no listing methodology,Maximum,NA,30
+Maximum,Not to exceed,Not to exceed,Rearing areas; no listing methodology,Maximum,NA,31
+Maximum,Not to exceed,Not to exceed,no listing methodology,Maximum,NA,32
+Maximum,Not to exceed,Arithmetic Mean,Frequency - harmonic mean of most recent 3 years,Maximum,harmonic mean,33
+Maximum,Not to exceed,Arithmetic Mean,NA,Maximum,NA,34
+Maximum,1 in most recent 3 years,24-hour max,NA,Maximum,NA,35
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,24-hour average,NA,Maximum,NA,36
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,96-hour average,Magnitude is minimum,Maximum,NA,37
+Maximum,1 in most recent 3 years,1-hour average,NA,Maximum,NA,38
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,96-hour average,NA,Maximum,NA,39
+Maximum,Not to exceed,Arithmetic mean,NA,Maximum,NA,40
+Maximum,1 in most recent 3 years,1-hour average,pH dependent,Maximum,NA,41
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,30-day average,pH dependent,Maximum,NA,42
+Maximum,1 in most recent 3 years,30-day average,pH dependent,Maximum,NA,43
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,96-hour average,pH dependent,Maximum,NA,44
+Maximum,Not to exceed,Arithmetic mean,Frequency - harmonic mean of most recent 3 years,Maximum,harmonic mean,45
+Maximum,Not to exceed,Arithmetic Mean,sample fraction for asbestos fibers?,Maximum,NA,46
+Maximum,1 in most recent 3 years,24-hour Max,NA,Maximum,NA,47
+Maximum,1 in most recent 3 years,1-hour average,Hardness dependent,Maximum,NA,48
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,96-hour average,Hardness dependent,Maximum,NA,49
+Maximum,1 in most recent 3 years,1-hour average,Applies to dissolved chloride when associated with sodium,Maximum,NA,50
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,96-hour average,Applies to dissolved chloride when associated with sodium,Maximum,NA,51
+Maximum,1 in most recent 3 years,1-hour Average,NA,Maximum,NA,52
+Maximum,1 in most recent 3 years,24-hour average,NA,Maximum,NA,53
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,96-hour average,"Toxics manual also refers to Sulfide, undissociated hydrogen sulfide",Maximum,NA,54
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,1-hour average,NA,Maximum,NA,55
+Maximum,1 in most recent 3 years,1-hour average,pH dependent; e(1.005(pH)-4.869),Maximum,NA,56
+Maximum,≥2 exceedances and >5% exceedance frequency in 3 year period,96-hour average,pH dependent; e(1.005(pH)-5.134),Maximum,NA,57
+Maximum,1 in most recent 3 years,1-hour average,"No value listed in table, where did 20 come from? EPA?",Maximum,NA,58
+Maximum,Not to exceed,24-hour average,May not exceed 25 NTU above natural conditions,Maximum,NA,59
+Maximum,Not to exceed,24-hour average,"For lake waters, may not exceed 5 NTU above natural conditions",Maximum,NA,60
+Maximum,Not to exceed,24-hour average,"5 NTU above natural conditions, when natural turbidity is 50 NTU or less.",Maximum,NA,61
+Maximum,Not to exceed,24-hour average,"No more than 10% increase when natural condition is more than 50 NTU, not to exceed max increase of 15 NTU",Maximum,NA,62
+Maximum,Not to exceed,24-hour average,"When natural condition is more than 50 NTU, not to exceed max increase of 15 NTU",Maximum,NA,63
+Maximum,Not to exceed,24-hour average,May not exceed 10 NTU above natural conditions when natural turbidity is 50 NTU or less,Maximum,NA,64
+Maximum,Not to exceed,24-hour average,"May not exceed 20% increase in turbidity when natural turbidity is greater than 50 NTU, not to exceed a maximum increase of 15 NTU",Maximum,NA,65
+Maximum,Not to exceed,24-hour average,"For lakes, turbidity may not exceed 5 NTU above natural turbidity.",Maximum,NA,66
+Maximum,Not to exceed,24-hour average,"No more than 10% increase when natural condition is more than 50 NTU, not to exceed a maximum increase of 25 NTU.",Maximum,NA,67

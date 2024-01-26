@@ -1,0 +1,19 @@
+ColumnName,Class,NumberUniqueValues,UniqueValues
+Notes,tbl_df; tbl; data.frame,1,NA
+Type,tbl_df; tbl; data.frame,3,"c(NA; ""Chronic""; ""Acute"")"
+Waterbody Type,tbl_df; tbl; data.frame,4,"c(""Freshwater""; ""Marine""; NA; ""Freshwater streams and rivers"")"
+Directionality,tbl_df; tbl; data.frame,4,"c(""Maximum""; ""Not to exceed""; ""Minimum""; ""May not be increased by more than"")"
+Listing Methodology,tbl_df; tbl; data.frame,4,"c(""Pathogens""; ""CALM""; ""None""; ""Turbidity"")"
+Fraction,tbl_df; tbl; data.frame,5,"c(NA; ""Total""; ""Total Recoverable""; ""Dissolved""; ""Total Residual"")"
+Use,tbl_df; tbl; data.frame,6,"c(""Primary Contact Recreation""; ""Drinking; Culinary; and Food Processing""; ""Secondary Contact Recreation""; ""Water Supply""; ""Aquatic Life""; ""Human Health"")"
+Frequency,tbl_df; tbl; data.frame,7,"c(""Not to exceed""; ""10% of samples""; ""10%""; ""5% by weight""; ""30% by weight""; ""≥2 exceedances and >5% exceedance frequency in 3 year period""; ""1 in 3 years"")"
+Constituent Group,tbl_df; tbl; data.frame,9,"c(""Bacteria""; ""Color""; ""Dissolved Gas""; ""Dissolved Inorganic Substances""; ""pH""; ""Sediment""; ""Temperature""; ""Toxics""; ""Turbidity"")"
+Source(s),tbl_df; tbl; data.frame,9,"c(""AK DEQ SWQS; criteria-search-tool-data.xlsx""; ""AK DEC SWQS""; ""WQS""; ""AK DEQ SWQS""; NA; ""criteria-search-tool-data.xlsx""; ""AK Toxics Manual; criteria-search-tool-data.xlsx""; ""AK DEC WQS""; ""AK Toxics Manual"")"
+Duration,tbl_df; tbl; data.frame,11,"c(""30-day period""; ""Water year average""; ""Daily average""; ""Daily minimum""; ""Daily maximum""; ""Not to exceed""; ""96-hour average""; ""1-hour average""; ""Arithmetic mean""; ""30-day average""; ""24-hour average"")"
+Use Description,tbl_df; tbl; data.frame,12,"c(NA; ""Agriculture; Including Irrigation and Stock Watering""; ""Aquaculture""; ""Drinking; Culinary; and Food Processing""; ""Industrial""; ""Harvesting for Consumption of Raw Mollusks or Other Raw Aquatic Life""; ""Seafood Processing""; ""Growth and Propagation of Fish; Shellfish; Other Aquatic Life; and Wildlife""; ""Aquatic Organisms Only""; ""Water and Aquatic Organisms""; ""Irrigation""; ""Stock Watering"")"
+Units,tbl_df; tbl; data.frame,12,"c(""CFU/100mL""; ""MPN/100mL""; ""Color units""; ""mg/L""; ""%""; ""SU""; NA; ""mm""; ""Degrees C""; ""ug/L""; ""pCi/L""; ""NTU"")"
+Details,tbl_df; tbl; data.frame,42,Too Many to list!
+TADA.Constituent,tbl_df; tbl; data.frame,49,Too Many to list!
+Constituent,tbl_df; tbl; data.frame,52,Too Many to list!
+Magnitude_Numeric,tbl_df; tbl; data.frame,101,Too Many to list!
+Magnitude_Text,tbl_df; tbl; data.frame,108,Too Many to list!
