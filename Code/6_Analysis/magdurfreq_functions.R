@@ -13,12 +13,12 @@ library(psych)
 ####Load in data####
 input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
 input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240117.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240117.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240131.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
 
-#Remove insufficient data
-removeCat3samples <- function(data_samples, data_sufficiency) {
+#Remove insufficient data combinations to lessen mdf analysis
+filterCat3samples <- function(data_samples, data_sufficiency) {
   suff_sites <- data_sufficiency %>%
     dplyr::filter(Data_Sufficient == 'Yes') %>%
     dplyr::select(AUID_ATTNS, TADA.CharacteristicName) %>%
@@ -32,7 +32,7 @@ removeCat3samples <- function(data_samples, data_sufficiency) {
   return(samples)
 }
 
-removeCat3sites <- function(data_sufficiency) {
+filterCat3sites <- function(data_sufficiency) {
   suff_sites <- data_sufficiency %>%
     dplyr::filter(Data_Sufficient == 'Yes') %>%
     unique()
@@ -40,11 +40,11 @@ removeCat3sites <- function(data_sufficiency) {
   return(suff_sites)
 }
 
-removeCat3samples(data_samples = input_samples
+filterCat3samples(data_samples = input_samples
                   , data_sufficiency = input_sufficiency)
-removeCat3sites(input_sufficiency)
+filterCat3sites(input_sufficiency)
 
-input_samples_filtered <- removeCat3samples(data_samples = input_samples, data_sufficiency = input_sufficiency)
+input_samples_filtered <- filterCat3samples(data_samples = input_samples, data_sufficiency = input_sufficiency)
 
 
 MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency) {
@@ -119,10 +119,11 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
       #Pull just that constituent data
       filt <- df_subset %>% dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent)
       
-      #Method: Maximum, not to exceed, 30-day geometric mean
+      
       if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
          filter_by$Duration == '30-day period' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
-        
+        #Method #1 ----
+        #Maximum, not to exceed, 30-day geometric mean
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
           dplyr::mutate(geo_mean_30d = zoo::rollapplyr(TADA.ResultMeasureValue, 
@@ -139,7 +140,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
          filter_by$Duration == 'Water year average' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
-        #Method: Maximum, Not to exceed, water year average, geometric mean
+        #Method #2 ----
+        #Maximum, Not to exceed, water year average, geometric mean
         results <- filt %>%
           dplyr::group_by(w_year) %>%
           dplyr::mutate(geo_mean_1yr = psych::geometric.mean(TADA.ResultMeasureValue),
@@ -154,7 +156,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
       }else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10% of samples' &
                 filter_by$Duration == 'Water year average') {
-        #Method: Maximum, 10% of samples, Water year average
+        #Method #3 ----
+        #Maximum, 10% of samples, Water year average
         
         results <- filt %>%
           dplyr::group_by(w_year) %>%
@@ -170,7 +173,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
       } else if(filter_by$Directionality == 'Not to exceed' & filter_by$Frequency == 'Not to exceed' &
               filter_by$Duration == '30-day period' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T){
-        #Method: Not to exceed, 30 day geometric mean
+        #Method #4 ----
+        #Not to exceed, 30 day geometric mean
         
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
@@ -187,7 +191,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
       } else if(filter_by$Directionality == 'Not to exceed' & filter_by$Frequency == 'Not to exceed' &
               filter_by$Duration == 'Water year average' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
-        #Method: Maximum, not to exceed, geometric mean for water year
+        #Method #5 ----
+        #Maximum, not to exceed, geometric mean for water year
         
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
@@ -205,7 +210,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
               filter_by$Duration == 'Daily average') {
-        #Method: Maximum, not to exceed, daily arithmetic mean
+        #Method #6 ----
+        #Maximum, not to exceed, daily arithmetic mean
         
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
@@ -223,7 +229,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10%' &
               filter_by$Duration == 'Daily average'){
-        #Method: Maximum, 10% of samples, daily arithmetic mean
+        #Method #7 ----
+        #Maximum, 10% of samples, daily arithmetic mean
         
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
@@ -247,7 +254,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
       } else if(filter_by$Directionality == 'Minimum' & filter_by$Frequency == '10%' &
               filter_by$Duration == 'Daily average' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '1m Depth') == T){
-        #Method: Minimum, 10%, daily arithmetic mean, 1m Depth
+        #Method #8 ----
+        #Minimum, 10%, daily arithmetic mean, 1m Depth
         
         results <- filt %>%
           dplyr::filter(TADA.ActivityDepthHeightMeasure.MeasureValue <= 1) %>%
@@ -268,7 +276,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
       } else if(filter_by$Directionality == 'Minimum' & filter_by$Frequency == '10%' &
                 filter_by$Duration == 'Daily average' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'Estuaries and tidal tributaries') == T){
-        #Method: Minimum, 10%, daily arithmetic mean
+        #Method #9 ----
+        #Minimum, 10%, daily arithmetic mean
         
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
@@ -288,7 +297,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
       } else if(filter_by$Directionality == 'Minimum' & filter_by$Frequency == '10%' &
               filter_by$Duration == 'Daily average'){
-        #Method: Minimum, 10%, daily arithmetic mean
+        #Method #10 ----
+        #Minimum, 10%, daily arithmetic mean
         
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
@@ -307,7 +317,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
       } else if(filter_by$Directionality == 'Minimum' & filter_by$Frequency == '10%' &
               filter_by$Duration == 'Daily minimum'){
-        #Method: Minimum, 10%, daily minimum
+        #Method #11 ----
+        #Minimum, 10%, daily minimum
         
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
@@ -325,7 +336,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10%' &
               filter_by$Duration == 'Daily maximum'){
-        #Method: Maximum, 10%, daily Maximum
+        #Method #12 ----
+        #Maximum, 10%, daily Maximum
         
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
@@ -343,7 +355,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10%' &
                 filter_by$Duration == 'Not to exceed'){
-        #Method: Maximum, 10%, not to exceed
+        #Method #13 ----
+        #Maximum, 10%, not to exceed
         
         results <- filt %>%
           dplyr::mutate(num_samples = n(),
@@ -358,7 +371,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
                filter_by$Duration == 'Not to exceed'){
-        #Method: Maximum, not to exceed, not to exceed
+        #Method #14 ----
+        #Maximum, not to exceed, not to exceed
         
         results <- filt %>%
           dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0))
@@ -368,10 +382,12 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
                filter_by$Duration == 'Arithmetic mean' &
                stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'Frequency - harmonic mean of most recent 3 years') == T){
-        #Method: Maximum, not to exceed, arithmetic Mean of last 3 years
+        #Method #15 ----
+        #Maximum, not to exceed, arithmetic Mean of last 3 years
         
         max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
         results <- filt %>%
@@ -384,24 +400,28 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
-                 filter_by$Duration == 'Arithmetic mean'){
-        #Method: Maximum, not to exceed, arithmetic mean
-        #ISSUE
-        max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
+                 filter_by$Duration == '30-day arithmetic average'){
+        #Method #16 ----
+        #Maximum, not to exceed, 30 day arithmetic mean
         results <- filt %>%
-          dplyr::filter(w_year >= max_year - 3) %>%
-          dplyr::mutate(mean_samps = mean(TADA.ResultMeasureValue), 
-                        bad_samp = ifelse(mean_samps >= filter_by$Magnitude_Numeric, 1, 0))
+          dplyr::arrange(ActivityStartDate) %>%
+          dplyr::mutate(mean_30_day = zoo::rollapplyr(TADA.ResultMeasureValue, 
+                                                     seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
+                                                     mean), 
+                        bad_samp = ifelse(mean_30_day >= filter_by$Magnitude_Numeric, 1, 0))
         
         bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
                 filter_by$Duration == '24-hour max'){
-        #Method: Maximum, 1 instance in previous 3 years, 24 hour max
+        #Method #17 ----
+        #Maximum, 1 instance in previous 3 years, 24 hour max
         
         max_year <- results %>% dplyr::select(w_year) %>% max() %>% unique()
         results <- filt %>%
@@ -415,14 +435,15 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
-                filter_by$Duration == '24-hour average' & is.na(filter_by$Details) == T){
-        #Method: Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 24 hour average
+                (filter_by$Duration == '24-hour average' | filter_by$Duration == '24-hour arithmetic average') & is.na(filter_by$Details) == T){
+        #Method #18 ----
+        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 24 hour average
         
         results <- filt %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(roll_1day_mean = map_dbl(ActivityStartDate, 
-                                          ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(1), .x)])), 
+          dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue), 
                  bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0)) 
         
         bad_tot <- results %>% 
@@ -449,8 +470,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
-                filter_by$Duration == '96-hour average' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'Magnitude is minimum') == T){
-        #Method: Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude is min
+                filter_by$Duration == '96-hour arithmetic average' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'Magnitude is minimum') == T){
+        #Method #19 ----
+        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude is min
   
         results <- filt %>%
           dplyr::group_by(ActivityStartDate) %>%
@@ -483,8 +505,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
-                filter_by$Duration == '96-hour average' & is.na(filter_by$Magnitude_Numeric) == F){
-        #Method: Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude listed
+                filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == F){
+        #Method #20 ----
+        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude listed
         
         results <- filt %>%
           dplyr::group_by(ActivityStartDate) %>%
@@ -519,7 +542,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
                 filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == F &
                 stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){
-        #Method: Maximum, 1 in most recent 3 years, 1 hour average
+        #Method #21 ----
+        #Maximum, 1 in most recent 3 years, 1 hour average
         #Could not do 1 hour average as some samples do not have a time recoreded
         #Assumed no samples were taken within 1 hour of each other at the same location
         max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
@@ -535,9 +559,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
-                filter_by$Duration == '96-hour average' & is.na(filter_by$Magnitude_Numeric) == F &
+                filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == F &
                 stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){
-        #Method: Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average
+        #Method #22 ----
+        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average
   
         
         results <- filt %>%
@@ -572,7 +597,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == F){
-        #Method: Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 1 hour average, magnitude listed
+          #Method #23 ----
+          #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 1 hour average, magnitude listed
         
         #1-hour averages: use the daily value
         #(it will be rare that multiple samples are taken in a day, and if they are they would be considered duplicates)
@@ -606,14 +632,15 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
                 filter_by$Duration == '24-hour average'){
-        #Method: Maximum, 1 in most recent 3 years, 24 hour average
+        #Method #24 ----
+        #Maximum, 1 in most recent 3 years, 24 hour average
         
         max_year <- filt %>% dplyr::select(w_year) %>% max() %>% unique()
         results <- filt %>%
           dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-                 bad_samp = ifelse(daily_avg >= magnitude, 1, 0)) 
+          dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue),
+                 bad_samp = ifelse(daily_mean >= magnitude, 1, 0)) 
         
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -638,16 +665,18 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   
   df_AU_data_WQS %>% dplyr::select(Exceed) %>% dplyr::group_by(Exceed) %>% dplyr::mutate(n = n()) %>% unique()
   
-  #combine with relevant WQS table
-  relevant_wqs <- input_sufficiency %>%
-    dplyr::filter(!(TADA.CharacteristicName %in% c('(?i)Cadmium', '(?i)Chromium (III)', '(?i)Copper', '(?i)Lead',
-                                                 '(?i)Nickel', '(?i)Silver', '(?i)Zinc') & Use == 'Aquatic Life')) %>%
-    dplyr::filter(TADA.CharacteristicName != 'AMMONIA' | TADA.CharacteristicName != 'PENTACHLORO-PHENOL') %>%
+  #combine with relevant WQS table, removing the constituents that are calculated in other functions
+  #these constituents come back in the hardness, pH, and turbidity specific functions
+  relevant_suff <- input_sufficiency %>%
+    dplyr::filter(!(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
+                                                     'NICKEL', 'SILVER', 'ZINC') & Use == 'Aquatic Life')) %>%
+    dplyr::filter(TADA.CharacteristicName != 'AMMONIA') %>%
+    dplyr::filter(TADA.CharacteristicName != 'PENTACHLORO-PHENOL') %>%
     dplyr::filter(TADA.CharacteristicName != 'TURBIDITY')
   
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-    dplyr::full_join(relevant_wqs, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
+    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
                                         'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
     dplyr::relocate(Exceed, .after = last_col())
@@ -682,7 +711,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     return(print("Insufficient site samples for hardness dependent variables. No analysis performed."))
   }
   
-  # use AU_Type to choose Waterbody Type in data WQS table
+  #Find unique AU IDs to cycle through
   Unique_AUIDs <- unique(input_samples_filtered_relevant$AUID_ATTNS) %>% stats::na.omit()
   result_list <- list()
   counter <- 0
@@ -735,9 +764,10 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
       filt <- df_subset %>% dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent)
       
       if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
-              filter_by$Duration == '96-hour average' & is.na(filter_by$Magnitude_Numeric) == T &
+              filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == T &
               stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){
-        #Method: Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude dependent on equations
+        #Method #1 ----
+        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude dependent on equations
         #Hardness dependent magnitudes - NOT pH DEPENDENT
         #Chronic
         
@@ -761,62 +791,56 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
         } else {
           #Need to make magnitude for: Chromium (III), copper, lead, nickel, zinc - all chronic
           if(filter_by$Constituent == 'Chromium (III)'){
-            #Combine matching hardness & calculate magnitude
-            
+            #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle            
             match_dates <- filt %>%
               dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
               dplyr::filter(!is.na(Hardness.Date))
-            
+            #Equation from Toxics Manual Appendix A
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.819*(log(Hardness))+0.6848)*0.860)
             
           } else if(filter_by$Constituent == 'Copper') {
-            #Combine matching hardness & calculate magnitude
-
+            #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle
             match_dates <- filt %>%
               dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
               dplyr::filter(!is.na(Hardness.Date))
-            
+            #Equation from Toxics Manual Appendix A
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.8545*(log(Hardness))-1.702)*0.960)
             
           } else if(filter_by$Constituent == 'Lead') {
-            #Combine matching hardness & calculate magnitude
-            
+            #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle            
             match_dates <- filt %>%
               dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
               dplyr::filter(!is.na(Hardness.Date))
-            
+            #Equation from Toxics Manual Appendix A
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(1.273*(log(Hardness))-4.705)*(1.46203-log(Hardness)*0.145712))
             
           } else if(filter_by$Constituent == 'Nickel') {
-            #Combine matching hardness & calculate magnitude
-            
+            #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle            
             match_dates <- filt %>%
               dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
               dplyr::filter(!is.na(Hardness.Date))
-            
+            #Equation from Toxics Manual Appendix A
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.846*(log(Hardness))+0.0584)*0.997)
             
           } else if(filter_by$Constituent == 'Zinc') {
-            #Combine matching hardness & calculate magnitude
-            
+            #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle            
             match_dates <- filt %>%
               dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
               dplyr::filter(!is.na(Hardness.Date))
-            
+            #Equation from Toxics Manual Appendix A
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.8473*(log(Hardness))+0.884)*0.986)
             
           } else if(filter_by$Constituent == 'Cadmium') {
-            #Combine matching hardness & calculate magnitude
-            
+            #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle            
             match_dates <- filt %>%
               dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
               dplyr::filter(!is.na(Hardness.Date))
-            
+            #Equation from Toxics Manual Appendix A
             joined <- match_dates %>%
               dplyr::mutate(magnitude = exp(0.7409*(log(Hardness))-4.719)*(1.101672-log(Hardness)*0.041838))
             
@@ -855,7 +879,8 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
         } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
                   filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == T &
                   stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){
-          #Method: Maximum, 1 in most recent 3 years, 1 hour average, magnitude dependent on equations
+          #Method #2 ----
+          #Maximum, 1 in most recent 3 years, 1 hour average, magnitude dependent on equations
           #Hardness dependent magnitudes 
           #Acute
           #Could not do 1 hour average as some samples do not have a time recorded
@@ -880,62 +905,56 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
             filter_by$Exceed <- "Insufficient hardness"
           } else {
             if(filter_by$Constituent == 'Chromium (III)'){
-              #Combine matching hardness & calculate magnitude
-              
+              #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle              
               match_dates <- filt %>%
                 dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
                 dplyr::filter(!is.na(Hardness.Date))
-              
+              #Equation from Toxics Manual Appendix A
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(0.819*(log(Hardness))+3.7256)*0.316)
               
             } else if(filter_by$Constituent == 'Copper') {
-              #Combine matching hardness & calculate magnitude
-              
+              #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle              
               match_dates <- filt %>%
                 dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
                 dplyr::filter(!is.na(Hardness.Date))
-              
+              #Equation from Toxics Manual Appendix A
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(0.9422*(log(Hardness))-1.700)*0.960)
               
             } else if(filter_by$Constituent == 'Lead') {
-              #Combine matching hardness & calculate magnitude
-              
+              #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle              
               match_dates <- filt %>%
                 dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
                 dplyr::filter(!is.na(Hardness.Date))
-              
+              #Equation from Toxics Manual Appendix A
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(1.273*(log(Hardness))-1.460)*(1.46203-log(Hardness)*0.145712))
               
             } else if(filter_by$Constituent == 'Nickel') {
-              #Combine matching hardness & calculate magnitude
-              
+              #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle              
               match_dates <- filt %>%
                 dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
                 dplyr::filter(!is.na(Hardness.Date))
-              
+              #Equation from Toxics Manual Appendix A
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(0.846*(log(Hardness))+2.255)*0.998)
               
             } else if(filter_by$Constituent == 'Zinc') {
-              #Combine matching hardness & calculate magnitude
-              
+              #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle              
               match_dates <- filt %>%
                 dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
                 dplyr::filter(!is.na(Hardness.Date))
-              
+              #Equation from Toxics Manual Appendix A
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(0.8473*(log(Hardness))+0.884)*0.978)
               
             } else if(filter_by$Constituent == 'Cadmium') {
-              #Combine matching hardness & calculate magnitude
-              
+              #Combine matching hardness & calculate magnitude - just need one hardness value for IR cycle
               match_dates <- filt %>%
                 dplyr::left_join(hardness, by = join_by(closest(ActivityStartDate >= Hardness.Date))) %>%
                 dplyr::filter(!is.na(Hardness.Date))
-              
+              #Equation from Toxics Manual Appendix A
               joined <- match_dates %>%
                 dplyr::mutate(magnitude = exp(1.0166*(log(Hardness))-3.924)*(1.136672-log(Hardness)*0.041838))
               
@@ -974,14 +993,14 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     distinct()
   
   #combine with relevant data standards table
-  relevant_wqs <- input_sufficiency %>%
-    dplyr::filter(TADA.CharacteristicName %in% c('(?i)Cadmium', '(?i)Chromium (III)', '(?i)Copper', '(?i)Lead',
-                                     '(?i)Nickel', '(?i)Silver', '(?i)Zinc')) %>% 
+  relevant_suff <- input_sufficiency %>%
+    dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
+                                     'NICKEL', 'SILVER', 'ZINC')) %>% 
     dplyr::filter(Use == 'Aquatic Life')
   
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-    dplyr::full_join(relevant_wqs, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
+    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
                                         'Fraction', 'Type'),
               relationship = "many-to-many") %>%
     dplyr::relocate(Exceed, .after = last_col())
@@ -1068,7 +1087,8 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
       
       if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
               filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == T){
-        #Method: Maximum, 1 in most recent 3 years, 1 hour average, magnitude dependent on equations
+        #Method #1 ----
+        #Maximum, 1 in most recent 3 years, 1 hour average, magnitude dependent on equations
         #Acute
         #Could not do 1 hour average as some samples do not have a time recoreded
         #Assumed no samples were taken within 1 hour of each other at the same location
@@ -1086,13 +1106,14 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
         
         if(filter_by$Constituent == 'Pentachloro-phenol') {
           #Combine matching pH & calculate magnitude
-          
+          #Join with pH - needs to be at least one pH value present during IR cycle
           match_dates <- filt %>%
             dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
             dplyr::filter(!is.na(pH.Date))
 
+          #Equation from WQS sheet 'Details'
           joined <- match_dates %>%
-            dplyr::mutate(magnitude = exp(1.005*pH-4.869)) #Equation from WQS sheet
+            dplyr::mutate(magnitude = exp(1.005*pH-4.869)) 
           
         } else {#Acute freshwater ammonia
           
@@ -1100,9 +1121,10 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
             dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
             dplyr::filter(!is.na(pH.Date))
           
+          #Equation from Toxics Manual Appendix C - no salmonids
           joined <- match_dates %>%
             dplyr::mutate(magnitude = ((0.411/(1+10^(7.204-pH)))+(58.4/(1+10^(pH-7.204)))))
-          #Equation from toxics table - no salmonids
+          
         }
 
         if(nrow(joined) == 0) {
@@ -1125,6 +1147,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '30-day average' & is.na(filter_by$Magnitude_Numeric) == T){
+        #Method #2 ----
         #Chronic, freshwater ammonia 
         #Maximum, 2 or more exceedances and >5% exceedance frequency in 3 year period for 30-day averages
         
@@ -1163,13 +1186,14 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           filter_by$AUID_ATTNS <- i
           filter_by$Exceed <- 'Insufficient dependent data'
         } else {
-          #Calculate the min() part of the equation
+          #Calculate the min() part of the equation from Toxics Manual Appendix D
           match_dates_w_min <- match_dates %>%
             mutate(Min_Value = ifelse(1.45*10^(0.028*(25-temp)) > 2.85, 2.85, 1.45*10^(0.028*(25-temp))))
           
           #Calculate magnitude, rolling 30 day average, and if something is a "bad sample" 
           joined <- match_dates_w_min %>%
             dplyr::arrange(ActivityStartDate) %>%
+            #Equation from Toxics Manual Appendix D
             dplyr::mutate(magnitude = ((0.0577/(1+10^(7.688-pH)))+(2.487/(1+10^(pH-7.688))))*Min_Value,
                           #Rolling 30 day average
                           average_30_day = zoo::rollapplyr(TADA.ResultMeasureValue, 
@@ -1202,11 +1226,12 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
         }
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
-                filter_by$Duration == '96-hour average' & is.na(filter_by$Magnitude_Numeric) == T) {
+                filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == T) {
+        #Method #3 ----
         #Maximum, 2 or more exceedances or >5% exceedance frequency in 3 years, 96-hour average (4 day)
         #Chronic Pentachloro-phenol
         #Marine chronic Ammonia
-                #Pull matching pH 
+        #Pull matching pH 
         pH <- input_samples %>%
           dplyr::filter(TADA.CharacteristicName == "PH") %>%
           dplyr::rename(pH = TADA.ResultMeasureValue,
@@ -1218,13 +1243,14 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           unique()
         
         if(filter_by$Constituent == 'Pentachloro-phenol') {
-          #Combine matching pH & calculate magnitude
+          #Combine matching pH & calculate magnitude - just need one pH value for IR cycle
           match_dates <- filt %>%
             dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
             dplyr::filter(!is.na(pH.Date))
           
+          #Equation from WQS sheet 'Details'
           joined <- match_dates %>%
-            dplyr::mutate(magnitude = exp(1.005*pH-5.134)) #Equation from WQS sheet
+            dplyr::mutate(magnitude = exp(1.005*pH-5.134)) 
           
           if(nrow(joined) == 0) {
             filter_by$AUID_ATTNS <- i
@@ -1248,7 +1274,6 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           }
           
         } else {#Chronic marine ammonia
-          
           #Pull matching temperature
           temp <- input_samples %>%
             dplyr::filter(TADA.CharacteristicName == "TEMPERATURE, WATER") %>%
@@ -1272,11 +1297,12 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
                            salinity = mean(salinity)) %>%
             unique()
           
-          
+          #Join ammonia with pH - needs to be at least one pH value present during IR cycle
           match_dates1 <- filt %>%
             dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
             dplyr::filter(!is.na(pH.Date))
           
+          #Join ammonia with salinity - needs to be at least one salinity value present during IR cycle
           match_dates2 <- match_dates1 %>%
             dplyr::left_join(salinity, by = join_by(closest(ActivityStartDate >= salinity.Date))) %>%
             dplyr::filter(!is.na(salinity.Date))
@@ -1285,6 +1311,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           match_dates <- match_dates2 %>%
             dplyr::inner_join(temp, by = dplyr::join_by(ActivityStartDate == temp.Date)) 
           
+          #Table from Toxics Manual Appendix G
           cross_table <- readr::read_csv("Data/data_analysis/chronic_marine_ammonia.csv") %>%
             dplyr::mutate(Salinity = DescTools::RoundTo(Salinity, 10000000),
                           Salinity = as.character(Salinity),
@@ -1329,6 +1356,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
                 filter_by$Duration == '30-day average' & is.na(filter_by$Magnitude_Numeric) == T) {
+        #Method #4 ----
         #Acute marine ammonia
         
         #Pull matching pH 
@@ -1364,11 +1392,12 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
                          salinity = mean(salinity)) %>%
           unique()
         
-        
+        #Match ammonia with pH - only need one pH sample for IR cycle
         match_dates1 <- filt %>%
           dplyr::left_join(pH, by = join_by(closest(ActivityStartDate >= pH.Date))) %>%
           dplyr::filter(!is.na(pH.Date))
         
+        #Match ammonia with salinity - only need one salinity sample for IR cycle
         match_dates2 <- match_dates1 %>%
           dplyr::left_join(salinity, by = join_by(closest(ActivityStartDate >= salinity.Date))) %>%
           dplyr::filter(!is.na(salinity.Date))
@@ -1377,6 +1406,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
         match_dates <- match_dates2 %>%
           dplyr::inner_join(temp, by = dplyr::join_by(ActivityStartDate == temp.Date)) 
         
+        #Table from Toxics Manual Appendix F
         cross_table <- readr::read_csv("Data/data_analysis/acute_marine_ammonia.csv") %>%
           dplyr::mutate(Salinity = DescTools::RoundTo(Salinity, 10000000),
                         Salinity = as.character(Salinity),
@@ -1432,12 +1462,12 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
     distinct()
   
   #combine with relevant data standards table
-  relevant_wqs <- input_sufficiency %>%
+  relevant_suff <- input_sufficiency %>%
     dplyr::filter(TADA.CharacteristicName %in% c('(?i)Ammonia', 'PENTACHLOROPHENOL')) 
   
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-    dplyr::full_join(relevant_wqs, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
+    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
                                           'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
     dplyr::relocate(Exceed, .after = last_col())
@@ -1447,14 +1477,15 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
 
 output_pH <- MagDurFreq_pHDependent(wqs_crosswalk, ammonia_test, ammonia_test_filtered, input_sufficiency)
 
-combine_MagDurFreq <- function(standard_output, hardness_output, pH_output) {#Add turbidity
+combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turbidity_output) {#Add turbidity
   output <- standard_output %>%
     rbind(hardness_output) %>%
-    rbind(pH_output) #ADD TURBIDITY
+    rbind(pH_output) %>%
+    rbind(turbidity_output)
   
   return(output)
 }
 
 final_output <- combine_MagDurFreq(output, output_hardness, output_pH)
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240207.csv')
