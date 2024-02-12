@@ -436,10 +436,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
-      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
+      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
                 (filter_by$Duration == '24-hour average' | filter_by$Duration == '24-hour arithmetic average') & is.na(filter_by$Details) == T){
         #Method #18 ----
-        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 24 hour average
+        #Maximum, >=2 exceedances and >5% exceedance frequency in 3 year period, 24 hour average
         
         results <- filt %>%
           dplyr::group_by(ActivityStartDate) %>%
@@ -469,10 +469,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
-      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
+      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '96-hour arithmetic average' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'Magnitude is minimum') == T){
         #Method #19 ----
-        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude is min
+        #Maximum, >=2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude is min
   
         results <- filt %>%
           dplyr::group_by(ActivityStartDate) %>%
@@ -504,10 +504,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
-      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
+      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == F){
         #Method #20 ----
-        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude listed
+        #Maximum, >=2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude listed
         
         results <- filt %>%
           dplyr::group_by(ActivityStartDate) %>%
@@ -558,11 +558,11 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
-      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
+      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == F &
                 stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){
         #Method #22 ----
-        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average
+        #Maximum, >=2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average
   
         
         results <- filt %>%
@@ -595,10 +595,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
-        } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
+        } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == F){
           #Method #23 ----
-          #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 1 hour average, magnitude listed
+          #Maximum, >=2 exceedances and >5% exceedance frequency in 3 year period, 1 hour average, magnitude listed
         
         #1-hour averages: use the daily value
         #(it will be rare that multiple samples are taken in a day, and if they are they would be considered duplicates)
@@ -770,11 +770,11 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
       
       filt <- df_subset %>% dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent)
       
-      if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
+      if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
               filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == T &
               stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){
         #Method #1 ----
-        #Maximum, ≥2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude dependent on equations
+        #Maximum, >=2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude dependent on equations
         #Hardness dependent magnitudes - NOT pH DEPENDENT
         #Chronic
         
@@ -1157,7 +1157,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         }
         
-      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
+      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '30-day average' & is.na(filter_by$Magnitude_Numeric) == T){
         #Method #2 ----
         #Chronic, freshwater ammonia 
@@ -1237,7 +1237,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         }
         
-      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '≥2 exceedances and >5% exceedance frequency in 3 year period' &
+      } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == T) {
         #Method #3 ----
         #Maximum, 2 or more exceedances or >5% exceedance frequency in 3 years, 96-hour average (4 day)
