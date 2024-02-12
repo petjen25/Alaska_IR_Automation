@@ -706,9 +706,16 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
                                           'NICKEL', 'SILVER', 'ZINC'))
   
-  #Return message if insufficient samples
+  #Return message if no samples available
   if(nrow(input_samples_filtered_relevant) == 0) {
-    return(print("Insufficient site samples for hardness dependent variables. No analysis performed."))
+    #If no samples available - just return sufficiency with empty Exceed column
+    relevant_suff <- input_sufficiency %>%
+      dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
+                                                   'NICKEL', 'SILVER', 'ZINC')) %>% 
+      dplyr::filter(Use == 'Aquatic Life') %>%
+      dplyr::mutate(Exceed = NA)
+    
+    return(relevant_suff)
   }
   
   #Find unique AU IDs to cycle through
@@ -1032,7 +1039,12 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
  
  #Return message if no samples available
  if(nrow(input_samples_filtered_relevant) == 0) {
-   return(print("Insufficient site samples for Ammonia and Pentachloro-phenol. No analysis performed."))
+   #If no samples available - just return sufficiency with empty Exceed column
+   relevant_suff <- input_sufficiency %>%
+     dplyr::filter(TADA.CharacteristicName %in% c('AMMONIA', 'PENTACHLOROPHENOL')) %>%
+     dplyr::mutate(Exceed = NA)
+   
+   return(relevant_suff)
  }
   
   # use AU_Type to choose Waterbody Type in WQS table
@@ -1463,7 +1475,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
   
   #combine with relevant data standards table
   relevant_suff <- input_sufficiency %>%
-    dplyr::filter(TADA.CharacteristicName %in% c('(?i)Ammonia', 'PENTACHLOROPHENOL')) 
+    dplyr::filter(TADA.CharacteristicName %in% c('AMMONIA', 'PENTACHLOROPHENOL')) 
   
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
@@ -1476,6 +1488,8 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
 } #End of pH dependent function
 
 output_pH <- MagDurFreq_pHDependent(wqs_crosswalk, ammonia_test, ammonia_test_filtered, input_sufficiency)
+output_pH_test <-  MagDurFreq_pHDependent(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency)
+
 
 combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turbidity_output) {#Add turbidity
   output <- standard_output %>%
