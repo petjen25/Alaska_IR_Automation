@@ -18,7 +18,7 @@ options <- input_analysis %>%
 categorize_AU <- function(input_analysis){ 
   
   calc_individual <- input_analysis %>%
-    mutate(Individual_Category = case_when(Data_Sufficient == "No" ~ '3',
+    dplyr::mutate(Individual_Category = case_when(Data_Sufficient == "No" ~ '3',
                                            Exceed == 'Yes' ~ '5',
                                            Exceed == 'No' ~ '2',
                                            Exceed == 'Insufficient hardness' ~ '3',
@@ -26,15 +26,15 @@ categorize_AU <- function(input_analysis){
                                            T ~ NA))
   
   calc_overall <- calc_individual %>%
-    group_by(AUID_ATTNS, Use) %>%
-    mutate(cat_5_present = length(Individual_Category[Individual_Category=='5']),
+    dplyr::group_by(AUID_ATTNS, Use) %>%
+    dplyr::mutate(cat_5_present = length(Individual_Category[Individual_Category=='5']),
            cat_2_present = length(Individual_Category[Individual_Category=='2']),
            Use_Category = case_when(cat_5_present > 0 ~ '5',
                                         cat_5_present == 0 & cat_2_present > 0 ~ '2',
                                         cat_5_present == 0 & cat_2_present == 0 ~ '3',
                                         T~NA)) %>%
-    select(!c(cat_5_present, cat_2_present)) %>%
-    arrange(AUID_ATTNS, Use)
+    dplyr::select(!c(cat_5_present, cat_2_present)) %>%
+    dplyr::arrange(AUID_ATTNS, Use)
   
   return(calc_overall)
   
