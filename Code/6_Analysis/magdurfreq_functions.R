@@ -1026,6 +1026,26 @@ input_samples <- ammonia_test
 input_samples_filtered <- ammonia_test_filtered
 
 
+#Function to tell you if you have sufficient freshwater ammonia samples and
+#will need to change the function to add in fish presence
+
+freshwaterAmmoniaWarning <- function(input_sufficiency){
+  
+  #Find freshwater ammonia
+  ammonia <- input_sufficiency %>%
+    dplyr::filter(TADA.CharacteristicName == 'AMMONIA') %>%
+    dplyr::filter(`Waterbody Type` == 'Freshwater')
+  
+  if(nrow(ammonia) > 0) {
+    return("There is sufficient freshwater ammonia in at least one AU. Please add fish data to analysis.")
+  } else {
+    return("There is NO sufficient freshwater ammonia. No changes requried for analysis.")
+  }
+}
+
+
+freshwaterAmmoniaWarning(input_sufficiency)
+
 MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency) {
   ##Magnitude, Frequency, Duration
   unique_methods <- wqs_crosswalk %>%
