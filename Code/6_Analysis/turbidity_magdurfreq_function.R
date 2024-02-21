@@ -46,8 +46,8 @@ findTurbidityReferenceSites <- function(input_samples_filtered) {
      dplyr::select(AUID_ATTNS, MonitoringLocationIdentifier) %>%
      unique() %>%
      dplyr::arrange(AUID_ATTNS) %>%
-     group_by(AUID_ATTNS) %>%
-     reframe(AUID_ATTNS = AUID_ATTNS,
+     dplyr::group_by(AUID_ATTNS) %>%
+     dplyr::reframe(AUID_ATTNS = AUID_ATTNS,
              MonitoringLocationIdentifier = list(unique(MonitoringLocationIdentifier)),
              n_MonitoringLocations = n()) %>%
      unique()
