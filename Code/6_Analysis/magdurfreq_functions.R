@@ -1043,7 +1043,6 @@ freshwaterAmmoniaWarning <- function(input_sufficiency){
   }
 }
 
-
 freshwaterAmmoniaWarning(input_sufficiency)
 
 MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency) {
