@@ -13,32 +13,49 @@ input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_d
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240131.csv')
 
 
-#Get turbidity samples
-turbidity_samples <- input_samples %>%
-  filter(TADA.CharacteristicName == 'TURBIDITY') %>%
-  filter(!is.na(AUID_ATTNS))
-
-#Pull 5 monitoring sites
-sites <- turbidity_samples %>%
-  select(MonitoringLocationIdentifier) %>%
-  unique() %>%
-  slice_sample(n=5) %>%
-  pull() 
-
-au_sites <- turbidity_samples %>%
-  filter(MonitoringLocationIdentifier %in% sites) %>%
-  select(AUID_ATTNS) %>%
-  unique() %>%
-  pull()
-
-
 #Create reference site table for analysis
-reference_sites <- tibble(AUID_ATTNS = au_sites,
-                          ReferenceSites = sites)
+#Reference table is blank for example
+reference_sites <- tibble(AUID_ATTNS = NA,
+                          ReferenceSites = NA)
 
-#Pull only samples from these AUs
-turbidity_samples_pull <- turbidity_samples %>%
-  filter(AUID_ATTNS %in% reference_sites$AUID_ATTNS)
+#Remove insufficient data combinations to lessen mdf analysis
+filterCat3samples <- function(data_samples, data_sufficiency) {
+  suff_sites <- data_sufficiency %>%
+    dplyr::filter(Data_Sufficient == 'Yes') %>%
+    dplyr::select(AUID_ATTNS, TADA.CharacteristicName) %>%
+    unique()
+  
+  samples <- data_samples %>% dplyr::right_join(suff_sites,
+                                                by = join_by('AUID_ATTNS',
+                                                             'TADA.CharacteristicName')) %>%
+    dplyr::filter(!is.na(TADA.ResultMeasureValue))
+  
+  return(samples)
+}
+
+input_samples_filtered <- filterCat3samples(data_samples = input_samples, data_sufficiency = input_sufficiency)
+
+
+#Function to output list of AUs with sufficient turbidity and their monitoring locations
+
+findTurbidityReferenceSites <- function(input_samples_filtered) {
+ 
+  #Find all AUs with sufficient turbidity
+   AUsufficient <- input_samples_filtered %>%
+     dplyr::filter(TADA.CharacteristicName == 'TURBIDITY') %>%
+     dplyr::select(AUID_ATTNS, MonitoringLocationIdentifier) %>%
+     unique() %>%
+     dplyr::arrange(AUID_ATTNS) %>%
+     group_by(AUID_ATTNS) %>%
+     reframe(AUID_ATTNS = AUID_ATTNS,
+             MonitoringLocationIdentifier = list(unique(MonitoringLocationIdentifier)),
+             n_MonitoringLocations = n()) %>%
+     unique()
+   
+   return(AUsufficient)
+}
+
+list_of_needed_sites <- findTurbidityReferenceSites(input_samples_filtered)
 
 
 #Turbidity Function
@@ -52,19 +69,32 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
     dplyr::select(Directionality, Frequency, Duration, Details) %>%
     unique()
   
+  #Filter samples for just turbidity
+  input_samples_filtered_relevant <- input_samples_filtered %>%
+    dplyr::filter(TADA.CharacteristicName == 'TURBIDITY')
+  
   #Calculate mean turbidity at reference sites
-  pull_reference <- input_samples_filtered %>%
+  pull_reference <- input_samples_filtered_relevant %>%
     dplyr::filter(MonitoringLocationIdentifier %in% reference_sites$ReferenceSites) %>%
     dplyr::group_by(MonitoringLocationIdentifier) %>%
     dplyr::mutate(mean_reference = mean(TADA.ResultMeasureValue)) %>%
     dplyr::select(MonitoringLocationIdentifier, mean_reference) %>%
     unique()
   
-  reference_sites_mean <- reference_sites %>%
-    dplyr::left_join(pull_reference, by = c('ReferenceSites' = 'MonitoringLocationIdentifier'))
+  #Find AUs without reference site and set natural conditions = 0 NTU
+  not_in_reference <- input_samples_filtered_relevant %>%
+    dplyr::filter(!AUID_ATTNS %in% reference_sites$AUID_ATTNS) %>%
+    dplyr::mutate(ReferenceSites = NA,
+                  mean_reference = 0) %>%
+    dplyr::select(AUID_ATTNS, ReferenceSites, mean_reference) %>%
+    unique()
   
-  input_samples_filtered_relevant <- input_samples_filtered %>%
-    dplyr::filter(TADA.CharacteristicName == 'TURBIDITY')
+  #Combine means with reference sites and add on AUs with no reference
+  reference_sites_mean <- reference_sites %>%
+    dplyr::left_join(pull_reference, by = c('ReferenceSites' = 'MonitoringLocationIdentifier')) %>%
+    rbind(not_in_reference) %>%
+    dplyr::filter(!is.na(AUID_ATTNS))
+  
   
   #Return message if no samples available
   if(nrow(input_samples_filtered_relevant) == 0) {
@@ -370,6 +400,4 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
   return(data_suff_WQS)
 } #End of turbidity function
 
-output <- MagDurFreq_turbidity(wqs_crosswalk, turbidity_samples_pull, input_sufficiency, reference_sites)
-
-# output_test <-MagDurFreq_turbidity(wqs_crosswalk, input_samples_filtered, input_sufficiency, reference_sites)
+output <- MagDurFreq_turbidity(wqs_crosswalk, input_samples_filtered, input_sufficiency, reference_sites)
