@@ -1506,8 +1506,8 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
   return(data_suff_WQS)
 } #End of pH dependent function
 
-output_pH <- MagDurFreq_pHDependent(wqs_crosswalk, ammonia_test, ammonia_test_filtered, input_sufficiency)
-output_pH_test <-  MagDurFreq_pHDependent(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency)
+# output_pH <- MagDurFreq_pHDependent(wqs_crosswalk, ammonia_test, ammonia_test_filtered, input_sufficiency)
+output_pH <-  MagDurFreq_pHDependent(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency)
 
 
 combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turbidity_output) {#Add turbidity
@@ -1519,6 +1519,6 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turb
   return(output)
 }
 
-final_output <- combine_MagDurFreq(output, output_hardness, output_pH)
+final_output <- combine_MagDurFreq(output, output_hardness, output_pH, output_turbidity)
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240207.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240222.csv')
