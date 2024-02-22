@@ -65,7 +65,6 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
   #This is not used in the code, but instead used as reference for making the methods
   unique_methods <- wqs_crosswalk %>%
     dplyr::filter(Constituent == 'Turbidity') %>%
-
     dplyr::select(Directionality, Frequency, Duration, Details) %>%
     unique()
   
@@ -143,7 +142,7 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
     my_data_magfreqdur <- wqs_crosswalk %>% 
       dplyr::filter(TADA.Constituent %in% my_constituents) %>% 
       dplyr::filter(`Waterbody Type` %in% my_WtrBdy_Type) %>%
-      dplyr::filter(Constituent == 'Turbidity')
+      dplyr::filter(Constituent == 'Turbidity') 
 
     
     #If no relevant samples, skip AU
@@ -395,9 +394,10 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
                                           'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
-    dplyr::relocate(Exceed, .after = last_col())
+    dplyr::relocate(Exceed, .after = last_col()) %>%
+    dplyr::select(!Magnitude_Text)
   
   return(data_suff_WQS)
 } #End of turbidity function
 
-output <- MagDurFreq_turbidity(wqs_crosswalk, input_samples_filtered, input_sufficiency, reference_sites)
+output_turbidity <- MagDurFreq_turbidity(wqs_crosswalk, input_samples_filtered, input_sufficiency, reference_sites)
