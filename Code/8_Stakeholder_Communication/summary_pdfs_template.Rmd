@@ -1,0 +1,104 @@
+---
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(dplyr)
+library(tibble)
+library(knitr)
+library(AKDECtools)
+library(htmltools)
+library(ggplot2)
+library(ggspatial)
+```
+
+# Assessment Unit Summary
+
+This is a summary for the following AU:
+
+```{r}
+### Episode detail
+output_df_au %>%
+  select(
+    `AU ID: ` = AUID_ATTNS,
+    `AU Type: ` = AU_Type) %>% 
+  unique() %>%
+  t() %>%
+  kable() 
+```
+
+```{r}
+#Maps
+
+ggplot() +
+  geom_sf(data = ak, fill = 'gray92', color = 'gray60') +
+  geom_sf(data = au_shape, color = 'red', fill = 'red', linewidth = 3) +
+  ggtitle("Assessment Unit Location within Alaska") + 
+  theme_bw() 
+  
+```
+
+```{r}
+#Map AU with monitoring sites
+sites <- output_samples %>%
+  filter(AUID_ATTNS == au_loop) %>%
+  select(MonitoringLocationIdentifier, Latitude, Longitude) %>%
+  unique() %>%
+  st_as_sf(coords = c('Longitude', 'Latitude'), remove = F) %>%
+  st_set_crs(4617)  %>% #NAD83 EPSG
+  st_transform(st_crs(au_shape))
+
+ggplot() +
+  annotation_map_tile("osm") +
+  geom_sf(data = au_shape, aes(color = AUID_ATTNS), linewidth = 1) +
+  geom_sf(data = sites, aes(fill = MonitoringLocationIdentifier),
+          shape = 21, color = 'black', size = 2.25) +
+  ggtitle('Assessment Unit with Monitoring Locations') +
+  theme_bw() +
+  scale_fill_brewer(name = 'Monitoring Location', palette = "BuPu") + 
+  scale_color_manual(name = 'AU ID', values = c('#0A0C9D')) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
+  
+```
+
+# Designated Uses and Attainment
+
+```{r}
+
+output_df_au %>%
+  select(
+    `Use: ` = Use,
+    `Use Category: `= Use_Category) %>% 
+  unique() %>%
+  kable() 
+```
+
+\newpage
+
+# Designated Uses and Attainment by Parameter
+
+```{r, echo = FALSE}
+output_df_au %>%
+  select(
+    `Use: ` = Use,
+    `Use Category: `= Use_Category,
+    `Parameter: ` = Constituent,
+    `Parameter Category: ` = Individual_Category) %>% 
+  unique() %>%
+  kable()
+```
+
+# Parameter Specific Box-plots
+
+```{r, echo=FALSE,results='hide',fig.keep='all'}
+AKDECtools::boxPlot(data = output_samples, WQS_table = wqs_table,
+                          AU_ID = au_loop, y_axis_log = T)
+```
+
+# Parameter Specific Time Series Plots
+
+```{r, echo=FALSE,results='hide',fig.keep='all'}
+AKDECtools::timeSeries(data = output_samples, WQS_table = wqs_table,
+                       AU_ID = au_loop, y_axis_log = T)
+```
