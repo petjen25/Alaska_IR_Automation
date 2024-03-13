@@ -15,10 +15,7 @@ library(ggspatial)
 
 # Assessment Unit Summary
 
-This is a summary for the following AU:
-
 ```{r}
-### Episode detail
 output_df_au %>%
   select(
     `AU ID: ` = AUID_ATTNS,
@@ -28,18 +25,7 @@ output_df_au %>%
   kable() 
 ```
 
-```{r}
-#Maps
-
-ggplot() +
-  geom_sf(data = ak, fill = 'gray92', color = 'gray60') +
-  geom_sf(data = au_shape, color = 'red', fill = 'red', linewidth = 3) +
-  ggtitle("Assessment Unit Location within Alaska") + 
-  theme_bw() 
-  
-```
-
-```{r}
+```{r, fig.dim = c(5.5,4)}
 #Map AU with monitoring sites
 sites <- output_samples %>%
   filter(AUID_ATTNS == au_loop) %>%
@@ -56,11 +42,26 @@ ggplot() +
           shape = 21, color = 'black', size = 2.25) +
   ggtitle('Assessment Unit with Monitoring Locations') +
   theme_bw() +
-  scale_fill_brewer(name = 'Monitoring Location', palette = "BuPu") + 
-  scale_color_manual(name = 'AU ID', values = c('#0A0C9D')) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5))
+  viridis::scale_fill_viridis(name = 'Monitoring Location', discrete = T, option = "mako") + 
+  scale_color_manual(name = 'AU ID', values = c('#072f49')) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5),
+        legend.position = 'top',
+        #plot.margin = margin(0.25,1,0.25,0.25, unit = 'in'),
+        plot.title.position = 'plot')
+```
+
+```{r, fig.dim = c(4,3)}
+#Maps
+
+ggplot() +
+  geom_sf(data = ak, fill = 'gray92', color = 'gray60') +
+  geom_sf(data = au_shape, color = '#435200', fill = '#435200', linewidth = 5) +
+  ggtitle("Assessment Unit Location within Alaska") + 
+  theme_bw() 
   
 ```
+
+\newpage
 
 # Designated Uses and Attainment
 
@@ -76,29 +77,41 @@ output_df_au %>%
 
 \newpage
 
-# Designated Uses and Attainment by Parameter
+# Attainment by Parameter
 
 ```{r, echo = FALSE}
 output_df_au %>%
-  select(
-    `Use: ` = Use,
-    `Use Category: `= Use_Category,
-    `Parameter: ` = Constituent,
-    `Parameter Category: ` = Individual_Category) %>% 
+  mutate(Attainment = case_when(Individual_Category == 3 ~
+                                          'Insufficient data',
+                                        Individual_Category == 2 ~
+                                          'Not exceeding',
+                                        Individual_Category == 5 ~
+                                          'Exceeding')) %>%
+    select(
+    Parameter = Constituent,
+    Use,
+    Attainment,
+    `# of Samples` = n_Samples,
+    Type,
+    Magnitude =  Magnitude_Numeric,
+    Frequency,
+    Duration) %>% 
   unique() %>%
+  arrange(Parameter) %>%
   kable()
 ```
 
-# Parameter Specific Box-plots
+\newpage
+# Distribution of Parameters
 
-```{r, echo=FALSE,results='hide',fig.keep='all'}
+```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim = c(6,3.5)}
 AKDECtools::boxPlot(data = output_samples, WQS_table = wqs_table,
                           AU_ID = au_loop, y_axis_log = T)
 ```
 
-# Parameter Specific Time Series Plots
+# Parameter Specific Time Series 
 
-```{r, echo=FALSE,results='hide',fig.keep='all'}
+```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim = c(6,3.5)}
 AKDECtools::timeSeries(data = output_samples, WQS_table = wqs_table,
                        AU_ID = au_loop, y_axis_log = T)
 ```
