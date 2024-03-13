@@ -1,0 +1,780 @@
+ASSESSMENT_UNIT_ID,LOCATION_TYPE_CODE,LOCATION_TEXT,LOCATION_TYPE_CONTEXT
+AK_B_1010203_001,HUC-8,19010102,"Knudson Cove, located in Ketchikan within the southern end of Clover Passage"
+AK_B_1010204_001,HUC-8,19010102,Located in Ketchikan on the southern portion of Port Higgins
+AK_B_1010204_002,HUC-8,19010102,"Beach at Shull Road, located in Ketchikan on the southern portion of Port Higgins"
+AK_B_1010204_003,HUC-8,19010102,"Beach off Sunset Drive (Sunset Beach), located in Ketchikan South of Mud Bay on Sunset Peninsula"
+AK_B_1010204_004,HUC-8,19010102,"Refuge Cove, located in Ketchikan within the Refuge Cove Recreation Site"
+AK_B_1010204_005,HUC-8,19010102,"Thomas Basin Harbor, located in Ketchikan within the South Refuge Cove Recreation Site"
+AK_B_1010204_006,HUC-8,19010102,Located in Saxman within Ketchikan
+AK_B_1010204_007,HUC-8,19010102,Located in southern Ketchikan at Rotary Park
+AK_B_1010204_008,HUC-8,19010102,Located in southern Ketchikan at Rotary Park
+AK_B_1010205_001,HUC-8,19010102,"Herring Bay, located in south of Ketchikan"
+AK_B_1010208_001,HUC-8,19010102,"Mountain Point Cultural Food Beach, located on Mountain Point south of the city of Ketchikan"
+AK_B_1010208_002,HUC-8,19010102,"Mountain Point Cultural Food Beach, located on Mountain Point south of the city of Ketchikan"
+AK_B_2030218_002,County,Kenai Peninsula Borough,Kenai Peninsula
+AK_B_2030218_003,County,Kenai Peninsula Borough,South of City of Kenai. Access from Kalifornsky Beach Road.
+AK_B_3030311_001,NA,NA,Dillingham
+AK_B_3030311_002,NA,NA,Dillingham
+AK_B_3030311_003,NA,NA,Dillingham
+AK_L_2040106_003,NA,NA,Anchorage; HUC: 19020401
+AK_L_2040108_055,NA,NA,Anchorage; HUC: 19020401
+AK_L_2040108_060,NA,NA,Anchorage; HUC: 19020401
+AK_L_2040108_063,County,Anchorage Municipality,Anchorage; HUC: 19020401
+AK_L_8030609_003,NA,NA,"HUC10 1908030609, monitoring location at 64.7688N, -147.214197W"
+AK_L_8030709_001,NA,NA,"28 mi. NW of Big Delta, E of Tanana River."
+AK_M_1010204_006,NA,NA,"Tongass Narrows 2, Alaska General Seafood processing facility, downtown Ketchikan, SE of Thomas Basin."
+AK_M_1010204_008,NA,NA,HUC: 19010102; 5.5 miles north of Ketchikan
+AK_M_1010204_010,NA,NA,"Tongass Narrows, Ketchican. Trident Seafoods seafood processing facility."
+AK_M_1010210_003,HUC-12,190101021001,"HUC10 1901010210 monitoring location at 55.4427N, -131.8494W"
+AK_M_1020903_010,HUC-8,19010209,"HUC10 1901020903 monitoring location at 56.3755N, -132.5915W"
+AK_M_1020903_010,HUC-12,190102090303,"HUC10 1901020903 monitoring location at 56.3755N, -132.5915W"
+AK_M_1020904_004,HUC-12,190102090401,"HUC10 1901020904 monitoring location at 56.4642N, -132.3983W"
+AK_M_1021010_006,NA,NA,Petersburg; HUC: 19010202
+AK_M_1021109_010,NA,NA,NW end of Chichagof Island
+AK_M_1021211_005,HUC-12,190102121106,"HUC10 1901021211 monitoring location at 57.0489N, -135.3301W"
+AK_M_1021212_013,HUC-12,190102121206,"HUC10 1901021212 monitoring location at 57.0551N, -135.3651W"
+AK_M_1021212_017,NA,NA,"Sitka, AK"
+AK_M_1030106_002,NA,NA,"19 miles long, trends NW from Stephens Passage to Auke Bay, between Douglas Island and the mainland & coast mountains"
+AK_M_1030106_003,NA,NA,Harbors in Juneau
+AK_M_1030107_025,NA,NA,"On N shore of Auke Bay, N of Auke Capa and 12 mi. NW of Juneau."
+AK_M_1030108_001,HUC-8,19010301,"HUC10 1901030108 monitoring location at 58.3227N, -134.9862W"
+AK_M_1030305_003,NA,NA,Skagway; HUC: 19010303
+AK_M_1030308_005,NA,NA,"HUC10 1901030308 monitoring location at 59.2238N, -135.4072W"
+AK_M_1030308_007,NA,NA,"HUC10 1901030308 monitoring location at 59.2706N, -135.4382W"
+AK_M_1050001_001,NA,NA,"HUC10 1901050001 monitoring location at 57.2848N, -133.756W"
+AK_M_1050004_001,NA,NA,"HUC10 1901050004 monitoring location at 57.0028N, -134.3698W"
+AK_M_1050006_003,NA,NA,"HUC10 1901050006 monitoring location at 58.2983N, -135.7742W"
+AK_M_1050007_001,NA,NA,"HUC10 1901050007 monitoring location at 57.4523N, -134.7857W"
+AK_M_1050008_001,NA,NA,"HUC10 1901050008 monitoring location at 56.3403N, -133.1292W"
+AK_M_1050009_001,NA,NA,"HUC10 1901050009 monitoring location at 56.1348N, -132.7785W"
+AK_M_2020111_005,NA,NA,Trends E-W from 3 mi. NE of Valdez Arm to its head at Valdez.
+AK_M_2020111_011,NA,NA,north corner of Port Valdez
+AK_M_2020120_011,NA,NA,Whittier
+AK_M_2030108_006,NA,NA,HUC: 19020301
+AK_M_2040108_006,NA,NA,"HUC10 1902040108, monitoring location at 61.2285N, -149.903W"
+AK_M_2070114_018,NA,NA,"HUC10 1902070114 monitoring location at 57.8308N, -152.3357W"
+AK_M_2070115_007,NA,NA,"HUC10 1902070115 monitoring location at 57.7897N, -152.3915W"
+AK_M_3010208_005,NA,NA,"Unalaska, Unalaska Island, Aleutians; HUC: 19030401"
+AK_M_3010208_008,NA,NA,"Iliuliuk Bay, Unalaska Island, Aluetian Islands"
+AK_M_3010208_009,NA,NA,"Dutch Harbor area, Unalaska Island, Aluetians Islands; HUC: 19030102"
+AK_R_1010504_005,HUC-8,19010105,Unuk River from AK/CN border to mouth in Burroughs Bay
+AK_R_1010601_009,NA,NA,"heads at Salmon Glacier in British Columbia, CA, flows S across border 14 mi. to Portland Canal"
+AK_R_1020709_011,HUC-8,19010207,"River from AK/CN border to mouth, discharges to Eastern Passage, 2 mi. N of Wrangell, in Southeast Alaska"
+AK_R_1030106_014,NA,NA,7 mi. NW of Juneau. Flows S 3 mi. to Juneau Airport area on Gastineau Channel.
+AK_R_1030407_006,NA,NA,"transboundary river, heads in British Columbia, flows SW 54 mi. to Taku Inlet, 18 mi. NE of Juneau"
+AK_R_1040422_001,NA,NA,"HUC10 1901040422 monitoring location at 59.192805N, -138.333917W"
+AK_R_2030207_012,NA,NA,"HUC10 1902030207, monitoring location at 61.017844N, -149.731088W"
+AK_R_2030207_018,NA,NA,"HUC10 1902030207, monitoring location at 61.000648N, -149.642506W"
+AK_R_2030214_007,HUC-8,19020302,"Kenai Peninsula, Kenai River from the outlet of Kenai Lake downstream 15.5 miles to Skilak Lake."
+AK_R_2030218_002_001,County,Kenai Peninsula Borough,"Lower Kenai River from approximately river mile 19 downstream to the mouth. River mile 19 is downstream of the Sterling Highway Bridge approximately 1.5 miles, at the mouth of Slikok Creek. 
+Kenai Peninsula; HUC: 19020302"
+AK_R_2030218_002_001,HUC-8,19020302,"Lower Kenai River from approximately river mile 19 downstream to the mouth. River mile 19 is downstream of the Sterling Highway Bridge approximately 1.5 miles, at the mouth of Slikok Creek. 
+Kenai Peninsula; HUC: 19020302"
+AK_R_2030218_002_002,HUC-8,19020302,"Kenai Peninsula, Kenai River from the outlet of Skilak Lake downstream 31.3 miles to Slikok Creek."
+AK_R_2030218_006,NA,NA,"Kenai Peninsula, SW of Soldotna"
+AK_R_2030218_007,NA,NA,city of Soldotna
+AK_R_2040102_002,NA,NA,"Flows NW to Knik Arm, N of Birchwood, 20 mi. NE of Anchorage, AK."
+AK_R_2040103_003_004,NA,NA,"HUC10 1902040103, monitoring location at 61.310353N, -149.576255W"
+AK_R_2040104_002_001,NA,NA,Anchorage; HUC: 19020401
+AK_R_2040104_002_002,NA,NA,"HUC10 1902040104, monitoring location at 61.224464N, -149.630439W"
+AK_R_2040106_001,NA,NA,Anchorage; HUC: 19020401
+AK_R_2040106_004,NA,NA,Anchorage; HUC: 19020401
+AK_R_2040106_005,NA,NA,"HUC10 1902040106, monitoring location at 61.133343N, -149.784853W"
+AK_R_2040107_002,NA,NA,Anchorage; HUC: 19020401
+AK_R_2040107_003_001,NA,NA,Anchorage; HUC: 19020401
+AK_R_2040107_004,NA,NA,"in Anchorage, S of Anchorage"
+AK_R_2040107_005,NA,NA,"Anchorage, AK"
+AK_R_2040107_007,NA,NA,Anchorage; HUC: 19020401
+AK_R_2040108_003,NA,NA,Anchorage; HUC: 19020401
+AK_R_2040108_009,NA,NA,Anchorage
+AK_R_2040108_022,NA,NA,"flows SW 23 mi. in Matanuska Valley to Palmer Slough,  11 mi. SW of Palmer, in Cook Inlet Lowlands"
+AK_R_2050512_016_003,NA,NA,"heads at Mint Glacier in Talkeetna Mtns., at 61/51/30N/149/03/30W, flows SW 110 miles to Cook Inlet, 13 miles W of Anchorage (logged into ADB with lat/longs for the mouth of the river)"
+AK_R_2050512_016_005,NA,NA,"HUC10 1902050512, monitoring location at 61.626459N, -149.806021W"
+AK_R_2050512_016_009,NA,NA,"HUC10 1902050512, monitoring location at 61.716906N, -149.2316W"
+AK_R_8030606_001,NA,NA,"HUC10 1908030606, monitoring location at 64.79441N, -147.191477W"
+AK_R_8030609_003,NA,NA,Fairbanks; HUC: 19040506
+AK_R_8030609_004_001,NA,NA,Fairbanks; HUC: 19040506; lower Chena Slough from Richardson Highway crossing downstream to confluence with Chena River.
+AK_R_8030710_005,NA,NA,"Trib. Of Tanana River W of Eielson AFB, flows through Eielson AG project."
+AK_R_8040102_012_002,NA,NA,"West of Mastadon Dome, interior Alaska. Flows southwest from the confluence of Eagle Creek and Gold Dust Creek to the confluence with Twelvemile Creek. Parallels the Steese Highway"
+AK-20202-802,NA,NA,"Montague Strait area, Prince William Sound, west of LaTouche Island"
+AK-20202-804,NA,NA,"NW LaTouche Island, Montague Strait"
+AK-20202-805,NA,NA,"NW LaTouche Island, Montague Strait"
+AK-20202-808,NA,NA,"N LaTouche Island, Montague Strait"
+AK-20202-809,NA,NA,"N LaTouche Island, Montague Island"
+AK-20202-811,NA,NA,"mainland, near Applegate Island"
+AK-20202-813,NA,NA,"Rua Cove, Knight Island, Montague Strait"
+AK-20202-815,NA,NA,"Marsha Bay, Knight Island, Montague Strait"
+AK-20202-814,NA,NA,"SE Knight Island, from Hogan Bay to Pt. Helen"
+AK-20202-816,NA,NA,"N Green Island, Montague Strait"
+AK-20202-817,NA,NA,"NE Seal Island, Montague Strait"
+AK-20202-818,NA,NA,"N Disk Island, south of Ingot Island"
+AK-20202-812,NA,NA,"NE Knight Island, Montague Strait"
+AK-20202-819,NA,NA,"NE Evans Island, Montague Strait"
+AK-20202-821,NA,NA,"NE Evans Island, Montague Strait"
+AK_B_2020302_027,HUC-8,19020203,"EVOS beach, W end of Smith Island, Prince William Sound"
+AK_B_2020302_028,HUC-8,19020203,"EVOS beach, NW side of Smith Island, Prince William Sound"
+AK_B_2020302_029,HUC-8,19020203,"EVOS beach, N side of Smith Island, Prince William Sound"
+AK_R_3020311_001_001,NA,NA,"heads in Becharof Lake, flows NW 28 miles to Egegik Bay, on N. coast of Alaska Penin."
+AK_M_3010115_017,NA,NA,"NE corner of Popof Island, off SSW end of Alaska Peninsula; HUC: 19030101"
+AK_L_2040105_008_001,NA,NA,"Wasilla, 21 mi. N of Anchorage."
+AK_M_1010303_014,NA,NA,"HUC: 19010103, E coast of Prince of Wales Island"
+AK_R_8040102_006,NA,NA,Approximately 100 miles northeast of Fairbanks; HUC: 19040402
+AK_R_8040102_009,NA,NA,Approximately 100 miles northeast of Fairbanks; HUC: 19040402
+AK_M_1020408_002,NA,NA,"NW coast of Admiralty Island, 20 mi SW of Juneau, approx 7 miles long trending N-S"
+AK_M_1021211_020,NA,NA,SE of Sitka; HUC: 19010203
+AK_R_8030907_014_001,NA,NA,North of Fairbanks and flows through the Goldstream Valley. HUC: 19040509
+AK_M_3010122_001,NA,NA,"NE Cold Bay, at end of Alaska Peninsula; HUC: 19030101"
+AK_R_8040108_022,NA,NA,"Flows 4.4 miles north to meet Porcupine Creek, junction is the headwaters of Crooked Creek. 18 mi. SW of Circle; HUC: 19040402"
+AK_R_1030302_007,NA,NA,"located in Skagway, near head of Taiya Inlet, and located approxiamtely 0.5 miles SE of the mouth of Skagway river, flows NE to SW approxiamtely one mile,"
+AK_R_8030710_002_001,NA,NA,"Eielson Air Force Base, Fairbanks; HUC: 19040506"
+AK_R_8040108_005_001,NA,NA,Bonanza Creek flows north 4.6 miles to Porcupine Creek just upstream of the junction of Porcupine and Mammoth Creeks. HUC: 19040402
+AK_B_2020303_004,NA,NA,"N LaTouche Island, Montague Strait"
+AK_R_1030106_017_001,NA,NA,Juneau; HUC: 19010301
+AK_R_8040108_024_001,NA,NA,"Flows 4.9 miles to meet Independence Creek, junction is the headwaters of Mammoth Creek; HUC: 19040402"
+AK_R_3050101_009,NA,NA,"Red Devil, Red Devil mine"
+AK_B_2020303_001,NA,NA,"NE Evans Island, Montague Strait"
+AK_R_8040108_019_001,NA,NA,Flows north 4.9 miles crossing Circle Hot Springs Rd to wetland complex associated with Crooked Creek; HUC: 19040402
+AK_R_2040207_013_002,NA,NA,Mat-Su valley; HUC: 19020402
+AK_R_8030609_017,NA,NA,Fairbanks; HUC: 19040506
+AK_M_1021116_020,NA,NA,"West coast of Chichagof Island, Southeast Alaska; HUC: 19010203"
+AK_B_2020303_005,NA,NA,"N LaTouche Island, Montague Strait"
+AK_M_3010123_005,NA,NA,"between Cold Bay and Belkofski Bay. at SW end of Alaska Peninsula, Aleutian Range; HUC: 19030101"
+AK_R_8040108_008,NA,NA,Flows north crossing Circle Hot Springs Road to wetland complex associated with Crooked Creek: 19040402
+AK_R_3050101_006_008,NA,NA,at Red Devil/Red Devil mine
+AK_L_2070115_036,NA,NA,"3.7 mi long, 22 mi S of Karluk, near SW coast of Kodiak Island"
+AK_M_3010207_004,NA,NA,E end of Akutan Island; Aleutians; HUC: 19030102
+AK_R_1030106_037,NA,NA,Juneau; HUC: 19010301
+AK_R_1030106_038,NA,NA,Juneau; HUC: 19010301
+AK_M_3010208_022,NA,NA,"SW of Unalaska, Unalaska Island, Aleutians; HUC: 19030102"
+AK_B_2020303_003,NA,NA,"N LaTouche Island, Montague Strait"
+AK_M_1021115_007,NA,NA,"0.3 mi. across, 1.5 mi. north of Chichagof, W coast of Chichagof Island"
+AK_R_8040108_027,NA,NA,"Flows 12.4 miles to meet Mammoth Creek, junction is headwaters of Crooked Creek; HUC: 19040402"
+AK_R_8031018_015,NA,NA,"flows approximately 5 miles NE to Moose Creek at Kantishna, Kantishna Hills"
+AK_R_2040108_004_001,NA,NA,"Wasilla area in southcentral, AK. Spring fed headwaters with mouth in Knik Arm"
+AK_B_2020302_003,NA,NA,"East coast  Eleanor Island, Montague Strait. EVOS beach"
+AK_B_2020303_002,NA,NA,"NE LaTouche Island, Montague Strait"
+AK_R_1030106_036,NA,NA,Juneau; HUC: 19010301
+AK_R_1021212_004_001,NA,NA,"Aproximately 8.5 miles NNE of Sitka, on Baranof Island. Drains to Katlian Bay."
+AK_R_2040103_003_003,NA,NA,N of Anchorage; HUC: 19020402
+AK_B_2020302_026,NA,NA,"Smith Island, Montague Strait"
+AK_R_8040108_007_002,NA,NA,"Headwaters is at junction of Mammoth and Porcupine Creeks, flows 28.9 mi. NE to Birch Creek, 18 mi. SW of Circle; HUC: 19040402"
+AK_M_1010305_021,NA,NA,"Kasaan area, Prince of Wales Island"
+AK_M_1021211_010,NA,NA,"Silver Bay, Sitka, Baranof Island"
+AK_B_2020302_004,HUC-8,19020203,"Prince William Sound, Montague Strait, E side of island"
+AK_B_2020302_005,HUC-8,19020203,"Prince William Sound, Montague Strait, E side of island"
+AK_B_2020302_006,HUC-8,19020203,"Prince William Sound, Montague Strait, SE side of island"
+AK_B_2020302_007,HUC-8,19020203,"Prince William Sound, Montague Strait, SE side of island"
+AK_B_2020302_008,HUC-8,19020203,"Prince William Sound, SE side of Northwest Bay, west side of island"
+AK_B_2020302_009,HUC-8,19020203,"Prince William Sound, SE side of Northwest Bay, west side of island"
+AK_B_2020302_010,HUC-8,19020203,"Prince William Sound, E side of Northwest Bay, west side of island"
+AK_B_2020302_011,HUC-8,19020203,"Prince William Sound, NE side of Northwest Bay, west side of island"
+AK_B_2020302_012,HUC-8,19020203,"Prince William Sound, NE side of Northwest Bay, west side of island"
+AK_L_2040108_020,NA,NA,"In Anchorage, AK."
+AK_R_8040108_006,NA,NA,flows 13 miles NE to Crooked Creek
+AK_L_6040101_002,NA,NA,"Near Prudoe Bay, Alaska. Lat/long is for Deadhorse, need precise L/L."
+AK_L_2070115_030,NA,NA,"W of Shahafka Cove, 1.2 mi. NE of Kodiak, Kodiak Island."
+AK_L_2070114_006,NA,NA,"2.5 mi. NE of Kodiak, Kodiak Is."
+AK_L_7050621_002,NA,NA,oxbow lake 0.3 miles north of Fort Yukon
+AK_L_2010401_003,NA,NA,in the town of Chitina
+AK_L_2040108_057,NA,NA,NW of Palmer; HUC: 19020402
+AK_L_3020512_001,NA,NA,"NE of Nondalton and 40 mi. W of Cook Inlet, on the Alaska Peninsula."
+AK_L_2040108_017,NA,NA,"3.2 miles NE of Birchwood, 22 miles NE of Anchorage"
+AK_L_2040106_012,NA,NA,city of Anchorage
+AK_L_2040108_043,NA,NA,2 mi. NE of Birchwood and 21 mi. NE of Anchorage.
+AK_L_2040106_004,NA,NA,Located in southwest Anchorage; HUC: 19020402
+AK_L_1030311_001,NA,NA,"On SW side of Chilkat River, 4.6 mi. NW of Wells and 25 mi. W of Skagway."
+AK_L_2040108_033,NA,NA,"Anchorage, AK"
+AK_L_2070115_002,NA,NA,"1 mile across, at the head of Buskin River, on NE coast of Kodiak Island"
+AK_L_2070115_001,NA,NA,"1.5 mi. NE of Kodiak, on NE coast of Kodiak Island."
+AK_L_1030107_001,NA,NA,"1 mi. E of Auke Bay, 12 mi NW of Juneau"
+AK_L_3020609_004,NA,NA,"lake 75 mi long, 20 mi wide at N end of Alaska Peninsula, between Kvichak Bak and Cook Inlet Contacts: Ben Foss at Pedro Bay 850-2342; Elijah Donnet, AK Native FWS, 222-6005"
+AK_L_8030313_001,NA,NA,"Approx 7 mi E of Richardson Highway off of Jack Warren Rd, Delta Jct., AK."
+AK_L_2040108_042,NA,NA,"4.2 mi SW of Anchorage, Alaska."
+AK_L_2010417_001,NA,NA,"4 mi. W of Copper River, 1 mi. N of Copper River Hwy., 20 mi. SE of Cordova, AK."
+AK_L_2070115_004,NA,NA,"2 mi. NE of Kodiak, Kodiak Island."
+AK_L_6040101_001,NA,NA,"Deadhorse Lease Tracts, Prudhoe Bay, AK."
+AK_L_2040108_009,NA,NA,"Anchorage, AK"
+AK_L_2040108_039,NA,NA,"0.4 mile long, one of the Fire Lakes at the head of Fire Creek, 15 mi. NE of Anchorage, Cook Inlet Lower"
+AK_L_8030407_001,NA,NA,Approx. 15 mi. S of Delta Jct. Off of the Richardson Hwy.
+AK_L_2040108_034,NA,NA,Anchorage
+AK_L_2050512_026,NA,NA,"0.6 miles across, in Matanuska Valley, 10 miles NW of Palmer, in Cook Inlet Lowlands"
+AK_L_2040106_009,NA,NA,"Between Jewel Lake and Sand Lake in Anchorage, AK."
+AK_L_3010208_002,NA,NA,"Unalaska, AK"
+AK_L_2050109_006,NA,NA,32 mi. NW of Glennallan.
+AK_L_2040205_003,NA,NA,"Chickaloon, Mat-Su valley"
+AK_L_8030701_002,NA,NA,Approx. 12 mi. north of Delta Junction off of Richardson Hwy.
+AK_L_2040108_008,NA,NA,City of Anchorage; HUC: 19020401
+AK_L_5040317_001,NA,NA,Next to Kotzebue airstrip & along cross runways.
+AK_L_2040108_058,NA,NA,"2 mi. long, in Matanuska Valley, E. of Wasilla, 8.5 mi. SW of Palmer, Cook Inlet Lowlands"
+AK_L_8030608_001,NA,NA,"16 mile Chena Hot Springs Road; 25 miles east and upstream of Fairbanks Contact: Susan Amundsen, Amundsen Evironmental Services, P.O. Box 10726, FBX; 488-2136"
+AK_L_2030111_004,NA,NA,"Homer, Kachemak Bay, south side of Peterson Bay"
+AK_L_2040108_018,NA,NA,"1.8 miles long in the Matanuska Valley, 5 miles W of Palmer in the Cook Inlet Lowlands"
+AK_L_2030218_015,NA,NA,"On Kenai Peninsula, W of Skilak Lake, 25 mi. SE of Kenai, AK."
+AK_L_2040212_006,NA,NA,"0.7 mile long, 6.6 miles SE of Palmer, Cook Inlet Lowlands"
+AK_L_2040105_007,NA,NA,"Mat-Su Big Lake watershed; T17N, R3W, S4-9; Mile 52.3 Parks Hwy. West on Big Lake Rd. 3.4 miles to Beaver Lake Rd. Right 2.5 miles on Beaver Lake Rd. to parking area and undeveloped public boat launch. most of lake shore is privately owned."
+AK_L_8030508_001,NA,NA,"4 miles SE of junction of Salcha and Tanana Rivers, Tanana Lowlands; HUC: 19040505"
+AK_L_1030106_004,NA,NA,"In Juneau, AK."
+AK_L_2070115_027,NA,NA,in Kodiak
+AK_L_2040108_024,NA,NA,"Anchorage, AK"
+AK_L_2030108_001,NA,NA,Homer
+AK_L_2010202_005,NA,NA,"in the course of the Gulkana River, 20 mi. N of its junction with its West Fork, Alaska Range"
+AK_L_2040108_056,NA,NA,"15 miles NE of Anchorage, AK along Glenn Highway"
+AK_L_2040108_014,NA,NA,"0.3 mi long, 4.3 mi SW of Anchorage"
+AK_L_2040105_028,NA,NA,"one of the Meadow Lakes in the Matanuska Valley, 15 mi NW of Palmer"
+AK_L_2010416_005,NA,NA,"Cordova, Alaska"
+AK_L_2070115_023,NA,NA,Near center of Kodiak business district.
+AK_L_2040207_002,NA,NA,"Canoe Lake, Palmer, mile 36.4 Glenn Highway"
+AK_L_2050512_030,NA,NA,Parks Hwy between Willow and Houston; HUC: 19020505
+AK_L_1010306_001,NA,NA,"1.3 mi. long, at the head of Dora Bay, on SE coast of Prince of Wales Island"
+AK_L_2020109_004,NA,NA,3 mi. SE of Valdez
+AK_L_2040108_011,NA,NA,"1.3 miles long in the Matanuska Valley, 6.2 miles W of Palmer, Cook Inlet Lowlands"
+AK_L_1030106_005,NA,NA,"In Juneau, AK."
+AK_L_5010100_001,NA,NA,"0.5 mi long, 0.5 mi S of Gambel, NW end of St. Lawrence Island"
+AK_L_1021211_006,NA,NA,"City of Sitka, Baronaf Island; HUC: 19010203"
+AK_R_2030207_007,NA,NA,flows SW approx. 10 miles to Turnagain Arm at Girdwood
+AK_B_2030107_001,NA,NA,"9 miles NW to Anchor Pt, 1 mi SE to Bluff Pt"
+AK_R_2040103_003_001,NA,NA,"Eagle River Flats is an estuarine salt marsh located at the mouth of Eagle River, along the upper Cook Inlet, near Anchorage, Alaska. It is within the Fort Richardson Army Base; HUC: 19020302"
+AK_R_2030207_005,NA,NA,"heads at Crystal Lake, flows SE 6 mi. to Glacier Creek, Girdwood"
+AK_B_1030107_007,NA,NA,"Beach on E shore of Favorite Channel, 0.6 mi. S of Tee Harbor and 14 mi. NW of Juneau, Coast Mts.; 58?24' N, 134?46'"
+AK_B_5010420_002,NA,NA,Nome
+AK_L_2020102_002,NA,NA,"Pond near/in Cordova, also called Odiak Lagoon"
+AK_B_2040108_001,NA,NA,Anchorage
+AK_M_6040116_001,NA,NA,"NE North Slope, mouth area of Kogotpak River; HUC: 19060402"
+AK_B_2030218_005,County,Kenai Peninsula Borough,Downstream of gull rookery.
+AK_B_1010203_002,HUC-8,19010102,"Near Beacon Hill, located in Ketchikan on the northern end of South Higgins Point"
+AK_M_1010205_010,NA,NA,"Revillagigedo Island, Carrol Inlet"
+AK_M_2030112_009,NA,NA,Seldovia; HUC: 19020301
+AK_M_2070115_012,NA,NA,SW of Kodiak
+AK_M_2030108_003,NA,NA,Homer
+AK_M_2030112_017,NA,NA,SW shore of Kachemak Bay; HUC: 19020301
+AK_M_1010309_007,NA,NA,"North end of Prince of Wales Island, Southeast Alaska"
+AK_M_1010313_005,NA,NA,"due west of Klawock, Prince of Wales Island; HUC: 19010103"
+AK_M_1020902_005,NA,NA,"NW Wrangell Island, S. of Wrangell; HUC: 19010102"
+AK_M_1010306_002,NA,NA,"Extends south four miles off Chomondeley Sound, on SE coast of Prince of Wales Island, Southeast"
+AK_M_2020123_010,NA,NA,"On E coast of Kenai Penin., extends N 8 mi. to Port Nellie Juan, 24 mi. SE of Whittier."
+AK_M_5040316_003,NA,NA,Kotzebue
+AK_M_1030107_002,NA,NA,"west cost of Mendenhall Peninsula, 10 mi. NW of Juneau"
+AK_M_3010300_177,NA,NA,"West end of Kuluk Bay on the NE shore of Adak Island, Aleutians. Adjacent to town of Adak."
+AK_M_1030104_001,NA,NA,North of Juneau
+AK_M_1010303_014_001,NA,NA,E coast of Prince of Wales Island
+AK_M_3010211_012,NA,NA,SSE Unalaska Island; Aleutians; HUC: 19030102
+AK_M_2070114_011,NA,NA,"9 mi. NE of Afognak, on SE coast of Afognak Island, N of Kodiak Island."
+AK_M_1020408_005,NA,NA,NW Admiralty Island; HUC: 19010204
+AK_M_1021109_011,NA,NA,"In Port Ferderick near Hoonah, Alaska."
+AK_M_1010303_015,NA,NA,On E coast of Prince of Wales Island at head of Kasaan Peninsula.
+AK_M_2030111_008,NA,NA,across Kechemak Bay from Homer
+AK_M_1021212_018,NA,NA,"Sitka, AK"
+AK_M_2030112_006,NA,NA,"0.7 mile wide, SE of Yukon Is., along SE shore of Kachemak Bay, 8 miles SSE of Homer"
+AK_M_3010208_002,NA,NA,"SW of City of Unalaska, Unalaska Island, Aleutians; HUC: 19030102"
+AK_M_1021010_005,NA,NA,"Extends S 24 mi. from Frederick Sound to Sumner Strait, seperates Mitkof Island from Kupreanof and Woewodski Island."
+AK_M_2040108_002,NA,NA,"W side of Knik Arm, 11 mi N of Anchorage"
+AK_M_2050513_004,NA,NA,HUC: 19020401
+AK_M_1021005_005,NA,NA,"Just north of Kake, Kupreanof Island. LTF for Sealaska and Kake Tribal Coporation lands timber harvesting"
+AK_M_2030108_005,NA,NA,"Homer, slough drains Beluga Lake in Homer"
+AK_M_1010306_003,NA,NA,"bay is four miles long, 1.5 miles south of Chomondeley Sound on SE Prince of Wales Island, Southeast"
+AK_M_2020301_002,NA,NA,"Prince William Sound, 44 mi. NE of Whittier, extends SW 4.5 miles to Wells Bay"
+AK_M_2070115_015,NA,NA,"Near Kodiak, AK"
+AK_M_2030111_004,NA,NA,"on E. shore of Kachmak Bay, on Kenai Penin., 9 mi. SE of Homer"
+AK_M_2070115_004,NA,NA,SW of Kodiak; HUC: 19020701
+AK_M_2030111_002,NA,NA,on Kenai Penin. Opens to the north to Kachemak Bay between Tutka Bay on W and Jackalof Bay to the E
+AK_M_2030111_009,NA,NA,"1.7 mile wide on E shore of Kachemak Bay, on Kenai Penin., 9 mi SE of Homer"
+AK_M_1021103_002,NA,NA,"S shore of Tenakee Inlet, Chichagof Island, Southeast"
+AK_M_1021005_006,NA,NA,"SE of Kake, Kupreanof Island; HUC: 19010202"
+AK_M_2080000_004,NA,NA,HUC: 19020301
+AK_M_2070114_030,NA,NA,"Lookout Cove at Danger Bay, Kazakof Bay Afognak Island"
+AK_M_1021103_008,NA,NA,"aproximately two miles east of Tenakee Springs, Tenakee Inlet, east side of Chichagof Island in Southeast Alaska"
+AK_M_1020614_001,NA,NA,"On E shore of Stephens Passage, 5 mi. SE of Rocky Point and 74 mi. NE of Sitka."
+AK_M_3010211_003,NA,NA,South of Dutch Harbor.
+AK_M_1021208_004,NA,NA,Neva Strait NW Baronof Island; HUC: 19010203
+AK_M_1021109_007,NA,NA,"S shore of Port Frederick, 4 mi. SW of Hoonah, on N central Chichagof Island."
+AK_M_1021113_003,NA,NA,"On N coast of Chichagof Is., 34 mi. NW of Hoonah, AK."
+AK_M_3010207_023,NA,NA,"NW Akun Island, Aleutian Islands"
+AK_M_1010304_004,NA,NA,"extends S 6 mi. off Skowl  Arm, Kasaan, E Prince of Wales Island; HUC: 19010103"
+AK_M_1010305_018,NA,NA,East side of Prince of Wales Island in Southeast. Twlevemile Arm is located off of Kasaan Bay.
+AK_M_5040316_002,NA,NA,"Kotzebue, AK"
+AK_M_2030111_010,NA,NA,SE side of Kachmak Bay NE of Homer
+AK_M_1021103_001,NA,NA,On S shore of Tenakee Inlet on E central Chichagof Island.
+AK_M_2030112_012,NA,NA,"2 mi wide at SE tip of Kenai Penin., 16 mi SW of Seldovia"
+AK_M_1021007_002,NA,NA,NW Kuiu Island; HUC: 19010202
+AK_M_5010517_002,NA,NA,"North of Nome, between Grantley Harbor and Bering Sea."
+AK_M_2030112_013,NA,NA,E of Seldovia
+AK_M_2030111_005,NA,NA,4 mi wide on E shore
+AK_M_1010310_021,NA,NA,"S Tuxecan Passage, WNW Prince of Wales Island; HUC: 19010103"
+AK_M_1030308_003,NA,NA,"In Haines, Alaska."
+AK_M_2070115_017,NA,NA,"At head of Womens Bay, 8 mi. SW of Kodiak."
+AK_M_2020102_009,NA,NA,"E of Hawkins Island and W of Cordova, Chugach Mts."
+AK_M_1021207_002,NA,NA,"Fish Bay, Baranof Island"
+AK_M_2060205_005,NA,NA,"NW shore of Cook Inlet, NW of Homer"
+AK_M_2020107_005,NA,NA,"On S. shore of Port Fidalgo, 32 mi. NW of Cordova, Prince William Sournd"
+AK_M_1010204_005,NA,NA,"Bay northwest of Ward Cove near Ketchikan, Alaska."
+AK_M_2020303_017,NA,NA,"At N tip of Latouche Island, at SE end of Knight Island Pasage, 54 mi. E of Seward"
+AK_M_1021006_004,NA,NA,On North coast of Kuiu Island. Permit ID Nos.: NPDES No. AK-004537-3; COE Frederick Sound 34
+AK_B_1020904_001,NA,NA,Petroglyph Beach near Wrangell Harbor
+AK_B_1030308_002,NA,NA,North of Haines
+AK_B_1020902_001,NA,NA,Wrangell
+AK_B_1030107_002,NA,NA,"Beach on SE end of Auke Bay, 9.5 miles NW of Juneau, on E side of Stephen's Passage, near Battleship Island"
+AK_B_1030106_001,NA,NA,"Douglas Harbor boat ramp, near Savikko Park"
+AK_B_1030308_003,NA,NA,Haines
+AK_B_1030107_003,NA,NA,"Beach on W end of Auke Bay, E of Point Louisa, 12.5 miles NW of Juneau, 58?38' N, 134?73'W"
+AK_R_8030609_004_002,HUC-8,19080306,"Upper Chena Slough near Fairbanks, from Piledriver slough, downstream to second Richardson Highway crossing."
+AK_R_9010105_007,HUC-8,19090101,"Flows N 3 mi. then W 5 mi. to Middle Fork Koyukuk River, 6 mi. NW of Poss Mtn. and 37 miles W of Chandalar, Brooks Range"
+AK_R_2070114_006,HUC-8,19020701,"N end of Kodiak Island, flows N .28 mi. from near Pillar Creek Road to Monashka Bay."
+AK_L_1021212_005,HUC-8,19010212,"SW side of Baranof Island, Southeast Alaska, 11 mi. SE of Sitka."
+AK_M_1021211_020_001,HUC-8,19010212,"Within Silver Bay 4 mi. SE of Sitka, .3 mi. offshore on the north side of the bay, near Herring Cove."
+AK_R_2010323_010,HUC-8,19020103,"Flows E to Lakina River, Wrangell-St Elias National Preserve"
+AK_R_2010319_005,HUC-8,19020103,"In Wrangell-St Elias National Park, heads at glacier and flows NE to Toby Creek, 21 miles NE of McCarthy, Wrangell Mountains."
+AK_R_5010417_003,NA,NA,"flows SW 7 mi. to Little Creek, 2.5 miles NW of Nome"
+AK_R_2030210_003,NA,NA,"on Kenai Penin., heads at Grant Lake, flows SW 1 mi. to Upper Trail Lake, 24 mi. N of Seward"
+AK_R_2050206_004,HUC-8,19020502,"Flows SE 18 mi. to Chuiitna River, 27 mi. NW of Talkeetna, Cook Inlet Lowlands, 62?42135"" N, 150?16130"" W, Denali National Park"
+AK_R_2030108_024,NA,NA,"Homer Alaska. Headwaters near the Homer High School (east side), discharges to Beluga Lake."
+AK_R_1030107_002,NA,NA,"Flows SE to Auke Bay, 0.2 mi. W of village of Auke Bay and 11 mi. NW of Juneau."
+AK_R_2020205_005,NA,NA,"city of Seward, E side of Resurrection Bay"
+AK_R_2010314_003,HUC-8,19020103,"Flows NW towards Tana River, Wrangell-St Elias National Park"
+AK_R_8030313_002,NA,NA,"Near Delta Junction, accessed from the Jack Warren Rd."
+AK_R_2030108_008,NA,NA,"on the Kenai Peninsula, flows S 4.5 miles to Kachemak Bay, 17 miles NE of Homer"
+AK_R_8030113_006,HUC-8,19080301,"In Mentasta Mts., flows S 10 mi. to Jack Creek, 2.5 mi. SE of Jack Lake,
+Alaska Ra.; 62?30'00"" N, 143?10'45"" W"
+AK_R_2050209_002,HUC-8,19020502,"heads in Dutch Hills, flows NE 7 mi. to Tokositna River, 32 mi. NW of Talkeetna, Alaska Ra.; 62""39'45"" N, 150'49'05"" W"
+AK_R_3020415_008,NA,NA,"Naknek, Bristol Bay; HUC: 19030204"
+AK_R_1040521_005,NA,NA,"2.5 mi. SW of Yakutat, AK."
+AK_R_3030210_006,NA,NA,"heads at Turquoise Lake, flows SW 160 mi. to Nushagak River, 65 mi. NE of Dillingham"
+AK_R_2030204_023,NA,NA,"On Kenai Peninsula, Flows NW to Mills Creek, 16 mi. S of Sunrise."
+AK_R_8031001_001,HUC-8,19080310,"Heads at glacier terminus, in Denali National Park, flows NW 30 mi. to Foraker River, 35 mi. SSE of village of Lake Minchumina, Tanana Lowlands."
+AK_R_3030211_002,NA,NA,"originates N of Iliamna Lake, flow NW to Mulchatna River"
+AK_R_2030104_003,NA,NA,"heads aat Tustumena Lake, flow NW 17 miles to Kasilov"
+AK_R_8030713_004,NA,NA,W of Salcha
+AK_R_3050284_008,NA,NA,"heads at a lake at 59/38, 160/23 and flows SW 60 miles to Goodnews Bay"
+AK_R_2030108_017,NA,NA,"on Kenai Peninsula, flows 23 miles W to Cook Inlet at Cape Starichkof, 19 miles NW of Homer"
+AK_R_2040105_002,NA,NA,"heads in a lake, flows SW 3.2 mi. to join Lucile Creek to form Meadow Creek, 25 mi. N. of Anchorage, Cook Inlet lowlands"
+AK_R_2010322_005,HUC-8,19020103,"Flows NW 6.2 mi. to Dan Creek 3.5 mi. E of its junc. with Nizina River, 15 mi. E of McCarthy, Wrangell Mts., 61?22'20"" N, 142?28'40"" W, Wrangell-St Elias National Preserve"
+AK_R_5040408_002,NA,NA,"Red Dog mine, located about 170 kilometres north of the Arctic Circle in northwest Alaska, near Kotzebue; HUC: 19050404"
+AK_R_2030107_009,NA,NA,"on Kenai Peninsula, near Nikolaevsk"
+AK_R_2010316_013,HUC-8,19020103,"Tributary to Clear Stream near the confluence of Clear Stream with Chitina River, Wrangell-St Elias National Preserve"
+AK_R_8030113_005,HUC-8,19080301,"Heads in Mentasta Mts., flows S 7 mi. to Jack Lake, Alaska Range, 62?31'20"" N, 143?18'40"" W"
+AK_R_8031024_010,HUC-8,19080310,"Denali National Park, flows N 25 mi. from Gravel Mtn. to Clearwater Fork 5 mi. S of junction with Toklat River, Alaska Range, 63?44'15"" N, 150?19'30"" W"
+AK_R_2030107_008,NA,NA,"om Kenai Peninsula, flows W 8 mi. to Anchor River, 6 mi. NW of Homer"
+AK_R_2070215_009,NA,NA,"on Alaska penin., flows N 2 mi. to Chignik Flats and Chignik Lagoon, ~5 mi. W of Chignik"
+AK_R_8030807_026,HUC-8,19080308,"Flows S to Hines Creek, crosses Denali National Park Road"
+AK_R_1021102_004,NA,NA,"SSE shore of Freshwater Bay, E Chichagof Island; HUC: 19010203"
+AK_R_1030310_002,NA,NA,"heads on E side of Mt. Seltat on Alaska-Canada boundary, flows SE 11 miles to Kelsall River, 28 miles NW of Skagway"
+AK_R_8031014_022,HUC-8,19080310,"Tributary to McKinley River, crosses McKinely Bar trail"
+AK_R_2010322_004,HUC-8,19020103,"Flows NW to the Nizina River ~4 miles downstream of Dan Creek's confluence with the Nizina River, Wrangell-St Elias National Preserve"
+AK_R_2030111_001,NA,NA,"on Kenai Penin., flows NW 6.5 mi. to Kachemak Bay, 22 mi. NE of Homer"
+AK_R_2030108_023,NA,NA,Homer
+AK_R_1021212_005,NA,NA,"Sitka, AK."
+AK_R_1030106_021,NA,NA,"Mendenhall Valley in Juneau, AK."
+AK_R_9020521_002,NA,NA,"flows NW 28 miles to Khotol River, 19 mi SE of Nulato"
+AK_R_3020609_004,NA,NA,"flows SW 11 miles to Knutson Bay, at NE end of Iliamna Lake"
+AK_R_8031018_009,HUC-8,19080310,"Flows N from Wonder Lake to Moose Creek, Denali National Park"
+AK_R_2050207_001,HUC-8,19020502,"Flows S along W side of Tokositna Glacier to the Tokositna River, Denali National Park"
+AK_R_2030108_014,NA,NA,approximately 10 mi NE of Homer
+AK_R_1010203_005,NA,NA,"flows NW, through Margaret Lake, 6 miles to Traitors Cove, NW coast of Revillagigedo Island, Southeast"
+AK_R_1040203_011,HUC-8,19010402,"Heads in glacier, flows E and S 3.5 mi. to Icy Bay, 6 mi. NE of Claybluff Point and 67 mi. NW of Yakutat, St. Elias Mts.; 60?00'55"" N, 141?24'30"" W"
+AK_R_8030103_004,HUC-8,19080301,"In Nutzotin Mts., flows W 8 mi. to Geohenda Creek 2.5 mi. SW of that stream's junc. with Chisana River, Alaska Ra.; 62?02' N, 142?02' W"
+AK_R_5010417_014,NA,NA,flows SE approx. 6 miles to Nome
+AK_R_8030710_004,NA,NA,"Along Richardson Hwy, 20 miles SE of Fairbanks, flows to Tanana River."
+AK_R_2030217_001,NA,NA,"Kenai Peninsula, flows NW 30 mi. to Kenai River S of Sterling; HUC: 19020302"
+AK_R_8040102_017,NA,NA,Approximately 100 miles northeast of Fairbanks; HUC: 19040402
+AK_R_8030807_025,HUC-8,19080308,"Flows south to Hines Creek, crosses Denali National Park Road, parallels Rock Creek Trail."
+AK_R_2010229_013,HUC-8,19020102,"Flows SW to the Nadina River, Wrangell-St Elias National Preserve"
+AK_R_2010323_008,HUC-8,19020103,"Flows from wetlands W to Long Lake, Wrangell-St Elias National Preserve"
+AK_R_6030319_002,NA,NA,"Lat/Long is for Umiat Lake which is 1 mile NE of the village of Umiat, on the Colville River, Arctic Slope"
+AK_R_1030301_003,HUC-8,19010303,"Upper Lynn Canal in Southeast Alaska. North of Skagway, mouth near historic community of Dyea, headwaters near Chilkoot Pass on Alaska/Canada border."
+AK_R_1030301_003,County,Skagway Municipality,"Upper Lynn Canal in Southeast Alaska. North of Skagway, mouth near historic community of Dyea, headwaters near Chilkoot Pass on Alaska/Canada border."
+AK_R_1010204_003,NA,NA,"On Revillagigedo Island, heads in a lake and flows W and S through Ketchikan Lakes Number One and Two, six miles to Tongass Narrows at Ketchikan"
+AK_R_2050209_012,HUC-8,19020502,"Flows E to Bear Creek, Denali National Park"
+AK_R_8030113_011,HUC-8,19080301,"Heads .7 mile from Peggy Lake, flows S to Twin Lakes, crosses Nabesna Road"
+AK_R_2010323_002,HUC-8,19020103,"Flows SE from Crystalline Hills to Lakina River, Wrangell-St Elias National Preserve"
+AK_R_5010315_018,NA,NA,"flows SE 25 mi. to Kwiniuk Inlet at NW end of Norton Bay, 25 mi. SW of Koyuk, Seward Penin."
+AK_R_7050603_003,NA,NA,"heads in Canada, flows SW across Alaska-Canada border 18 mi. to Hard Luck Creek, 23 mi. N of Eagle,  65?08'15"" N, 141?11'20"" W"
+AK_R_2010323_009,HUC-8,19020103,"Flows W from Long Lake to the Lakina River, Wrangell-St Elias National Preserve"
+AK_R_3020612_001,NA,NA,flows into NW corner of Lake Iliamna
+AK_R_8030810_005,HUC-8,19080308,"Flows NW 27 mi. to Teklanika River, 17 mi. NW of Healy, Alaska, 63?55' N, 149?30' W"
+AK_R_8031008_004,HUC-8,19080310,"Flows N to Birch Creek, Denali National Park"
+AK_R_2030108_002,NA,NA,"City of Homer, Kachemak Bay"
+AK_R_1010301_002,NA,NA,"Flows N 18 mile through Lake Galea and two unnamed lakes to Sweetwater Lake. N central Prince of Wales Island in Southeast, federal land, Tongass N.F."
+AK_R_5010419_023,NA,NA,"Heads N of Tigaraha Mtn., flows SW to Norton Sound, 25 mi. NW of Nome."
+AK_R_3020211_003,NA,NA,"Bristol Bay, NW shore of Alaska Penin., S of Pilot Point"
+AK_R_5030212_006,NA,NA,"heads at Shishakshinovik Pass, flows SW 45 mi. to Kobuk River, 10 mi. E of Shungnak"
+AK_R_8030713_001,NA,NA,Salchaket Slough
+AK_R_2030205_017,NA,NA,"Hope, AK on the South side of Turnagain Arm."
+AK_R_8031018_006,HUC-8,19080310,"Kantishna Hills, flows SE 1.8 mi. from Wickersham Dome to Moose Creek, 4.4 mi. NNW of Wonder Lake, Alaska Range, 63?32'15"", 150?59'20"""
+AK_R_8031017_006,NA,NA,"in Kantishna Hills, flows N 14 mi. to Bearpaw River"
+AK_R_2010312_003,HUC-8,19020103,"Heads at glacier, flows south, Wrangell-St Elias National Park"
+AK_R_7050612_002,NA,NA,"Flows SW to Copper Creek, Yukon-Charley Rivers National Preserve, also called Cedar Creek."
+AK_R_9020405_010,NA,NA,"Formed by confluence of Wilson and Golden Creeks, flows S to Yukon River, at Kallands N of Brant Island"
+AK_R_3030310_001,NA,NA,"heads at 60 35N, 156 06W, and flows 242 mi to Nushagak Bay"
+AK_R_8030811_004,HUC-8,19080308,"Flows N 26 mi. to Teklanika River, 18 mi. SW of Healy, Alaska Range, 63'49' N, 149'31' W"
+AK_R_2010115_002,HUC-8,19020101,"Unnamed tributary to Sanford River, in Sanford River floodplain."
+AK_R_8030811_009,HUC-8,19080308,"Flows W to Sanctuary River, Denali National Park"
+AK_R_2030218_008,NA,NA,city of Kenai
+AK_R_8031024_012,HUC-8,19080310,Unnamed creek flows west to Stony Creek in Denali National Park
+AK_R_2010320_003,HUC-8,19020103,"Heads on E side of Pyramid Peak, flows generally W to Nizina River, Wrangell-St Elias National Preserve"
+AK_R_2050206_005,HUC-8,19020502,"flows S 5.8 mi. to Coffee River 9 mi. N of Chulitna River, 27 mi. N of Talkeetna, Alaska Ra.; 62?49'55"" N, 150?18'15"" W"
+AK_R_8030102_007,HUC-8,19080301,"Heads in Nutzotin Mountains, flows S to Notch Creek downstream of William and Notch Creeks confluence"
+AK_R_8031025_001,HUC-8,19080310,"Heads at glacier terminus, in Denali National Park, flows NNW 40 mi. to Toklat River, 36 mi. W of Healy, Alaska Range, 63?54'2OW N.,
+150?08'40"" W"
+AK_R_2030108_009,NA,NA,"on the Kenai Peninsula, flows S 7.5 miles to Kachemak Bay, 21 miles NE of Homer - this is a Cook Inlet Keeper Monitoring site at the Dolina Road Bridge"
+AK_R_3030401_001,NA,NA,"in Wood-Tikchick State Park, heads at Grant Lake, flows SE 5.7 mi. to Lake Kulik"
+AK_R_8030809_009,NA,NA,N of Healy
+AK_R_2040212_002,NA,NA,flows through city of Butte to Knik Arm; HUC: 19020402
+AK_R_8030113_001,HUC-8,19080301,"Heads in Mentasta Mts., flows SW 4.2 mi. to Jack Creek, 7 mi. NW of Devils Mtn., Alaska Ra.; 62?29' N, 143?07' W"
+AK_R_8031017_003,NA,NA,"in Kantishna Hills, flows W and N 16 mi to Bearpaw River, 15 N of Wonder Lake , in Alaska Range"
+AK_R_2010325_001,HUC-8,19020103,"Flows from Summit Lake E to the Tebay River, Wrangell-St Elias National Park"
+AK_R_1020408_008,NA,NA,"Flow into upper Hawk Inlet, NW corner of Admiralty Island, Southeast"
+AK_R_3030405_013,NA,NA,"Heads in Aleknagik Lake and flow SSE 20 mi. to Nushagak River just NE of Dillingham, Bristol Bay."
+AK_R_2070215_013,NA,NA,"at Chignik on the Alaska Penin., from saltwater flows SW ~1 mi, then S for ~3 mi."
+AK_R_2010315_003,HUC-8,19020103,"Heads at glacier W of Hanagita Peak, flows N and E to the Chakina River, Wrangell-St Elias National Park"
+AK_R_1030312_006,NA,NA,"W of Haines, flows from BC/AK border to Chilkat River."
+AK_R_1010205_009,NA,NA,"Revillagigedo Island, Carrol Inlet; HUC: 19010102"
+AK_R_2030107_001,NA,NA,"On Kenai Penin., flows W. 30 miles to a lagoon on E. shore of Cook Inlet, 14 mile NW of Homer"
+AK_R_6040113_001,NA,NA,Flows N to Gwydyr Bay 8 mi. SE of Beechey Point.
+AK_R_7050614_002,NA,NA,"Flows NE 28 miles to Charley River, 70 miles NW of Eagle, Yukon-Tanana Highlands"
+AK_R_8031026_013,HUC-8,19080310,"Flows E to Toklat River, Denali National Park"
+AK_R_2010321_006,HUC-8,19020103,"Flows E from Fireweed Mountain to the Kennicott Glacier, Wrangell-St Elias National Preserve"
+AK_R_1010301_005,NA,NA,"Coffman Cove, Prince of Wales Island, USFS 3030 Road"
+AK_R_2040105_004,NA,NA,"formed by Little Meadow and Lucille Creeks, flws SW 5 mi to Big Lake 23 mi N of anchorage"
+AK_R_8031025_003,HUC-8,19080310,"Flows W to East Fork Toklat River, Denali National Park"
+AK_R_8031018_019,HUC-8,19080310,"Flows NW to Wonder Lake, Denali National Park"
+AK_R_9010813_009,NA,NA,Flow SW to Koyukuk River 32 mi. WSW of Hughes.
+AK_R_1010204_001,NA,NA,"flows SW 2 miles through Carlanna Lake in Ketchikan to Tongass Narrows to Charcoal Point, Revillagigedo Island"
+AK_R_8031018_010,NA,NA,"Heads in Denali National Park, flows W and N 50 mi. to Bearpaw River, 18 mi. E of Chilchukabena Lake, Tanana Low.; 63?53'15"" N, 150?54'05"" W"
+AK_R_2010322_019,HUC-8,19020103,"Heads in area of Virginia and Grubstate Gulches, flows NW to Rex Creek near Chitina Camp, Wrangell-St Elias National Preserve"
+AK_R_3050287_010,NA,NA,"flows SW 9 mi. to Kuskokwim Bay, 21 mi. NE of Cape Newenham, Kilbuck-Kuskokwim Mts."
+AK_R_8010515_002,NA,NA,"heads on the North Slope, flows S 200 mi. to Porcupine River, NE of Fort Yuokon, Yukon Flats"
+AK_R_2030107_011,NA,NA,located on the lower Kenai Peninsula approximately 3 miles SE of Anchor Point
+AK_R_2050209_009,HUC-8,19020502,"heads at glacier, flows SE 5 mi. to Alder Creek 8 mi. NW of its junc. with Tokositna River, 25 mi. NW of Talkeetna, Alaska Ra.; 62?46'50"" N, 150?25'45"" W, Denali National Park"
+AK_R_8040411_021,NA,NA,"Heads on Eureka Dome and flows N 22 mi. to Yukon River, 1 mi. N of Rampart."
+AK_R_2030211_007,NA,NA,"on Kenai Penin., flows NW 6 mi then SW 10 mi to Kenai Lake, 28 mi NW of Seward"
+AK_R_5030408_001,NA,NA,flow W 280 mi. to Hotham Inlet 25 mi. SE of Kotzebue
+AK_R_8031008_001,HUC-8,19080310,"Heads at glacier terminus in Denali National Park, flows N 65 mi., joins McKinley River to form Kantishna River, 23 mi. E of village of Lake Minchumina, Tanana Low.; 63?52'00"" N, 151?33'20"" W"
+AK_R_2010229_010,HUC-8,19020102,"Heads at Nadina Glacier, flows 18 mi. SW to Copper River, 3.3 mi. NE of the locality of Willow Creek, 62 mi. NE of Valdez, Copper River Basin; 61?51'20"" N, 145?09'50"" W"
+AK_R_2020205_023,NA,NA,"Seward ship Drydock area, Seward"
+AK_R_2010322_022,HUC-8,19020103,"Heads in Nizina River floodplain, flows S to Nizina River ~1.3 miles upstream from the Chitostone River's confluence with the Nizina, Wrangell-St Elias National Preserve"
+AK_R_2040105_003,NA,NA,"heads in Lucille Lake, flows W 11 mi. and joins Little Meadow Creek to form Meadow Creek, 22 mi. W of Palmer"
+AK_R_2010322_012,HUC-8,19020103,"Heads on NW side of Chititu Peak, flows N to Nizina River ~10 miles upstream of Nizina and Kennicott Rivers confluence, Wrangell-St. Elias National Preserve"
+AK_R_8030103_009,HUC-8,19080301,"In Nutzotin Mts., flows SW 1 mi. to Glacier Creek at Caribou Pass, Alaska Range, 62?07'N, 141?52'W, Wrangell St-Elias National Preserve"
+AK_R_2010325_003,HUC-8,19020103,"Heads in group of lakes 12 mi. ESE of Hanagita Lake, flows WNW 17 mi. to Tebay River, 4 mi. SE of Summit Lake and 73 mi. ENE of Valdez, Chugach Mts, 61?17'00"" N, 144?03'25"" W, Wrangell-St Elias National Preserve"
+AK_R_1030214_002,NA,NA,Gustavus
+AK_R_1010313_006,NA,NA,central Prince o f Wales Island
+AK_R_8030508_011,NA,NA,"A stream flowing from a basin to the east of Harding Lake, SE of Fairbanks; HUC: 19040505"
+AK_R_7050222_010,NA,NA,"formed by its N & S forks flows 60 mi NE into Canada to Yukon River, 32 mi SE of Eagle"
+AK_R_1030106_022,NA,NA,"Flows SE to the Mendenhall River, 1 mi. N of Juneau Airport."
+AK_R_2010102_005,HUC-8,19020101,"Heads in Tanada Lake, in Wrangell Mts., flows NW 17 mi. to Copper River 8 mi SE of junc. of Slana River, Copper River Basin; 62?18' N, 143?48' W"
+AK_R_8031018_007,HUC-8,19080310,"Kantishna Hills, formed by its East and West Forks, flows S 12 mi. to North Fork Moose Creek, 6 mi. ENE of Wonder Lake, Alaska Ra.; 63?31'15"" N, 150?42'15"" W"
+AK_R_2030108_021,NA,NA,Homer
+AK_R_2030216_002,NA,NA,"flows SW 23 miles to Kenai River at Sterling, 18 miles E of Kenai"
+AK_R_2050209_001,HUC-8,19020502,"Heads at glacier E of Ruth Glacier, flows SE 16 mi. to Tokositna River 1.5 mi. W of its junc. with Chulitna River, 25 mi. NW of Talkeetna, Cook Inlet Low.; 62?49'30"" N, 150?20'10"" W."
+AK_B_2030218_001,County,Kenai Peninsula Borough,Downstream of gull rookery.
+AK_R_2030112_001,NA,NA,flows NW 9 mi. to Kachemak Bay on Kenai Penin.
+AK_R_2030105_001,NA,NA,"flows SW 21 miles to Cook Inlet at Ninilchik, 38 miles SW of Kenai, Kenai Peninsula"
+AK_R_1010301_006,NA,NA,"Coffman Cove area, Prince of Wales Island, USFS 3030 Road"
+AK_R_2010324_002,HUC-8,19020103,"Flows SW 21 mi. to Chitina River, 4.5 mi. S of Gilahina Butte, 29 mi. W of McCarthy, Cooper River Basin; 61?22'20"" N, 143?46'50"" W;, Wrangell-St Elias National Preserve"
+AK_R_7040216_004,HUC-8,19070402,"In Nutzotin Mts., flows SE 9 mi. to Beaver Creek, 1.5 mi. SW of Braye Pass, Wrangell-St Elias National Preserve, near Horsfeld Airport"
+AK_R_5010417_032,NA,NA,"flows SW 2.6 mi. to Snake River, 7 mi. NW of Nome, Seward Penin. Highlands"
+AK_R_8030103_029,HUC-8,19080301,"Flows SE to Chisana River approximately 5 miles downstream of confluence of Sheep Creek and the Chisana River, Wrangell-St Elias National Preserve"
+AK_R_8031018_005,HUC-8,19080310,"Kantishna Hills, flows SW 4 mi. to Moose Creek, S of Quigley Ridge, 3 mi. NNW of Wonder Lake, Alaska Range, Denali National Park, 63?31'40"" N, 150?57'40"" W"
+AK_R_2010317_003,HUC-8,19020103,"Unnamed tributary heads on N side of Mount Baldwin and flows NE to Skolai Creek, ~4 miles W of Upper Skolai Lake, Wrangell-St Elias National Park"
+AK_R_2010407_001,HUC-8,19020104,"Flows W and SW 8 mi. to North Fork Bremner River, 8.5 mi. NW of 1950 terminus of Bremner Glacier and 78 mi. NE of Cordova, Chugach Mts.; 60?59' N, 143?42' W, Wrangell-St Elias National Park"
+AK_R_2010314_004,HUC-8,19020103,"Flows SW towards Tana River, Wrangell-St Elias National Park"
+AK_R_1021210_001,NA,NA,"13 mi. N of Sitka, Baronof Island; HUC: 19010203"
+AK_R_2010316_012,HUC-8,19020103,"Flows W to Chitina River 3.4 miles downstream from confluence of Chitina River and Canyon Creek, Wrangell-St Elias National Preserve"
+AK_R_1010301_008,NA,NA,"Coffman Cove area, Prince of Wales Island, USFS 3030 Road"
+AK_R_5010100_001,NA,NA,located approximately 9 mi W of Northeast Cape on Saint Lawrence Island; also known as Suqi River. Lat/longs given here are for vil of Lietnik (10 miles W of NE Cape)
+AK_R_1010301_007,NA,NA,"Coffman Cove area, Prince of Wales Island, USFS 3030 Road"
+AK_R_2030108_006,NA,NA,"on Kenai Penin., flows W 5 mi to Kachemak Bay, 5.7 WNW mi of Homer, lower Cook Inlet"
+AK_R_8031014_008,HUC-8,19080310,"Denali National Park, flows W 5.4 mi. to Thorofare River, 3.3 mi. WSW of Eielson Visitor Center, Alaska Range, 63?25'2OU N, 150?22'40"" W"
+AK_R_1030106_029,NA,NA,"heads in Salmon Creek Reservoir, flows 3 mi SW to Gastineau Channel, 3 mi NW of Juneau"
+AK_R_1040517_008,HUC-8,19010405,"Heads in Galiano Glacier, flows S to Disenchantment Bay, NE of Yakutat"
+AK_R_2010315_007,HUC-8,19020103,"Flows NW several miles into the Chakina River, approximately 2.5 miles N  of Sunshine Lake."
+AK_R_2010315_004,HUC-8,19020103,"flows NE 18 mi. to Chakina River, 7 mi. N of Goodlata Peak and 18 mi. SW of McCarthy, Chugach Mts.; 61?10' N, 143?07' W, Wrangell-St Elias National Park"
+AK_R_3050276_002,NA,NA,"heads at Kagati Lake, flow SW 75 miles to Kuskokwim Bay, 1.5 miles west of the village of Qunihagak in the Y-K Delta. Lowere 20 miles in village corporation ownership. Contact information: Walter Johnson of Quniahak 556-8165x209; 556-8166"
+AK_R_7040215_004,HUC-8,19070402,"Heads at Rock Lake, flows NE, through Ptarmigan Lake, 15 mi. to Beaver Creek, 72 mi. NE of McCarthy, Alaska Ra.; 61?52' N, 141?09' W"
+AK_R_1040518_008,NA,NA,"heads at Siuk Lake, flows SW 18 miles to Situk, 11 miles SE of Yakutat"
+AK_R_2010416_009,NA,NA,"flows SW 9 mi. to Eyak Lake, 5 mi. NE of Cordova"
+AK_R_8031024_011,HUC-8,19080310,"Flows north to Stony Creek, crosses Denali Park Road, Denali National Park"
+AK_R_2030112_002,NA,NA,"flows NW 11 miles to English Bay, on S end of Kenai Peninsula, 10 miles SW of Seldovia"
+AK_R_2010321_013,HUC-8,19020103,"Flows 4 mi. SE to Kennicott River, 3 miles SW of McCarthy, Wrangell
+Mts, 61?24'23"" N, 142?59'53""W"
+AK_R_1020408_006,NA,NA,"flows N to S to Zinc Creek, NW Admiralty Island, Hawk Inlet/Greens Creek mine"
+AK_R_5010412_052,NA,NA,35 miles E of Nome
+AK_R_8031014_014,HUC-8,19080310,"Heads at glacier terminus in Denali National Park, flows N 20 mi. to McKinley River at W end of Eagle Gorge, 11 mi. W of Wonder Lake,
+Tanana Low.; 64?28'10"" N, 151?14'45"" W"
+AK_R_3020302_001,NA,NA,flows NW 4 mi to Becharof Lake on Alaska Peninsula
+AK_R_2010412_005,NA,NA,"heads on N side of Wrangell Mts., flows S 250 mi. through Chugach Mts. to Gulf of Alaska; HUC: 19020104"
+AK_R_5010416_048,NA,NA,3 mi. E of Nome
+AK_R_2030107_010,NA,NA,"Homer, Alaska. A small stream that flows near the Sterling Highway and discharges into the Anchor River."
+AK_R_8030113_008,HUC-8,19080301,"Flows E 5 mi. to Jack Creek, N of White Mtn., Wrangell Mts.; 62?24100"" N, 142?58'20"" W, Wrangell-St Elias National Preserve"
+AK_R_2050208_003,HUC-8,19020502,"Flows E into Ruth Glacier, Denali National Park"
+AK_R_2010312_002,HUC-8,19020103,"Unnamed tributary to Tana River, Wrangell-St Elias National Park"
+AK_R_9030528_004,NA,NA,"on W slope of Towak Mtns., flows SW 3 mi. to Kochechik Bay, 3.5 mi. S of Cape Romonzof; HUC: 19030502"
+AK_R_8030113_002,HUC-8,19080301,"In Mentasta Mts., flows SW 10 mi. to Jack Creek E of Lost Creek, 33 mi. SE of Mentasta Pass, Alaska Ra.; 62?30' N, 143?10' W"
+AK_R_8030113_003,HUC-8,19080301,"Flows SE 18 mi. between Nutzotin and Wrangell Mts. to Nabesna River, 5.5 mi. NE of Nabesna, Wrangell Mts.; 62?24' N, 142?51' W"
+AK_R_1010402_001,NA,NA,"confluence of East and North forks,  flows to Bradfield Canal 30 mi. SE of Wrangell"
+AK_R_1010204_009,NA,NA,Ketchikan
+AK_R_3020415_002,NA,NA,"Naknek, Bristol Bay; HUC: 19030204"
+AK_R_5010417_016,NA,NA,"heads on E side of Mount Brynteson. flows SW 6 mi. to Snake River, 6 mi. NW of Nome"
+AK_R_5010412_015,NA,NA,"Flow SW to Solomon River, 10 mi. NE of Solomon, Seward Peninsula"
+AK_R_8031024_005,HUC-8,19080310,"Heads N of Gravel Mtn., flows N 4.5 mi. to Stony Creek, 2 mi. N of Stony Hill and 11.5 mi. NE of head of  McKinley River, Alaska Ra.; 63?29'45"" N, 150?15'00"" W"
+AK_R_1010204_002,NA,NA,3160 Tongass Avenue Ketchikan
+AK_B_2030218_004,NA,NA,Kenai River BEACH program monitoring location. Located at intersection of Warren Ames Memorial Bridge and Kenai River.
+AK_R_5010412_051,NA,NA,"7 mi. NE of Solomon (Nome), vicinity of Lee's Camp."
+AK_R_7050506_013,NA,NA,"Yukon-Charley Rivers National Preserve, flows N to Seventymile River"
+AK_R_2010407_012,HUC-8,19020104,"Heads in mountains near Chakina River headwaters, flows S into Bremner Glacier, Wrangell-St Elias National Park"
+AK_R_2010102_004,HUC-8,19020101,"Heads in Mentasta Mts., flows SW 5 mi. to Caribou Creek 10 mi. SE of its junc. with Copper River, Alaska Range, 62?34' N, 143?28' W"
+AK_R_2050501_004,NA,NA,flows W 6 miles to Nenana River 10 mi S of Healy
+AK_R_1010301_004,NA,NA,"Coffman Cove, Prince of Wales Island, USFS 3030 Road"
+AK_R_2030205_010,NA,NA,"flows 6.5 mi NW to Resurrection Creek on Kenai Penin., 16 mi SW of Hope"
+AK_R_3020607_001,NA,NA,"flows S 25 mi Iliamna Lake, 15 mi SW of Iliamna, Bristol Bay area"
+AK_R_2010324_001,HUC-8,19020103,"Flows SW 14 mi. to Gilahina River E of Gilahina Butte, 27 mi. W of McCarthy, Copper River Basin; 61?25'30"" N, 143?44'00"" W; Wrangell-St Elias National Preserve"
+AK_R_1040202_001,HUC-8,19010402,"Flows E from Robinson Mountains to Icy Bay, near terminus of Guyot Glacier"
+AK_R_7050611_002,NA,NA,"Flows W to Charley River, Yukon-Charley Rivers National Preserve"
+AK_R_2020111_005,NA,NA,"flows SW 1.5 mi. from Silver Lake to the Lagoon at the head of Galena Bay, 40 mi. NW of Cordova"
+AK_R_2010323_007,HUC-8,19020103,"Flows SE 4.8 mi. to Lakina River, 2.5 mi. SW of Lakina Glacier terminus, 17 mi. NW of McCarthy, Wrangell Mts.; 61?32'N, 143?23'W, Wrangell-St Elias National Preserve"
+AK_R_2070115_015,NA,NA,"flows NE to Women's Bay, S of Kodiak"
+AK_R_2010104_009,HUC-8,19020101,"Flows NW 5.5 mi. to Slana River 1.6 mi. NE of its junc. with Copper River, Alaska Ra.; 62?43' N, 143?56' W."
+AK_R_8031016_002,NA,NA,"heads at junc. of Birch Creek and McKinley River, flows N 108 mi. to Tanana River, 32 mi. NW of Nenana"
+AK_R_2010105_002,HUC-8,19020101,"Heads N of Capital Mountain, flows N"
+AK_R_2020120_003,NA,NA,"heads at teriminus of Whittier glacier, flow NW 2 mi. to Passage Canal at Whittier"
+AK_R_1030214_001,HUC-8,19010302,"Heads in Glacier Bay National Monument, flows 13 miles South to Icy Passage at Gustavus."
+AK_R_8031014_020,HUC-8,19080310,"Tributary to Gorge Creek, spring, Denali National Park"
+AK_R_2040108_023,NA,NA,Spring Creek near Palmer flows into Rabbit Slough
+AK_R_8030109_002,HUC-8,19080301,"Flows N and E to Stuver Creek upstream of the Stuver and Antler Creeks confluence, Wrangell-St Elias National Preserve"
+AK_R_7050617_008,NA,NA,"heads at 65?09' N, 143?39' W, flows NE 24 mi. to Yukon River, 10 miles W of junc. of Charley and Yukon Rivers, Yukon-Tanana High. ; 65?21 N, 143?07' W"
+AK_R_5040408_003,NA,NA,Near Red Dog Mine.
+AK_R_2040212_009,NA,NA,"aprrox 4 mi SE of Palmer, flows 10 mi south into Jim Creek"
+AK_R_7040215_007,HUC-8,19070402,"Flows ~2 miles between Rock Lake and Ptarmigan Lake, Nutzotin Mountains"
+AK_R_2030204_026,NA,NA,"Flow N to Canyon Creek, 16 mi. S of Sunrise, Chugach Mts."
+AK_R_1021212_006,NA,NA,N of Sitka; HUC: 19010203
+AK_R_2060118_001,NA,NA,"tributary to middle of Chuitna River, from headwaters flows SE ~10.25 mi."
+AK_R_2040101_002,NA,NA,"originates at Eklutna Glacier and flows 22 mi. through Eklutna Lake, emptying into the Knik Arm of Cook Inlet approximately 17 mi. northeast of Anchorage HUC: 19020402"
+AK_R_5040408_001,NA,NA,"Red Dog mine, located about 170 kilometres north of the Arctic Circle in northwest Alaska, near Kotzebue; HUC: 19050404"
+AK_R_2050301_002,NA,NA,"flows NW 10 mi to Talkeetna River, 6.5 mi NE of Talkeetna Glacier, 45 mi NW of Tahnetna Pass in Talkeetna Mtns."
+AK_R_2010322_013,HUC-8,19020103,"Heads on NW side of Williams Peak, flows NW to Nizina River 6 miles downstream of Chitostone River confluence, Wrangell-St Elias National Preserve"
+AK_R_7050611_001,NA,NA,"Flows SW to Upper Charley River, Yukon-Charley Rivers National Preserve"
+AK_R_7050612_001,NA,NA,"Heads at 64'50' N, 142""42' W, flows NW 27 mi. to Charley River, 28 mi. W of Eagle, Yukon-Tanana Highlands"
+AK_R_8040108_017,NA,NA,"Flows 3.4 miles to meet Mastadon Creek, junction is the headwaters of Mammoth Creek; HUC: 19040402"
+AK_R_2020205_019,NA,NA,downtown Seward
+AK_R_2030207_002,NA,NA,"south side of Turnagain Arm, flows NNW 6 mi. to Hope"
+AK_R_8031018_004,HUC-8,19080310,"In Kantishna Hills, flows NE 5.5 miles to Moose Creek, 3.5 miles NNW of Wonder Lake, Alaska Range. 63?31'50"" N, 150?58'15"""
+AK_R_2010322_021,HUC-8,19020103,"Flows N and E to West Fork Glacier, W of West Fork Nizina River, Wrangell-St Elias National Park."
+AK_R_1021005_003,NA,NA,flows SW 5 mi to Keku Strait on NW Kupreanof Island
+AK_R_2010321_008,HUC-8,19020103,"Flows E 3.5 mi. to Hidden Creek Lake, W of Kennicott Glacier, 11 mi.
+NW of McCarthy, Wrangell Mts.; 61?33'30"" N, 143?08'00"" W"
+AK_R_8040102_004,NA,NA,Approximately 100 miles northeast of Fairbanks; HUC: 19040402
+AK_R_2050418_003,NA,NA,"the entire Cache Creek flows SW 21 miles to Kahiltna River, 33 mi west of Talkeetna this segment is 11 miles from Dollar Creek to the headwaters"
+AK_R_2060118_006,NA,NA,"N. reach Chuitna River tributary, near Tyonenk, upper W side of Cook Inlet"
+AK_R_2030207_004,NA,NA,"flows SE 8 miles to Galaicer Creek, at Girdwood"
+AK_R_2040212_007,NA,NA,"flows 10 miles SW to Knik River, 7.5 miles SE of Palmer, in the Cook Inlet Lowlands"
+AK_R_8031017_007,HUC-8,19080310,"Kantishna Hills, flows NW 2.7 mi. to Caribou Creek, 8 mi. NNE of Wonder Lake, Alaska Range"
+AK_R_2050503_003,NA,NA,"Flows SW to Fish Lake, 10 mi. to Birch Creek, 6 mi. south of Talkeetna HUC 19020503"
+AK_R_1021212_007,NA,NA,"flows NE 3 mi. into Starrigavan Bay, apprx. 5 mi. N of Sitka on Baranof Island"
+AK_R_7040216_001,HUC-8,19070402,"In Nutzotin Mts., flows SE, through Beaver Lake, and NE 85 mi., across Alaska-Canada boundary, to White River in Yukon, Canada, Alaska Ra.; 62?02'N, 141?47'W; Wrangell-St Elias National Preserve"
+AK_R_1030102_002,NA,NA,flows 4.0 miles SE to Berners Bay at the mouth of Lace River
+AK_R_2030111_010,NA,NA,"flow from China Poot Lake to China Poot Bay, E shore of Kachemak Bay, on Kenai Peninsula, ~9 mi SE of Homer"
+AK_R_3020415_004,NA,NA,"Naknek, Bristol Bay; HUC: 19030204"
+AK_R_2010316_006,HUC-8,19020103,"Heads in mountains S of Chitina River near Kiagna River, flows N to Chitina River, Wrangell-St Elias National Park"
+AK_R_1020408_007,NA,NA,"located at Green Creek mine, NW coast Admiralty Island, SE AK"
+AK_R_1030315_010,NA,NA,City of Haines; HUC: 19010301
+AK_R_8040108_002,NA,NA,"Flows NE 6 mi. to Crooked Creek, 35 mi. SW of Circle, Yukon Tanana Highlands; 65?33'45"", 145?05'40"" W"
+AK_R_2010409_012,HUC-8,19020104,"Heads at glacier and flows E to Falls Creek, Wrangell-St Elias National Park, 3 miles NW of Upper Tebay Lake"
+AK_R_2010318_004,HUC-8,19020103,"Flows W 5.3 mi. to Nizina River, 4.5 mi. E of Nizina Mtn. and 20 mi. NE of McCarthy, Wrangell Mts, 61? 36' N, 142?26' W"
+AK_R_1021102_001,NA,NA,"7.5 miles long, head of Freshwater Bay, Chichagof Island"
+AK_R_2010221_001,NA,NA,"heads at Klutina Galcier, flows 63 mi NE to Copper River at Copper Center"
+AK_R_8031024_003,HUC-8,19080310,"Kantishna Hills, flows NE 30 mi. to Toklat River, 8 mi. SSW of junc. of that stream's East Fork, Alaska Range, 63?48'30"" N, 150?17'10"" W"
+AK_R_8030803_001,HUC-8,19080308,"Heads at Cantwell Glacier, flows E 21 mi. to Jack River, 34 mi. S of Healy, Alaska Ra.; 63?23'30"" N, 148? 55'45"" W"
+AK_R_5010417_038,NA,NA,"Nome, AK, mouth of river is Nome small boat harbor."
+AK_R_3050108_007,NA,NA,"flows SW 14 mi. joins Flat Creek to form Crooked Creek, 15 mi NW of village of Crooked Creek, & 43 mi NW of Sleetmute"
+AK_R_2010314_002,HUC-8,19020103,"Heads in mountains W of Tana River, flows E to Tana River, approximately 17 miles upstream of Tana and Chitina Rivers confluence"
+AK_R_2050306_006,NA,NA,heads in Talkeetna Glacier in Talkeetna Mtns. Flows NW and SW 85 miles to Suisitna River
+AK_R_8031014_021,HUC-8,19080310,Tributary to McKinley River at McKinley Bar
+AK_R_3020309_004,NA,NA,"Naknek, Bristol Bay; HUC: 19030203; flows to Egegik Bay"
+AK_R_2030107_003,NA,NA,"flows 5 mi. NW to Twitter Creek, a trib to Anchor River, NW of Homer"
+AK_R_5010421_028,NA,NA,"Flows W to Bering Sea, 11 mi. SE of Cape Douglasand 40 mi. NW of Nome, Seward Peninsula."
+AK_R_6040216_002,NA,NA,At Sagwon on North Slope.
+AK_R_2030108_025,NA,NA,"Kachemak Bay, NE of Homer, between Fritz Creek and McNeil Canyon."
+AK_R_2010324_003,HUC-8,19020103,Flows SW to Chokosna River
+AK_R_2020111_001,NA,NA,"heads in lake, flows N 2 mi.to Port Valdez, 3.7 mi. SW of Valdez"
+AK_R_8031026_008,HUC-8,19080310,"Kantishna Hills, flows SE 3.5 mi. to Crooked Creek, 4 mi. W of
+junc. of Toklat River and its Clearwater Fork, Alaska Range, 63?48'4OU N, 153?25'00"" W"
+AK_R_1010304_002,NA,NA,"East side of Prince of Wales Island in Southeast, and the southwest part of Polk Inlet, flows NE 4.7 mi. into Polk Inlet"
+AK_R_2040108_010,NA,NA,Wasilla; HUC: 19020505
+AK_R_8030811_003,HUC-8,19080308,"Flows NE 10 mi. to Teklanika River, 24 mi. SW of Healy, Alaska Range, 63?38'30"" N, 149?34'00"" W"
+AK_R_1030107_012,NA,NA,"flows 4 miles SE to Auke Lake, 1.2 mi NE of Auke Bay, and 10 mi NW of Juneau"
+AK_R_8030811_008,HUC-8,19080308,"Flows NW to Sanctuary River, parallels Denali Park Road for some distance"
+AK_R_2050509_002,NA,NA,Western trib to Susitna R. approx. 9 miles west of Willow
+AK_R_2010323_001,HUC-8,19020103,"Heads in Fourth of July Pass, flows SW 2.3 mi. to Fohlin Creek, 12 mi. NW of McCarthy, Wrangell Mts.; 61?29' N, 143?15' W, Wrangell-st Elias National Preserve"
+AK_R_2010206_002,NA,NA,"flows S 60 mi from Gulkana Glacier to Copper River, 9 mi NE of Glenallen"
+AK_R_7040202_010,HUC-8,19070402,"Flows E to Solo Creek, 46 mi. NE of McCarthy, Alaska Range, 61?45' N, 141?401 W, Wrangell-St Elias National Preserve"
+AK_R_2030106_003,NA,NA,"on Kenai Peninsula, heads N. of Boxcar Hills, flows NW to Cook Inlet at Cape Ninilchik, 39 mi. SW of Kenai"
+AK_R_1010305_017,NA,NA,"HUC: 19010103; tributary to Harris River, central Prince of Wales Island"
+AK_R_3050205_003,NA,NA,"2 miles upriver and 2 miles downriver from the village of Aniak on the Kuskokwim River, Aniak is on the south bank of the riverat the head of Aniak Slough 59 miles SW of Russian Mission"
+AK_R_3010300_001,NA,NA,"Adak Naval Air Station, Adak Island, Aleutian Islands, AK"
+AK_R_2050115_001,NA,NA,"flows NE 5.8 mi to Goose Creek, 12 mi SW of its junc. with Susitna River"
+AK_R_1021211_002,NA,NA,"flows S 5 mi to Eastern Anchorage, 1 mi SE of Sitka on W coast of Baranof Island."
+AK_R_2050506_017,NA,NA,Mat-su valley;HUC: 19020505
+AK_R_8030810_007,HUC-8,19080308,"Flows N to Savage River, Denali National Park"
+AK_R_7050606_005,NA,NA,"flows NE 12 miles to Yukon River, 34 mi NW of Eagle, Yukon-Tanana Highlands"
+AK_R_2030108_010,NA,NA,"flows 7 mi S to Kachmak Bay, 7 mi NE of Homer, lower Cook Inlet"
+AK_R_1021010_009,NA,NA,"~7 mi. S of Petersburg on NE side of Mitkof Island, between Taain Creek and Twin Creek"
+AK_R_1030107_001,NA,NA,Flows from Auke Lake to Auke Bay.
+AK_R_2010409_011,HUC-8,19020104,"Heads at glacier and flows NW to the East Fork Bremner River, Wrangell-St Elias National Park"
+AK_R_2010224_004,HUC-8,19020102,"Flows S to to Chichokna River, Wrangell-St Elias National Preserve"
+AK_R_2010118_008,HUC-8,19020101,"Heads at glacier, flows NE, Wrangell-Saint Elias National Preserve"
+AK_R_8030709_008,NA,NA,northern tributary of Tanana River
+AK_R_2030108_026,NA,NA,"Homer, Alaska"
+AK_R_7040217_004,HUC-8,19070402,"In Nutzotin Mts., flows SE 9 mi. to easternmost of Braye Lakes, 36 mi. E of Euchre Mtn., Alaska Ra.; 62?03'10"" N, 141?04'45""W"
+AK_R_2070117_002,NA,NA,"~1.0 mi. NE of Old Harbor, S side of Kodiak Island, flow S 2 mi. to Sitkalidark Strait"
+AK_R_8030811_006,HUC-8,19080308,"Flows SE to Igloo Creek, Denali National Park"
+AK_R_2060118_005,NA,NA,"tributary to the Chuitna River, near Tyonek, upper Cook Inlet E side"
+AK_R_8030103_008,HUC-8,19080301,"Flows W 13 mi. to Chisana River, 10 mi. N of Euchre Mtn. and 40 mi. SE of Nabesna, Alaska Ra.; 62?11' N, 142?05' W, Wrangell-St Elias National Preserve"
+AK_R_2010416_004,NA,NA,South East of Cordova. Outlet of Eyak Lake and Ibeck Creek which runs to the western side of the Copper River Delta.
+AK_R_2030218_001,NA,NA,"flows S into the Kenai River, E of Kenai; HUC: 19020302"
+AK_R_8030103_013,HUC-8,19080301,"In Nutzotin Mts., heads at lake in Caribou Pass, flows NW 2.7 mi. to Chavolda Creek 6.2 mi. SE of its junc. with Chisana River, Alaska Ra.; 62?08'05"" N, 141?55'15"" W, Wrangell-St Elias National Preserve."
+AK_R_2010326_012,HUC-8,19020103,"Flows SW 14 mi. to Kuskulana River, 1.6 mi. S of Strelna and 77 mi. NE of Valdez, Wrangell Mts.; 61?29' N, 144?03' W, Wrangell-St Elias National Park"
+AK_R_2010118_007,HUC-8,19020101,"Heads NW of Mt Sanford, flows NW"
+AK_R_1020408_002,NA,NA,"NE corner of Hawk Inlet on N, NW end of Admiralty Island, Southeast Alaska"
+AK_R_1030315_009,NA,NA,"aprox 3 miles S of Haines on the W side of the Chilkat Peninsula; is crossed by Small Tracts and Mud Bay Roads cataloged anadromous fish stream: 115-32-10260  Conacts: Randy Erickson, ADF&G/Haines @766-3638; Ben Kirkpatrick, ADF&G/Habitat/jnu 465-4288"
+AK_R_2050503_015,NA,NA,"heads in largest of Sunshine Lakes, flows 2.6 miles to Suisitna River, 10 miles S of Talkeetna"
+AK_R_1021211_003,NA,NA,"flows into Sawmill Cove SE of Sitka, Baranof Island"
+AK_R_9010813_003,NA,NA,Hogatza
+AK_R_7050610_007,NA,NA,"Flows N to Kandik River, Yukon-Charley Rivers National Preserve"
+AK_R_8031024_013,HUC-8,19080310,"Tributary to Little Stony Creek in Denali National Park, near Stony Hill/Dome"
+AK_R_2010321_011,HUC-8,19020103,"Flows S and W 18 miles from McCarthy Glacier terminus to Kennicott River at Mccarthy, Wrangell Mountains, 61?25'45""N, 142?56'00"""
+AK_R_1030107_014,NA,NA,"NW end of Douglas Island, NW of Juneau Contact: Cathy Needham, Central Council of Tlingit and Haida Indian Tribes of AK, 463-7187"
+AK_R_2010325_006,HUC-8,19020103,"Heads at lake and flows 10 mi. N to Hanagita River, 37 mi. NW of McCarthy, Chugach Mts.; 61?15' N, 143?58'W, Wrangell-St Elias National Preserve"
+AK_R_2070115_004,NA,NA,"heads at Buskin Lake in Kodiak and flows NE 3.5 mi to Saint Paul Harbor, 3.7 mi SW of Kodiak"
+AK_R_8030906_009,NA,NA,"heads at junc. of McManus and Smith Creeks, flows SW 128 miles to Tolovana River, 48 miles NW of Fairbanks"
+AK_R_5010417_026,NA,NA,"flows 3 mi. SW to Snake River, 3 mi. NW of Nome, Seward Peninsula"
+AK_R_3020609_005,NA,NA,"flow into N side of Iliamna Lake, W of Iliamna"
+AK_R_1010205_012,NA,NA,"a stream that flows NW to SE approx 0.5, to perhaps a mile, thru tidal wetlands into Herring Bay, S coast of Revillagigedo Island, approx 6 mi SE of Ketchikan"
+AK_R_8031118_013,NA,NA,"formed by the confluence of the Chisana and Nebesna Rivers at Northway Junction, flows NW 440 mi. to the Yukon River, 3.5 mi. E of Tanana"
+AK_R_7040204_005,HUC-8,19070402,"Flows SE 22 mi. to White River, 50 mi. NE of McCarthy, Alaska Ra.; 61?45' N, 141?34' W"
+AK_R_8031019_001,HUC-8,19080310,"Heads on Brooker Mtn., at S end of Kantishna Hills, flows N 40 mi. to Bearpaw River, 21 mi. WNW of junc. of Toklat River and its East Fork, Tanana Lowlands, 63?58'50"" N, 150?49'40"" W"
+AK_R_2030214_001,NA,NA,Cooper Creek at Cooper Landing on the Kenai Peninsula
+AK_R_2030108_016,NA,NA,"on Kenai Peninsula, flows S 2.5 mi. to a marsh 1 mi. NE of Beluga Lake, Homer"
+AK_M_1010303_016,NA,NA,"old logging camp, in passage between Thorne Island and Prince of Wales Island"
+AK_R_8031024_009_001,NA,NA,"in Kantishna Hills, flow NE 2.5 mi. to Clearwater Fork, 4 mi. S of that stream's confluence with Toklat River, Alaska Range"
+AK_R_9020511_017,NA,NA,"Yukon River near Galena, within HUC10 1909020511; flows from just upstream of Kala Slough to confluence with Pilot Mountain Slough. Near Galena."
+AK_M_3010400_006,NA,NA,"lagoon on S side of Saint Paul Island, Bering Sea; HUC: 19030104"
+AK_B_3020623_002,NA,NA,Naknek
+AK_R_2070114_007,NA,NA,"Drains to Monashka Bay near Kodiak, north of Monashka Bay Road."
+AK_R_5040409_002,NA,NA,"Wulik River within HUC10 1905040409, flows from just downstream of the confluence with Ikalukrock Creek to the mouth near Kivalina."
+AK_B_1030106_003,NA,NA,Douglas
+AK_B_3020415_001,NA,NA,Naknek River near city of Naknek
+AK_M_1010202_009,NA,NA,uplands associated with cove and old logging camp
+AK_L_8031018_002,HUC-8,19080310,"Just east of Wonder Lake, approximately 1.5 miles S of Moose Creek, adjacent to Denali Park road. 63.489037, -150.866654"
+AK_M_3010208_023,NA,NA,"HUC10 1903010208, monitoring location at 53.9032N, -166.5255W"
+AK_M_5010420_003,NA,NA,HUC10 1901021010
+AK_L_8030710_001,NA,NA,"HUC10 1908030710, monitoring location at 64.714164N, -147.193331W"
+AK_R_2010102_001,NA,NA,"HUC10 1902010102, monitoring location at 62.57322628N, -143.51831183W"
+AK_R_2010118_001,NA,NA,"HUC10 1902010118, monitoring location at 62.38761N, -144.365361W"
+AK_R_2010311_003,NA,NA,"HUC10 1902010309, monitoring location at 60.811194N, -142.478516W"
+AK_R_2010313_004,NA,NA,"HUC10 1902010311, monitoring location at 60.979466N, -142.857788W"
+AK_R_2010321_015,NA,NA,"HUC10 1902010317, monitoring location at 61.586787N, -142.965631W"
+AK_R_2010322_023,NA,NA,"HUC10 1902010318, monitoring location at 61.353773N, -142.611336W"
+AK_R_2010325_008,NA,NA,"HUC10 1902010321, monitoring location at 61.188501N, -144.390546W"
+AK_R_2010321_010,NA,NA,"HUC10 1902010317, monitoring location at 61.43432N, -142.94053W"
+AK_R_2010409_010,NA,NA,"HUC10 1902010409, monitoring location at 61.051741N, -144.40322W"
+AK_R_2050417_001,NA,NA,"HUC10 1902050417, monitoring location at 62.584799N, -151.204494W"
+AK_R_2050418_039,NA,NA,"HUC10 1902050418, monitoring location at 62.481078N, -151.187995W"
+AK_R_7040216_008,NA,NA,"HUC10 1907040207, monitoring location at 61.991352N, -141.763678W"
+AK_R_7050613_004,NA,NA,"HUC10 1907050613, monitoring location at 64.902142N, -143.731877W"
+AK_R_7050614_005,NA,NA,"HUC10 1907050614, monitoring location at 64.804154N, -143.985624W"
+AK_R_7050617_015,NA,NA,"HUC10 1907050617, monitoring location at 65.333N, -142.943W"
+AK_R_7050617_016,NA,NA,"HUC10 1907050617, monitoring location at 65.42502N, -142.977476W"
+AK_R_7050618_011,NA,NA,"HUC10 1907050618, monitoring location at 65.339958N, -143.63214W"
+AK_R_7050618_012,NA,NA,"HUC10 1907050618, monitoring location at 65.232976N, -143.55383W"
+AK_R_8030103_007,NA,NA,"HUC10 1908030103, monitoring location at 62.09908N, -141.782646W"
+AK_R_8030113_009,NA,NA,"HUC10 1908030112, monitoring location at 62.52338N, -143.22081W"
+AK_R_8030906_008,NA,NA,"HUC10 1908030906, monitoring location at 65.1564694444445N, -147.607W"
+AK_R_8030906_028,NA,NA,"HUC10 1908030906, monitoring location at 65.1643611111111N, -147.500938888889W"
+AK_R_8030906_039,NA,NA,"HUC10 1908030906, monitoring location at 65.1523833333333N, -147.485119444444W"
+AK_R_8030906_052,NA,NA,"HUC10 1908030906, monitoring location at 65.1578527777778N, -147.606502777778W"
+AK_R_8030906_053,NA,NA,"HUC10 1908030906, monitoring location at 65.14485N, -147.574238888889W"
+AK_R_8030906_054,NA,NA,"HUC10 1908030906, monitoring location at 65.18055N, -147.440669444444W"
+AK_R_8030508_008,NA,NA,"HUC10 1908030508, monitoring location at 64.4693N, -146.9292W"
+AK_R_9030512_009,NA,NA,"HUC10 1909030512, monitoring location at 62.0521N, -163.4067W"
+AK_R_7050513_010,NA,NA,"HUC10 1907050513, monitoring location at 64.7828N, -141.1767W"
+AK_R_7050620_004,NA,NA,"HUC10 1907050620, monitoring location at 65.8246N, -144.0537W"
+AK_R_7050621_003,NA,NA,"HUC10 1907050621, monitoring location at 66.5588N, -145.2776W"
+AK_R_8010626_001,NA,NA,"HUC10 1908010626, monitoring location at 66.6541N, -143.7155W"
+AK_R_8010822_008,NA,NA,"HUC10 1908010822, monitoring location at 66.5928N, -145.2786W"
+AK_R_8020409_005,NA,NA,"HUC10 1908020409, monitoring location at 67.0191N, -146.4304W"
+AK_R_8030204_004,NA,NA,"HUC10 1908030204, monitoring location at 63.3173N, -142.6493W"
+AK_R_8030710_009,NA,NA,"HUC10 1908030715, monitoring location at 64.532515N, -147.01493W"
+AK_R_8030713_008,NA,NA,"HUC10 1908030713, monitoring location at 64.7895N, -147.9593W"
+AK_R_8030722_002,NA,NA,"HUC10 1908030722, monitoring location at 64.5663N, -149.0915W"
+AK_R_8030903_003,NA,NA,"HUC10 1908030903, monitoring location at 65.162N, -149.1298W"
+AK_R_8040405_011,NA,NA,"HUC10 1908040405, monitoring location at 65.876N, -149.7179W"
+AK_R_8040408_003,NA,NA,"HUC10 1908040408, monitoring location at 65.6658N, -149.0966W"
+AK_R_8040418_005,NA,NA,"HUC10 1908040418, monitoring location at 65.1807N, -151.9614W"
+AK_R_9010816_005,NA,NA,"HUC10 1909010816, monitoring location at 65.9937N, -155.3995W"
+AK_R_9010820_004,NA,NA,"HUC10 1909010820, monitoring location at 65.7007N, -156.428W"
+AK_R_9010913_004,NA,NA,"HUC10 1909010913, monitoring location at 64.9221N, -157.5414W"
+AK_R_9020401_007,NA,NA,"HUC10 1909020401, monitoring location at 65.1658N, -152.0649W"
+AK_R_9020506_009,NA,NA,"HUC10 1909020506, monitoring location at 64.7454N, -155.4887W"
+AK_R_9020513_011,NA,NA,"HUC10 1909020513, monitoring location at 64.7277N, -158.055W"
+AK_R_9030114_001,NA,NA,"HUC10 1909030114, monitoring location at 62.6667N, -160.2817W"
+AK_R_9030115_005,NA,NA,"HUC10 1903050222, monitoring location at 62.6724N, -160.1959W"
+AK_R_9030411_006,NA,NA,"HUC10 1909030411, monitoring location at 61.8419N, -161.3053W"
+AK_R_9030506_001,NA,NA,"HUC10 1909030515, monitoring location at 62.05499N, -163.13892W"
+AK_R_1010302_005,NA,NA,"Heads in lake, on Prince of Wales Island and flows SE 16.5 mi. to Thorne Bay."
+AK_R_8030106_003,HUC-8,19080301,"Heads in Yukon, Canada, flows SW across Alaska-Canada boundary 50 mi. to Chisana River, 28 mi. SE of Northway Junction, Alaska Ra.; 62?41' N, 141?16' W"
+AK_L_2040105_036,NA,NA,Wasilla; HUC: 19020505
+AK_R_1010305_005,NA,NA,located approx 45 miles west of Ketchikan on the central east coast of Prince of Wales Island near Hollis. Watershed encompasses 31.8 sq mi
+AK_L_2040105_036_001,HUC-8,19020401,Wasilla. Two areas on the north shore of lake.
+AK_L_3050204_001,NA,NA,"HUC10 1903050204, monitoring location at 61.4135N, -160.0214W"
+AK_B_1030315_003,NA,NA,"Haines, four miles south of Portage Cove"
+AK_R_9030519_024,NA,NA,"HUC10 1909030519, monitoring location at 63.0414N, -163.6697W"
+AK_R_9030519_028,NA,NA,"HUC10 1909030519, monitoring location at 62.6847N, -164.6184W"
+AK_R_9030529_004,NA,NA,"HUC10 1909030529, monitoring location at 61.5461N, -165.5739W"
+AK_R_9020405_009,NA,NA,"HUC10 1909020404, monitoring location at 65.1966N, -152.9393W"
+AK_R_7050219_030,NA,NA,"HUC10 1907050219, monitoring location at 64.1568N, -141.4404W"
+AK_R_8031106_014,NA,NA,"HUC10 1908031106, monitoring location at 65.1667N, -150.2181W"
+AK_R_8031116_001,NA,NA,"HUC10 1908031116, monitoring location at 65.0566N, -151.3212W"
+AK_R_8031116_004,NA,NA,"HUC10 1908031116, monitoring location at 65.132N, -151.277W"
+AK_R_8031116_007,NA,NA,"HUC10 1908040417, monitoring location at 65.038191N, -151.375571W"
+AK_R_8040108_028,NA,NA,"HUC10 1908040108, monitoring location at 65.4732N, -144.6013W"
+AK_R_8040411_013,NA,NA,"HUC10 1908040411, monitoring location at 65.4734N, -150.0041W"
+AK_R_8040417_001,NA,NA,"HUC10 1908040417, monitoring location at 65.3622N, -150.9977W"
+AK_R_8040417_009,NA,NA,"HUC10 1908040417, monitoring location at 65.2633N, -151.3041W"
+AK_R_9010804_005,NA,NA,"HUC10 1909010804, monitoring location at 65.8688N, -154.399W"
+AK_R_9010806_005,NA,NA,"HUC10 1909010806, monitoring location at 66.0871N, -154.2163W"
+AK_R_9010814_003,NA,NA,"HUC10 1909010814, monitoring location at 66.0059N, -155.3905W"
+AK_R_9020107_008,NA,NA,"HUC10 1909020107, monitoring location at 65.1361N, -152.4163W"
+AK_R_9020220_013,NA,NA,"HUC10 1909020220, monitoring location at 64.4053N, -155.4969W"
+AK_R_9020220_014,NA,NA,"HUC10 1909020220, monitoring location at 64.385N, -155.522W"
+AK_R_9020220_015,NA,NA,"HUC10 1909020220, monitoring location at 64.3538N, -155.5093W"
+AK_R_9020224_007,NA,NA,"HUC10 1909020224, monitoring location at 64.4157N, -155.3461W"
+AK_M_1021010_008,NA,NA,Harbor at southeast Alaska community of Petersburg
+AK_R_2010323_005,NA,NA,"HUC10 1902010323, monitoring location at 61.37528N, -143.346580W"
+AK_R_2050510_009,NA,NA,Susitna River within HUC 1902050510; flows north to south from the Kashwitna River downstream to Anderson Creek.
+AK_R_2040201_005,NA,NA,"HUC10 1902040201, monitoring location at 61.80201N, -147.68605W"
+AK_R_2040203_007,NA,NA,"HUC10 1902040203, monitoring location at 61.79278N, -147.93568W"
+AK_R_2040204_013,NA,NA,"HUC10 1902040204, monitoring location at 61.81109N, -148.13625W"
+AK_R_2040205_003,NA,NA,"HUC10 1902040205, monitoring location at 61.79652N, -148.47852W"
+AK_R_2040205_004,NA,NA,"HUC10 1902040205, monitoring location at 61.79633N, -148.47803W"
+AK_R_2040206_001,NA,NA,"HUC10 1902040206, monitoring location at 61.73218N, -148.75056W"
+AK_R_2040207_001,NA,NA,"HUC10 1902040207, monitoring location at 61.71471N, -149.07291W"
+AK_R_2040207_005,NA,NA,"HUC10 1902040207, monitoring location at 61.711N, -148.89859W"
+AK_R_2040207_008,NA,NA,"HUC10 1902040207, monitoring location at 61.71125N, -148.85046W"
+AK_R_2040207_014,NA,NA,"HUC10 1902040207, monitoring location at 61.68235N, -149.04647W"
+AK_R_2040207_016,NA,NA,"HUC10 1902040207, monitoring location at 61.65537N, -149.0332W"
+AK_R_2040207_017,NA,NA,"HUC10 1902040207, monitoring location at 61.67504N, -149.02559W"
+AK_R_2040207_018,NA,NA,"HUC10 1902040207, monitoring location at 61.73441N, -149.02486W"
+AK_R_3050101_006_001,NA,NA,"HUC10 1903050101, monitoring location at 61.89594N, -157.7021W"
+AK_R_3050107_005,NA,NA,"HUC10 1903050107, monitoring location at 61.89814N, -157.7139W"
+AK_R_3050108_005,NA,NA,"HUC10 1903050108, monitoring location at 61.8893006N, -158.156842W. Tributary to the Kuskokwim River, downstream of Georgetown."
+AK_R_3050123_001,NA,NA,"HUC10 1903050123, monitoring location at 61.57073N, -159.492W"
+AK_R_3050124_006,NA,NA,"HUC10 1903050124, monitoring location at 61.59303N, -159.447W"
+AK_R_3050205_001,NA,NA,"HUC10 1903050205, monitoring location at 61.57259N, -159.529W"
+AK_M_1020904_005,HUC-12,190102090401,"HUC10 1901020904 monitoring location at 56.4875N, -132.396W"
+AK_M_1030305_002,HUC-8,19010303,"HUC10 1901030305 monitoring location at 59.4418N, -135.3453W"
+AK_M_1030305_002,HUC-12,190103030502,"HUC10 1901030305 monitoring location at 59.4418N, -135.3453W"
+AK_M_1030305_004,NA,NA,"HUC10 1901030305, monitoring location at 59.4496N, -135.333W"
+AK_M_2020205_003,NA,NA,"HUC10 1902020205 monitoring location at 60.1144N, -149.4155W"
+AK_M_2040108_003,NA,NA,"HUC10 1902040108 monitoring location at 61.2574N, -149.9255W"
+AK_B_2030108_005,NA,NA,"Homer Spit, Homer"
+AK_R_2060118_002,NA,NA,"flows 37 miles SE to Cook Inlt, 2 miles Nof Tyonek"
+AK_R_8030116_002,HUC-8,19080301,"Heads at Nabesna Glacier and flows NE 73 mi. to join the Chisana River to form the Tanana River, 41 mi. SE of Tok, Alaska Ra.; 63?03' N, 141?52' W"

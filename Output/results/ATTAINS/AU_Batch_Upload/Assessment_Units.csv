@@ -1,0 +1,772 @@
+ASSESSMENT_UNIT_ID,ASSESSMENT_UNIT_NAME,ASSESSMENT_UNIT_STATE,ASSESSMENT_UNIT_AGENCY,ASSESSMENT_UNIT_COMMENT,LOCATION_DESCRIPTION,USE_CLASS_NAME
+AK_B_1010203_001,Knudson Cove Beach,AK,S,NA,19010102,Beach
+AK_B_1010204_001,South Point Higgins Beach,AK,S,NA,19010102,Beach
+AK_B_1010204_002,Shull Beach,AK,S,NA,19010102,Beach
+AK_B_1010204_003,Sunset Beach,AK,S,NA,19010102,Beach
+AK_B_1010204_004,Refuge Cove Beach,AK,S,NA,19010102,Beach
+AK_B_1010204_005,Thomas Basin Harbor,AK,S,NA,19010102,Beach
+AK_B_1010204_006,Seaport Beach,AK,S,NA,19010102,Beach
+AK_B_1010204_007,Rotary Pool,AK,S,NA,19010102,Beach
+AK_B_1010204_008,Rotary Park Beach,AK,S,NA,19010102,Beach
+AK_B_1010205_001,Herring Cove Beach,AK,S,NA,19010102,Beach
+AK_B_1010208_001,Mountain Point Cultural Food Beach,AK,S,NA,19010102,Beach
+AK_B_1010208_002,Mountain Point Surprise Beach,AK,S,NA,19010102,Beach
+AK_B_2030218_002,North Kenai Beach,AK,S,NA,Kenai Peninsula Borough,Beach
+AK_B_2030218_003,South Kenai Beach,AK,S,NA,Kenai Peninsula Borough,Beach
+AK_B_3030311_001,Beach @ Kanakanak (Dillingham),AK,S,NA,NA,Beach
+AK_B_3030311_002,Beach @ Scandinavian Beach,AK,S,NA,NA,Beach
+AK_B_3030311_003,Beach @ Snag Point,AK,S,NA,NA,Beach
+AK_L_2040106_003,Campbell Lake,AK,S,NA,NA,Lake
+AK_L_2040108_055,University Lake,AK,S,NA,NA,Lake
+AK_L_2040108_060,Westchester Lagoon,AK,S,NA,NA,Lake
+AK_L_2040108_063,Hood/Spenard Lake,AK,S,NA,Anchorage Municipality,Lake
+AK_L_8030609_003,Chena Lake,AK,S,NA,NA,Lake
+AK_L_8030709_001,Birch Lake,AK,S,NA,NA,Lake
+AK_M_1010204_006,Tongass Narrows 2 (Alaska General Seafoods),AK,S,NA,NA,Marine
+AK_M_1010204_008,Ward Cove,AK,S,NA,NA,Marine
+AK_M_1010204_010,Tongass Narrows 1 (Trident Seafoods),AK,S,NA,NA,Marine
+AK_M_1010210_003,Inside Passage,AK,S,NA,190101021001,Marine
+AK_M_1020903_010,Stikine Strait,AK,S,NA,19010209,Marine
+AK_M_1020903_010,Stikine Strait,AK,S,NA,190102090303,Marine
+AK_M_1020904_004,Wrangell Harbor,AK,S,NA,190102090401,Marine
+AK_M_1021010_006,Hammer Slough,AK,S,NA,NA,Marine
+AK_M_1021109_010,East Port Frederick,AK,S,NA,NA,Marine
+AK_M_1021211_005,Crescent Bay,AK,S,NA,190102121106,Marine
+AK_M_1021212_013,Sitka Harbor,AK,S,NA,190102121206,Marine
+AK_M_1021212_017,Sitka Channel,AK,S,NA,NA,Marine
+AK_M_1030106_002,Gastineau Channel,AK,S,NA,NA,Marine
+AK_M_1030106_003,Gastineau Channel (Harris and Aurora Harbors),AK,S,NA,NA,Marine
+AK_M_1030107_025,Auke Nu Cove,AK,S,NA,NA,Marine
+AK_M_1030108_001,Lynn Canal,AK,S,NA,19010301,Marine
+AK_M_1030305_003,Skagway Harbor,AK,S,NA,NA,Marine
+AK_M_1030308_005,Portage Cove,AK,S,NA,NA,Marine
+AK_M_1030308_007,Tanani Bay,AK,S,NA,NA,Marine
+AK_M_1050001_001,Stephens Passage,AK,S,NA,NA,Marine
+AK_M_1050004_001,Fredrick Sound,AK,S,NA,NA,Marine
+AK_M_1050006_003,Icy Strait,AK,S,NA,NA,Marine
+AK_M_1050007_001,Chatham Strait,AK,S,NA,NA,Marine
+AK_M_1050008_001,Sumner Strait,AK,S,NA,NA,Marine
+AK_M_1050009_001,Clarence Strait,AK,S,NA,NA,Marine
+AK_M_2020111_005,Port Valdez,AK,S,NA,NA,Marine
+AK_M_2020111_011,Port Valdez Small Boat Harbor,AK,S,NA,NA,Marine
+AK_M_2020120_011,Passage Canal (Whittier Harbor),AK,S,NA,NA,Marine
+AK_M_2030108_006,Homer Harbor,AK,S,NA,NA,Marine
+AK_M_2040108_006,Anchorage Harbor,AK,S,NA,NA,Marine
+AK_M_2070114_018,Mill Bay,AK,S,NA,NA,Marine
+AK_M_2070115_007,Kodiak Harbor,AK,S,NA,NA,Marine
+AK_M_3010208_005,Dutch Harbor,AK,S,NA,NA,Marine
+AK_M_3010208_008,Iliuliuk Bay,AK,S,NA,NA,Marine
+AK_M_3010208_009,Iliuliuk Harbor,AK,S,NA,NA,Marine
+AK_R_1010504_005,Unuk River,AK,S,NA,19010105,River
+AK_R_1010601_009,Salmon River (Hyder),AK,S,NA,NA,River
+AK_R_1020709_011,Stikine River,AK,S,NA,19010207,River
+AK_R_1030106_014,Jordan Creek,AK,S,NA,NA,River
+AK_R_1030407_006,Taku River,AK,S,NA,NA,River
+AK_R_1040422_001,Alsek River,AK,S,NA,NA,River
+AK_R_2030207_012,McHugh Creek,AK,S,NA,NA,River
+AK_R_2030207_018,Rainbow Creek,AK,S,NA,NA,River
+AK_R_2030214_007,Kenai River,AK,S,NA,19020302,River
+AK_R_2030218_002_001,Kenai River,AK,S,NA,Kenai Peninsula Borough,River
+AK_R_2030218_002_001,Kenai River,AK,S,NA,19020302,River
+AK_R_2030218_002_002,Kenai River,AK,S,NA,19020302,River
+AK_R_2030218_006,Slikok Creek,AK,S,NA,NA,River
+AK_R_2030218_007,Soldotna Creek,AK,S,NA,NA,River
+AK_R_2040102_002,Peters Creek,AK,S,NA,NA,River
+AK_R_2040103_003_004,Eagle River,AK,S,NA,NA,River
+AK_R_2040104_002_001,Ship Creek-Glenn Hy. Bridge Down to Mouth,AK,S,NA,NA,River
+AK_R_2040104_002_002,Ship Creek,AK,S,NA,NA,River
+AK_R_2040106_001,Campbell Creek,AK,S,NA,NA,River
+AK_R_2040106_004,Little Campbell Creek,AK,S,NA,NA,River
+AK_R_2040106_005,Craig Creek,AK,S,NA,NA,River
+AK_R_2040107_002,Furrow Creek,AK,S,NA,NA,River
+AK_R_2040107_003_001,Little Rabbit Creek,AK,S,NA,NA,River
+AK_R_2040107_004,Potter Creek,AK,S,NA,NA,River
+AK_R_2040107_005,Rabbit Creek,AK,S,NA,NA,River
+AK_R_2040107_007,Little Survival Creek,AK,S,NA,NA,River
+AK_R_2040108_003,Chester Creek,AK,S,NA,NA,River
+AK_R_2040108_009,Fish Creek (Anchorage),AK,S,NA,NA,River
+AK_R_2040108_022,Wasilla Creek,AK,S,NA,NA,River
+AK_R_2050512_016_003,Little Susitna River,AK,S,NA,NA,River
+AK_R_2050512_016_005,Little Susitna River,AK,S,NA,NA,River
+AK_R_2050512_016_009,Little Susitna River,AK,S,NA,NA,River
+AK_R_8030606_001,Chena River,AK,S,NA,NA,River
+AK_R_8030609_003,Chena River,AK,S,NA,NA,River
+AK_R_8030609_004_001,Chena Slough (lower),AK,S,NA,NA,River
+AK_R_8030710_005,Pile Driver Slough,AK,S,NA,NA,River
+AK_R_8040102_012_002,Birch Creek (Ikheenjik River),AK,S,NA,NA,River
+AK-20202-802,EVOS beach (N Elrington Island),AK,S,NA,NA,NA
+AK-20202-804,EVOS beach (NW LaTouche Island 2),AK,S,NA,NA,NA
+AK-20202-805,EVOS beach (NW LaTouche Island 3),AK,S,NA,NA,NA
+AK-20202-808,EVOS beach (N LaTouche Island 6),AK,S,NA,NA,NA
+AK-20202-809,EVOS beach (N LaTouche Island 7),AK,S,NA,NA,NA
+AK-20202-811,EVOS beach (mainland),AK,S,NA,NA,NA
+AK-20202-813,"EVOS beach (Rua Cove, Knight Island)",AK,S,NA,NA,NA
+AK-20202-815,"EVOS beach (Marsha Bay, Knight Island)",AK,S,NA,NA,NA
+AK-20202-814,EVOS beach (SE Knight Island),AK,S,NA,NA,NA
+AK-20202-816,EVOS beach (N Green Island),AK,S,NA,NA,NA
+AK-20202-817,EVOS beach (NE Seal Island),AK,S,NA,NA,NA
+AK-20202-818,EVOS beach (N Disk Island),AK,S,NA,NA,NA
+AK-20202-812,EVOS beach (NE Knight Island),AK,S,NA,NA,NA
+AK-20202-819,EVOS beach (NE Evans Island 2),AK,S,NA,NA,NA
+AK-20202-821,EVOS beach (NE Evans Island 4),AK,S,NA,NA,NA
+AK_B_2020302_027,Smith Island,AK,S,NA,19020203,NA
+AK_B_2020302_028,Smith Island,AK,S,NA,19020203,NA
+AK_B_2020302_029,Smith Island,AK,S,NA,19020203,NA
+AK_R_3020311_001_001,Egegik River,AK,S,NA,NA,NA
+AK_M_3010115_017,Popof Strait,AK,S,NA,NA,NA
+AK_L_2040105_008_001,Big Lake,AK,S,NA,NA,NA
+AK_M_1010303_014,Thorne Bay,AK,S,NA,NA,NA
+AK_R_8040102_006,Upper Birch Creek drainage: Eagle Creek,AK,S,NA,NA,NA
+AK_R_8040102_009,Upper Birch Creek drainage: Gold Dust Creek,AK,S,NA,NA,NA
+AK_M_1020408_002,Hawk Inlet,AK,S,NA,NA,NA
+AK_M_1021211_020,Silver Bay,AK,S,NA,NA,NA
+AK_R_8030907_014_001,Goldstream Creek,AK,S,NA,NA,NA
+AK_M_3010122_001,Cold Bay,AK,S,NA,NA,NA
+AK_R_8040108_022,Crooked Creek Watershed: Mammoth Creek,AK,S,NA,NA,NA
+AK_R_1030302_007,Pullen Creek,AK,S,NA,NA,NA
+AK_R_8030710_002_001,Garrison Slough,AK,S,NA,NA,NA
+AK_R_8040108_005_001,Crooked Creek Watershed: Bonanza Creek,AK,S,NA,NA,NA
+AK_B_2020303_004,EVOS beach (N LaTouche Island 5),AK,S,NA,NA,NA
+AK_R_1030106_017_001,Lemon Creek,AK,S,NA,NA,NA
+AK_R_8040108_024_001,Crooked Creek Watershed: Mastadon Creek,AK,S,NA,NA,NA
+AK_R_3050101_009,Red Devil Creek (2),AK,S,NA,NA,NA
+AK_B_2020303_001,EVOS beach (NE Evans Island 3),AK,S,NA,NA,NA
+AK_R_8040108_019_001,Crooked Creek Watershed: Ketchem Creek,AK,S,NA,NA,NA
+AK_R_2040207_013_002,Matanuska River,AK,S,NA,NA,NA
+AK_R_8030609_017,Noyes Slough,AK,S,NA,NA,NA
+AK_M_1021116_020,Klag Bay,AK,S,NA,NA,NA
+AK_B_2020303_005,EVOS beach (N LaTouche Island 8),AK,S,NA,NA,NA
+AK_M_3010123_005,King Cove,AK,S,NA,NA,NA
+AK_R_8040108_008,Crooked Creek Watershed: Deadwood Creek,AK,S,NA,NA,NA
+AK_R_3050101_006_008,Kuskokwim River (Red Devil),AK,S,NA,NA,NA
+AK_L_2070115_036,Red Lake-Anton Road Pond,AK,S,NA,NA,NA
+AK_M_3010207_004,Akutan Harbor,AK,S,NA,NA,NA
+AK_R_1030106_037,Vanderbilt Creek,AK,S,NA,NA,NA
+AK_R_1030106_038,Pederson Hill Creek,AK,S,NA,NA,NA
+AK_M_3010208_022,South Unalaska Bay,AK,S,NA,NA,NA
+AK_B_2020303_003,EVOS beach (N LaTouche Island 4),AK,S,NA,NA,NA
+AK_M_1021115_007,Kimshan Cove,AK,S,NA,NA,NA
+AK_R_8040108_027,Crooked Creek Watershed: Porcupine Creek,AK,S,NA,NA,NA
+AK_R_8031018_015,Slate Creek,AK,S,NA,NA,NA
+AK_R_2040108_004_001,Cottonwood Creek,AK,S,NA,NA,NA
+AK_B_2020302_003,Eleanor Island,AK,S,NA,NA,NA
+AK_B_2020303_002,EVOS beach (NE LaTouche Island 1),AK,S,NA,NA,NA
+AK_R_1030106_036,Duck Creek,AK,S,NA,NA,NA
+AK_R_1021212_004_001,Katlian River,AK,S,NA,NA,NA
+AK_R_2040103_003_003,Eagle River,AK,S,NA,NA,NA
+AK_B_2020302_026,EVOS beach (N Smith Island),AK,S,NA,NA,NA
+AK_R_8040108_007_002,Crooked Creek Watershed: Crooked Creek,AK,S,NA,NA,NA
+AK_M_1010305_021,Salt Chuck Bay,AK,S,NA,NA,NA
+AK_M_1021211_010,"Herring Cove, of Silver Bay",AK,S,NA,NA,NA
+AK_B_2020302_004,Eleanor Island,AK,S,NA,19020203,NA
+AK_B_2020302_005,Eleanor Island,AK,S,NA,19020203,NA
+AK_B_2020302_006,Eleanor Island,AK,S,NA,19020203,NA
+AK_B_2020302_007,Eleanor Island,AK,S,NA,19020203,NA
+AK_B_2020302_008,Eleanor Island,AK,S,NA,19020203,NA
+AK_B_2020302_009,Eleanor Island,AK,S,NA,19020203,NA
+AK_B_2020302_010,Eleanor Island,AK,S,NA,19020203,NA
+AK_B_2020302_011,Eleanor Island,AK,S,NA,19020203,NA
+AK_B_2020302_012,Eleanor Island,AK,S,NA,19020203,NA
+AK_L_2040108_020,Goose Lake,AK,S,NA,NA,NA
+AK_R_8040108_006,Crooked Creek Watershed: Boulder Creek,AK,S,NA,NA,NA
+AK_L_6040101_002,Lake McDermott,AK,S,NA,NA,NA
+AK_L_2070115_030,Potatopatch Lake,AK,S,NA,NA,NA
+AK_L_2070114_006,Horseshoe/Island Lakes,AK,S,NA,NA,NA
+AK_L_7050621_002,Hospital Lake,AK,S,NA,NA,NA
+AK_L_2010401_003,Town Lake,AK,S,NA,NA,NA
+AK_L_2040108_057,Walby Lake,AK,S,NA,NA,NA
+AK_L_3020512_001,Lake Clark,AK,S,NA,NA,NA
+AK_L_2040108_017,Edmonds Lake,AK,S,NA,NA,NA
+AK_L_2040106_012,Hideaway (Hidden) Lake,AK,S,NA,NA,NA
+AK_L_2040108_043,Mirror Lake,AK,S,NA,NA,NA
+AK_L_2040106_004,Jewel Lake,AK,S,NA,NA,NA
+AK_L_1030311_001,Mosquito Lake,AK,S,NA,NA,NA
+AK_L_2040108_033,Lake Otis,AK,S,NA,NA,NA
+AK_L_2070115_002,Buskin Lake,AK,S,NA,NA,NA
+AK_L_2070115_001,Beaver Lake,AK,S,NA,NA,NA
+AK_L_1030107_001,Auke Lake,AK,S,NA,NA,NA
+AK_L_3020609_004,Iliamna Lake,AK,S,NA,NA,NA
+AK_L_8030313_001,Clearwater Lake,AK,S,NA,NA,NA
+AK_L_2040108_042,Meadow Lake,AK,S,NA,NA,NA
+AK_L_2010417_001,McKinley Lake,AK,S,NA,NA,NA
+AK_L_2070115_004,Dark Lake,AK,S,NA,NA,NA
+AK_L_6040101_001,Colleen Lake,AK,S,NA,NA,NA
+AK_L_2040108_009,Conners Lake,AK,S,NA,NA,NA
+AK_L_2040108_039,Lower Fire Lake,AK,S,NA,NA,NA
+AK_L_8030407_001,Bolio Lake,AK,S,NA,NA,NA
+AK_L_2040108_034,Little Campbell Lake,AK,S,NA,NA,NA
+AK_L_2050512_026,Memory Lake,AK,S,NA,NA,NA
+AK_L_2040106_009,Sundi Lake,AK,S,NA,NA,NA
+AK_L_3010208_002,Unalaska Lake,AK,S,NA,NA,NA
+AK_L_2050109_006,Lake Louise,AK,S,NA,NA,NA
+AK_L_2040205_003,Upper Bonnie Lake,AK,S,NA,NA,NA
+AK_L_8030701_002,Quartz Lake,AK,S,NA,NA,NA
+AK_L_2040108_008,Cheney Lake,AK,S,NA,NA,NA
+AK_L_5040317_001,Kotzebue Lake,AK,S,NA,NA,NA
+AK_L_2040108_058,Wasilla Lake,AK,S,NA,NA,NA
+AK_L_8030608_001,Unnamed Lake (Chena Hot Springs Rd.),AK,S,NA,NA,NA
+AK_L_2030111_004,Lost and Found Lake,AK,S,NA,NA,NA
+AK_L_2040108_018,Finger Lake,AK,S,NA,NA,NA
+AK_L_2030218_015,Fire Lake,AK,S,NA,NA,NA
+AK_L_2040212_006,Jim Lake,AK,S,NA,NA,NA
+AK_L_2040105_007,Big Beaver Lake,AK,S,NA,NA,NA
+AK_L_8030508_001,Harding Lake,AK,S,NA,NA,NA
+AK_L_1030106_004,North Twin Lakes,AK,S,NA,NA,NA
+AK_L_2070115_027,Mission Lake,AK,S,NA,NA,NA
+AK_L_2040108_024,Jones Lake,AK,S,NA,NA,NA
+AK_L_2030108_001,Beluga Lake (Homer),AK,S,NA,NA,NA
+AK_L_2010202_005,Paxson Lake,AK,S,NA,NA,NA
+AK_L_2040108_056,Upper Fire Lake,AK,S,NA,NA,NA
+AK_L_2040108_014,Delong Lake,AK,S,NA,NA,NA
+AK_L_2040105_028,Kalmbach Lake,AK,S,NA,NA,NA
+AK_L_2010416_005,Eyak Lake,AK,S,NA,NA,NA
+AK_L_2070115_023,Lilly Lake,AK,S,NA,NA,NA
+AK_L_2040207_002,Canoe Lake,AK,S,NA,NA,NA
+AK_L_2050512_030,Nancy Lake,AK,S,NA,NA,NA
+AK_L_1010306_001,Dora Lake,AK,S,NA,NA,NA
+AK_L_2020109_004,Robe Lake,AK,S,NA,NA,NA
+AK_L_2040108_011,Cottonwood Lake,AK,S,NA,NA,NA
+AK_L_1030106_005,South Twin Lakes,AK,S,NA,NA,NA
+AK_L_5010100_001,Troutman Lake,AK,S,NA,NA,NA
+AK_L_1021211_006,Wrinkleneck Creek-Swan Lake,AK,S,NA,NA,NA
+AK_R_2030207_007,Glacier Creek (Girdwood),AK,S,NA,NA,NA
+AK_B_2030107_001,Beach @ Bluff Point,AK,S,NA,NA,NA
+AK_R_2040103_003_001,Eagle River Flats,AK,S,NA,NA,NA
+AK_R_2030207_005,Crow Creek,AK,S,NA,NA,NA
+AK_B_1030107_007,"Lena Cove Beach, Juneau",AK,S,NA,NA,NA
+AK_B_5010420_002,Beach @ West Beach,AK,S,NA,NA,NA
+AK_L_2020102_002,Odiak Pond,AK,S,NA,NA,NA
+AK_B_2040108_001,Beach @ Point Woronzof,AK,S,NA,NA,NA
+AK_M_6040116_001,Nearshore Beaufort Lagoon: Sag River to Simpson Lagoon,AK,S,NA,NA,NA
+AK_B_2030218_005,Kenai Gull Rookery 2,AK,S,NA,Kenai Peninsula Borough,NA
+AK_B_1010203_002,Beacon Hill Beach,AK,S,NA,19010102,NA
+AK_M_1010205_010,Shoal Cove,AK,S,NA,NA,NA
+AK_M_2030112_009,Jakolof Bay,AK,S,NA,NA,NA
+AK_M_2070115_012,Saint Paul Harbor,AK,S,NA,NA,NA
+AK_M_2030108_003,Mud Bay (Homer),AK,S,NA,NA,NA
+AK_M_2030112_017,Seldovia Bay,AK,S,NA,NA,NA
+AK_M_1010309_007,Labouchere Bay,AK,S,NA,NA,NA
+AK_M_1010313_005,Klawock Inlet,AK,S,NA,NA,NA
+AK_M_1020902_005,Shoemaker Bay,AK,S,NA,NA,NA
+AK_M_1010306_002,Dora Bay,AK,S,NA,NA,NA
+AK_M_2020123_010,McClure Bay,AK,S,NA,NA,NA
+AK_M_5040316_003,Kotzebue Lagoon,AK,S,NA,NA,NA
+AK_M_1030107_002,Auke Bay,AK,S,NA,NA,NA
+AK_M_3010300_177,Sweeper Cove,AK,S,NA,NA,NA
+AK_M_1030104_001,Berners Bay,AK,S,NA,NA,NA
+AK_M_1010303_014_001,Thorne Bay (2),AK,S,NA,NA,NA
+AK_M_3010211_012,Udagak Bay,AK,S,NA,NA,NA
+AK_M_2070114_011,Kazakof Bay,AK,S,NA,NA,NA
+AK_M_1020408_005,Cube Cove,AK,S,NA,NA,NA
+AK_M_1021109_011,West Port Frederick,AK,S,NA,NA,NA
+AK_M_1010303_015,Tolstoi Bay,AK,S,NA,NA,NA
+AK_M_2030111_008,Neptune Bay,AK,S,NA,NA,NA
+AK_M_1021212_018,Sitka Sound,AK,S,NA,NA,NA
+AK_M_2030112_006,Eldred Passage,AK,S,NA,NA,NA
+AK_M_3010208_002,Captain's Bay,AK,S,NA,NA,NA
+AK_M_1021010_005,Wrangell Narrows,AK,S,NA,NA,NA
+AK_M_2040108_002,Goose Bay,AK,S,NA,NA,NA
+AK_M_2050513_004,Cook Inlet (upper),AK,S,NA,NA,NA
+AK_M_1021005_005,Point Mcartney,AK,S,NA,NA,NA
+AK_M_2030108_005,Beluga Slough,AK,S,NA,NA,NA
+AK_M_1010306_003,Kitkun Bay,AK,S,NA,NA,NA
+AK_M_2020301_002,Cedar Bay,AK,S,NA,NA,NA
+AK_M_2070115_015,Women's Bay,AK,S,NA,NA,NA
+AK_M_2030111_004,China Poot Bay,AK,S,NA,NA,NA
+AK_M_2070115_004,Gibson Cove,AK,S,NA,NA,NA
+AK_M_2030111_002,Bear Cove,AK,S,NA,NA,NA
+AK_M_2030111_009,Peterson Bay,AK,S,NA,NA,NA
+AK_M_1021103_002,Crab Bay,AK,S,NA,NA,NA
+AK_M_1021005_006,Hamilton Bay,AK,S,NA,NA,NA
+AK_M_2080000_004,Kachemak Bay,AK,S,NA,NA,NA
+AK_M_2070114_030,Lookout Cove,AK,S,NA,NA,NA
+AK_M_1021103_008,Sunshine Cove,AK,S,NA,NA,NA
+AK_M_1020614_001,Hobart Bay,AK,S,NA,NA,NA
+AK_M_3010211_003,Beaver Inlet,AK,S,NA,NA,NA
+AK_M_1021208_004,Saint John Baptist Bay,AK,S,NA,NA,NA
+AK_M_1021109_007,Salt Lake Bay,AK,S,NA,NA,NA
+AK_M_1021113_003,Elfin Cove,AK,S,NA,NA,NA
+AK_M_3010207_023,Lost Harbor,AK,S,NA,NA,NA
+AK_M_1010304_004,McKenzie Inlet,AK,S,NA,NA,NA
+AK_M_1010305_018,Twelvemile Arm,AK,S,NA,NA,NA
+AK_M_5040316_002,Kotzebue Estuary,AK,S,NA,NA,NA
+AK_M_2030111_010,Mallard Bay,AK,S,NA,NA,NA
+AK_M_1021103_001,Corner Bay,AK,S,NA,NA,NA
+AK_M_2030112_012,Dogfish Bay (Koyuktolik Bay),AK,S,NA,NA,NA
+AK_M_1021007_002,Rowan Bay,AK,S,NA,NA,NA
+AK_M_5010517_002,Port Clarence,AK,S,NA,NA,NA
+AK_M_2030112_013,Little Tutka Bay,AK,S,NA,NA,NA
+AK_M_2030111_005,Halibut Cove,AK,S,NA,NA,NA
+AK_M_1010310_021,Winter Harbor,AK,S,NA,NA,NA
+AK_M_1030308_003,Lutak Inlet,AK,S,NA,NA,NA
+AK_M_2070115_017,Bells Flats,AK,S,NA,NA,NA
+AK_M_2020102_009,Orca Inlet,AK,S,NA,NA,NA
+AK_M_1021207_002,Schulze Cove,AK,S,NA,NA,NA
+AK_M_2060205_005,Tuxedni Bay,AK,S,NA,NA,NA
+AK_M_2020107_005,Two Moon Bay,AK,S,NA,NA,NA
+AK_M_1010204_005,Refuge Cove (Tongass Narrows),AK,S,NA,NA,NA
+AK_M_2020303_017,Sleepy Bay,AK,S,NA,NA,NA
+AK_M_1021006_004,Saginaw Bay,AK,S,NA,NA,NA
+AK_B_1020904_001,Beach @ Petroglyph Beach,AK,S,NA,NA,NA
+AK_B_1030308_002,"Lutak Inlet Beach, Haines AK",AK,S,NA,NA,NA
+AK_B_1020902_001,"City Park Beach, Wrangell AK",AK,S,NA,NA,NA
+AK_B_1030107_002,"Ann Coleman Road Beach, Juneau",AK,S,NA,NA,NA
+AK_B_1030106_001,Beach @ Douglas Harbor,AK,S,NA,NA,NA
+AK_B_1030308_003,"Portage Cove Beach, Haines AK",AK,S,NA,NA,NA
+AK_B_1030107_003,"Auke Recreation Area Beach, Juneau",AK,S,NA,NA,NA
+AK_R_8030609_004_002,Chena Slough (upper),AK,S,NA,19080306,NA
+AK_R_9010105_007,Gold Creek,AK,S,NA,19090101,NA
+AK_R_2070114_006,Leachate Creek,AK,S,NA,19020701,NA
+AK_L_1021212_005,Redoubt Lake,AK,S,NA,19010212,NA
+AK_M_1021211_020_001,Silver Bay 2,AK,S,NA,19010212,NA
+AK_R_2010323_010,Unnamed Creek (Lakina River tributary),AK,S,NA,19020103,NA
+AK_R_2010319_005,Unnamed Stream (Toby Creek tributary),AK,S,NA,19020103,NA
+AK_R_5010417_003,Anvil Creek,AK,S,NA,NA,NA
+AK_R_2030210_003,Grant Creek,AK,S,NA,NA,NA
+AK_R_2050206_004,Coffee River,AK,S,NA,19020502,NA
+AK_R_2030108_024,Mariner Creek,AK,S,NA,NA,NA
+AK_R_1030107_002,Auke Nu Creek,AK,S,NA,NA,NA
+AK_R_2020205_005,Fourth of July Creek (Seward),AK,S,NA,NA,NA
+AK_R_2010314_003,Unnamed Creek (Tana River tributary),AK,S,NA,19020103,NA
+AK_R_8030313_002,Clearwater Creek,AK,S,NA,NA,NA
+AK_R_2030108_008,Falls Creek (Kachemak),AK,S,NA,NA,NA
+AK_R_8030113_006,Lost Creek,AK,S,NA,19080301,NA
+AK_R_2050209_002,Bear Creek,AK,S,NA,19020502,NA
+AK_R_3020415_008,Red Fox Creek,AK,S,NA,NA,NA
+AK_R_1040521_005,Ophir Creek,AK,S,NA,NA,NA
+AK_R_3030210_006,Mulchatna River,AK,S,NA,NA,NA
+AK_R_2030204_023,Juneau Creek,AK,S,NA,NA,NA
+AK_R_8031001_001,White Creek,AK,S,NA,19080310,NA
+AK_R_3030211_002,Koktuli River - North Fork,AK,S,NA,NA,NA
+AK_R_2030104_003,Kasilof River,AK,S,NA,NA,NA
+AK_R_8030713_004,McDonald Creek (Salchaket Slough),AK,S,NA,NA,NA
+AK_R_3050284_008,Goodnews River,AK,S,NA,NA,NA
+AK_R_2030108_017,Stariski Creek,AK,S,NA,NA,NA
+AK_R_2040105_002,Little Meadow Creek,AK,S,NA,NA,NA
+AK_R_2010322_005,Copper Creek,AK,S,NA,19020103,NA
+AK_R_5040408_002,Red Dog Creek,AK,S,NA,NA,NA
+AK_R_2030107_009,Nahodak Creek,AK,S,NA,NA,NA
+AK_R_2010316_013,Unnamed Creek (Clear Stream tributary),AK,S,NA,19020103,NA
+AK_R_8030113_005,Little Jack Creek,AK,S,NA,19080301,NA
+AK_R_8031024_010,Stony Creek,AK,S,NA,19080310,NA
+AK_R_2030107_008,Twitter Creek,AK,S,NA,NA,NA
+AK_R_2070215_009,Packers Creek,AK,S,NA,NA,NA
+AK_R_8030807_026,Unnamed Creek (Hines Creek tributary),AK,S,NA,19080308,NA
+AK_R_1021102_004,Pavlof River,AK,S,NA,NA,NA
+AK_R_1030310_002,Nataga Creek,AK,S,NA,NA,NA
+AK_R_8031014_022,Unnamed Creek (McKinley River tributary 2),AK,S,NA,19080310,NA
+AK_R_2010322_004,Chititu Creek,AK,S,NA,19020103,NA
+AK_R_2030111_001,Battle Creek,AK,S,NA,NA,NA
+AK_R_2030108_023,Benny Creek,AK,S,NA,NA,NA
+AK_R_1021212_005,Turnaround Creek,AK,S,NA,NA,NA
+AK_R_1030106_021,Mendenhall River,AK,S,NA,NA,NA
+AK_R_9020521_002,Camp Creek (Nulato),AK,S,NA,NA,NA
+AK_R_3020609_004,Knutson Creek,AK,S,NA,NA,NA
+AK_R_8031018_009,Lake Creek,AK,S,NA,19080310,NA
+AK_R_2050207_001,Unnamed Creek (Tokositna tributary),AK,S,NA,19020502,NA
+AK_R_2030108_014,McNeil Creek,AK,S,NA,NA,NA
+AK_R_1010203_005,Margaret Creek,AK,S,NA,NA,NA
+AK_R_1040203_011,Independence Creek,AK,S,NA,19010402,NA
+AK_R_8030103_004,Bryan Creek,AK,S,NA,19080301,NA
+AK_R_5010417_014,Dry Creek (Nome),AK,S,NA,NA,NA
+AK_R_8030710_004,Moose Creek,AK,S,NA,NA,NA
+AK_R_2030217_001,Funny River,AK,S,NA,NA,NA
+AK_R_8040102_017,Upper Birch Creek drainage: Ptarmigan Creek,AK,S,NA,NA,NA
+AK_R_8030807_025,Rock Creek,AK,S,NA,19080308,NA
+AK_R_2010229_013,Unnamed Creek (Nadina River Tributary),AK,S,NA,19020102,NA
+AK_R_2010323_008,Unnamed Creek (Long Lake inflow),AK,S,NA,19020103,NA
+AK_R_6030319_002,Colville River/Umiat Lake,AK,S,NA,NA,NA
+AK_R_1030301_003,Taiya River,AK,S,NA,19010303,NA
+AK_R_1030301_003,Taiya River,AK,S,NA,Skagway Municipality,NA
+AK_R_1010204_003,Ketchikan Creek,AK,S,NA,NA,NA
+AK_R_2050209_012,Wildhorse Creek,AK,S,NA,19020502,NA
+AK_R_8030113_011,Paco Creek,AK,S,NA,19080301,NA
+AK_R_2010323_002,Crystal Creek,AK,S,NA,19020103,NA
+AK_R_5010315_018,Tubutulik River,AK,S,NA,NA,NA
+AK_R_7050603_003,Cathedral Creek,AK,S,NA,NA,NA
+AK_R_2010323_009,Unnamed Creek (Long Lake outflow),AK,S,NA,19020103,NA
+AK_R_3020612_001,Kaskanak Creek,AK,S,NA,NA,NA
+AK_R_8030810_005,Savage River,AK,S,NA,19080308,NA
+AK_R_8031008_004,Unnamed Creek (Birch Creek tributary),AK,S,NA,19080310,NA
+AK_R_2030108_002,Bidarka Creek,AK,S,NA,NA,NA
+AK_R_1010301_002,Hatchery Creek,AK,S,NA,NA,NA
+AK_R_5010419_023,Sinuk River,AK,S,NA,NA,NA
+AK_R_3020211_003,Ugashik River,AK,S,NA,NA,NA
+AK_R_5030212_006,Kogoluktuk River,AK,S,NA,NA,NA
+AK_R_8030713_001,Bear Creek (Salchaket Slough),AK,S,NA,NA,NA
+AK_R_2030205_017,Resurrection Creek,AK,S,NA,NA,NA
+AK_R_8031018_006,Friday Creek,AK,S,NA,19080310,NA
+AK_R_8031017_006,Glacier Creek (Kantishna Creek),AK,S,NA,NA,NA
+AK_R_2010312_003,Unnamed Creek (Iceberg Bench),AK,S,NA,19020103,NA
+AK_R_7050612_002,Godge Creek,AK,S,NA,NA,NA
+AK_R_9020405_010,Illinois Creek,AK,S,NA,NA,NA
+AK_R_3030310_001,Nushagak River,AK,S,NA,NA,NA
+AK_R_8030811_004,Sanctuary River,AK,S,NA,19080308,NA
+AK_R_2010115_002,Unnamed Creek (Sanford floodplain),AK,S,NA,19020101,NA
+AK_R_8030811_009,Unnamed Creek (Sanctuary River tributary),AK,S,NA,19080308,NA
+AK_R_2030218_008,Unnamed Creek (City of Kenai),AK,S,NA,NA,NA
+AK_R_8031024_012,Unnamed Creek (Stony Creek tributary),AK,S,NA,19080310,NA
+AK_R_2010320_003,Young Creek,AK,S,NA,19020103,NA
+AK_R_2050206_005,Crystal Creek,AK,S,NA,19020502,NA
+AK_R_8030102_007,Unnamed Creek (Notch Creek tributary),AK,S,NA,19080301,NA
+AK_R_8031025_001,East Fork Toklat River,AK,S,NA,19080310,NA
+AK_R_2030108_009,Fox Creek,AK,S,NA,NA,NA
+AK_R_3030401_001,Grant River,AK,S,NA,NA,NA
+AK_R_8030809_009,Lignite Creek,AK,S,NA,NA,NA
+AK_R_2040212_002,Bodenburg Creek,AK,S,NA,NA,NA
+AK_R_8030113_001,Boyden Creek,AK,S,NA,19080301,NA
+AK_R_8031017_003,Caribou Creek,AK,S,NA,NA,NA
+AK_R_2010325_001,Bridge Creek,AK,S,NA,19020103,NA
+AK_R_1020408_008,Zinc Creek,AK,S,NA,NA,NA
+AK_R_3030405_013,Wood River,AK,S,NA,NA,NA
+AK_R_2070215_013,Unnamed Creek (Chignik),AK,S,NA,NA,NA
+AK_R_2010315_003,Klu River,AK,S,NA,19020103,NA
+AK_R_1030312_006,Klehini River,AK,S,NA,NA,NA
+AK_R_1010205_009,Shoal Creek,AK,S,NA,NA,NA
+AK_R_2030107_001,Anchor River,AK,S,NA,NA,NA
+AK_R_6040113_001,Kuparuk River,AK,S,NA,NA,NA
+AK_R_7050614_002,Crescent Creek,AK,S,NA,NA,NA
+AK_R_8031026_013,Highway Pass Creek,AK,S,NA,19080310,NA
+AK_R_2010321_006,Fireweed Creek,AK,S,NA,19020103,NA
+AK_R_1010301_005,"Unnamed Creek, Sweetwater Lake, Stream 6",AK,S,NA,NA,NA
+AK_R_2040105_004,Meadow Creek,AK,S,NA,NA,NA
+AK_R_8031025_003,Unnamed Creek (East Fork Toklat River tributary),AK,S,NA,19080310,NA
+AK_R_8031018_019,Unanmed Creek (Wonder Lake inflow),AK,S,NA,19080310,NA
+AK_R_9010813_009,Hogatza River,AK,S,NA,NA,NA
+AK_R_1010204_001,Carlanna Creek,AK,S,NA,NA,NA
+AK_R_8031018_010,Moose Creek,AK,S,NA,NA,NA
+AK_R_2010322_019,White Creek,AK,S,NA,19020103,NA
+AK_R_3050287_010,Salmon River (Platinum),AK,S,NA,NA,NA
+AK_R_8010515_002,Sheenjek River,AK,S,NA,NA,NA
+AK_R_2030107_011,"Unnamed tributary of Anchor River (""Two  Moose Creek"")",AK,S,NA,NA,NA
+AK_R_2050209_009,Slide Creek,AK,S,NA,19020502,NA
+AK_R_8040411_021,Minook Creek,AK,S,NA,NA,NA
+AK_R_2030211_007,Quartz Creek,AK,S,NA,NA,NA
+AK_R_5030408_001,Kobuk River,AK,S,NA,NA,NA
+AK_R_8031008_001,Birch Creek,AK,S,NA,19080310,NA
+AK_R_2010229_010,Nadina River,AK,S,NA,19020102,NA
+AK_R_2020205_023,Spring Creek (Seward),AK,S,NA,NA,NA
+AK_R_2010322_022,Unnamed Creek (Nizina River tributary),AK,S,NA,19020103,NA
+AK_R_2040105_003,Lucile Creek,AK,S,NA,NA,NA
+AK_R_2010322_012,May Creek,AK,S,NA,19020103,NA
+AK_R_8030103_009,Chicken Creek,AK,S,NA,19080301,NA
+AK_R_2010325_003,Hanagita River,AK,S,NA,19020103,NA
+AK_R_1030214_002,Falls Creek (Gustavus),AK,S,NA,NA,NA
+AK_R_1010313_006,Black Bear Creek,AK,S,NA,NA,NA
+AK_R_8030508_011,Rogge Creek,AK,S,NA,NA,NA
+AK_R_7050222_010,Fortymile River,AK,S,NA,NA,NA
+AK_R_1030106_022,Montana Creek (Juneau),AK,S,NA,NA,NA
+AK_R_2010102_005,Tanada Creek,AK,S,NA,19020101,NA
+AK_R_8031018_007,Glen Creek,AK,S,NA,19080310,NA
+AK_R_2030108_021,Bear Creek (Homer),AK,S,NA,NA,NA
+AK_R_2030216_002,Moose River,AK,S,NA,NA,NA
+AK_R_2050209_001,Alder Creek,AK,S,NA,19020502,NA
+AK_B_2030218_001,Kenai Gull Rookery 1,AK,S,NA,Kenai Peninsula Borough,NA
+AK_R_2030112_001,Barbara Creek,AK,S,NA,NA,NA
+AK_R_2030105_001,Ninilchik River,AK,S,NA,NA,NA
+AK_R_1010301_006,"Unnamed Creek, Sweetwater Lake, Stream 7",AK,S,NA,NA,NA
+AK_R_2010324_002,Gilahina River,AK,S,NA,19020103,NA
+AK_R_7040216_004,Horsfeld Creek,AK,S,NA,19070402,NA
+AK_R_5010417_032,Rock Creek,AK,S,NA,NA,NA
+AK_R_8030103_029,Unnamed Creek (Chisana River tributary),AK,S,NA,19080301,NA
+AK_R_8031018_005,Eureka Creek,AK,S,NA,19080310,NA
+AK_R_2010317_003,Unnamed Creek (Skolai Pass),AK,S,NA,19020103,NA
+AK_R_2010407_001,Amy Creek,AK,S,NA,19020104,NA
+AK_R_2010314_004,Unnamed Creek (Tana River tributary),AK,S,NA,19020103,NA
+AK_R_1021210_001,Nakwasina River,AK,S,NA,NA,NA
+AK_R_2010316_012,Ultima Thule Creek,AK,S,NA,19020103,NA
+AK_R_1010301_008,"Unnamed Creek, Sweetwater Lake, Stream 9",AK,S,NA,NA,NA
+AK_R_5010100_001,Suqitughneq River,AK,S,NA,NA,NA
+AK_R_1010301_007,"Unnamed Creek, Sweetwater Lake, Stream 8",AK,S,NA,NA,NA
+AK_R_2030108_006,Diamond Creek,AK,S,NA,NA,NA
+AK_R_8031014_008,Gorge Creek,AK,S,NA,19080310,NA
+AK_R_1030106_029,Salmon Creek,AK,S,NA,NA,NA
+AK_R_1040517_008,Galiano West Creek,AK,S,NA,19010405,NA
+AK_R_2010315_007,Unnamed Creek (Chakina River tributary),AK,S,NA,19020103,NA
+AK_R_2010315_004,Monahan Creek,AK,S,NA,19020103,NA
+AK_R_3050276_002,Kanektok River,AK,S,NA,NA,NA
+AK_R_7040215_004,Ptarmigan Creek,AK,S,NA,19070402,NA
+AK_R_1040518_008,Situk River,AK,S,NA,NA,NA
+AK_R_2010416_009,Power Creek,AK,S,NA,NA,NA
+AK_R_8031024_011,Travertine Stream,AK,S,NA,19080310,NA
+AK_R_2030112_002,English Bay River,AK,S,NA,NA,NA
+AK_R_2010321_013,Swift Creek,AK,S,NA,19020103,NA
+AK_R_1020408_006,Tributary Creek (Greens Creek),AK,S,NA,NA,NA
+AK_R_5010412_052,Solomon River,AK,S,NA,NA,NA
+AK_R_8031014_014,McLeod Creek,AK,S,NA,19080310,NA
+AK_R_3020302_001,Bear Creek (Becharof),AK,S,NA,NA,NA
+AK_R_2010412_005,Copper River,AK,S,NA,NA,NA
+AK_R_5010416_048,Nome River,AK,S,NA,NA,NA
+AK_R_2030107_010,Ruby Creek,AK,S,NA,NA,NA
+AK_R_8030113_008,Skookum Creek,AK,S,NA,19080301,NA
+AK_R_2050208_003,Unnamed Creek (Ruth Glacier tributary),AK,S,NA,19020502,NA
+AK_R_2010312_002,Unnamed Creek (Tana Glacier tributary),AK,S,NA,19020103,NA
+AK_R_9030528_004,Nilumat Creek,AK,S,NA,NA,NA
+AK_R_8030113_002,Chalk Creek,AK,S,NA,19080301,NA
+AK_R_8030113_003,Jack Creek,AK,S,NA,19080301,NA
+AK_R_1010402_001,Bradfield River,AK,S,NA,NA,NA
+AK_R_1010204_009,Schoenbar Creek,AK,S,NA,NA,NA
+AK_R_3020415_002,Eskimo Creek,AK,S,NA,NA,NA
+AK_R_5010417_016,Glacier Creek (Nome),AK,S,NA,NA,NA
+AK_R_5010412_015,"Solomon River, East Fork",AK,S,NA,NA,NA
+AK_R_8031024_005,Little Stony Creek,AK,S,NA,19080310,NA
+AK_R_1010204_002,Hoadley Creek,AK,S,NA,NA,NA
+AK_B_2030218_004,Warren Ames Bridge Kenai,AK,S,NA,NA,NA
+AK_R_5010412_051,Shovel Creek,AK,S,NA,NA,NA
+AK_R_7050506_013,Unnamed Creek (Seventymile River tributary),AK,S,NA,NA,NA
+AK_R_2010407_012,Paco's River,AK,S,NA,19020104,NA
+AK_R_2010102_004,Rock Creek,AK,S,NA,19020101,NA
+AK_R_2050501_004,Montana Creek (Talkeetna),AK,S,NA,NA,NA
+AK_R_1010301_004,"Unnamed Creek, Sweetwater Lake, Stream 3",AK,S,NA,NA,NA
+AK_R_2030205_010,East Creek,AK,S,NA,NA,NA
+AK_R_3020607_001,Upper Talarik Creek,AK,S,NA,NA,NA
+AK_R_2010324_001,Chokosna River,AK,S,NA,19020103,NA
+AK_R_1040202_001,Unnamed creek (Icy Bay),AK,S,NA,19010402,NA
+AK_R_7050611_002,Upper Charley River,AK,S,NA,NA,NA
+AK_R_2020111_005,Duck River,AK,S,NA,NA,NA
+AK_R_2010323_007,Mill Creek,AK,S,NA,19020103,NA
+AK_R_2070115_015,Russian Creek,AK,S,NA,NA,NA
+AK_R_2010104_009,Rufus Creek,AK,S,NA,19020101,NA
+AK_R_8031016_002,Kantishna River,AK,S,NA,NA,NA
+AK_R_2010105_002,Unnamed Creek (Capital Mountain),AK,S,NA,19020101,NA
+AK_R_2020120_003,Whittier Creek,AK,S,NA,NA,NA
+AK_R_1030214_001,Salmon River,AK,S,NA,19010302,NA
+AK_R_8031014_020,Unnamed Creek (Gorge Creek tributary),AK,S,NA,19080310,NA
+AK_R_2040108_023,Spring Creek,AK,S,NA,NA,NA
+AK_R_8030109_002,Unnamed Creek (Stuver Creek tributary),AK,S,NA,19080301,NA
+AK_R_7050617_008,Coal Creek,AK,S,NA,NA,NA
+AK_R_5040408_003,Bons Creek,AK,S,NA,NA,NA
+AK_R_2040212_009,McRoberts Creek,AK,S,NA,NA,NA
+AK_R_7040215_007,Unnamed Creek (Rock Lake outflow),AK,S,NA,19070402,NA
+AK_R_2030204_026,Mills Creek,AK,S,NA,NA,NA
+AK_R_1021212_006,Granite Creek,AK,S,NA,NA,NA
+AK_R_2060118_001,Chuit Creek,AK,S,NA,NA,NA
+AK_R_2040101_002,Eklutna River,AK,S,NA,NA,NA
+AK_R_5040408_001,Ikalukarok Creek,AK,S,NA,NA,NA
+AK_R_2050301_002,Clear Creek,AK,S,NA,NA,NA
+AK_R_2010322_013,Lake Creek,AK,S,NA,19020103,NA
+AK_R_7050611_001,Three Fingers Stream,AK,S,NA,NA,NA
+AK_R_7050612_001,Copper Creek,AK,S,NA,NA,NA
+AK_R_8040108_017,Crooked Creek Watershed: Independence Creek,AK,S,NA,NA,NA
+AK_R_2020205_019,Scheffler Creek,AK,S,NA,NA,NA
+AK_R_2030207_002,Bear Creek (Hope),AK,S,NA,NA,NA
+AK_R_8031018_004,Eldorado Creek,AK,S,NA,19080310,NA
+AK_R_2010322_021,Unnamed Stream (West Fork Glacier tributary),AK,S,NA,19020103,NA
+AK_R_1021005_003,Gunnuk Creek,AK,S,NA,NA,NA
+AK_R_2010321_008,Hidden Creek,AK,S,NA,19020103,NA
+AK_R_8040102_004,Upper Birch Creek drainage: Butte Creek,AK,S,NA,NA,NA
+AK_R_2050418_003,Cache Creek,AK,S,NA,NA,NA
+AK_R_2060118_006,Bass Creek (Chuitna River tributary),AK,S,NA,NA,NA
+AK_R_2030207_004,California Creek,AK,S,NA,NA,NA
+AK_R_2040212_007,Jim Creek,AK,S,NA,NA,NA
+AK_R_8031017_007,Last Chance Creek,AK,S,NA,19080310,NA
+AK_R_2050503_003,Birch Creek,AK,S,NA,NA,NA
+AK_R_1021212_007,Starrigavan Creek,AK,S,NA,NA,NA
+AK_R_7040216_001,Beaver Creek,AK,S,NA,19070402,NA
+AK_R_1030102_002,Johnson Creek,AK,S,NA,NA,NA
+AK_R_2030111_010,China Poot Creek,AK,S,NA,NA,NA
+AK_R_3020415_004,Naknek River,AK,S,NA,NA,NA
+AK_R_2010316_006,Hunter Creek,AK,S,NA,19020103,NA
+AK_R_1020408_007,Unnamed Creek (Althea Creek),AK,S,NA,NA,NA
+AK_R_1030315_010,Sawmill Creek (Haines),AK,S,NA,NA,NA
+AK_R_8040108_002,Crooked Creek Watershed: Bedrock Creek,AK,S,NA,NA,NA
+AK_R_2010409_012,Unnamed Creek (Fall's Creek),AK,S,NA,19020104,NA
+AK_R_2010318_004,Moonshine Creek,AK,S,NA,19020103,NA
+AK_R_1021102_001,Freshwater Creek,AK,S,NA,NA,NA
+AK_R_2010221_001,Klutina River,AK,S,NA,NA,NA
+AK_R_8031024_003,Clearwater Fork Toklat River,AK,S,NA,19080310,NA
+AK_R_8030803_001,Cantwell Creek,AK,S,NA,19080308,NA
+AK_R_5010417_038,Snake River,AK,S,NA,NA,NA
+AK_R_3050108_007,Donlin Creek,AK,S,NA,NA,NA
+AK_R_2010314_002,Willow Creek,AK,S,NA,19020103,NA
+AK_R_2050306_006,Talkeetna River,AK,S,NA,NA,NA
+AK_R_8031014_021,Unnamed Creek (McKinley River tributary 1),AK,S,NA,19080310,NA
+AK_R_3020309_004,King Salmon River,AK,S,NA,NA,NA
+AK_R_2030107_003,Bridge Creek,AK,S,NA,NA,NA
+AK_R_5010421_028,Tisuk River,AK,S,NA,NA,NA
+AK_R_6040216_002,Sagavanirktok River,AK,S,NA,NA,NA
+AK_R_2030108_025,Rice Creek,AK,S,NA,NA,NA
+AK_R_2010324_003,Unnamed Creek (Chokosna River tributary),AK,S,NA,19020103,NA
+AK_R_2020111_001,Allison Creek,AK,S,NA,NA,NA
+AK_R_8031026_008,Marten Creek,AK,S,NA,19080310,NA
+AK_R_1010304_002,Dog Salmon Creek,AK,S,NA,NA,NA
+AK_R_2040108_010,Goose Creek,AK,S,NA,NA,NA
+AK_R_8030811_003,Igloo Creek,AK,S,NA,19080308,NA
+AK_R_1030107_012,Lake Creek,AK,S,NA,NA,NA
+AK_R_8030811_008,Hogan Creek,AK,S,NA,19080308,NA
+AK_R_2050509_002,Deshka River (Kroto Creek),AK,S,NA,NA,NA
+AK_R_2010323_001,Bear Creek,AK,S,NA,19020103,NA
+AK_R_2010206_002,Gulkana River,AK,S,NA,NA,NA
+AK_R_7040202_010,Unnamed Creek (Solo Creek tributary),AK,S,NA,19070402,NA
+AK_R_2030106_003,Deep Creek,AK,S,NA,NA,NA
+AK_R_1010305_017,Fubar Creek,AK,S,NA,NA,NA
+AK_R_3050205_003,Kuskokwim River,AK,S,NA,NA,NA
+AK_R_3010300_001,Sweeper Creek,AK,S,NA,NA,NA
+AK_R_2050115_001,Busch Creek,AK,S,NA,NA,NA
+AK_R_1021211_002,Indian River,AK,S,NA,NA,NA
+AK_R_2050506_017,Willow Creek,AK,S,NA,NA,NA
+AK_R_8030810_007,Unnamed Creek (Savage River tributary),AK,S,NA,19080308,NA
+AK_R_7050606_005,Fourth of July Creek,AK,S,NA,NA,NA
+AK_R_2030108_010,Fritz Creek,AK,S,NA,NA,NA
+AK_R_1021010_009,Unnamed Creek (Petersburg),AK,S,NA,NA,NA
+AK_R_1030107_001,Auke Creek,AK,S,NA,NA,NA
+AK_R_2010409_011,Unnamed Creek (East Fork Bremner River tributary),AK,S,NA,19020104,NA
+AK_R_2010224_004,Sheep Gulch,AK,S,NA,19020102,NA
+AK_R_2010118_008,Unnamed Creek (Sheep Glacier),AK,S,NA,19020101,NA
+AK_R_8030709_008,Shaw Creek,AK,S,NA,NA,NA
+AK_R_2030108_026,Woodard Creek,AK,S,NA,NA,NA
+AK_R_7040217_004,Gravel Creek,AK,S,NA,19070402,NA
+AK_R_2070117_002,Unnamed Creek (Old Harbor),AK,S,NA,NA,NA
+AK_R_8030811_006,Tattler Creek,AK,S,NA,19080308,NA
+AK_R_2060118_005,Unnamed Creek (Chuitna River tributary),AK,S,NA,NA,NA
+AK_R_8030103_008,Chavolda Creek,AK,S,NA,19080301,NA
+AK_R_2010416_004,Eyak River,AK,S,NA,NA,NA
+AK_R_2030218_001,Beaver Creek,AK,S,NA,NA,NA
+AK_R_8030103_013,Glacier Creek,AK,S,NA,19080301,NA
+AK_R_2010326_012,Strelna Creek,AK,S,NA,19020103,NA
+AK_R_2010118_007,Unnamed Creek (Mt Sanford),AK,S,NA,19020101,NA
+AK_R_1020408_002,Greens Creek,AK,S,NA,NA,NA
+AK_R_1030315_009,One Mile Creek,AK,S,NA,NA,NA
+AK_R_2050503_015,Sunshine Creek,AK,S,NA,NA,NA
+AK_R_1021211_003,Sawmill Creek (Sitka),AK,S,NA,NA,NA
+AK_R_9010813_003,Bear Creek (Hogatza),AK,S,NA,NA,NA
+AK_R_7050610_007,Maggie Creek,AK,S,NA,NA,NA
+AK_R_8031024_013,Unnanmed Creek (Little Stony Creek tributary),AK,S,NA,19080310,NA
+AK_R_2010321_011,McCarthy Creek,AK,S,NA,19020103,NA
+AK_R_1030107_014,Peterson Creek,AK,S,NA,NA,NA
+AK_R_2010325_006,Sangaina Creek,AK,S,NA,19020103,NA
+AK_R_2070115_004,Buskin River,AK,S,NA,NA,NA
+AK_R_8030906_009,Chatanika River,AK,S,NA,NA,NA
+AK_R_5010417_026,"Little Creek, south fork (Nome)",AK,S,NA,NA,NA
+AK_R_3020609_005,Lower Talarik Creek,AK,S,NA,NA,NA
+AK_R_1010205_012,Herring Bay Creek,AK,S,NA,NA,NA
+AK_R_8031118_013,Tanana River,AK,S,NA,NA,NA
+AK_R_7040204_005,North Fork White River,AK,S,NA,19070402,NA
+AK_R_8031019_001,Bear Creek,AK,S,NA,19080310,NA
+AK_R_2030214_001,Cooper Creek,AK,S,NA,NA,NA
+AK_R_2030108_016,Palmer Creek (Homer),AK,S,NA,NA,NA
+AK_M_1010303_016,Whale Passage,AK,S,NA,NA,NA
+AK_R_8031024_009_001,Stampede Creek,AK,S,NA,NA,NA
+AK_R_9020511_017,Yukon River (Galena),AK,S,NA,NA,NA
+AK_M_3010400_006,Salt Lagoon (Saint Paul Island),AK,S,NA,NA,NA
+AK_B_3020623_002,Kvichak Bay (Naknek),AK,S,NA,NA,NA
+AK_R_2070114_007,Kodiak Landfill Creek,AK,S,NA,NA,NA
+AK_R_5040409_002,Wulik River,AK,S,NA,NA,NA
+AK_B_1030106_003,Sandy Beach (Douglas),AK,S,NA,NA,NA
+AK_B_3020415_001,Naknek River Beach,AK,S,NA,NA,NA
+AK_M_1010202_009,Fire Cove,AK,S,NA,NA,NA
+AK_L_8031018_002,Unnamed Lake (near Wonder Lake),AK,S,NA,19080310,NA
+AK_M_3010208_023,Dutch Harbor (entire harbor),AK,S,NA,NA,NA
+AK_M_5010420_003,Nome Harbor,AK,S,NA,NA,NA
+AK_L_8030710_001,Bathing Beauty Pond,AK,S,NA,NA,NA
+AK_R_2010102_001,Caribou Creek,AK,S,NA,NA,NA
+AK_R_2010118_001,Unnamed creek (on Windy Ridge),AK,S,NA,NA,NA
+AK_R_2010311_003,Twelvemile Creek,AK,S,NA,NA,NA
+AK_R_2010313_004,Unnamed creek (near Tana Knob),AK,S,NA,NA,NA
+AK_R_2010321_015,Unnamed creek (Gates Glacier tributary),AK,S,NA,NA,NA
+AK_R_2010322_023,Unnamed creek (near Lake Creek),AK,S,NA,NA,NA
+AK_R_2010325_008,Unnamed Creek (Tebay Lake tributary),AK,S,NA,NA,NA
+AK_R_2010321_010,Kennicott River,AK,S,NA,NA,NA
+AK_R_2010409_010,Unnamed Creek (Little Bremner River tributary),AK,S,NA,NA,NA
+AK_R_2050417_001,Hidden Creek,AK,S,NA,NA,NA
+AK_R_2050418_039,Unnamed Creek (Granite Creek Tributary),AK,S,NA,NA,NA
+AK_R_7040216_008,Willow Creek,AK,S,NA,NA,NA
+AK_R_7050613_004,Unnamed creek (Charley River tributary),AK,S,NA,NA,NA
+AK_R_7050614_005,Unnamed creek (Crescent Creek tributary),AK,S,NA,NA,NA
+AK_R_7050617_015,Unnamed Creek (Yukon River tributary),AK,S,NA,NA,NA
+AK_R_7050617_016,Unnamed Creek (Yukon River tributary),AK,S,NA,NA,NA
+AK_R_7050618_011,Webber Creek,AK,S,NA,NA,NA
+AK_R_7050618_012,Woodchopper Creek,AK,S,NA,NA,NA
+AK_R_8030103_007,Chathenda Creek,AK,S,NA,NA,NA
+AK_R_8030113_009,Trail Creek,AK,S,NA,NA,NA
+AK_R_8030906_008,Caribou Creek,AK,S,NA,NA,NA
+AK_R_8030906_028,Little Poker Creek,AK,S,NA,NA,NA
+AK_R_8030906_039,Poker Creek,AK,S,NA,NA,NA
+AK_R_8030906_052,Unnamed Creek (Caribou Creek tributary),AK,S,NA,NA,NA
+AK_R_8030906_053,Unnamed Creek (Caribou Creek tributary),AK,S,NA,NA,NA
+AK_R_8030906_054,Unnamed Creek (Poker Creek Tributary),AK,S,NA,NA,NA
+AK_R_8030508_008,Salcha River,AK,S,NA,NA,NA
+AK_R_9030512_009,Yukon River,AK,S,NA,NA,NA
+AK_R_7050513_010,Yukon River,AK,S,NA,NA,NA
+AK_R_7050620_004,Yukon River,AK,S,NA,NA,NA
+AK_R_7050621_003,Yukon River,AK,S,NA,NA,NA
+AK_R_8010626_001,Draanjik River,AK,S,NA,NA,NA
+AK_R_8010822_008,Porcupine River,AK,S,NA,NA,NA
+AK_R_8020409_005,Chandalar River,AK,S,NA,NA,NA
+AK_R_8030204_004,Tanana River,AK,S,NA,NA,NA
+AK_R_8030710_009,Tanana River,AK,S,NA,NA,NA
+AK_R_8030713_008,Tanana River,AK,S,NA,NA,NA
+AK_R_8030722_002,Tanana River,AK,S,NA,NA,NA
+AK_R_8030903_003,Tolovana River,AK,S,NA,NA,NA
+AK_R_8040405_011,Yukon River,AK,S,NA,NA,NA
+AK_R_8040408_003,Hess Creek,AK,S,NA,NA,NA
+AK_R_8040418_005,Yukon River,AK,S,NA,NA,NA
+AK_R_9010816_005,Koyukuk River,AK,S,NA,NA,NA
+AK_R_9010820_004,Koyukuk River,AK,S,NA,NA,NA
+AK_R_9010913_004,Koyukuk River,AK,S,NA,NA,NA
+AK_R_9020401_007,Yukon River,AK,S,NA,NA,NA
+AK_R_9020506_009,Yukon River,AK,S,NA,NA,NA
+AK_R_9020513_011,Yukon River,AK,S,NA,NA,NA
+AK_R_9030114_001,Anvik River,AK,S,NA,NA,NA
+AK_R_9030115_005,Yukon River,AK,S,NA,NA,NA
+AK_R_9030411_006,Yukon River,AK,S,NA,NA,NA
+AK_R_9030506_001,Andreafski River,AK,S,NA,NA,NA
+AK_R_1010302_005,Thorne River,AK,S,NA,NA,NA
+AK_R_8030106_003,Scottie Creek,AK,S,NA,19080301,NA
+AK_L_2040105_036,Lucile Lake,AK,S,NA,NA,NA
+AK_R_1010305_005,Harris River,AK,S,NA,NA,NA
+AK_L_2040105_036_001,Lucile Lake (stormwater outfalls),AK,S,NA,19020401,NA
+AK_L_3050204_001,Whitefish Lake,AK,S,NA,NA,NA
+AK_B_1030315_003,Letnikof Cove,AK,S,NA,NA,NA
+AK_R_9030519_024,Okwega Pass (Yukon River),AK,S,NA,NA,NA
+AK_R_9030519_028,Yukon River,AK,S,NA,NA,NA
+AK_R_9030529_004,Ninglikfak River,AK,S,NA,NA,NA
+AK_R_9020405_009,Grant Creek,AK,S,NA,NA,NA
+AK_R_7050219_030,Wade Creek,AK,S,NA,NA,NA
+AK_R_8031106_014,Eureka Creek,AK,S,NA,NA,NA
+AK_R_8031116_001,American Creek,AK,S,NA,NA,NA
+AK_R_8031116_004,Boulder Creek,AK,S,NA,NA,NA
+AK_R_8031116_007,Fish Creek,AK,S,NA,NA,NA
+AK_R_8040108_028,Portage Creek,AK,S,NA,NA,NA
+AK_R_8040411_013,Hunter Creek,AK,S,NA,NA,NA
+AK_R_8040417_001,Bear Creek,AK,S,NA,NA,NA
+AK_R_8040417_009,Morelock Creek,AK,S,NA,NA,NA
+AK_R_9010804_005,Indian River,AK,S,NA,NA,NA
+AK_R_9010806_005,Huntington Creek,AK,S,NA,NA,NA
+AK_R_9010814_003,Hogatza River,AK,S,NA,NA,NA
+AK_R_9020107_008,Tozitna River,AK,S,NA,NA,NA
+AK_R_9020220_013,Long Creek,AK,S,NA,NA,NA
+AK_R_9020220_014,Unnamed Creek (Long Creek tributary),AK,S,NA,NA,NA
+AK_R_9020220_015,Flamingo Spring,AK,S,NA,NA,NA
+AK_R_9020224_007,Flint Creek,AK,S,NA,NA,NA
+AK_M_1021010_008,Petersburg Harbor,AK,S,NA,NA,NA
+AK_R_2010323_005,Lakina River,AK,S,NA,NA,NA
+AK_R_2050510_009,Susitna River,AK,S,NA,NA,NA
+AK_R_2040201_005,Caribou Creek,AK,S,NA,NA,NA
+AK_R_2040203_007,Hicks Creek,AK,S,NA,NA,NA
+AK_R_2040204_013,Purinton Creek,AK,S,NA,NA,NA
+AK_R_2040205_003,California Creek,AK,S,NA,NA,NA
+AK_R_2040205_004,Chickaloon River,AK,S,NA,NA,NA
+AK_R_2040206_001,Kings River,AK,S,NA,NA,NA
+AK_R_2040207_001,Buffalo Creek,AK,S,NA,NA,NA
+AK_R_2040207_005,Eska Creek,AK,S,NA,NA,NA
+AK_R_2040207_008,Granite Creek,AK,S,NA,NA,NA
+AK_R_2040207_014,Moose Creek,AK,S,NA,NA,NA
+AK_R_2040207_016,Wolverine Creek,AK,S,NA,NA,NA
+AK_R_2040207_017,Kleinschmidt Spring,AK,S,NA,NA,NA
+AK_R_2040207_018,Moose Creek Wetlands,AK,S,NA,NA,NA
+AK_R_3050101_006_001,Kuskokwim River,AK,S,NA,NA,NA
+AK_R_3050107_005,George River,AK,S,NA,NA,NA
+AK_R_3050108_005,Crooked Creek,AK,S,NA,NA,NA
+AK_R_3050123_001,Aniak River,AK,S,NA,NA,NA
+AK_R_3050124_006,Kuskokwim River,AK,S,NA,NA,NA
+AK_R_3050205_001,Aniak Slough,AK,S,NA,NA,NA
+AK_M_1020904_005,Point Highfield,AK,S,NA,190102090401,NA
+AK_M_1030305_002,Taiya Inlet,AK,S,NA,19010303,NA
+AK_M_1030305_002,Taiya Inlet,AK,S,NA,190103030502,NA
+AK_M_1030305_004,Skagway Harbor (entire harbor area),AK,S,NA,NA,NA
+AK_M_2020205_003,Upper Resurrection Bay,AK,S,NA,NA,NA
+AK_M_2040108_003,Knik Arm,AK,S,NA,NA,NA
+AK_B_2030108_005,Mariner Park Beach (Homer Spit),AK,S,NA,NA,NA
+AK_R_2060118_002,Chuitna River,AK,S,NA,NA,NA
+AK_R_8030116_002,Nabesna River,AK,S,NA,19080301,NA
