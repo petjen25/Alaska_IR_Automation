@@ -8,7 +8,7 @@ library(tidyverse)
 
 #Test data
 categorize_output <- read_csv('Output/results/categorized_aus.csv')
-wqs_table <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240117.csv')
+wqs_table <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240131.csv')
 
 summarize_AU <- function(categorize_output, wqs_table, AU_ID) {
   
@@ -38,4 +38,13 @@ summarize_AU <- function(categorize_output, wqs_table, AU_ID) {
 
 }
 
-output <- summarize_AU(categorize_output, wqs_table, AU_ID = 'AK_B_1010203_001')
+
+output <- list()
+
+for (i in 1:length(unique(categorize_output$AUID_ATTNS))) {
+  output[[i]] <- summarize_AU(categorize_output, wqs_table, AU_ID = unique(categorize_output$AUID_ATTNS)[i])
+}
+
+output_table <- do.call("rbind", output)
+
+write_csv(output_table, 'Output/results/summary_au_tables_20240319.csv')
