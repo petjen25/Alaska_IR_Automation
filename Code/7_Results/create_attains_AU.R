@@ -46,13 +46,13 @@ data_all_AUs <- data_current_AU %>%
 
 ####Assessment Units####
 assessment_units <- data_all_AUs %>%
-  rename(ASSESSMENT_UNIT_ID = assessmentUnitId,
+  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
          USE_CLASS_NAME = AU_Type,
          ASSESSMENT_UNIT_NAME = assessmentUnitName,
          LOCATION_DESCRIPTION = locationText) %>%
   mutate(ASSESSMENT_UNIT_STATE = 'AK',
          ASSESSMENT_UNIT_AGENCY = 'S', #S for state agency
-         ASSESSMENT_UNIT_COMMENT = NA) %>%
+         ASSESSMENT_UNIT_COMMENT = NA) %>% #ASK ABOUT COMMENTS
   select(ASSESSMENT_UNIT_ID, ASSESSMENT_UNIT_NAME, ASSESSMENT_UNIT_STATE,
          ASSESSMENT_UNIT_AGENCY, ASSESSMENT_UNIT_COMMENT, LOCATION_DESCRIPTION,
          USE_CLASS_NAME) %>% #Change order to reflect template
@@ -76,9 +76,9 @@ write_csv(combine_assessment_units, 'Output/results/ATTAINS/AU_Batch_Upload/Asse
 
 ####Water Types####
 water_types <- data_all_AUs %>%
-  select(assessmentUnitId, waterType, waterSize, waterSizeUnits, sizeSource, sourceScale) %>%
+  select(AUID_ATTNS, waterType, waterSize, waterSizeUnits, sizeSource, sourceScale) %>%
   mutate(ESTIMATION_METHOD = NA) %>%
-  rename(ASSESSMENT_UNIT_ID = assessmentUnitId,
+  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
          WATER_TYPE = waterType,
          WATER_SIZE = waterSize,
          WATER_UNIT = waterSizeUnits,
@@ -92,8 +92,8 @@ write_csv(water_types, 'Output/results/ATTAINS/AU_Batch_Upload/Water_Types.csv')
 
 ####Locations####
 locations <- data_all_AUs %>%
-  select(assessmentUnitId, locationTypeCode, locationText, locationDescription) %>%
-  rename(ASSESSMENT_UNIT_ID = assessmentUnitId,
+  select(AUID_ATTNS, locationTypeCode, locationText, locationDescription) %>%
+  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
          LOCATION_TYPE_CODE = locationTypeCode,
          LOCATION_TYPE_CONTEXT = locationDescription,
          LOCATION_TEXT = locationText) %>%
