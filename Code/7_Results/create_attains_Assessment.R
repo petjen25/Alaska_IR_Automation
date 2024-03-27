@@ -12,7 +12,6 @@ library(readxl)
 
 
 ####Load Data####
-data_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240117.csv')
 au_id_crosswalk <- read_csv('Data/data_analysis/AUID_crosswalk.csv')
 previous_assessment_attains <- read_xlsx('Data/data_analysis/ATTAINS_AK_Asessments_DataDownload_20240126.xlsx', sheet = 2)
 samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
@@ -32,18 +31,21 @@ data_current_AU <- data_category_AUID_added %>%
 #Find retired AUs
 data_retired_AU <- data_category_AUID_added %>%
   mutate(assessmentUnitId = Retired_AUID) %>%
+  filter(!is.na(assessmentUnitId)) %>%
   right_join(previous_assessment_attains, by = c('assessmentUnitId'))
 
 #Find historical AUs
 data_historical_AU <- data_category_AUID_added %>%
   mutate(assessmentUnitId = Historical_AUID) %>%
+  filter(!is.na(assessmentUnitId)) %>%
   right_join(previous_assessment_attains, by = c('assessmentUnitId'))
 
 #Combine all together
 #This becomes the starting point for each csv export process
 data_all_AUs <- data_current_AU %>%
   rbind(data_retired_AU) %>%
-  rbind(data_historical_AU)
+  rbind(data_historical_AU) %>%
+  unique()
 
 
 ####Assessments####
@@ -107,26 +109,12 @@ write_csv(uses, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses.csv')
 
 
 ####Assessment Types####
-
-data_all_AUs %>% select(`Constituent Group`) %>% unique()
-
-#`Constituent Group`           
-#1 Bacteria                      
-#2 pH                            
-#3 Turbidity                     
-#4 NA                            
-#5 Dissolved Gas                 
-#6 Dissolved Inorganic Substances
-#7 Sediment                      
-#8 Toxics 
-
 assessment_types <- data_all_AUs %>%
-  select(AUID_ATTNS, Use, `Constituent Group`) %>%
+  select(AUID_ATTNS, Use,  assessmentTypes) %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         USE_NAME = Use) %>%
-  mutate(USE_ASMT_TYPE = NA, #PULL FROM PREVIOUS ATTAINS assessmentTypes
-         USE_ASMT_CONFIDENCE = NA) %>%
-  select(!c(`Constituent Group`)) %>%
+         USE_NAME = Use,
+         USE_ASMT_TYPE = assessmentTypes) %>%  #PULL FROM PREVIOUS ATTAINS assessmentTypes
+  mutate(USE_ASMT_CONFIDENCE = NA) %>%
   unique()
 
 write_csv(assessment_types, 'Output/results/ATTAINS/Assessment_Batch_Upload/Assessment_Types.csv')
@@ -151,7 +139,7 @@ parameters <- data_all_AUs %>%
                                            "X"),
          PARAM_TREND = NA,
          PARAM_COMMENT = NA,
-         PARAM_AGENCY_CODE = 'S',
+         PARAM_AGENCY_CODE = NA,
          PARAM_POLLUTANT_INDICATOR = NA, #Should be Y/N
          PARAM_YEAR_LISTED = NA,
          PARAM_TARGET_TMDL_DATE = NA,
@@ -184,6 +172,8 @@ write_csv(parameters, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters
 ####Seasons####
 seasons <- data_all_AUs %>%
   select(AUID_ATTNS) #No seasonality in attainment decisions
+
+
 
 
 ####Sources####
