@@ -17,7 +17,7 @@ The purpose of the *create_attains_Assessment.R* script is to take the outputs o
 
 ## Required Packages
 
-The required packages for the *data_processing.R* code are [*tidyverse*](https://www.tidyverse.org/) and [*readxl*](https://cran.r-project.org/web/packages/readxl/index.html)*.* Installation for the *tidyverse* packages can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to install and load these packages.
+The required packages for the *data_processing.R* code are [*tidyverse*](https://www.tidyverse.org/) and [*readxl*](https://cran.r-project.org/web/packages/readxl/index.html)*.* Installation for the *tidyverse* package can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to install and load these packages.
 
 ```{r}
 #| output: false
@@ -86,11 +86,23 @@ data_historical_AU <- data_category_AUID_added %>%
   right_join(previous_assessment_attains, by = c('assessmentUnitId'))
 
 #Combine all together
-#This becomes the starting point for each csv export process
-data_all_AUs <- data_current_AU %>%
+data_all_AUs1 <- data_current_AU %>%
   rbind(data_retired_AU) %>%
   rbind(data_historical_AU) %>%
   unique()
+
+#Find AUs not in previous ATTAINS
+data_current_AU_not_listed <- data_category_AUID_added %>%
+  mutate(assessmentUnitId = AUID_ATTNS) %>%
+  full_join(previous_assessment_attains, by = c('assessmentUnitId')) %>%
+  filter(!assessmentUnitId %in% data_current_AU$assessmentUnitId) %>%
+  filter(!assessmentUnitId %in% data_retired_AU$assessmentUnitId) %>%
+  filter(!assessmentUnitId %in% data_historical_AU$assessmentUnitId)
+
+#Bind rows together to ensure all current AUs represented
+#This becomes the starting point for each csv export process
+data_all_AUs <- data_all_AUs1 %>% 
+  rbind(data_current_AU_not_listed)
 ```
 
 \*For create_attains_AU.R, the steps are the same, but the *data_sufficiency* variable replaces the *categorized_aus* variable.
