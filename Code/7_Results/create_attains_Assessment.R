@@ -41,12 +41,23 @@ data_historical_AU <- data_category_AUID_added %>%
   right_join(previous_assessment_attains, by = c('assessmentUnitId'))
 
 #Combine all together
-#This becomes the starting point for each csv export process
-data_all_AUs <- data_current_AU %>%
+data_all_AUs1 <- data_current_AU %>%
   rbind(data_retired_AU) %>%
   rbind(data_historical_AU) %>%
   unique()
 
+#Find AUs not in previous ATTAINS
+data_current_AU_not_listed <- data_category_AUID_added %>%
+  mutate(assessmentUnitId = AUID_ATTNS) %>%
+  full_join(previous_assessment_attains, by = c('assessmentUnitId')) %>%
+  filter(!assessmentUnitId %in% data_current_AU$assessmentUnitId) %>%
+  filter(!assessmentUnitId %in% data_retired_AU$assessmentUnitId) %>%
+  filter(!assessmentUnitId %in% data_historical_AU$assessmentUnitId)
+
+#Bind rows together to ensure all current AUs represented
+#This becomes the starting point for each csv export process
+data_all_AUs <- data_all_AUs1 %>% 
+  rbind(data_current_AU_not_listed)
 
 ####Assessments####
 assessments <- data_all_AUs %>%
