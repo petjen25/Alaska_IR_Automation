@@ -112,7 +112,8 @@ combine_assessment_units <- assessment_units %>%
                                         'ASSESSMENT_UNIT_AGENCY', 'ASSESSMENT_UNIT_COMMENT', 'LOCATION_DESCRIPTION',
                                         'USE_CLASS_NAME'))
 
-write_csv(combine_assessment_units, 'Output/results/ATTAINS/AU_Batch_Upload/Assessment_Units.csv')
+write_csv(combine_assessment_units, 'Output/results/ATTAINS/AU_Batch_Upload/Assessment_Units.csv',
+          na="")
 
 ####Water Types####
 water_types <- data_current_AU_not_listed %>%
@@ -126,20 +127,22 @@ water_types <- data_current_AU_not_listed %>%
   select(ASSESSMENT_UNIT_ID, WATER_TYPE, WATER_SIZE, WATER_UNIT) %>% #Reorder columns
   unique()
 
-write_csv(water_types, 'Output/results/ATTAINS/AU_Batch_Upload/Water_Types.csv')
+write_csv(water_types, 'Output/results/ATTAINS/AU_Batch_Upload/Water_Types.csv',
+          na="")
 
 ####Locations####
 locations <- data_current_AU_not_listed %>%
-  select(AUID_ATTNS, locationTypeCode, locationText, locationDescription) %>%
+  select(AUID_ATTNS, HUC10_ID) %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         LOCATION_TYPE_CONTEXT = HUC10_ID,
-         LOCATION_TEXT = NA) %>% #To be filled in manually be AK DEC
-  mutate(LOCATION_TYPE_CODE = 'HUC-10') %>%
+         LOCATION_TYPE_CONTEXT = HUC10_ID) %>% #To be filled in manually be AK DEC
+  mutate(LOCATION_TYPE_CODE = 'HUC-10',
+         LOCATION_TEXT = NA) %>%
   select(ASSESSMENT_UNIT_ID, LOCATION_TYPE_CODE, LOCATION_TYPE_CONTEXT, 
          LOCATION_TEXT) %>%
   unique()
 
-write_csv(locations, 'Output/results/ATTAINS/AU_Batch_Upload/Locations.csv')
+write_csv(locations, 'Output/results/ATTAINS/AU_Batch_Upload/Locations.csv',
+          na="")
 
 ####Monitoring Stations####
 ml_names <- combine_assessment_units %>%
@@ -152,4 +155,5 @@ monitoring_stations <- ml_names %>%
   mutate(MS_ORG_ID = 'AKDECWQ') %>%
   select(ASSESSMENT_UNIT_ID, MS_ORG_ID, MS_LOCATION_ID)
 
-write_csv(monitoring_stations, 'Output/results/ATTAINS/AU_Batch_Upload/Monitoring_Stations.csv')
+write_csv(monitoring_stations, 'Output/results/ATTAINS/AU_Batch_Upload/Monitoring_Stations.csv',
+          na="")
