@@ -3,7 +3,7 @@
 
 
 #Written by Hannah Ferriby
-#Date updated: 3/13/2024
+#Date updated: 4/4/2024
 
 
 ####Load Packages####
@@ -60,21 +60,21 @@ data_all_AUs <- data_all_AUs1 %>%
   rbind(data_current_AU_not_listed)
 
 ####Assessments####
+monitoring_year <- samples %>%
+  select(AUID_ATTNS, ActivityStartDate) %>%
+  group_by(AUID_ATTNS) %>%
+  reframe(AUID_ATTNS = AUID_ATTNS,
+          YEAR_LAST_MONITORED = year(max(ActivityStartDate))) %>%
+  unique()
+
 assessments <- data_all_AUs %>%
-  select(AUID_ATTNS, organizationId, reportingCycle, Use_Category, Use) %>%
-  mutate(ASSESSMENT_COMMENT = Use,
-         AGENCY_CODE = 'S',
-         YEAR_LAST_MONITORED = '2023',
-         ASSESSMENT_RATIONALE = NA,
-         TROPHIC_STATUS = NA) %>%
+  select(AUID_ATTNS, organizationId, reportingCycle) %>%
+  left_join(monitoring_year, by = 'AUID_ATTNS') %>%
+  mutate(AGENCY_CODE = 'S') %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS, 
-         CYCLE_LAST_ASSESSED = reportingCycle, #Pulling from previous year's ATTAINS
-         ASSESSMENT_UNIT_STATE_IR_CAT = Use_Category) %>%
+         CYCLE_LAST_ASSESSED = reportingCycle) %>% #Pulling from previous year's ATTAINS
   unique() %>%
-  select(!Use) %>%
-  select(ASSESSMENT_UNIT_ID, AGENCY_CODE, CYCLE_LAST_ASSESSED, YEAR_LAST_MONITORED,
-         ASSESSMENT_UNIT_STATE_IR_CAT, ASSESSMENT_COMMENT, ASSESSMENT_RATIONALE,
-         TROPHIC_STATUS)
+  select(ASSESSMENT_UNIT_ID, AGENCY_CODE, CYCLE_LAST_ASSESSED, YEAR_LAST_MONITORED)
 
 write_csv(assessments, 'Output/results/ATTAINS/Assessment_Batch_Upload/Assessments.csv')
 
@@ -87,12 +87,63 @@ monitoring_dates <- samples %>%
           USE_MONITORING_END = max(ActivityStartDate)) %>%
   unique()
 
+data_suf_4 <- data_suf_3 %>%
+  mutate(ATTAINS_USE = 
+           case_when(Use == "Human Health" & Description == "Water and Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Human Health" & Description == "Water & Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Water Supply" ~ "WATER SUPPLY",    
+                     Description == "Harvesting" | Description == "Marine Harvesting" ~ "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR OTHER RAW AQUATIC LIFE",
+                     Description == "Growth and propagation" | Use == "Aquatic Life" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",
+                     Description == "Aquatic Organisms Only" | Description == "Aquatic Organisms only" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",  
+                     Use == "Primary Contact Recreation" | Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "WATER RECREATION",
+           ))
+
+data_suf_5 <- data_suf_4 %>%
+  mutate(ATTAINS_DESCRIPTION = 
+           case_when(Description == "Water & Aquatic Organisms" | Description == "Water and Aquatic Organisms" |
+                       Description == "Drinking" | Description == "Drinking Water" | Description == "Drinking water" ~ "DRINKING, CULINARY, AND FOOD PROCESSING",
+                     Description == "Irrigation " |Description == "Agriculture" | Description == "Irrigation" | Description == "Irrigation Water" | 
+                       Description == "Stock water" | Description == "Stock Water" | Description == "Stockwater" ~ "AGRICULTURE, INCLUDING IRRIGATION AND STOCK WATERING",
+                     Use == "Primary Contact Recreation" ~ "CONTACT RECREATION",
+                     Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "SECONDARY RECREATION",
+                     Description == "Seafood Processing" ~ "SEAFOOD PROCESSING",
+                     Description == "Industrial" ~ "INDUSTRIAL",
+                     Description == "Aquaculture" ~ "AQUACULTURE"
+           ))
+
+data_suf_5$PARAM_USE_NAME <- paste(data_suf_5$water_type, data_suf_5$ATTAINS_USE, data_suf_5$ATTAINS_DESCRIPTION, sep=" / ") #EPA use/description code
+data_suf_5$PARAM_USE_NAME <- gsub(" / NA", "", data_suf_5$PARAM_USE_NAME)
+
 uses <- data_all_AUs %>%
-  select(AUID_ATTNS, AUID_ATTNS, Use, Use_Category) %>%
+  filter(!is.na(Use)) %>%
+  #Following mutate code from Jenny Petitt
+  mutate(ATTAINS_USE = 
+           case_when(Use == "Human Health" & `Use Description` == "Water and Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Human Health" & `Use Description` == "Water & Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Water Supply" ~ "WATER SUPPLY",    
+                     `Use Description` == "Harvesting" | `Use Description` == "Marine Harvesting" ~ "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR OTHER RAW AQUATIC LIFE",
+                     `Use Description` == "Growth and propagation" | Use == "Aquatic Life" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",
+                     `Use Description` == "Aquatic Organisms Only" | `Use Description` == "Aquatic Organisms only" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",  
+                     Use == "Primary Contact Recreation" | Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "WATER RECREATION"),
+         ATTAINS_DESCRIPTION = 
+           case_when(`Use Description` == "Water & Aquatic Organisms" | `Use Description` == "Water and Aquatic Organisms" |
+                       `Use Description` == "Drinking" | `Use Description` == "Drinking Water" | `Use Description` == "Drinking water" ~ "DRINKING, CULINARY, AND FOOD PROCESSING",
+                     `Use Description` == "Irrigation " |`Use Description` == "Agriculture" | `Use Description` == "Irrigation" | `Use Description` == "Irrigation Water" | 
+                       `Use Description` == "Stock water" | `Use Description` == "Stock Water" | `Use Description` == "Stockwater" ~ "AGRICULTURE, INCLUDING IRRIGATION AND STOCK WATERING",
+                     Use == "Primary Contact Recreation" ~ "CONTACT RECREATION",
+                     Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "SECONDARY RECREATION",
+                     `Use Description` == "Seafood Processing" ~ "SEAFOOD PROCESSING",
+                     `Use Description` == "Industrial" ~ "INDUSTRIAL",
+                     `Use Description` == "Aquaculture" ~ "AQUACULTURE"),
+         `Waterbody Type` = toupper(`Waterbody Type`), 
+         PARAM_USE_NAME = paste(`Waterbody Type`, ATTAINS_USE, ATTAINS_DESCRIPTION, sep = ' / '),
+         PARAM_USE_NAME = gsub(" / NA", "", PARAM_USE_NAME)) %>%
+  #End of Jenny code
+  select(AUID_ATTNS, AUID_ATTNS, PARAM_USE_NAME, Use_Category) %>%
   left_join(monitoring_dates, by = 'AUID_ATTNS') %>%
   unique() %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         USE_NAME = Use) %>%
+         USE_NAME = PARAM_USE_NAME) %>% #MATCH TO ATTAINS CODES
   mutate(USE_ATTAINMENT_CODE = case_when(Use_Category == 5 ~
                                            "N", #Not supporting
                                          Use_Category == 2 ~
@@ -102,13 +153,13 @@ uses <- data_all_AUs %>%
                                          T ~
                                            "X"), #Not assessed
          USE_AGENCY_CODE = "S",
-         USE_TREND = NA,
+         USE_TREND = NA, #Here down are optional columns
          USE_THREATENED = NA,
          USE_ASMT_BASIS = NA,
          USE_ASMT_DATE = NA,
          USE_ASSESSOR_NAME = NA,
          USE_COMMENT = NA,
-         USE_STATE_IR_CAT = Use_Category,
+         USE_STATE_IR_CAT = NA,
          USE_ORG_QUALIFIER_FLAG = NA) %>%
   select(!Use_Category) %>%
   select(ASSESSMENT_UNIT_ID, USE_NAME, USE_AGENCY_CODE, USE_TREND, USE_THREATENED,
@@ -117,25 +168,6 @@ uses <- data_all_AUs %>%
          USE_ORG_QUALIFIER_FLAG)
   
 write_csv(uses, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses.csv')
-
-
-####Assessment Types####
-assessment_types <- data_all_AUs %>%
-  select(AUID_ATTNS, Use,  assessmentTypes) %>%
-  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         USE_NAME = Use,
-         USE_ASMT_TYPE = assessmentTypes) %>%  #PULL FROM PREVIOUS ATTAINS assessmentTypes
-  mutate(USE_ASMT_CONFIDENCE = NA) %>%
-  unique()
-
-write_csv(assessment_types, 'Output/results/ATTAINS/Assessment_Batch_Upload/Assessment_Types.csv')
-
-####Assessment Method Types####
-assessment_method_types <- data_all_AUs %>%
-  select(AUID_ATTNS, Use)
-
-
-write_csv(assessment_method_types, 'Output/results/ATTAINS/Assessment_Batch_Upload/Assessment_Method_Types.csv')
 
 ####Parameters####
 parameters <- data_all_AUs %>%
@@ -178,20 +210,3 @@ parameters <- data_all_AUs %>%
          
 
 write_csv(parameters, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters.csv')
-
-
-####Seasons####
-seasons <- data_all_AUs %>%
-  select(AUID_ATTNS) #No seasonality in attainment decisions
-
-
-
-
-####Sources####
-sources <- data_all_AUs %>%
-  select()
-
-
-####Associated-Actions####
-associated_actions <- data_all_AUs %>%
-  select()
