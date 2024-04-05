@@ -133,7 +133,7 @@ locations <- data_current_AU_not_listed %>%
   select(AUID_ATTNS, locationTypeCode, locationText, locationDescription) %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
          LOCATION_TYPE_CONTEXT = HUC10_ID,
-         LOCATION_TEXT = locationText) %>% #NEED AK FEEDBACK
+         LOCATION_TEXT = NA) %>% #To be filled in manually be AK DEC
   mutate(LOCATION_TYPE_CODE = 'HUC-10') %>%
   select(ASSESSMENT_UNIT_ID, LOCATION_TYPE_CODE, LOCATION_TYPE_CONTEXT, 
          LOCATION_TEXT) %>%
