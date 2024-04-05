@@ -76,7 +76,8 @@ assessments <- data_all_AUs %>%
   unique() %>%
   select(ASSESSMENT_UNIT_ID, AGENCY_CODE, CYCLE_LAST_ASSESSED, YEAR_LAST_MONITORED)
 
-write_csv(assessments, 'Output/results/ATTAINS/Assessment_Batch_Upload/Assessments.csv')
+write_csv(assessments, 'Output/results/ATTAINS/Assessment_Batch_Upload/Assessments.csv',
+          na="")
 
 ####Uses####
 monitoring_dates <- samples %>%
@@ -86,33 +87,6 @@ monitoring_dates <- samples %>%
           USE_MONITORING_START = min(ActivityStartDate),
           USE_MONITORING_END = max(ActivityStartDate)) %>%
   unique()
-
-data_suf_4 <- data_suf_3 %>%
-  mutate(ATTAINS_USE = 
-           case_when(Use == "Human Health" & Description == "Water and Aquatic Organisms" ~ "WATER SUPPLY",
-                     Use == "Human Health" & Description == "Water & Aquatic Organisms" ~ "WATER SUPPLY",
-                     Use == "Water Supply" ~ "WATER SUPPLY",    
-                     Description == "Harvesting" | Description == "Marine Harvesting" ~ "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR OTHER RAW AQUATIC LIFE",
-                     Description == "Growth and propagation" | Use == "Aquatic Life" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",
-                     Description == "Aquatic Organisms Only" | Description == "Aquatic Organisms only" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",  
-                     Use == "Primary Contact Recreation" | Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "WATER RECREATION",
-           ))
-
-data_suf_5 <- data_suf_4 %>%
-  mutate(ATTAINS_DESCRIPTION = 
-           case_when(Description == "Water & Aquatic Organisms" | Description == "Water and Aquatic Organisms" |
-                       Description == "Drinking" | Description == "Drinking Water" | Description == "Drinking water" ~ "DRINKING, CULINARY, AND FOOD PROCESSING",
-                     Description == "Irrigation " |Description == "Agriculture" | Description == "Irrigation" | Description == "Irrigation Water" | 
-                       Description == "Stock water" | Description == "Stock Water" | Description == "Stockwater" ~ "AGRICULTURE, INCLUDING IRRIGATION AND STOCK WATERING",
-                     Use == "Primary Contact Recreation" ~ "CONTACT RECREATION",
-                     Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "SECONDARY RECREATION",
-                     Description == "Seafood Processing" ~ "SEAFOOD PROCESSING",
-                     Description == "Industrial" ~ "INDUSTRIAL",
-                     Description == "Aquaculture" ~ "AQUACULTURE"
-           ))
-
-data_suf_5$PARAM_USE_NAME <- paste(data_suf_5$water_type, data_suf_5$ATTAINS_USE, data_suf_5$ATTAINS_DESCRIPTION, sep=" / ") #EPA use/description code
-data_suf_5$PARAM_USE_NAME <- gsub(" / NA", "", data_suf_5$PARAM_USE_NAME)
 
 uses <- data_all_AUs %>%
   filter(!is.na(Use)) %>%
@@ -167,19 +141,52 @@ uses <- data_all_AUs %>%
          USE_ASSESSOR_NAME, USE_COMMENT, USE_STATE_IR_CAT, 
          USE_ORG_QUALIFIER_FLAG)
   
-write_csv(uses, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses.csv')
+write_csv(uses, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses.csv',
+          na="")
 
 ####Parameters####
 parameters <- data_all_AUs %>%
-  select(AUID_ATTNS, TADA.CharacteristicName, Use, Use_Category, Individual_Category) %>%
-  mutate(PARAM_STATUS_NAME = case_when(Use_Category == 5 ~ #CATEGORIES ARE UNCLEAR
-                                           "N", 
-                                         Use_Category == 2 ~
+  filter(!is.na(Use)) %>%
+  #Following mutate code from Jenny Petitt
+  mutate(ATTAINS_USE = 
+           case_when(Use == "Human Health" & `Use Description` == "Water and Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Human Health" & `Use Description` == "Water & Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Water Supply" ~ "WATER SUPPLY",    
+                     `Use Description` == "Harvesting" | `Use Description` == "Marine Harvesting" ~ "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR OTHER RAW AQUATIC LIFE",
+                     `Use Description` == "Growth and propagation" | Use == "Aquatic Life" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",
+                     `Use Description` == "Aquatic Organisms Only" | `Use Description` == "Aquatic Organisms only" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",  
+                     Use == "Primary Contact Recreation" | Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "WATER RECREATION"),
+         ATTAINS_DESCRIPTION = 
+           case_when(`Use Description` == "Water & Aquatic Organisms" | `Use Description` == "Water and Aquatic Organisms" |
+                       `Use Description` == "Drinking" | `Use Description` == "Drinking Water" | `Use Description` == "Drinking water" ~ "DRINKING, CULINARY, AND FOOD PROCESSING",
+                     `Use Description` == "Irrigation " |`Use Description` == "Agriculture" | `Use Description` == "Irrigation" | `Use Description` == "Irrigation Water" | 
+                       `Use Description` == "Stock water" | `Use Description` == "Stock Water" | `Use Description` == "Stockwater" ~ "AGRICULTURE, INCLUDING IRRIGATION AND STOCK WATERING",
+                     Use == "Primary Contact Recreation" ~ "CONTACT RECREATION",
+                     Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "SECONDARY RECREATION",
+                     `Use Description` == "Seafood Processing" ~ "SEAFOOD PROCESSING",
+                     `Use Description` == "Industrial" ~ "INDUSTRIAL",
+                     `Use Description` == "Aquaculture" ~ "AQUACULTURE"),
+         `Waterbody Type` = toupper(`Waterbody Type`), 
+         PARAM_USE_NAME = paste(`Waterbody Type`, ATTAINS_USE, ATTAINS_DESCRIPTION, sep = ' / '),
+         PARAM_USE_NAME = gsub(" / NA", "", PARAM_USE_NAME)) %>%
+  #End of Jenny code
+  select(AUID_ATTNS, TADA.CharacteristicName, PARAM_USE_NAME, Individual_Category) %>%
+  mutate(PARAM_STATUS_NAME = case_when(Individual_Category == 5 ~ #CATEGORIES ARE UNCLEAR
+                                           "Observed effect", 
+                                       Individual_Category == 2 ~
                                            "Meeting Criteria", 
-                                         Use_Category == 3 ~
+                                       Individual_Category == 3 ~
                                            "Insufficient Information", 
                                          T ~
-                                           "X"),
+                                           "X")) %>%
+  mutate(PARAM_ATTAINMENT_CODE = case_when(Individual_Category == 5 ~ #CATEGORIES ARE UNCLEAR
+                                             "Not meeting criteria", 
+                                           Individual_Category == 2 ~
+                                             "Meeting Criteria", 
+                                           Individual_Category == 3 ~
+                                             "Not enough information", 
+                                           T ~
+                                             "Not applicable"),
          PARAM_TREND = NA,
          PARAM_COMMENT = NA,
          PARAM_AGENCY_CODE = NA,
@@ -195,10 +202,7 @@ parameters <- data_all_AUs %>%
          PARAM_DELISTING_COMMENT = NA,
          PARAM_DELISTING_AGENCY = NA) %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         PARAM_NAME = TADA.CharacteristicName,
-         PARAM_USE_NAME = Use,
-         PARAM_ATTAINMENT_CODE = Individual_Category,
-         PARAM_STATE_IR_CAT = Use_Category) %>%
+         PARAM_NAME = TADA.CharacteristicName) %>%
   unique() %>%
   select(ASSESSMENT_UNIT_ID, PARAM_NAME, PARAM_USE_NAME, PARAM_STATUS_NAME,
          PARAM_ATTAINMENT_CODE, PARAM_TREND, PARAM_COMMENT, PARAM_AGENCY_CODE,
@@ -209,4 +213,5 @@ parameters <- data_all_AUs %>%
          PARAM_DELISTING_COMMENT, PARAM_DELISTING_AGENCY)
          
 
-write_csv(parameters, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters.csv')
+write_csv(parameters, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters.csv',
+          na="")
