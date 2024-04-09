@@ -11,9 +11,15 @@ library(AKDECtools)
 library(htmltools)
 library(ggplot2)
 library(ggspatial)
+library(leaflet)
+library(viridis)
 ```
 
+<br>
+
 # Assessment Unit Summary
+
+<br>
 
 ```{r}
 output_df_au %>%
@@ -25,45 +31,105 @@ output_df_au %>%
   kable() 
 ```
 
-```{r, fig.dim = c(5.5,4)}
-#Map AU with monitoring sites
-sites <- output_samples %>%
-  filter(AUID_ATTNS == au_loop) %>%
-  select(MonitoringLocationIdentifier, Latitude, Longitude) %>%
-  unique() %>%
-  st_as_sf(coords = c('Longitude', 'Latitude'), remove = F) %>%
-  st_set_crs(4617)  %>% #NAD83 EPSG
-  st_transform(st_crs(au_shape))
+<br>
 
-ggplot() +
-  annotation_map_tile("osm") +
-  geom_sf(data = au_shape, aes(color = AUID_ATTNS), linewidth = 1) +
-  geom_sf(data = sites, aes(fill = MonitoringLocationIdentifier),
-          shape = 21, color = 'black', size = 2.25) +
-  ggtitle('Assessment Unit with Monitoring Locations') +
-  theme_bw() +
-  viridis::scale_fill_viridis(name = 'Monitoring Location', discrete = T, option = "mako") + 
-  scale_color_manual(name = 'AU ID', values = c('#072f49')) + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5),
-        legend.position = 'top',
-        #plot.margin = margin(0.25,1,0.25,0.25, unit = 'in'),
-        plot.title.position = 'plot')
+```{r, results = 'asis'}
+# {r, fig.dim = c(5.5,4)}
+#Map AU with monitoring sites
+#center <- st_centroid(au_shape)$geometry
+
+au_shape_4_map <- st_transform(au_shape, crs = 'EPSG:4326')
+sites_4_map <- st_transform(sites, crs='EPSG:4326')
+
+
+pal <- colorFactor(
+  palette = viridis_pal(alpha = 1, begin = 0, end = 1,
+                        option = 'mako')(nrow(sites)),
+  domain = sites_4_map$MonitoringLocationIdentifier,
+  ordered = TRUE)
+
+leaflet() %>% 
+  addTiles() %>%
+  addProviderTiles(providers$Esri.NatGeoWorldMap) %>% 
+  addPolylines(data = au_shape_4_map,
+               color = '#072f95',
+               opacity  = 1) %>%
+  addCircleMarkers(data = sites_4_map,
+                   radius = 3,
+                   color = ~pal(MonitoringLocationIdentifier),
+                   opacity  = 1,
+                   label = sites_4_map$MonitoringLocationIdentifier,
+                   labelOptions = labelOptions(noHide = F)) %>%
+  addLegend("bottomright",
+            pal = pal,
+            values = sites_4_map$MonitoringLocationIdentifier,
+            title = "Monitoring Location",
+            opacity = 1) %>%
+  addLegend('bottomright',
+            color = '#072f95',
+            label = au_shape_4_map$AUID_ATTNS,
+            title = 'AU ID',
+            opacity = 1)
+
+
+
+# ggplot() +
+#   annotation_map_tile("osm") +
+#   geom_sf(data = au_shape, aes(color = AUID_ATTNS), linewidth = 1) +
+#   geom_sf(data = sites, aes(fill = MonitoringLocationIdentifier),
+#           shape = 21, color = 'black', size = 2.25) +
+#   # xlim(x_lim) +
+#   # ylim(y_lim) +
+#   ggtitle('Assessment Unit with Monitoring Locations') +
+#   theme_bw() +
+#   viridis::scale_fill_viridis(name = 'Monitoring Location', discrete = T, option = "mako") + 
+#   scale_color_manual(name = 'AU ID', values = c('#072f49')) + 
+#   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5),
+#         legend.position = 'top',
+#         #plot.margin = margin(0.25,1,0.25,0.25, unit = 'in'),
+#         plot.title.position = 'plot')
+
 ```
 
-```{r, fig.dim = c(4,3)}
+<br>
+
+### Monitoring Location(s) Summary
+
+```{r}
+sites %>%
+  st_drop_geometry() %>%
+  select(
+    `Monitoring Location` = MonitoringLocationIdentifier,
+    Latitude,
+    Longitude) %>% 
+  unique() %>%
+  kable() 
+```
+
+<br>
+
+### Assessment Unit Location within Alaska
+
+```{r}
+# {r, fig.dim = c(4,3)}
 #Maps
+center <- st_centroid(st_make_valid(au_shape_4_map))
 
 ggplot() +
   geom_sf(data = ak, fill = 'gray92', color = 'gray60') +
-  geom_sf(data = au_shape, color = '#435200', fill = '#435200', linewidth = 5) +
-  ggtitle("Assessment Unit Location within Alaska") + 
+  geom_sf(data = center, color = '#435200', fill = '#435200', size = 5) +
+  # ggtitle("Assessment Unit Location within Alaska") + 
   theme_bw() 
   
 ```
 
 \newpage
 
-## Designated Uses and Attainment
+<br>
+
+<br>
+
+### Designated Uses and Attainment
 
 ```{r}
 
@@ -75,9 +141,21 @@ output_df_au %>%
   kable() 
 ```
 
+###### **Categories 1 and 2:** Waters for which there is enough information to determine that water quality standards are attained for all or some of their designated uses.
+
+###### **Category 3:** Waters for which there is not enough information to determine their status.
+
+###### **Category 4:** Waters that are impaired, but have one of several different types of waterbody recovery plans.
+
+###### **Category 5:** Waters that are impaired and do not yet have waterbody recovery plans. Also known as 303(d) list impaired waters.
+
 \newpage
 
-## Attainment by Parameter
+<br>
+
+<br>
+
+### Attainment by Parameter
 
 ```{r, echo = FALSE}
 output_df_au %>%
@@ -89,10 +167,10 @@ output_df_au %>%
                                           'Exceeding')) %>%
     select(
     Parameter = Constituent,
-    Use,
+    `Designated Use` = Use,
     Attainment,
     `# of Samples` = n_Samples,
-    Type,
+    `Chronic/Acute` = Type,
     Magnitude =  Magnitude_Numeric,
     Frequency,
     Duration) %>% 
@@ -101,16 +179,40 @@ output_df_au %>%
   kable()
 ```
 
+###### **Parameter:** Qualitative or quantitative measurements of physical, chemical, or biological attributes such as temperatures, metals, or bacteria.
+
+###### **Designated Use:** Water quality goals of a waterbody or portion thereof, in part, by designating the use or uses to be made of the water.
+
+###### **Attainment:** Achieving attainment means that a waterbody is supporting all designated uses for the pollutant parameters evaluated. Impairement means that a waterbody is persistently exceeding criteria for one or more pollutants and not supporting all designated uses.
+
+###### **Acute/Chronic:** Duration periods and frequency thresholds for toxic pollutants for their protection of aquatic life and human health vary depending on short term (acute) or longer-term (chronic) exposure.
+
+###### **Magnitude:** Describes the allowable maximum or minimum numeric concentration of a pollutant determined to meet water quality standards and be protective of the designated use.
+
+###### **Frequency:** Describes the allowable number of times a water quality criterion can be exceeded before water quality standards are not met and an impairment of the designated use occurs.
+
+###### **Duration:** Describes the length of time a pollutant may be present and potentially impacting a designated use before the criterion is considered exceeded and water quality standards are not met.
+
 \newpage
 
-## Distribution of Parameters
+<br>
+
+<br>
+
+### Distribution of Parameters
 
 ```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim = c(6,3.5)}
 AKDECtools::boxPlot(data = output_samples, WQS_table = wqs_table,
                           AU_ID = au_loop, y_axis_log = T)
 ```
 
-## Parameter Specific Time Series
+\newpage
+
+<br>
+
+<br>
+
+### Parameter Specific Time Series
 
 ```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim = c(6,3.5)}
 AKDECtools::timeSeries(data = output_samples, WQS_table = wqs_table,
