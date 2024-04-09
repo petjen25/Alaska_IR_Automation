@@ -3,7 +3,7 @@
 
 
 #Written by Hannah Ferriby
-#Date updated: 4/4/2024
+#Date updated: 4/9/2024
 
 
 ####Load Packages####
@@ -182,7 +182,7 @@ parameters <- data_all_AUs %>%
   mutate(PARAM_ATTAINMENT_CODE = case_when(Individual_Category == 5 ~ #CATEGORIES ARE UNCLEAR
                                              "Not meeting criteria", 
                                            Individual_Category == 2 ~
-                                             "Meeting Criteria", 
+                                             "Meeting criteria", 
                                            Individual_Category == 3 ~
                                              "Not enough information", 
                                            T ~
