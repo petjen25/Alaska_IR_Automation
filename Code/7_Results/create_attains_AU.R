@@ -3,7 +3,7 @@
 
 
 #Written by Hannah Ferriby
-#Date updated: 4/4/2024
+#Date updated: 4/8/2024
 
 
 ####Load Packages####
@@ -134,9 +134,9 @@ write_csv(water_types, 'Output/results/ATTAINS/AU_Batch_Upload/Water_Types.csv',
 locations <- data_current_AU_not_listed %>%
   select(AUID_ATTNS, HUC10_ID) %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         LOCATION_TYPE_CONTEXT = HUC10_ID) %>% #To be filled in manually be AK DEC
+         LOCATION_TYPE_CONTEXT = HUC10_ID) %>% 
   mutate(LOCATION_TYPE_CODE = 'HUC-10',
-         LOCATION_TEXT = NA) %>%
+         LOCATION_TEXT = NA) %>% #To be filled in manually be AK DEC
   select(ASSESSMENT_UNIT_ID, LOCATION_TYPE_CODE, LOCATION_TYPE_CONTEXT, 
          LOCATION_TEXT) %>%
   unique()
