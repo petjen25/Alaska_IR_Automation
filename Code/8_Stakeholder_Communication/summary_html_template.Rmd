@@ -15,6 +15,16 @@ library(leaflet)
 library(viridis)
 ```
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
+
+```{css}
+h1 {color:White; background-color:#253B64; text-align: center;}
+h3 {color:#253B64; font-weight: bold;}
+body {background-color: #F7F5F2; font-family: "Open Sans", Arial, sans-serif;}
+```
+
+[![](www/dec-logo-large.png){width="20%"}](https://dec.alaska.gov/water/water-quality/)
+
 <br>
 
 # Assessment Unit Summary
@@ -119,7 +129,7 @@ ggplot() +
   geom_sf(data = ak, fill = 'gray92', color = 'gray60') +
   geom_sf(data = center, color = '#435200', fill = '#435200', size = 5) +
   # ggtitle("Assessment Unit Location within Alaska") + 
-  theme_bw() 
+  theme_bw()
   
 ```
 
