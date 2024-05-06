@@ -176,7 +176,7 @@ output_df_au %>%
                                         Individual_Category == 5 ~
                                           'Exceeding')) %>%
     select(
-    Parameter = Constituent,
+    Parameter = TADA.CharacteristicName,
     `Designated Use` = Use,
     Attainment,
     `# of Samples` = n_Samples,
