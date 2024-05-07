@@ -15,6 +15,13 @@ ak <- st_read('Data/data_GIS/cb_2018_us_state_500k/cb_2018_us_state_500k.shp') %
   filter(STUSPS == 'AK') %>%
   st_transform(crs = st_crs(au_shape_crs))
 
+# test <- ml_au_crosswalk %>%
+#   select(AUID_ATTNS, MonitoringLocationIdentifier) %>%
+#   group_by(AUID_ATTNS) %>%
+#   reframe(AUID_ATTNS,
+#           n = n()) %>%
+#   unique()
+  
 
 unique_AU <- output_df %>%
   select(AUID_ATTNS) %>%
@@ -35,7 +42,8 @@ unique_AU <- output_df %>%
   unique()
 
 # Loop --------------------------------------------------------------------
-au_loop <- unique_AU$AUID_ATTNS[[2]]
+# au_loop <- unique_AU$AUID_ATTNS[[2]]
+# au_loop <- 'AK_M_1030305_003'
 
 for (au_loop in unique_AU$AUID_ATTNS){  # for each unique episode
   
@@ -48,25 +56,33 @@ for (au_loop in unique_AU$AUID_ATTNS){  # for each unique episode
   if(au_type == 'Marine') {
     
     au_shape <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/marine.shp') %>%
-      filter(AUID_ATTNS == au_loop)
+      filter(AUID_ATTNS == au_loop) %>%
+      mutate(Shape_4_Summary = AU_Area,
+             AU_Shape_Unit = 'square miles')
     
   } else if(au_type == 'River') {
     
     au_shape <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/rivers.shp') %>%
       filter(AUID_ATTNS == au_loop) %>%
-      st_transform(crs = st_crs(au_shape_crs))
+      st_transform(crs = st_crs(au_shape_crs)) %>%
+      mutate(Shape_4_Summary = AU_Miles,
+             AU_Shape_Unit = 'miles')
     
   } else if(au_type == 'Beach') {
     
     au_shape <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/beaches.shp') %>%
       filter(AUID_ATTNS == au_loop) %>%
-      st_transform(crs = st_crs(au_shape_crs))
+      st_transform(crs = st_crs(au_shape_crs)) %>%
+      mutate(Shape_4_Summary = AU_Miles,
+             AU_Shape_Unit = 'miles')
     
   } else if(au_type == 'Lake') {
     
     au_shape <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/lakes.shp') %>%
       filter(AUID_ATTNS == au_loop) %>%
-      st_transform(crs = st_crs(au_shape_crs))
+      st_transform(crs = st_crs(au_shape_crs)) %>%
+      mutate(Shape_4_Summary = AU_Area,
+             AU_Shape_Unit = 'acres')
     
   } else(
     print("No AU Type Detected")
@@ -98,3 +114,5 @@ for (au_loop in unique_AU$AUID_ATTNS){  # for each unique episode
   )
   
 }  # end of loop
+
+

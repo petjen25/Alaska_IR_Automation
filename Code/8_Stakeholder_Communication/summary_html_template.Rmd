@@ -13,6 +13,7 @@ library(ggplot2)
 library(ggspatial)
 library(leaflet)
 library(viridis)
+library(ggpubr)
 ```
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
@@ -23,18 +24,27 @@ h3 {color:#253B64; font-weight: bold;}
 body {background-color: #F7F5F2; font-family: "Open Sans", Arial, sans-serif;}
 ```
 
-[![](www/dec-logo-large.png){width="20%"}](https://dec.alaska.gov/water/water-quality/)
+[![](www/dec-logo-large.png){width="11%"}](https://dec.alaska.gov/water/water-quality/)
 
 <br>
 
 # Assessment Unit Summary
 
+Assessment units are entire waterbodies or portions of them that fall within a specified hydrologic area such as a watershed. Using data obtained during a public call for data and pre-defined assessment methodologies, these units are analyzed to determine if the assessment unit is meeting Alaska water quality standards. After this analysis is completed, waterbodies are placed in corresponding categories (see definitions below).
+
+```{r, results = 'asis'}
+cat(paste0('This ', au_type, ' Assessment Unit is ', round(au_shape$Shape_4_Summary, 3), ' ', au_shape$AU_Shape_Unit, ' and is located in HUC', au_shape$HUC10_ID ,'.'))
+```
+
+::: {align="center"}
 <br>
 
 ```{r}
 output_df_au %>%
+  mutate(AU_Name = au_shape$Name_AU) %>%
   select(
     `AU ID: ` = AUID_ATTNS,
+    `AU Name: ` = AU_Name,
     `AU Type: ` = AU_Type) %>% 
   unique() %>%
   t() %>%
@@ -150,6 +160,7 @@ output_df_au %>%
   unique() %>%
   kable() 
 ```
+:::
 
 ###### **Categories 1 and 2:** Waters for which there is enough information to determine that water quality standards are attained for all or some of their designated uses.
 
@@ -165,43 +176,36 @@ output_df_au %>%
 
 <br>
 
+::: {align="center"}
 ### Attainment by Parameter
 
 ```{r, echo = FALSE}
 output_df_au %>%
   mutate(Attainment = case_when(Individual_Category == 3 ~
-                                          'Insufficient data',
+                                          'Insufficient data (3)',
                                         Individual_Category == 2 ~
-                                          'Not exceeding',
+                                          'Not exceeding (2)',
                                         Individual_Category == 5 ~
-                                          'Exceeding')) %>%
+                                          'Exceeding (5)')) %>%
     select(
     Parameter = TADA.CharacteristicName,
     `Designated Use` = Use,
     Attainment,
     `# of Samples` = n_Samples,
-    `Chronic/Acute` = Type,
-    Magnitude =  Magnitude_Numeric,
-    Frequency,
-    Duration) %>% 
+    `# of Sample Dates` = n_SampDates) %>% 
   unique() %>%
   arrange(Parameter) %>%
   kable()
 ```
+:::
 
 ###### **Parameter:** Qualitative or quantitative measurements of physical, chemical, or biological attributes such as temperatures, metals, or bacteria.
 
 ###### **Designated Use:** Water quality goals of a waterbody or portion thereof, in part, by designating the use or uses to be made of the water.
 
-###### **Attainment:** Achieving attainment means that a waterbody is supporting all designated uses for the pollutant parameters evaluated. Impairement means that a waterbody is persistently exceeding criteria for one or more pollutants and not supporting all designated uses.
+###### **Impairment:** Impairment means that a waterbody is persistently exceeding criteria for one or more pollutants and not supporting all designated uses.
 
-###### **Acute/Chronic:** Duration periods and frequency thresholds for toxic pollutants for their protection of aquatic life and human health vary depending on short term (acute) or longer-term (chronic) exposure.
-
-###### **Magnitude:** Describes the allowable maximum or minimum numeric concentration of a pollutant determined to meet water quality standards and be protective of the designated use.
-
-###### **Frequency:** Describes the allowable number of times a water quality criterion can be exceeded before water quality standards are not met and an impairment of the designated use occurs.
-
-###### **Duration:** Describes the length of time a pollutant may be present and potentially impacting a designated use before the criterion is considered exceeded and water quality standards are not met.
+###### **Attainment:** Achieving attainment means that a waterbody is supporting all designated uses for the pollutant parameters evaluated.
 
 \newpage
 
@@ -209,11 +213,16 @@ output_df_au %>%
 
 <br>
 
+::: {align="center"}
 ### Distribution of Parameters
 
-```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim = c(6,3.5)}
-AKDECtools::boxPlot(data = output_samples, WQS_table = wqs_table,
-                          AU_ID = au_loop, y_axis_log = T)
+```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim= c(11,5)}
+plots<- AKDECtools::boxPlot(data = output_samples, WQS_table = wqs_table,
+                          AU_ID = au_loop, y_axis_log = T) 
+
+ggarrange(plotlist = plots,
+         ncol = 2,
+         common.legend = T) 
 ```
 
 \newpage
@@ -224,7 +233,12 @@ AKDECtools::boxPlot(data = output_samples, WQS_table = wqs_table,
 
 ### Parameter Specific Time Series
 
-```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim = c(6,3.5)}
-AKDECtools::timeSeries(data = output_samples, WQS_table = wqs_table,
+```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim= c(10,5)}
+plots2 <- AKDECtools::timeSeries(data = output_samples, WQS_table = wqs_table,
                        AU_ID = au_loop, y_axis_log = T)
+
+ggarrange(plotlist = plots2,
+         ncol = 2,
+        common.legend = T)
 ```
+:::
