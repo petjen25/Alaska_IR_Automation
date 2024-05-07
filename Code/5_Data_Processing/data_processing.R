@@ -439,7 +439,7 @@ data_19_long <- left_join(data_16, df_ML_AU_Crosswalk
   select(!c(HydrologicEvent, HydrologicCondition, StatisticalBaseCode, ResultTimeBasisText, 
             ActivityEndDateTime, MonitoringLocationDescriptionText,
             SamplingDesignTypeCode, QAPPApprovedIndicator, QAPPApprovalAgencyName,
-            TADA.CharacteristicNameAssumptions))
+            TADA.CharacteristicNameAssumptions, ProjectDescriptionText))
 
 #Export data summary
 write_csv(data_19_long, file = file.path('Output/data_processing'
