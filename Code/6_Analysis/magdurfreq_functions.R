@@ -11,8 +11,8 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240117.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240507.csv')
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240507.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240131.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
@@ -1521,4 +1521,4 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turb
 
 final_output <- combine_MagDurFreq(output, output_hardness, output_pH, output_turbidity)
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240222.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240507.csv')

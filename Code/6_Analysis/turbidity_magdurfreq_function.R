@@ -8,8 +8,8 @@ library(tidyverse)
 set.seed(42)
 
 #Load in data
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240117.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240507.csv')
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240507.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240131.csv')
 
 
