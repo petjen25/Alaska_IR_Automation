@@ -13,7 +13,7 @@ library(psych)
 ####Load in data####
 input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240507.csv')
 input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240507.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240131.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240507.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
 
@@ -507,6 +507,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == F){
         #Method #20 ----
+        #PROBLEM HERE
         #Maximum, >=2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude listed
         
         results <- filt %>%
@@ -769,7 +770,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
       filter_by <- my_data_magfreqdur[j,]
       
       filt <- df_subset %>% dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent)
-      
+      #ISSUE HERE
       if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
               filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == T &
               stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){

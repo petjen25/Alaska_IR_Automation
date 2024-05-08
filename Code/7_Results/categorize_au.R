@@ -6,13 +6,14 @@
 library(tidyverse)
 
 ####Load in data####
-input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240222.csv')
+input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240507.csv')
 
 options <- input_analysis %>%
   select(Exceed) %>%
   unique()
 
-
+test1<- input_analysis %>% filter(AUID_ATTNS == 'AK_R_1010504_005')
+test <- input_analysis %>% filter(Exceed == 'Method not coded!')
 
 
 categorize_AU <- function(input_analysis){ 
@@ -42,4 +43,4 @@ categorize_AU <- function(input_analysis){
 
 output <- categorize_AU(input_analysis)
 
-write_csv(output, 'Output/results/categorized_aus_20240222.csv')
+write_csv(output, 'Output/results/categorized_aus_20240508.csv')
