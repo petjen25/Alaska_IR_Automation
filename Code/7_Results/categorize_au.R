@@ -12,15 +12,7 @@ options <- input_analysis %>%
   select(Exceed) %>%
   unique()
 
-test1<- input_analysis %>% filter(AUID_ATTNS == 'AK_R_1010504_005')
-test <- input_analysis %>% filter(Exceed == 'Method not coded!')
-test2 <- input_analysis %>% filter(is.na(Data_Sufficient))
-
-input_analysis <- input_analysis %>%
-  filter(AUID_ATTNS == 'AK_R_1020709_011') %>%
-  filter(TADA.CharacteristicName == 'PH')
-
-categorize_AU <- function(input_analysis){ 
+categorize_AU <- function(input_analysis, simplify_standards){ 
   
   calc_individual <- input_analysis %>%
     dplyr::mutate(Individual_Category = case_when(is.na(Data_Sufficient) ~ NA,
@@ -31,7 +23,31 @@ categorize_AU <- function(input_analysis){
                                            Exceed == 'Insufficient dependent data' ~ '3',
                                            T ~ NA))
   
-  calc_overall <- calc_individual %>%
+  if(simplify_standards == T){
+    
+    mid_step <- calc_individual %>%
+      dplyr::group_by(AUID_ATTNS, Use, `Use Description`, TADA.CharacteristicName) %>%
+      dplyr::mutate(n = n(),
+             is_2 = sum(ifelse(Individual_Category == '2', 1, 0)),
+             is_3 = sum(ifelse(Individual_Category == '3', 1, 0)),
+             is_5 = sum(ifelse(Individual_Category == '5', 1, 0)),
+             #If n > 1, choose worse category
+             new_Individual_Category = case_when(n > 1 & is_5 == 1 ~
+                                                   '5',
+                                                 n > 1 & is_5 == 0 & is_2 > 0 ~
+                                                   '2',
+                                                 T ~ Individual_Category)) %>%
+      dplyr::filter(Individual_Category == new_Individual_Category) %>%
+      dplyr::select(!c(Individual_Category, n, is_2, is_3, is_5)) %>%
+      dplyr::rename(Individual_Category = new_Individual_Category)
+      
+    
+  } else {
+    mid_step <- calc_individual
+  }
+  
+  
+  calc_overall <- mid_step %>%
     dplyr::group_by(AUID_ATTNS, Use) %>%
     dplyr::mutate(cat_5_present = length(Individual_Category[Individual_Category=='5']),
            cat_2_present = length(Individual_Category[Individual_Category=='2']),
@@ -46,6 +62,6 @@ categorize_AU <- function(input_analysis){
   
 }
 
-output <- categorize_AU(input_analysis)
+output <- categorize_AU(input_analysis, simplify_standards = F)
 
 write_csv(output, 'Output/results/categorized_aus_20240513.csv')
