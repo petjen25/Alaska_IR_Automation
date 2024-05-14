@@ -434,12 +434,44 @@ data_19 <- left_join(data_18, df_ML_AU_Crosswalk
 
 #Create object for export, remove columns of mostly NAs to make file small enough
 #for github
+blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "COLOR", "DISSOLVED OXYGEN (DO)"
+                     , "ENTEROCOCCUS", "ESCHERICHIA COLI", "FECAL COLIFORM"
+                     , "PH", "SEDIMENT", "SULFATE", "TEMPERATURE, WATER"
+                     , "TOTAL DISSOLVED SOLIDS", "TURBIDITY") # from data sufficiency table
+
 data_19_long <- left_join(data_16, df_ML_AU_Crosswalk
                           , by = "MonitoringLocationIdentifier") %>%
   select(!c(HydrologicEvent, HydrologicCondition, StatisticalBaseCode, ResultTimeBasisText, 
             ActivityEndDateTime, MonitoringLocationDescriptionText,
             SamplingDesignTypeCode, QAPPApprovedIndicator, QAPPApprovalAgencyName,
-            TADA.CharacteristicNameAssumptions, ProjectDescriptionText))
+            TADA.CharacteristicNameAssumptions, ProjectDescriptionText)) %>% 
+  mutate(TADA.ResultSampleFractionText_new = case_when((TADA.ResultSampleFractionText == "UNFILTERED"
+                                                        |TADA.ResultSampleFractionText == "UNFILTERED, FIELD"
+                                                        |TADA.ResultSampleFractionText == "TOTAL") 
+                                                       ~ "TOTAL"
+                                                       , (TADA.ResultSampleFractionText == "FILTERED"
+                                                          | TADA.ResultSampleFractionText == "FILTERED, LAB"
+                                                          | TADA.ResultSampleFractionText == "FILTERED, FIELD"
+                                                          | TADA.ResultSampleFractionText == "VOLATILE"
+                                                          | TADA.ResultSampleFractionText == "DISSOLVED") 
+                                                       ~ "DISSOLVED"
+                                                       , (TADA.ResultSampleFractionText == "SUSPENDED"
+                                                          | TADA.ResultSampleFractionText == "NON-FILTERABLE (PARTICLE)"
+                                                          | TADA.ResultSampleFractionText == "NON-FILTERABLE"
+                                                          | TADA.ResultSampleFractionText == "SETTLEABLE") 
+                                                       ~ "PARTICULATE"
+                                                       , (TADA.ResultSampleFractionText == "RECOVERABLE") 
+                                                       ~ "TOTAL RECOVERABLE"
+                                                       , (TADA.ResultSampleFractionText == "FIELD") ~ NA
+                                                       , TRUE ~ NA)) %>% 
+  mutate(TADA.ResultSampleFractionText_new = case_when((TADA.CharacteristicName %in% blank_fractions) ~ NA
+                                                       , TRUE ~ TADA.ResultSampleFractionText_new)) %>% 
+  mutate(TADA.CharacteristicName = case_when((TADA.CharacteristicName == "HARDNESS, CA, MG"
+                                              | TADA.CharacteristicName == "HARDNESS, CARBONATE"
+                                              | TADA.CharacteristicName ==  "HARDNESS"
+                                              | TADA.CharacteristicName ==  "TOTAL HARDNESS") ~ "HARDNESS"
+                                             , TRUE ~ TADA.CharacteristicName))
+
 
 #Export data summary
 write_csv(data_19_long, file = file.path('Output/data_processing'

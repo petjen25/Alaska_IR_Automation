@@ -11,8 +11,8 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240507.csv')
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240507.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240509.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240507.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
@@ -117,8 +117,22 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
       filter_by <- my_data_magfreqdur[j,]
       
       #Pull just that constituent data
-      filt <- df_subset %>% dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent)
+      if(is.na(filter_by$Fraction)) {
+        
+        filt <- df_subset %>%
+          dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent) %>%
+          dplyr::filter(is.na(TADA.ResultSampleFractionText_new))
+        
+      } else {
       
+        filt <- df_subset %>%
+          dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent) %>%
+          dplyr::filter(TADA.ResultSampleFractionText_new == toupper(filter_by$Fraction))
+      }
+      
+      if(nrow(filt) == 0) {
+        next
+      }
       
       if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
          filter_by$Duration == '30-day period' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
@@ -769,8 +783,23 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
       counter <- counter + 1
       filter_by <- my_data_magfreqdur[j,]
       
-      filt <- df_subset %>% dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent)
-      #ISSUE HERE
+      if(is.na(filter_by$Fraction)) {
+        
+        filt <- df_subset %>%
+          dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent) %>%
+          dplyr::filter(is.na(TADA.ResultSampleFractionText_new))
+        
+      } else {
+        
+        filt <- df_subset %>%
+          dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent) %>%
+          dplyr::filter(TADA.ResultSampleFractionText_new == toupper(filter_by$Fraction))
+      }
+      
+      if(nrow(filt) == 0) {
+        next
+      }
+      
       if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
               filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == T &
               stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), 'pH') == F){
@@ -1020,11 +1049,11 @@ output_hardness <- MagDurFreq_hardnessDependent(wqs_crosswalk, input_samples, in
 
 
 #Just doing this to make it more similar to the standard and hardness dependent functions
-ammonia_test_filtered <- ammonia_test %>%
-  dplyr::filter(TADA.CharacteristicName %in% c('AMMONIA', 'PENTACHLOROPHENOL'))
-
-input_samples <- ammonia_test
-input_samples_filtered <- ammonia_test_filtered
+# ammonia_test_filtered <- ammonia_test %>%
+#   dplyr::filter(TADA.CharacteristicName %in% c('AMMONIA', 'PENTACHLOROPHENOL'))
+# 
+# input_samples <- ammonia_test
+# input_samples_filtered <- ammonia_test_filtered
 
 
 #Function to tell you if you have sufficient freshwater ammonia samples and
@@ -1077,7 +1106,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
     print(i) # print name of current AU
     
     # dplyr::filter data
-    df_subset <- input_samples_filtered %>% #CHANGE to input_samples_filtered_relevant
+    df_subset <- input_samples_filtered_relevant %>% #CHANGE to input_samples_filtered_relevant
       dplyr::filter(AUID_ATTNS == i) %>%
       dplyr::mutate(year = year(ActivityStartDate),
                     month = month(ActivityStartDate),
@@ -1115,7 +1144,22 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
       counter <- counter + 1
       filter_by <- my_data_magfreqdur[j,]
       
-      filt <- df_subset %>% dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent)
+      if(is.na(filter_by$Fraction)) {
+        
+        filt <- df_subset %>%
+          dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent) %>%
+          dplyr::filter(is.na(TADA.ResultSampleFractionText_new))
+        
+      } else {
+        
+        filt <- df_subset %>%
+          dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent) %>%
+          dplyr::filter(TADA.ResultSampleFractionText_new == toupper(filter_by$Fraction))
+      }
+      
+      if(nrow(filt) == 0) {
+        next
+      }
       
       if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
               filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == T){
@@ -1515,11 +1559,12 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turb
   output <- standard_output %>%
     rbind(hardness_output) %>%
     rbind(pH_output) %>%
-    rbind(turbidity_output)
+    rbind(turbidity_output) %>%
+    filter(!is.na(Constituent))
   
   return(output)
 }
 
 final_output <- combine_MagDurFreq(output, output_hardness, output_pH, output_turbidity)
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240507.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240513.csv')

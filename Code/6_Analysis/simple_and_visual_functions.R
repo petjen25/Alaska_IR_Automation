@@ -14,7 +14,7 @@ library(psych)
 ####Load in data####
 input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
 input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240117.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240117.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240131.csv')
 
 
 #Determine max amount of constituents in an AU
@@ -92,7 +92,8 @@ timeSeries <- function(data, WQS_table, AU_ID, y_axis_log) {
       viridis::scale_fill_viridis(discrete = T,
                                    option = "mako") +
       ggplot2::labs(fill = 'Monitoring Location') +
-      ggplot2::theme(legend.position="top")
+      ggplot2::theme(legend.position="top",
+                     text=element_text(size=22))
     
     results[[counter]] <- plt
     } else {
@@ -112,7 +113,8 @@ timeSeries <- function(data, WQS_table, AU_ID, y_axis_log) {
         viridis::scale_fill_viridis(discrete = T,
                                     option = "mako") +
         ggplot2::labs(fill = 'Monitoring Location') +
-        ggplot2::theme(legend.position="top")
+        ggplot2::theme(legend.position="top",
+                       text=element_text(size=22))
       
       results[[counter]] <- plt
     }
@@ -121,8 +123,10 @@ timeSeries <- function(data, WQS_table, AU_ID, y_axis_log) {
 }
 
 timeseries_example <- timeSeries(data = input_samples, WQS_table = wqs_crosswalk,
-                                 AU_ID = c('AK_R_1010504_005'), y_axis_log = F)
+                                 AU_ID = c('AK_M_1030305_003'), y_axis_log = F)
 
+ggsave('Output/results/test/testtime.jpg', timeseries_example[[1]], units = 'in',
+       height = 5, width = 6.5)
 
 #Boxplot function 
 boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
@@ -163,6 +167,7 @@ boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
                              color = 'black',
                              shape = 21,
                              size = 2,
+                             width = 0.2,
                              alpha = 0.8) +
         ggplot2::xlab('AU ID') +
         ggplot2::ylab(paste0(j, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')')) +
@@ -170,7 +175,8 @@ boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
         viridis::scale_fill_viridis(discrete = T,
                                     option = "mako") +
         ggplot2::labs(fill = 'Monitoring Location') +
-        ggplot2::theme(legend.position="top")
+        ggplot2::theme(legend.position="top",
+                       text=element_text(size=22))
       
       results[[counter]] <- plt
     } else {
@@ -185,6 +191,7 @@ boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
                              color = 'black',
                              shape = 21,
                              size = 2,
+                             width = 0.2,
                              alpha = 0.8) +
         ggplot2::xlab('AU ID') +
         ggplot2::ylab(paste0(j, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')')) +
@@ -193,7 +200,8 @@ boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
         viridis::scale_fill_viridis(discrete = T,
                                     option = "mako") +
         ggplot2::labs(fill = 'Monitoring Location') +
-        ggplot2::theme(legend.position="top")
+        ggplot2::theme(legend.position="top",
+                       text=element_text(size=22))
       
       results[[counter]] <- plt
     }
@@ -202,4 +210,7 @@ boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
 }
 
 boxplot_example <- boxPlot(data = input_samples, WQS_table = wqs_crosswalk,
-                                 AU_ID = c('AK_R_1010504_005'), y_axis_log = F)
+                                 AU_ID = c('AK_M_1030305_003'), y_axis_log = F)
+
+ggsave('Output/results/test/testboxplot.jpg', boxplot_example[[1]], units = 'in',
+       height = 5, width = 6.5)

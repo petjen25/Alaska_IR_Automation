@@ -6,7 +6,7 @@
 library(tidyverse)
 
 ####Load in data####
-input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240507.csv')
+input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240513.csv')
 
 options <- input_analysis %>%
   select(Exceed) %>%
@@ -14,12 +14,17 @@ options <- input_analysis %>%
 
 test1<- input_analysis %>% filter(AUID_ATTNS == 'AK_R_1010504_005')
 test <- input_analysis %>% filter(Exceed == 'Method not coded!')
+test2 <- input_analysis %>% filter(is.na(Data_Sufficient))
 
+input_analysis <- input_analysis %>%
+  filter(AUID_ATTNS == 'AK_R_1020709_011') %>%
+  filter(TADA.CharacteristicName == 'PH')
 
 categorize_AU <- function(input_analysis){ 
   
   calc_individual <- input_analysis %>%
-    dplyr::mutate(Individual_Category = case_when(Data_Sufficient == "No" ~ '3',
+    dplyr::mutate(Individual_Category = case_when(is.na(Data_Sufficient) ~ NA,
+                                                  Data_Sufficient == "No" ~ '3',
                                            Exceed == 'Yes' ~ '5',
                                            Exceed == 'No' ~ '2',
                                            Exceed == 'Insufficient hardness' ~ '3',
@@ -33,7 +38,7 @@ categorize_AU <- function(input_analysis){
            Use_Category = case_when(cat_5_present > 0 ~ '5',
                                         cat_5_present == 0 & cat_2_present > 0 ~ '2',
                                         cat_5_present == 0 & cat_2_present == 0 ~ '3',
-                                        T~NA)) %>%
+                                        T~ NA)) %>%
     dplyr::select(!c(cat_5_present, cat_2_present)) %>%
     dplyr::arrange(AUID_ATTNS, Use)
   
@@ -43,4 +48,4 @@ categorize_AU <- function(input_analysis){
 
 output <- categorize_AU(input_analysis)
 
-write_csv(output, 'Output/results/categorized_aus_20240508.csv')
+write_csv(output, 'Output/results/categorized_aus_20240513.csv')
