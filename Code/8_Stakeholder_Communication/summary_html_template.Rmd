@@ -181,6 +181,7 @@ output_df_au %>%
 
 ```{r, echo = FALSE}
 output_df_au %>%
+  filter(!is.na(n_Samples)) %>%
   mutate(Attainment = case_when(Individual_Category == 3 ~
                                           'Insufficient data (3)',
                                         Individual_Category == 2 ~

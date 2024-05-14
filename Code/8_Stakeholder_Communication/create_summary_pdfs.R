@@ -5,23 +5,15 @@ library(AKDECtools)
 library(rmarkdown)  # for render
 library(ggplot2)
 
-output_df <- read_csv(file = "Output/results/categorized_aus_20240222.csv")  # path to file
-wqs_table <- read_csv(file = 'Data/data_analysis/AK_WQS_Crosswalk_20240131.csv')
-output_samples <- read_csv(file = 'Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
+output_df <- read_csv(file = "Output/results/categorized_aus_20240509.csv")  # path to file
+wqs_table <- read_csv(file = 'Data/data_analysis/AK_WQS_Crosswalk_20240507.csv')
+output_samples <- read_csv(file = 'Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
 ml_au_crosswalk <- read_csv(file = 'Data/data_processing/ML_AU_Crosswalk.csv')
 au_shape_crs <- st_read('Data/data_GIS/Marine/MAUs_FINAL_2023.shp')
 
 ak <- st_read('Data/data_GIS/cb_2018_us_state_500k/cb_2018_us_state_500k.shp') %>%
   filter(STUSPS == 'AK') %>%
   st_transform(crs = st_crs(au_shape_crs))
-
-# test <- ml_au_crosswalk %>%
-#   select(AUID_ATTNS, MonitoringLocationIdentifier) %>%
-#   group_by(AUID_ATTNS) %>%
-#   reframe(AUID_ATTNS,
-#           n = n()) %>%
-#   unique()
-  
 
 unique_AU <- output_df %>%
   select(AUID_ATTNS) %>%
