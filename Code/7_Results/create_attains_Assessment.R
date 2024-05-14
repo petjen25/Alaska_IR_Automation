@@ -3,7 +3,7 @@
 
 
 #Written by Hannah Ferriby
-#Date updated: 4/9/2024
+#Date updated: 5/14/2024
 
 
 ####Load Packages####
@@ -14,50 +14,10 @@ library(readxl)
 ####Load Data####
 au_id_crosswalk <- read_csv('Data/data_analysis/AUID_crosswalk.csv')
 previous_assessment_attains <- read_xlsx('Data/data_analysis/ATTAINS_AK_Asessments_DataDownload_20240126.xlsx', sheet = 2)
-samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240117.csv')
-categorized_aus <- read_csv('Output/results/categorized_aus_20240222.csv')
+samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
+categorized_aus <- read_csv('Output/results/categorized_aus_20240513.csv') %>%
+  filter(!is.na(Individual_Category))
 
-
-#Combine sample data with AUID crosswalk
-data_category_AUID_added <- categorized_aus %>%
-  left_join(au_id_crosswalk, by = c('AUID_ATTNS' = 'Active_AUID'))
-
-
-#Join with previous AU ATTAINS by each AUID type
-data_current_AU <- data_category_AUID_added %>%
-  mutate(assessmentUnitId = AUID_ATTNS) %>%
-  right_join(previous_assessment_attains, by = c('assessmentUnitId'))
-
-#Find retired AUs
-data_retired_AU <- data_category_AUID_added %>%
-  mutate(assessmentUnitId = Retired_AUID) %>%
-  filter(!is.na(assessmentUnitId)) %>%
-  right_join(previous_assessment_attains, by = c('assessmentUnitId'))
-
-#Find historical AUs
-data_historical_AU <- data_category_AUID_added %>%
-  mutate(assessmentUnitId = Historical_AUID) %>%
-  filter(!is.na(assessmentUnitId)) %>%
-  right_join(previous_assessment_attains, by = c('assessmentUnitId'))
-
-#Combine all together
-data_all_AUs1 <- data_current_AU %>%
-  rbind(data_retired_AU) %>%
-  rbind(data_historical_AU) %>%
-  unique()
-
-#Find AUs not in previous ATTAINS
-data_current_AU_not_listed <- data_category_AUID_added %>%
-  mutate(assessmentUnitId = AUID_ATTNS) %>%
-  full_join(previous_assessment_attains, by = c('assessmentUnitId')) %>%
-  filter(!assessmentUnitId %in% data_current_AU$assessmentUnitId) %>%
-  filter(!assessmentUnitId %in% data_retired_AU$assessmentUnitId) %>%
-  filter(!assessmentUnitId %in% data_historical_AU$assessmentUnitId)
-
-#Bind rows together to ensure all current AUs represented
-#This becomes the starting point for each csv export process
-data_all_AUs <- data_all_AUs1 %>% 
-  rbind(data_current_AU_not_listed)
 
 ####Assessments####
 monitoring_year <- samples %>%
@@ -67,15 +27,16 @@ monitoring_year <- samples %>%
           YEAR_LAST_MONITORED = year(max(ActivityStartDate))) %>%
   unique()
 
-assessments <- data_all_AUs %>%
-  select(AUID_ATTNS, organizationId, reportingCycle) %>%
+assessments <- categorized_aus %>%
+  select(AUID_ATTNS) %>%
   left_join(monitoring_year, by = 'AUID_ATTNS') %>%
-  mutate(AGENCY_CODE = 'S') %>%
-  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS, 
-         CYCLE_LAST_ASSESSED = reportingCycle) %>% #Pulling from previous year's ATTAINS
+  mutate(AGENCY_CODE = 'S', 
+         CYCLE_LAST_ASSESSED = '2024') %>% #Manual year entry
+  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS) %>% 
   unique() %>%
   select(ASSESSMENT_UNIT_ID, AGENCY_CODE, CYCLE_LAST_ASSESSED, YEAR_LAST_MONITORED)
 
+#Creates small file ~ 3KB
 write_csv(assessments, 'Output/results/ATTAINS/Assessment_Batch_Upload/Assessments.csv',
           na="")
 
@@ -88,7 +49,7 @@ monitoring_dates <- samples %>%
           USE_MONITORING_END = max(ActivityStartDate)) %>%
   unique()
 
-uses <- data_all_AUs %>%
+uses_part1 <- categorized_aus %>%
   filter(!is.na(Use)) %>%
   #Following mutate code from Jenny Petitt
   mutate(ATTAINS_USE = 
@@ -134,18 +95,58 @@ uses <- data_all_AUs %>%
          USE_ASSESSOR_NAME = NA,
          USE_COMMENT = NA,
          USE_STATE_IR_CAT = NA,
-         USE_ORG_QUALIFIER_FLAG = NA) %>%
+         USE_ORG_QUALIFIER_FLAG = NA) 
+
+
+uses_needs_1_cat_3 <- uses_part1 %>%
+  group_by(ASSESSMENT_UNIT_ID) %>%
+  #If all Uses are 2, one needs to be changed to a 3
+  mutate(All_Cat_2 = all(Use_Category == 2)) %>% 
+  filter(All_Cat_2 == T) %>%
+  mutate(Use_Category = case_when(str_detect(USE_NAME, 'INDUSTRIAL') == T ~
+                                    3,
+                                  T ~ Use_Category)) %>%
+  select(!All_Cat_2)
+
+uses_part2 <- uses_part1 %>%
+  filter(!ASSESSMENT_UNIT_ID %in% uses_needs_1_cat_3$ASSESSMENT_UNIT_ID) %>%
+  rbind(uses_needs_1_cat_3) %>%
   select(!Use_Category) %>%
-  select(ASSESSMENT_UNIT_ID, USE_NAME, USE_AGENCY_CODE, USE_TREND, USE_THREATENED,
-         USE_ASMT_BASIS, USE_MONITORING_START, USE_MONITORING_END, USE_ASMT_DATE,
-         USE_ASSESSOR_NAME, USE_COMMENT, USE_STATE_IR_CAT, 
-         USE_ORG_QUALIFIER_FLAG)
-  
-write_csv(uses, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses.csv',
+  select(ASSESSMENT_UNIT_ID, USE_NAME, USE_ATTAINMENT_CODE, USE_AGENCY_CODE,
+         USE_TREND, USE_THREATENED, USE_ASMT_BASIS, USE_MONITORING_START,
+         USE_MONITORING_END, USE_ASMT_DATE, USE_ASSESSOR_NAME, USE_COMMENT,
+         USE_STATE_IR_CAT, USE_ORG_QUALIFIER_FLAG)
+
+##Following code for splitting uses_part2 for export
+
+uses_4_export <- uses_part2 %>%
+  group_by(ASSESSMENT_UNIT_ID) %>%
+  mutate(Cat_5s = sum(ifelse(USE_ATTAINMENT_CODE == 'N', 1, 0)),
+         Cat_2s = sum(ifelse(USE_ATTAINMENT_CODE == 'F', 1, 0)),
+         Cat_3s = sum(ifelse(USE_ATTAINMENT_CODE == 'I', 1, 0)))
+
+uses_cat2_export <- uses_4_export %>%
+  filter(Cat_5s == 0) %>%
+  filter(Cat_2s >= 1)
+
+uses_cat5_export <- uses_4_export %>%
+  filter(Cat_5s >= 1)
+
+uses_cat3_export <- uses_4_export %>%
+  filter(Cat_5s == 0) %>%
+  filter(Cat_2s == 0)
+ 
+write_csv(uses_cat2_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses_Cat2.csv',
+          na="")
+
+write_csv(uses_cat5_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses_Cat5.csv',
+          na="")
+
+write_csv(uses_cat3_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses_Cat3.csv',
           na="")
 
 ####Parameters####
-parameters <- data_all_AUs %>%
+parameters <- categorized_aus %>%
   filter(!is.na(Use)) %>%
   #Following mutate code from Jenny Petitt
   mutate(ATTAINS_USE = 
@@ -171,19 +172,47 @@ parameters <- data_all_AUs %>%
          PARAM_USE_NAME = gsub(" / NA", "", PARAM_USE_NAME)) %>%
   #End of Jenny code
   select(AUID_ATTNS, TADA.CharacteristicName, PARAM_USE_NAME, Individual_Category) %>%
-  mutate(PARAM_STATUS_NAME = case_when(Individual_Category == 5 ~ #CATEGORIES ARE UNCLEAR
-                                           "Observed effect", 
-                                       Individual_Category == 2 ~
+  group_by(AUID_ATTNS, TADA.CharacteristicName) %>%
+  #Find param status for the parameter/AU combo as a group
+  mutate(is_2 = sum(ifelse(Individual_Category == 2, 1, 0)),
+         is_3 = sum(ifelse(Individual_Category == 3, 1, 0)),
+         param_status_midstep = case_when(max(Individual_Category) == 5 ~
+                                            5,
+                                          max(Individual_Category) == 2 ~
+                                            2,
+                                          #If there are 3's present, but also 2's
+                                          is_2 >= 1 & is_3 >= 1 ~
+                                            2,
+                                          all(Individual_Category  == 3) ~
+                                            3), 
+         PARAM_STATUS_NAME = case_when(param_status_midstep == 5 ~ 
+                                           "Cause", 
+                                       param_status_midstep == 2 ~
                                            "Meeting Criteria", 
-                                       Individual_Category == 3 ~
-                                           "Insufficient Information", 
-                                         T ~
-                                           "X")) %>%
-  mutate(PARAM_ATTAINMENT_CODE = case_when(Individual_Category == 5 ~ #CATEGORIES ARE UNCLEAR
+                                       param_status_midstep == 3 ~
+                                           "Insufficient Information", #MAKE EXPORT CAT BASED ON THIS
+                                       T ~ NA)) %>%
+  ungroup() %>%
+  select(!c(is_2, is_3)) %>% 
+  unique() %>%
+  group_by(AUID_ATTNS, PARAM_USE_NAME, TADA.CharacteristicName) %>%
+  mutate(n = n(),
+         is_2 = sum(ifelse(Individual_Category == 2, 1, 0)),
+         is_3 = sum(ifelse(Individual_Category == 3, 1, 0)),
+         is_5 = sum(ifelse(Individual_Category == 5, 1, 0)),
+         #If n > 1, choose worse category
+         new_Individual_Category = case_when(n > 1 & is_5 == 1 ~
+                                               5,
+                                             n > 1 & is_5 == 0 & is_2 > 0 ~
+                                               2,
+                                             T ~ Individual_Category)) %>%
+  select(!c(Individual_Category, n, is_2, is_3, is_5)) %>%
+  unique() %>%
+  mutate(PARAM_ATTAINMENT_CODE = case_when(new_Individual_Category == 5 ~ 
                                              "Not meeting criteria", 
-                                           Individual_Category == 2 ~
+                                           new_Individual_Category == 2 ~
                                              "Meeting criteria", 
-                                           Individual_Category == 3 ~
+                                           new_Individual_Category == 3 ~
                                              "Not enough information", 
                                            T ~
                                              "Not applicable"),
@@ -213,5 +242,29 @@ parameters <- data_all_AUs %>%
          PARAM_DELISTING_COMMENT, PARAM_DELISTING_AGENCY)
          
 
-write_csv(parameters, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters.csv',
+##Following code for splitting parameters for export
+param_4_export <- parameters %>%
+  group_by(ASSESSMENT_UNIT_ID) %>%
+  mutate(Cat_5s = sum(ifelse(PARAM_STATUS_NAME == 'Cause', 1, 0)),
+         Cat_2s = sum(ifelse(PARAM_STATUS_NAME == 'Meeting criteria', 1, 0)),
+         Cat_3s = sum(ifelse(PARAM_STATUS_NAME == 'Not enough information', 1, 0)))
+
+param_cat2_export <- param_4_export %>%
+  filter(Cat_5s == 0) %>%
+  filter(Cat_2s >= 1)
+
+param_cat5_export <- param_4_export %>%
+  filter(Cat_5s >= 1)
+
+param_cat3_export <- param_4_export %>%
+  filter(Cat_5s == 0) %>%
+  filter(Cat_2s == 0)
+
+write_csv(param_cat2_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters_Cat2.csv',
+          na="")
+
+write_csv(param_cat5_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters_Cat5.csv',
+          na="")
+
+write_csv(param_cat3_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters_Cat3.csv',
           na="")
