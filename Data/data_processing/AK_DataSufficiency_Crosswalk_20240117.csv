@@ -26,6 +26,7 @@ Marine,Conventional,Color,COLOR,,Water Supply,Aquaculture,,2 years,10,"15 result
 Freshwater,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Aquatic Life,,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Aquatic Life,"Growth and Propagation of Fish, Shellfish, Other Aquatic Life, and Wildlife",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Primary Contact Recreation,,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Secondary Contact Recreation,,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Water Supply,"Agriculture, Including Irrigation and Stock Watering",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Water Supply,Aquaculture,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater streams and rivers,Dissolved Gas,Dissolved Oxygen,DISSOLVED OXYGEN (DO),,Water Supply,"Drinking, Culinary, and Food Processing",,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
@@ -190,6 +191,7 @@ Freshwater,Toxics,Iron,IRON,Dissolved,Aquatic Life,,Chronic,2 years,10,,CALM,,2,
 Freshwater,Toxics,Iron,IRON,Dissolved,Aquatic Life,,Chronic,2 years,18,"18 results required for existing impaired, to determine attainment",CALM,,2,18
 Freshwater,Toxics,Iron,IRON,Dissolved,Water Supply,Irrigation,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Lead,LEAD,Dissolved,Aquatic Life,,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
+Freshwater,Toxics,Lead,LEAD,Dissolved,Aquatic Life,,Chronic,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Lead,LEAD,Dissolved,Aquatic Life,,Acute,2 years,5,"15 results required for existing impaired, to determine attainment",CALM,,2,5
 Freshwater,Toxics,Lead,LEAD,Dissolved,Water Supply,Stock Watering,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
 Freshwater,Toxics,Lead,LEAD,Dissolved,Water Supply,Irrigation,,2 years,10,"15 results required for existing impaired, to determine attainment",CALM,,2,10
