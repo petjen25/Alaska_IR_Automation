@@ -6,7 +6,7 @@
 library(tidyverse)
 
 ####Load in data####
-input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240513.csv')
+input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240515.csv')
 
 options <- input_analysis %>%
   select(Exceed) %>%
@@ -15,6 +15,9 @@ options <- input_analysis %>%
 categorize_AU <- function(input_analysis, simplify_standards){ 
   
   calc_individual <- input_analysis %>%
+    filter(Exceed != 'Requires manual analysis') %>%
+    filter(Exceed != 'AU not lake waters') %>%
+    filter(Exceed != 'Natural conditions less than or equal to 50 NTU') %>%
     dplyr::mutate(Individual_Category = case_when(is.na(Data_Sufficient) ~ NA,
                                                   Data_Sufficient == "No" ~ '3',
                                            Exceed == 'Yes' ~ '5',
@@ -63,5 +66,7 @@ categorize_AU <- function(input_analysis, simplify_standards){
 }
 
 output <- categorize_AU(input_analysis, simplify_standards = F)
+output_simp <- categorize_AU(input_analysis, simplify_standards = T)
 
-write_csv(output, 'Output/results/categorized_aus_20240513.csv')
+write_csv(output, 'Output/results/categorized_aus_20240515.csv')
+write_csv(output_simp, 'Output/results/categorized_simplified_aus_20240515.csv')

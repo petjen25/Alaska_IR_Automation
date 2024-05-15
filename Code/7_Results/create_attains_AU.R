@@ -14,8 +14,11 @@ library(stringi)
 
 ####Load Data####
 data_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240509.csv')
+
 previous_au_attains <- read_xlsx('Data/data_analysis/ATTAINS_AK_AsessmentUnits_DataDownload_20240126.xlsx', sheet = 2)
+
 samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
+
 ml_au_crosswalk <- read_csv('Data/data_processing/ML_AU_Crosswalk.csv')
 
 lake_aus <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/lakes.shp') %>%

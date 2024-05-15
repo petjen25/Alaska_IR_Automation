@@ -5,7 +5,7 @@ library(AKDECtools)
 library(rmarkdown)  # for render
 library(ggplot2)
 
-output_df <- read_csv(file = "Output/results/categorized_aus_20240509.csv")  # path to file
+output_df <- read_csv(file = "Output/results/categorized_simplified_aus_20240515.csv")  # path to file
 wqs_table <- read_csv(file = 'Data/data_analysis/AK_WQS_Crosswalk_20240507.csv')
 output_samples <- read_csv(file = 'Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
 ml_au_crosswalk <- read_csv(file = 'Data/data_processing/ML_AU_Crosswalk.csv')
@@ -33,9 +33,16 @@ unique_AU <- output_df %>%
   select(AUID_ATTNS) %>%
   unique()
 
+# which_au_no_sites <- unique_AU %>%
+#   select(AUID_ATTNS) %>%
+#   filter(AUID_ATTNS %in% ml_au_crosswalk$AUID_ATTNS)
+
 # Loop --------------------------------------------------------------------
 # au_loop <- unique_AU$AUID_ATTNS[[2]]
 # au_loop <- 'AK_M_1030305_003'
+
+no_html <- list()
+count <- 1
 
 for (au_loop in unique_AU$AUID_ATTNS){  # for each unique episode
   
@@ -90,10 +97,14 @@ for (au_loop in unique_AU$AUID_ATTNS){  # for each unique episode
     st_transform(st_crs(au_shape))
     
   if(dim(sites)[1] == 0) { #If no sites in AU/ML crosswalk, move on
+    no_html[count] <- au_loop
+    count <- count + 1
     next
   }
   
-  if(dim(au_shape)[1] == 0) { #If no sites in AU/ML crosswalk, move on
+  if(dim(au_shape)[1] == 0) { #If no shapefile, move on
+    no_html[count] <- au_loop
+    count <- count + 1
     next
   }
   

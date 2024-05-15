@@ -12,9 +12,10 @@ library(readxl)
 
 
 ####Load Data####
-au_id_crosswalk <- read_csv('Data/data_analysis/AUID_crosswalk.csv')
 previous_assessment_attains <- read_xlsx('Data/data_analysis/ATTAINS_AK_Asessments_DataDownload_20240126.xlsx', sheet = 2)
+
 samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
+
 categorized_aus <- read_csv('Output/results/categorized_aus_20240513.csv') %>%
   filter(!is.na(Individual_Category))
 

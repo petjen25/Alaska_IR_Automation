@@ -216,6 +216,9 @@ output_df_au %>%
 
 ::: {align="center"}
 ### Distribution of Parameters
+:::
+
+The following figures depict the range of each sampled parameter at this Assessment Unit. The actual sample values are overlayed onto the boxplots to provide an additional visualization of the spread. Samples originating from different Monitoring Locations are assigned different colors. 
 
 ```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim= c(11,5)}
 plots<- AKDECtools::boxPlot(data = output_samples, WQS_table = wqs_table,
@@ -230,9 +233,14 @@ ggarrange(plotlist = plots,
 
 <br>
 
-<br>
+<br> 
 
+::: {align="center"}
 ### Parameter Specific Time Series
+:::
+
+The following figures depict the temporal range of parameter samples taken in this Assessment Unit. Samples originating from different Monitoring Locations are assigned different colors.
+
 
 ```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim= c(10,5)}
 plots2 <- AKDECtools::timeSeries(data = output_samples, WQS_table = wqs_table,
@@ -242,4 +250,3 @@ ggarrange(plotlist = plots2,
          ncol = 2,
         common.legend = T)
 ```
-:::

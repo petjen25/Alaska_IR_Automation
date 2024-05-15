@@ -134,7 +134,13 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         next
       }
       
-      if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
+      #No decided method for analyzing sediment, set to Method not coded!
+      if (filter_by$TADA.Constituent == 'SEDIMENT') {
+        
+        filter_by$AUID_ATTNS <- i
+        filter_by$Exceed <- 'Requires manual analysis'
+      }
+      else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
          filter_by$Duration == '30-day period' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
         #Method #1 ----
         #Maximum, not to exceed, 30-day geometric mean
@@ -1567,4 +1573,4 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turb
 
 final_output <- combine_MagDurFreq(output, output_hardness, output_pH, output_turbidity)
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240513.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240515.csv')
