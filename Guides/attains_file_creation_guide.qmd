@@ -17,7 +17,7 @@ The purpose of the *create_attains_Assessment.R* script is to take the outputs o
 
 ## Required Packages
 
-The required packages for the *data_processing.R* code are [*tidyverse*](https://www.tidyverse.org/) and [*readxl*](https://cran.r-project.org/web/packages/readxl/index.html)*.* Installation for the *tidyverse* package can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to install and load these packages.
+The required packages for the *data_processing.R* code are [tidyverse](https://www.tidyverse.org/), [readxl](https://cran.r-project.org/web/packages/readxl/index.html), [sf](https://cran.r-project.org/web/packages/sf/index.html), and [stringi](https://cran.r-project.org/web/packages/stringi/index.html)*.* Installation for the *tidyverse* package can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to install and load these packages.
 
 ```{r}
 #| output: false
@@ -28,84 +28,58 @@ library(tidyverse)
 #install.packages('readxl')
 library(readxl)
 
+#install.packages('sf')
+library(sf)
+
+#install.packages('stringi')
+library(stringi)
 ```
 
 ## Required Inputs
 
 This code has specific exterior files that are required for it to run. The inputs are listed below. All input files are loaded at the beginning of the script.
 
-+--------------------------------------------------------+------------------------------------------------------------------------------------------------------+---------------------+
-| File Name                                              | Purpose                                                                                              | Source              |
-+========================================================+======================================================================================================+=====================+
-| WQ_metadata_trimmed_with_data_sufficiency_20240117.csv | Provides necessary metadata for ATTAINS csv outputs                                                  | *data_processing.R* |
-|                                                        |                                                                                                      |                     |
-|                                                        | \*\*For Assessment Units Only                                                                        |                     |
-+--------------------------------------------------------+------------------------------------------------------------------------------------------------------+---------------------+
-| AUID_crosswalk.csv                                     | Connects previous AU IDs to current AU IDs. Required to connect to previous year ATTAINS information | AK DEC              |
-+--------------------------------------------------------+------------------------------------------------------------------------------------------------------+---------------------+
-| ATTAINS_AK_Asessments_DataDownload_20240126.xlsx       | Provides information from previous years ATTAINS                                                     | ATTAINS             |
-|                                                        |                                                                                                      |                     |
-|                                                        | \*For Assessment Only                                                                                |                     |
-+--------------------------------------------------------+------------------------------------------------------------------------------------------------------+---------------------+
-| ATTAINS_AK_AsessmentUnits_DataDownload_20240126.xlsx   | Provides information from previous years ATTAINS                                                     | ATTAINS             |
-|                                                        |                                                                                                      |                     |
-|                                                        | \*\*For Assessment Units Only                                                                        |                     |
-+--------------------------------------------------------+------------------------------------------------------------------------------------------------------+---------------------+
-| WQ_data_trimmed_long_withAU20240117.csv                | Provides sample information such as date range that is required in the ATTAINS csv outputs           | *data_processing.R* |
-+--------------------------------------------------------+------------------------------------------------------------------------------------------------------+---------------------+
-| categorized_aus_20240222.csv                           | Provides necessary metadata for ATTAINS csv outputs                                                  | *categorize_au.R*   |
-+--------------------------------------------------------+------------------------------------------------------------------------------------------------------+---------------------+
-
-## Combine all AU IDs
-
-In order to connect the current IR cycle ATTAINS information to previous years, we need to use the *AUID_crosswalk.csv* information. The next section of code pulls previous ATTAINS information with the current AU IDs, previous AU IDs, and historical AU IDs. None of the AU ID numbers are overridden in this code. This information is then combined together to provide previous metadata to the current year's upload. The following code shows the process in *create_attains_Assessment.R*.
-
-```{r}
-#| output: false
-#| eval: false
-#Combine sample data with AUID crosswalk
-data_category_AUID_added <- categorized_aus %>%
-  left_join(au_id_crosswalk, by = c('AUID_ATTNS' = 'Active_AUID'))
-
-
-#Join with previous AU ATTAINS by each AUID type
-data_current_AU <- data_category_AUID_added %>%
-  mutate(assessmentUnitId = AUID_ATTNS) %>%
-  right_join(previous_assessment_attains, by = c('assessmentUnitId'))
-
-#Find retired AUs
-data_retired_AU <- data_category_AUID_added %>%
-  mutate(assessmentUnitId = Retired_AUID) %>%
-  filter(!is.na(assessmentUnitId)) %>%
-  right_join(previous_assessment_attains, by = c('assessmentUnitId'))
-
-#Find historical AUs
-data_historical_AU <- data_category_AUID_added %>%
-  mutate(assessmentUnitId = Historical_AUID) %>%
-  filter(!is.na(assessmentUnitId)) %>%
-  right_join(previous_assessment_attains, by = c('assessmentUnitId'))
-
-#Combine all together
-data_all_AUs1 <- data_current_AU %>%
-  rbind(data_retired_AU) %>%
-  rbind(data_historical_AU) %>%
-  unique()
-
-#Find AUs not in previous ATTAINS
-data_current_AU_not_listed <- data_category_AUID_added %>%
-  mutate(assessmentUnitId = AUID_ATTNS) %>%
-  full_join(previous_assessment_attains, by = c('assessmentUnitId')) %>%
-  filter(!assessmentUnitId %in% data_current_AU$assessmentUnitId) %>%
-  filter(!assessmentUnitId %in% data_retired_AU$assessmentUnitId) %>%
-  filter(!assessmentUnitId %in% data_historical_AU$assessmentUnitId)
-
-#Bind rows together to ensure all current AUs represented
-#This becomes the starting point for each csv export process
-data_all_AUs <- data_all_AUs1 %>% 
-  rbind(data_current_AU_not_listed)
-```
-
-\*For create_attains_AU.R, the steps are the same, but the *data_sufficiency* variable replaces the *categorized_aus* variable.
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| File Name                                              | Purpose                                                                                    | Source              |
++========================================================+============================================================================================+=====================+
+| WQ_data_trimmed_long_withAU20240509.csv                | Provides sample information such as date range that is required in the ATTAINS csv outputs | *data_processing.R* |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| categorized_aus_20240513.csv                           | Provides necessary metadata for ATTAINS csv outputs                                        | *categorize_au.R*   |
+|                                                        |                                                                                            |                     |
+|                                                        | \*For Assessment Only                                                                      |                     |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| ATTAINS_AK_Asessments_DataDownload_20240126.xlsx       | Provides information from previous years ATTAINS                                           | ATTAINS             |
+|                                                        |                                                                                            |                     |
+|                                                        | \*For Assessment Only                                                                      |                     |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| ATTAINS_AK_AsessmentUnits_DataDownload_20240126.xlsx   | Provides information from previous years ATTAINS                                           | ATTAINS             |
+|                                                        |                                                                                            |                     |
+|                                                        | \*\*For Assessment Units Only                                                              |                     |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| WQ_metadata_trimmed_with_data_sufficiency_20240509.csv | Provides necessary metadata for ATTAINS csv outputs                                        | *data_processing.R* |
+|                                                        |                                                                                            |                     |
+|                                                        | \*\*For Assessment Units Only                                                              |                     |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| ML_AU_Crosswalk.csv                                    | Monitoring location to Assessment Unit crosswalk                                           | AKDEC               |
+|                                                        |                                                                                            |                     |
+|                                                        | \*\*For Assessment Units Only                                                              |                     |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| rivers.shp                                             | River Assessment Unit shapefiles                                                           | AKDEC               |
+|                                                        |                                                                                            |                     |
+|                                                        | \*\*For Assessment Units Only                                                              |                     |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| lakes.shp                                              | Lake Assessment Unit shapefiles                                                            | AKDEC               |
+|                                                        |                                                                                            |                     |
+|                                                        | \*\*For Assessment Units Only                                                              |                     |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| marine.shp                                             | Marine Assessment Unit shapefiles                                                          | AKDEC               |
+|                                                        |                                                                                            |                     |
+|                                                        | \*\*For Assessment Units Only                                                              |                     |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
+| beaches.shp                                            | Beach Assessment Unit shapefiles                                                           | AKDEC               |
+|                                                        |                                                                                            |                     |
+|                                                        | \*\*For Assessment Units Only                                                              |                     |
++--------------------------------------------------------+--------------------------------------------------------------------------------------------+---------------------+
 
 ## Assessment Outputs
 
@@ -118,21 +92,21 @@ The 'Assessments' csv output requires Assessment Unit ID, Agency, and Cycle Last
 ```{r}
 #| output: false
 #| eval: false
-assessments <- data_all_AUs %>%
-  select(AUID_ATTNS, organizationId, reportingCycle, Use_Category, Use) %>%
-  mutate(ASSESSMENT_COMMENT = Use,
-         AGENCY_CODE = 'S',
-         YEAR_LAST_MONITORED = '2023',
-         ASSESSMENT_RATIONALE = NA,
-         TROPHIC_STATUS = NA) %>%
-  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS, 
-         CYCLE_LAST_ASSESSED = reportingCycle, #Pulling from previous year's ATTAINS
-         ASSESSMENT_UNIT_STATE_IR_CAT = Use_Category) %>%
+monitoring_year <- samples %>%
+  select(AUID_ATTNS, ActivityStartDate) %>%
+  group_by(AUID_ATTNS) %>%
+  reframe(AUID_ATTNS = AUID_ATTNS,
+          YEAR_LAST_MONITORED = year(max(ActivityStartDate))) %>%
+  unique()
+
+assessments <- categorized_aus %>%
+  select(AUID_ATTNS) %>%
+  left_join(monitoring_year, by = 'AUID_ATTNS') %>%
+  mutate(AGENCY_CODE = 'S', 
+         CYCLE_LAST_ASSESSED = '2024') %>% #Manual year entry
+  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS) %>% 
   unique() %>%
-  select(!Use) %>%
-  select(ASSESSMENT_UNIT_ID, AGENCY_CODE, CYCLE_LAST_ASSESSED, YEAR_LAST_MONITORED,
-         ASSESSMENT_UNIT_STATE_IR_CAT, ASSESSMENT_COMMENT, ASSESSMENT_RATIONALE,
-         TROPHIC_STATUS)
+  select(ASSESSMENT_UNIT_ID, AGENCY_CODE, CYCLE_LAST_ASSESSED, YEAR_LAST_MONITORED)
 ```
 
 ### Uses
@@ -150,12 +124,36 @@ monitoring_dates <- samples %>%
           USE_MONITORING_END = max(ActivityStartDate)) %>%
   unique()
 
-uses <- data_all_AUs %>%
-  select(AUID_ATTNS, AUID_ATTNS, Use, Use_Category) %>%
+uses_part1 <- categorized_aus %>%
+  filter(!is.na(Use)) %>%
+  #Following mutate code from Jenny Petitt
+  mutate(ATTAINS_USE = 
+           case_when(Use == "Human Health" & `Use Description` == "Water and Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Human Health" & `Use Description` == "Water & Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Water Supply" ~ "WATER SUPPLY",    
+                     `Use Description` == "Harvesting" | `Use Description` == "Marine Harvesting" ~ "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR OTHER RAW AQUATIC LIFE",
+                     `Use Description` == "Growth and propagation" | Use == "Aquatic Life" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",
+                     `Use Description` == "Aquatic Organisms Only" | `Use Description` == "Aquatic Organisms only" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",  
+                     Use == "Primary Contact Recreation" | Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "WATER RECREATION"),
+         ATTAINS_DESCRIPTION = 
+           case_when(`Use Description` == "Water & Aquatic Organisms" | `Use Description` == "Water and Aquatic Organisms" |
+                       `Use Description` == "Drinking" | `Use Description` == "Drinking Water" | `Use Description` == "Drinking water" ~ "DRINKING, CULINARY, AND FOOD PROCESSING",
+                     `Use Description` == "Irrigation " |`Use Description` == "Agriculture" | `Use Description` == "Irrigation" | `Use Description` == "Irrigation Water" | 
+                       `Use Description` == "Stock water" | `Use Description` == "Stock Water" | `Use Description` == "Stockwater" ~ "AGRICULTURE, INCLUDING IRRIGATION AND STOCK WATERING",
+                     Use == "Primary Contact Recreation" ~ "CONTACT RECREATION",
+                     Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "SECONDARY RECREATION",
+                     `Use Description` == "Seafood Processing" ~ "SEAFOOD PROCESSING",
+                     `Use Description` == "Industrial" ~ "INDUSTRIAL",
+                     `Use Description` == "Aquaculture" ~ "AQUACULTURE"),
+         `Waterbody Type` = toupper(`Waterbody Type`), 
+         PARAM_USE_NAME = paste(`Waterbody Type`, ATTAINS_USE, ATTAINS_DESCRIPTION, sep = ' / '),
+         PARAM_USE_NAME = gsub(" / NA", "", PARAM_USE_NAME)) %>%
+  #End of Jenny code
+  select(AUID_ATTNS, AUID_ATTNS, PARAM_USE_NAME, Use_Category) %>%
   left_join(monitoring_dates, by = 'AUID_ATTNS') %>%
   unique() %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         USE_NAME = Use) %>%
+         USE_NAME = PARAM_USE_NAME) %>% #MATCH TO ATTAINS CODES
   mutate(USE_ATTAINMENT_CODE = case_when(Use_Category == 5 ~
                                            "N", #Not supporting
                                          Use_Category == 2 ~
@@ -165,35 +163,34 @@ uses <- data_all_AUs %>%
                                          T ~
                                            "X"), #Not assessed
          USE_AGENCY_CODE = "S",
-         USE_TREND = NA,
+         USE_TREND = NA, #Here down are optional columns
          USE_THREATENED = NA,
          USE_ASMT_BASIS = NA,
          USE_ASMT_DATE = NA,
          USE_ASSESSOR_NAME = NA,
          USE_COMMENT = NA,
-         USE_STATE_IR_CAT = Use_Category,
-         USE_ORG_QUALIFIER_FLAG = NA) %>%
+         USE_STATE_IR_CAT = NA,
+         USE_ORG_QUALIFIER_FLAG = NA) 
+
+
+uses_needs_1_cat_3 <- uses_part1 %>%
+  group_by(ASSESSMENT_UNIT_ID) %>%
+  #If all Uses are 2, one needs to be changed to a 3
+  mutate(All_Cat_2 = all(Use_Category == 2)) %>% 
+  filter(All_Cat_2 == T) %>%
+  mutate(Use_Category = case_when(str_detect(USE_NAME, 'INDUSTRIAL') == T ~
+                                    3,
+                                  T ~ Use_Category)) %>%
+  select(!All_Cat_2)
+
+uses_part2 <- uses_part1 %>%
+  filter(!ASSESSMENT_UNIT_ID %in% uses_needs_1_cat_3$ASSESSMENT_UNIT_ID) %>%
+  rbind(uses_needs_1_cat_3) %>%
   select(!Use_Category) %>%
-  select(ASSESSMENT_UNIT_ID, USE_NAME, USE_AGENCY_CODE, USE_TREND, USE_THREATENED,
-         USE_ASMT_BASIS, USE_MONITORING_START, USE_MONITORING_END, USE_ASMT_DATE,
-         USE_ASSESSOR_NAME, USE_COMMENT, USE_STATE_IR_CAT, 
-         USE_ORG_QUALIFIER_FLAG)
-```
-
-### Assessment Types
-
-The 'Assessments Types' csv output is not required. Assessment Unit ID, Use Name, and Type were provided anyway. The Confidence column is optional and assigned a value of NA.
-
-```{r}
-#| output: false
-#| eval: false
-assessment_types <- data_all_AUs %>%
-  select(AUID_ATTNS, Use,  assessmentTypes) %>%
-  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         USE_NAME = Use,
-         USE_ASMT_TYPE = assessmentTypes) %>%  #PULL FROM PREVIOUS ATTAINS assessmentTypes
-  mutate(USE_ASMT_CONFIDENCE = NA) %>%
-  unique()
+  select(ASSESSMENT_UNIT_ID, USE_NAME, USE_ATTAINMENT_CODE, USE_AGENCY_CODE,
+         USE_TREND, USE_THREATENED, USE_ASMT_BASIS, USE_MONITORING_START,
+         USE_MONITORING_END, USE_ASMT_DATE, USE_ASSESSOR_NAME, USE_COMMENT,
+         USE_STATE_IR_CAT, USE_ORG_QUALIFIER_FLAG)
 ```
 
 ### Parameters
@@ -203,16 +200,76 @@ The 'Parameters' csv output requires Assessment Unit ID, Parameter Name, Associa
 ```{r}
 #| output: false
 #| eval: false
-parameters <- data_all_AUs %>%
-  select(AUID_ATTNS, TADA.CharacteristicName, Use, Use_Category, Individual_Category) %>%
-  mutate(PARAM_STATUS_NAME = case_when(Use_Category == 5 ~ #CATEGORIES ARE UNCLEAR
-                                           "N", 
-                                         Use_Category == 2 ~
+parameters <- categorized_aus %>%
+  filter(!is.na(Use)) %>%
+  #Following mutate code from Jenny Petitt
+  mutate(ATTAINS_USE = 
+           case_when(Use == "Human Health" & `Use Description` == "Water and Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Human Health" & `Use Description` == "Water & Aquatic Organisms" ~ "WATER SUPPLY",
+                     Use == "Water Supply" ~ "WATER SUPPLY",    
+                     `Use Description` == "Harvesting" | `Use Description` == "Marine Harvesting" ~ "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR OTHER RAW AQUATIC LIFE",
+                     `Use Description` == "Growth and propagation" | Use == "Aquatic Life" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",
+                     `Use Description` == "Aquatic Organisms Only" | `Use Description` == "Aquatic Organisms only" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",  
+                     Use == "Primary Contact Recreation" | Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "WATER RECREATION"),
+         ATTAINS_DESCRIPTION = 
+           case_when(`Use Description` == "Water & Aquatic Organisms" | `Use Description` == "Water and Aquatic Organisms" |
+                       `Use Description` == "Drinking" | `Use Description` == "Drinking Water" | `Use Description` == "Drinking water" ~ "DRINKING, CULINARY, AND FOOD PROCESSING",
+                     `Use Description` == "Irrigation " |`Use Description` == "Agriculture" | `Use Description` == "Irrigation" | `Use Description` == "Irrigation Water" | 
+                       `Use Description` == "Stock water" | `Use Description` == "Stock Water" | `Use Description` == "Stockwater" ~ "AGRICULTURE, INCLUDING IRRIGATION AND STOCK WATERING",
+                     Use == "Primary Contact Recreation" ~ "CONTACT RECREATION",
+                     Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "SECONDARY RECREATION",
+                     `Use Description` == "Seafood Processing" ~ "SEAFOOD PROCESSING",
+                     `Use Description` == "Industrial" ~ "INDUSTRIAL",
+                     `Use Description` == "Aquaculture" ~ "AQUACULTURE"),
+         `Waterbody Type` = toupper(`Waterbody Type`), 
+         PARAM_USE_NAME = paste(`Waterbody Type`, ATTAINS_USE, ATTAINS_DESCRIPTION, sep = ' / '),
+         PARAM_USE_NAME = gsub(" / NA", "", PARAM_USE_NAME)) %>%
+  #End of Jenny code
+  select(AUID_ATTNS, TADA.CharacteristicName, PARAM_USE_NAME, Individual_Category) %>%
+  group_by(AUID_ATTNS, TADA.CharacteristicName) %>%
+  #Find param status for the parameter/AU combo as a group
+  mutate(is_2 = sum(ifelse(Individual_Category == 2, 1, 0)),
+         is_3 = sum(ifelse(Individual_Category == 3, 1, 0)),
+         param_status_midstep = case_when(max(Individual_Category) == 5 ~
+                                            5,
+                                          max(Individual_Category) == 2 ~
+                                            2,
+                                          #If there are 3's present, but also 2's
+                                          is_2 >= 1 & is_3 >= 1 ~
+                                            2,
+                                          all(Individual_Category  == 3) ~
+                                            3), 
+         PARAM_STATUS_NAME = case_when(param_status_midstep == 5 ~ 
+                                           "Cause", 
+                                       param_status_midstep == 2 ~
                                            "Meeting Criteria", 
-                                         Use_Category == 3 ~
-                                           "Insufficient Information", 
-                                         T ~
-                                           "X"),
+                                       param_status_midstep == 3 ~
+                                           "Insufficient Information", #MAKE EXPORT CAT BASED ON THIS
+                                       T ~ NA)) %>%
+  ungroup() %>%
+  select(!c(is_2, is_3)) %>% 
+  unique() %>%
+  group_by(AUID_ATTNS, PARAM_USE_NAME, TADA.CharacteristicName) %>%
+  mutate(n = n(),
+         is_2 = sum(ifelse(Individual_Category == 2, 1, 0)),
+         is_3 = sum(ifelse(Individual_Category == 3, 1, 0)),
+         is_5 = sum(ifelse(Individual_Category == 5, 1, 0)),
+         #If n > 1, choose worse category
+         new_Individual_Category = case_when(n > 1 & is_5 == 1 ~
+                                               5,
+                                             n > 1 & is_5 == 0 & is_2 > 0 ~
+                                               2,
+                                             T ~ Individual_Category)) %>%
+  select(!c(Individual_Category, n, is_2, is_3, is_5)) %>%
+  unique() %>%
+  mutate(PARAM_ATTAINMENT_CODE = case_when(new_Individual_Category == 5 ~ 
+                                             "Not meeting criteria", 
+                                           new_Individual_Category == 2 ~
+                                             "Meeting criteria", 
+                                           new_Individual_Category == 3 ~
+                                             "Not enough information", 
+                                           T ~
+                                             "Not applicable"),
          PARAM_TREND = NA,
          PARAM_COMMENT = NA,
          PARAM_AGENCY_CODE = NA,
@@ -228,10 +285,7 @@ parameters <- data_all_AUs %>%
          PARAM_DELISTING_COMMENT = NA,
          PARAM_DELISTING_AGENCY = NA) %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         PARAM_NAME = TADA.CharacteristicName,
-         PARAM_USE_NAME = Use,
-         PARAM_ATTAINMENT_CODE = Individual_Category,
-         PARAM_STATE_IR_CAT = Use_Category) %>%
+         PARAM_NAME = TADA.CharacteristicName) %>%
   unique() %>%
   select(ASSESSMENT_UNIT_ID, PARAM_NAME, PARAM_USE_NAME, PARAM_STATUS_NAME,
          PARAM_ATTAINMENT_CODE, PARAM_TREND, PARAM_COMMENT, PARAM_AGENCY_CODE,
@@ -246,7 +300,7 @@ parameters <- data_all_AUs %>%
 
 Optional Outputs
 
-The 'Assessment Method Types', 'Seasons', 'Sources', and 'Associated-Actions' csv outputs were not included since there was no required information and no evidence of AK DEC providing these in the past.
+The 'Assessment Types', 'Assessment Method Types', 'Seasons', 'Sources', and 'Associated-Actions' csv outputs were not included since there was no required information and no evidence of AK DEC providing these in the past.
 
 ## Assessment Unit Outputs
 
@@ -259,32 +313,20 @@ The 'Assessment Units' csv output requires Assessment Unit ID, Name, State, Agen
 ```{r}
 #| output: false
 #| eval: false
-assessment_units <- data_all_AUs %>%
+assessment_units <- data_current_AU_not_listed %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         USE_CLASS_NAME = AU_Type,
-         ASSESSMENT_UNIT_NAME = assessmentUnitName,
-         LOCATION_DESCRIPTION = locationText) %>%
-  mutate(ASSESSMENT_UNIT_STATE = 'AK',
+         ASSESSMENT_UNIT_NAME = Name_AU) %>%
+  mutate(USE_CLASS_NAME = NA,
+         LOCATION_DESCRIPTION = paste0('Located in HUC', HUC10_ID,', ',
+                                       round(Shape_4_Summary, 3), ' ',
+                                       AU_Shape_Unit, '.'),
+         ASSESSMENT_UNIT_STATE = 'AK',
          ASSESSMENT_UNIT_AGENCY = 'S', #S for state agency
          ASSESSMENT_UNIT_COMMENT = NA) %>% #ASK ABOUT COMMENTS
   select(ASSESSMENT_UNIT_ID, ASSESSMENT_UNIT_NAME, ASSESSMENT_UNIT_STATE,
          ASSESSMENT_UNIT_AGENCY, ASSESSMENT_UNIT_COMMENT, LOCATION_DESCRIPTION,
          USE_CLASS_NAME) %>% #Change order to reflect template
   unique() 
-
-#Some AUs have duplicates from having use class and some having NA
-duplicate_values_na <- assessment_units %>% 
-  group_by_at(vars(-USE_CLASS_NAME)) %>% #Find duplicate rows based on one having
-  #a use class and another having NA
-  filter(n() > 1) %>%
-  #filter out NA values 
-  filter(is.na(USE_CLASS_NAME))
-
-#Remove all NA duplicated values in the assessment
-combine_assessment_units <- assessment_units %>%
-  anti_join(duplicate_values_na, by = c('ASSESSMENT_UNIT_ID', 'ASSESSMENT_UNIT_NAME', 'ASSESSMENT_UNIT_STATE',
-                                        'ASSESSMENT_UNIT_AGENCY', 'ASSESSMENT_UNIT_COMMENT', 'LOCATION_DESCRIPTION',
-                                        'USE_CLASS_NAME'))
 ```
 
 ### Water Types
@@ -294,17 +336,25 @@ The 'Water Types' csv output requires Assessment Unit ID, Water Type, Size, and 
 ```{r}
 #| output: false
 #| eval: false
-water_types <- data_all_AUs %>%
-  select(AUID_ATTNS, waterType, waterSize, waterSizeUnits, sizeSource, sourceScale) %>%
-  mutate(ESTIMATION_METHOD = NA) %>%
+water_types <- data_current_AU_not_listed %>%
+  select(AUID_ATTNS, AU_Type, Shape_4_Summary, AU_Shape_Unit, Name_AU) %>%
   rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         WATER_TYPE = waterType,
-         WATER_SIZE = waterSize,
-         WATER_UNIT = waterSizeUnits,
-         SIZE_SOURCE = sizeSource,
-         SOURCE_SCALE = sourceScale) %>%
-  select(ASSESSMENT_UNIT_ID, WATER_TYPE, WATER_SIZE, WATER_UNIT, SIZE_SOURCE, 
-         ESTIMATION_METHOD, SOURCE_SCALE) %>% #Reorder columns
+         WATER_SIZE = Shape_4_Summary) %>%
+  mutate(WATER_TYPE = ifelse(AU_Type == 'River', 'STREAM/CREEK/RIVER', toupper(AU_Type)),
+         WATER_TYPE = case_when(AU_Type == 'MARINE' & str_detect(Name_AU, 'Harbor') ~
+                                 'HARBOR',
+                                AU_Type == 'MARINE' & str_detect(Name_AU, 'Estuary') ~
+                                  'ESTUARY',
+                                AU_Type == 'MARINE' & str_detect(Name_AU, 'Lagoon') ~
+                                  'LAGOON',
+                                AU_Type == 'MARINE' & (str_detect(Name_AU, 'Channel') |
+                                                         str_detect(Name_AU, 'Bay') )~
+                                  'CHANNEL AND BAY',
+                                AU_Type == 'MARINE' ~
+                                  'COASTAL',
+                                T ~ WATER_TYPE), 
+         WATER_UNIT = AU_Shape_Unit) %>%
+  select(ASSESSMENT_UNIT_ID, WATER_TYPE, WATER_SIZE, WATER_UNIT) %>% #Reorder columns
   unique()
 ```
 
@@ -315,12 +365,14 @@ The 'Locations' csv output is optional, but all the information is present in th
 ```{r}
 #| output: false
 #| eval: false
-locations <- data_all_AUs %>%
-  select(AUID_ATTNS, locationTypeCode, locationText, locationDescription) %>%
-  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         LOCATION_TYPE_CODE = locationTypeCode,
-         LOCATION_TYPE_CONTEXT = locationDescription,
-         LOCATION_TEXT = locationText) %>%
+locations <- data_current_AU_not_listed %>%
+  select(AUID_ATTNS, HUC10_ID) %>%
+  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS) %>% 
+  mutate(LOCATION_TYPE_CODE = 'HUC-10',
+         LOCATION_TYPE_CONTEXT = 'AKDECWQ',
+         LOCATION_TEXT = paste0('HUC',HUC10_ID)) %>% #Add 190
+  select(ASSESSMENT_UNIT_ID, LOCATION_TYPE_CODE, LOCATION_TYPE_CONTEXT, 
+         LOCATION_TEXT) %>%
   unique()
 ```
 
@@ -331,11 +383,13 @@ The 'Monitoring Stations' csv output is optional, but all the information is pre
 ```{r}
 #| output: false
 #| eval: false
-monitoring_stations <- samples %>%
-  select(AUID_ATTNS, ActivityConductingOrganizationText, MonitoringLocationIdentifier) %>%
+ml_names <- assessment_units %>%
+  left_join(ml_au_crosswalk, by = c('ASSESSMENT_UNIT_ID' = 'AUID_ATTNS'))
+
+monitoring_stations <- ml_names %>%
+  select(ASSESSMENT_UNIT_ID, MonitoringLocationIdentifier) %>%
   unique() %>%
-  filter(!is.na(AUID_ATTNS)) %>%
-  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         MS_ORG_ID = ActivityConductingOrganizationText,
-         MS_LOCATION_ID = MonitoringLocationIdentifier)
+  rename(MS_LOCATION_ID = MonitoringLocationIdentifier) %>%
+  mutate(MS_ORG_ID = 'AKDECWQ') %>%
+  select(ASSESSMENT_UNIT_ID, MS_ORG_ID, MS_LOCATION_ID)
 ```
