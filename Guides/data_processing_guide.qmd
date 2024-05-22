@@ -9,7 +9,7 @@ editor: visual
 
 ## Introduction
 
-The following user guide pertains to the [*data_processing.R*](https://github.com/KateriSalk/Alaska_IR_Automation/blob/main/Code/5_Data_Processing/data_processing.R) script developed by Tetra Tech for the Alaska Department of Environmental Conservation (AK DEC). This guide assumes that the user has relatively recent versions of [R](https://www.r-project.org/) and [RStudio](https://posit.co/download/rstudio-desktop/) installed and that they are familiar with the R coding language. Please direct any questions regarding the usage of the *data_processing.R* script to Amber Bethe Crawford, AK DEC (amber.crawford\@alaska.gov).
+The following user guide pertains to the [*data_processing.R*](https://github.com/KateriSalk/Alaska_IR_Automation/blob/main/Code/5_Data_Processing/data_processing.R) script developed by Tetra Tech for the Alaska Department of Environmental Conservation (AK DEC). This guide assumes that the user has relatively recent versions of [R](https://www.r-project.org/) and [RStudio](https://posit.co/download/rstudio-desktop/) installed and that they are familiar with the R coding language. Please direct any questions regarding the usage of the *data_processing.R* script to Amber Crawford, AK DEC (amber.crawford\@alaska.gov).
 
 ### Purpose
 
@@ -17,7 +17,7 @@ The purpose of the *data_processing.R* script is to first conduct quality contro
 
 ## Required Packages
 
-The required packages for the *data_processing.R* code are [*TADA*](https://github.com/USEPA/TADA), [*tidyverse*](https://www.tidyverse.org/)*, [leaflet](https://rstudio.github.io/leaflet/), [scales](https://scales.r-lib.org/),* and [*sf*](https://r-spatial.github.io/sf/)*.* Installation for the *TADA* and *tidyverse* packages can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to install and load these packages.
+The required packages for the *data_processing.R* code are [*TADA*](https://github.com/USEPA/TADA), [*tidyverse*](https://www.tidyverse.org/)*, [leaflet](https://rstudio.github.io/leaflet/), [scales](https://scales.r-lib.org/),* and [*sf*](https://r-spatial.github.io/sf/)*.* Installation for the *TADA* and *tidyverse* packages can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to install and load these packages. If you work from using a Virtual Private Network (VPN), you may have trouble downloading packages, and if so, simply turn the VPN off before package download.
 
 ```{r}
 #| output: false
@@ -40,7 +40,7 @@ library(sf)
 This code has specific exterior files that are required for it to run. The inputs are listed below. Note, only the outputs from *data_pull.R* are loaded at the beginning of the script, whereas all others are loaded when needed farther into the script.
 
 | File Name                                              | Purpose                                      | Source                   |
-|--------------------------------------------------------|----------------------------------------------|--------------------------|
+|-----------------------------|-------------------------|------------------|
 | .CSV outputs (varies by site types from *data_pull.R*) | WQ data to be processed.                     | WQP (via *data_pull.R*). |
 | WQ_Column_Manager.csv                                  | Quickly subset WQ dataset fields.            | Tetra Tech               |
 | ML_AU_Crosswalk.csv                                    | Crosswalk Monitoring Locations with AUs/     | AK DEC                   |
@@ -274,7 +274,9 @@ This section matches the processed WQ data with the appropriate AK DEC Assessmen
 
     e.  Create an interactive map using *leaflet* with each of the AU waterbody types and the monitoring locations with missing AU assignments. Use this map and the outputs from the spatial joins to evaluate whether montioring locations were correctly assigned to AUs.
 
-    f.  Update *ML_AU_Crosswalk.csv* with correct monitoring location and AU information based on the results from the previous sub-steps.
+    f.  Update *ML_AU_Crosswalk.csv* with correct monitoring location and AU information based on the results from the previous sub-steps. This should be done manually for analyst review of spatial joins.
+
+    g.  Rerun Section 3 once all correct and approved spatial joins have been added to *ML_AU_Crosswalk.csv.*
 
 ## Section 4: Organize Data by AU
 
