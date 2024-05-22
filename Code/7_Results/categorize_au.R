@@ -12,7 +12,7 @@ options <- input_analysis %>%
   select(Exceed) %>%
   unique()
 
-categorize_AU <- function(input_analysis, simplify_standards){ 
+categorize_AU_uses <- function(input_analysis, simplify_standards){ 
   
   calc_individual <- input_analysis %>%
     filter(Exceed != 'Requires manual analysis') %>%
@@ -65,8 +65,31 @@ categorize_AU <- function(input_analysis, simplify_standards){
   
 }
 
-output <- categorize_AU(input_analysis, simplify_standards = F)
-output_simp <- categorize_AU(input_analysis, simplify_standards = T)
+output <- categorize_AU_uses(input_analysis, simplify_standards = F)
+output_simp <- categorize_AU_uses(input_analysis, simplify_standards = T)
 
 write_csv(output, 'Output/results/categorized_aus_20240515.csv')
 write_csv(output_simp, 'Output/results/categorized_simplified_aus_20240515.csv')
+
+
+
+categorize_AU <- function(input_categorized_uses){ 
+
+  calc_overall <- input_categorized_uses %>%
+    dplyr::group_by(AUID_ATTNS) %>%
+    dplyr::mutate(cat_5_present = length(Use_Category[Use_Category=='5']),
+                  cat_2_present = length(Use_Category[Use_Category=='2']),
+                  Overall_Category = case_when(cat_5_present > 0 ~ '5',
+                                           cat_5_present == 0 & cat_2_present > 0 ~ '2',
+                                           cat_5_present == 0 & cat_2_present == 0 ~ '3',
+                                           T~ NA)) %>%
+    dplyr::select(!c(cat_5_present, cat_2_present)) %>%
+    dplyr::arrange(AUID_ATTNS)
+  
+  return(calc_overall)
+
+}
+
+
+output_overall <- categorize_AU(output)
+output_simp_overall <- categorize_AU(output_simp)
