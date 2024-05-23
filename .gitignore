@@ -69,3 +69,11 @@ Output/data_processing/Original_data_with_flags_20240105.csv
 Output/data_processing/WQ_data_trimmed_20240105.csv
 Output/data_processing/WQ_data_trimmed_20240117.csv
 Output/data_processing/Original_data_with_flags_20240117.csv
+Data/data_GIS/z_OldShapefiles/Rivers.cpg
+Data/data_GIS/z_OldShapefiles/Rivers.dbf
+Data/data_GIS/z_OldShapefiles/Rivers.prj
+Data/data_GIS/z_OldShapefiles/Rivers.sbn
+Data/data_GIS/z_OldShapefiles/Rivers.sbx
+Data/data_GIS/z_OldShapefiles/Rivers.shp
+Data/data_GIS/z_OldShapefiles/Rivers.shp.xml
+Data/data_GIS/z_OldShapefiles/Rivers.shx

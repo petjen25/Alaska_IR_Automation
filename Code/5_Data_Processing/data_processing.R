@@ -2,7 +2,7 @@
 
 #Written by: Hannah Ferriby and Ben Block
 #Date Created: 9-29-2023
-#Date of Last Updated: 01-17-2024
+#Date of Last Updated: 05-22-2024
 
 ##Required Inputs:
 #1. csv outputs from data_pull.R broken up by site type
@@ -10,10 +10,10 @@
 #3. 'ML_AU_Crosswalk.csv' to crosswalk Monitoring Locations with AUs
 #4. 'AK_DataSufficiency_Crosswalk_20240117.csv' to crosswalk WQ dataset with 
      # data sufficiency table
-#5. 'Beaches.shp' Beaches AU shapefile
-#6. 'Lakes.shp' Lakes AU shapefile
-#7. 'MAUs_FINAL_2023.shp' Marine AU shapefile
-#8. 'Rivers.shp' Rivers AU shapefile
+#5. 'beaches.shp' Beaches AU shapefile
+#6. 'lakes.shp' Lakes AU shapefile
+#7. 'marine.shp' Marine AU shapefile
+#8. 'rivers.shp' Rivers AU shapefile (must be provided by user due to size limits on GitHub (05/22/2024; BenB))
 #9. 'cb_2018_us_state_500k.shp' US States shapefile
 
 ####Set Up####
@@ -525,7 +525,7 @@ map # view map
 # check for missing ML in crosswalk table (i.e., new ones)
 # Use spatial joins to assign monitoring locations to AUs
 # Note: use the interactive map below to QC results.
-# Finally, update 'ML_AU_Crosswalk.CSV' with new matches.
+# Finally, update 'ML_AU_Crosswalk.CSV' with new matches (by hand).
 
 ML_in_crosswalk <- unique(df_ML_AU_Crosswalk$MonitoringLocationIdentifier)
 
@@ -534,14 +534,14 @@ ML_in_crosswalk <- unique(df_ML_AU_Crosswalk$MonitoringLocationIdentifier)
 
 ######20a. Setup #####
 fn_shp <- file.path(getwd(), "Data", "data_GIS")
-beach_shp <- sf::st_read(dsn = paste0(fn_shp,"/Beaches"), layer = "Beaches")%>% 
+beach_shp <- sf::st_read(dsn = paste0(fn_shp,"/Beaches"), layer = "beaches")%>% 
   sf::st_transform(3338)
-lake_shp <- sf::st_read(dsn = paste0(fn_shp,"/Lakes"), layer = "Lakes")%>% 
+lake_shp <- sf::st_read(dsn = paste0(fn_shp,"/Lakes"), layer = "lakes")%>% 
   sf::st_transform(3338) %>% 
   sf::st_zm()
-marine_shp <- sf::st_read(dsn = paste0(fn_shp,"/Marine"), layer = "MAUs_FINAL_2023")%>% 
+marine_shp <- sf::st_read(dsn = paste0(fn_shp,"/Marine"), layer = "marine")%>% 
   sf::st_transform(3338)
-river_shp <- sf::st_read(dsn = paste0(fn_shp,"/Rivers"), layer = "Rivers")%>% 
+river_shp <- sf::st_read(dsn = paste0(fn_shp,"/Rivers"), layer = "rivers")%>% 
   sf::st_transform(3338) %>% 
   sf::st_zm()
 USA_shp <- sf::st_read(dsn = paste0(fn_shp,"/cb_2018_us_state_500k")
