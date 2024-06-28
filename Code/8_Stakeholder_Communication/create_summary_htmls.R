@@ -1,20 +1,26 @@
-library(readr)  # for read_csv()
+
+####Load libraries####
+library(readr)
 library(dplyr)
 library(sf)
 library(AKDECtools)
-library(rmarkdown)  # for render
+library(rmarkdown)
 library(ggplot2)
 
-output_df <- read_csv(file = "Output/results/categorized_simplified_aus_20240515.csv")  # path to file
+
+####Read in data####
+output_df <- read_csv(file = "Output/results/categorized_simplified_aus_20240621.csv")  # path to file
 wqs_table <- read_csv(file = 'Data/data_analysis/AK_WQS_Crosswalk_20240507.csv')
 output_samples <- read_csv(file = 'Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
 ml_au_crosswalk <- read_csv(file = 'Data/data_processing/ML_AU_Crosswalk.csv')
-au_shape_crs <- st_read('Data/data_GIS/Marine/MAUs_FINAL_2023.shp')
+au_shape_crs <- st_read('Data/data_GIS/Marine/marine.shp')
 
 ak <- st_read('Data/data_GIS/cb_2018_us_state_500k/cb_2018_us_state_500k.shp') %>%
   filter(STUSPS == 'AK') %>%
   st_transform(crs = st_crs(au_shape_crs))
 
+
+####Find Number of AUs for loop####
 unique_AU <- output_df %>%
   select(AUID_ATTNS) %>%
   unique() %>%
@@ -33,9 +39,131 @@ unique_AU <- output_df %>%
   select(AUID_ATTNS) %>%
   unique()
 
-# which_au_no_sites <- unique_AU %>%
-#   select(AUID_ATTNS) %>%
-#   filter(AUID_ATTNS %in% ml_au_crosswalk$AUID_ATTNS)
+
+####Required functions####
+#Box plot function
+boxPlot <- function(data, WQS_table, AU_ID) {
+  
+  sysfonts::font_add_google("Open Sans", family = "Open_Sans") # for fonts
+  showtext::showtext_auto() # for fonts
+  
+  relevant_constituents <- WQS_table %>%
+    dplyr::select(TADA.Constituent) %>%
+    unique() %>%
+    dplyr::pull()
+  
+  relevant_data <- data %>%
+    dplyr::filter(TADA.CharacteristicName %in% relevant_constituents) %>%
+    dplyr::filter(AUID_ATTNS == AU_ID)
+  
+  constituents <- relevant_data %>%
+    dplyr::select(TADA.CharacteristicName) %>%
+    unique() %>%
+    dplyr::pull()
+  
+  results <- list()
+  counter <- 0
+  #Loop through constituents
+  for(j in constituents) {
+    
+    counter<- counter+1
+    
+    filt <- relevant_data %>%
+      dplyr::filter(TADA.CharacteristicName == j)
+    
+    plt<-ggplot2::ggplot() +
+      ggplot2::geom_boxplot(data = filt,
+                            ggplot2::aes(x = AUID_ATTNS,
+                                         y = TADA.ResultMeasureValue),
+                            color = 'gray30',
+                            outlier.shape = NA) +
+      ggplot2::geom_jitter(data = filt, ggplot2::aes(x = AUID_ATTNS,
+                                                     y = TADA.ResultMeasureValue,
+                                                     fill = MonitoringLocationIdentifier),
+                           color = 'black',
+                           shape = 21,
+                           size = 3.5,
+                           width = 0.2,
+                           alpha = 0.8) +
+      ggplot2::xlab('AU ID') +
+      ggplot2::ylab(paste0(str_to_title(j), ' (', tolower(filt$TADA.ResultMeasure.MeasureUnitCode), ')')) +
+      ggplot2::scale_y_log10() +
+      ggplot2::theme_bw() +
+      viridis::scale_fill_viridis(discrete = T,
+                                  option = "mako") +
+      ggplot2::labs(fill = 'Monitoring Location ID') +
+      ggplot2::theme(legend.position="top"
+                     , legend.spacing.x = unit(0.5, 'cm')
+                     , text = ggplot2::element_text(family = "Open_Sans", size = 24)
+                     , axis.text = ggplot2::element_text(family = "Open_Sans", size = 22)
+                     , legend.background = element_rect(colour = 'gray60', fill = 'white', linetype='dashed')
+                     , plot.margin = unit(c(0.5,0.25,0.5,0.25), "cm")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = ceiling(length(unique(filt$MonitoringLocationIdentifier))/3)))+
+    guides(fill = guide_legend(title.position="top", title.hjust = 0.5))
+    
+    results[[counter]] <- plt
+  }
+  return(results)
+}
+
+#Time Series function
+timeSeries <- function(data, WQS_table, AU_ID) {
+  sysfonts::font_add_google("Open Sans", family = "Open_Sans") # for fonts
+  showtext::showtext_auto() # for fonts
+  
+  relevant_constituents <- WQS_table %>%
+    dplyr::select(TADA.Constituent) %>%
+    unique() %>%
+    dplyr::pull()
+  
+  relevant_data <- data %>%
+    dplyr::filter(TADA.CharacteristicName %in% relevant_constituents) %>%
+    dplyr::filter(AUID_ATTNS == AU_ID)
+  
+  constituents <- relevant_data %>%
+    dplyr::select(TADA.CharacteristicName) %>%
+    unique() %>%
+    dplyr::pull()
+  
+  results <- list()
+  counter <- 0
+  #Loop through constituents
+  for(j in constituents) {
+    
+    counter<- counter+1
+    
+    filt <- relevant_data %>%
+      dplyr::filter(TADA.CharacteristicName == j)
+    
+    plt<-ggplot2::ggplot() +
+      ggplot2::geom_point(data = filt,
+                          ggplot2::aes(x = ActivityStartDate,
+                                       y = TADA.ResultMeasureValue,
+                                       fill = MonitoringLocationIdentifier),
+                          color = 'black',
+                          shape = 21,
+                          size = 3.5,
+                          alpha = 0.8) +
+      ggplot2::xlab('Time') +
+      ggplot2::scale_y_log10() +
+      ggplot2::ylab(paste0(str_to_title(j), ' (', tolower(filt$TADA.ResultMeasure.MeasureUnitCode), ')')) +
+      ggplot2::theme_bw() +
+      viridis::scale_fill_viridis(discrete = T,
+                                  option = "mako") +
+      ggplot2::labs(fill = 'Monitoring Location ID') +
+      ggplot2::theme(legend.position="top"
+                     , legend.spacing.x = unit(0.5, 'cm')
+                     , text = ggplot2::element_text(family = "Open_Sans", size = 24)
+                     , axis.text = ggplot2::element_text(family = "Open_Sans", size = 22)
+                     , legend.background = element_rect(colour = 'gray60', fill = 'white', linetype='dashed')
+                     , plot.margin = unit(c(0.5,0.25,0.5,0.25), "cm")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = ceiling(length(unique(filt$MonitoringLocationIdentifier))/3))) +
+      guides(fill = guide_legend(title.position="top", title.hjust = 0.5))
+    
+    results[[counter]] <- plt
+  }
+  return(results)
+}
 
 # Loop --------------------------------------------------------------------
 # au_loop <- unique_AU$AUID_ATTNS[[2]]

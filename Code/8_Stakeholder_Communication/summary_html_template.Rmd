@@ -14,6 +14,8 @@ library(ggspatial)
 library(leaflet)
 library(viridis)
 library(ggpubr)
+library(kableExtra)
+library(stringr)
 ```
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open Sans">
@@ -30,10 +32,10 @@ body {background-color: #F7F5F2; font-family: "Open Sans", Arial, sans-serif;}
 
 # Assessment Unit Summary
 
-Assessment units are entire waterbodies or portions of them that fall within a specified hydrologic area such as a watershed. Using data obtained during a public call for data and pre-defined assessment methodologies, these units are analyzed to determine if the assessment unit is meeting Alaska water quality standards. After this analysis is completed, waterbodies are placed in corresponding categories (see definitions below).
+Assessment units, identified by assessment unit ID (AU ID), are entire waterbodies or portions of them located within a specified drainage area. These drainage areas, also known as watersheds, are identified by hydrologic unit codes (HUCs). Water quality data collected within assessment units are obtained during a public call for data and analyzed using pre-defined methods. These data help us determine if state waters are meeting Alaska water quality standards. After this analysis is completed, waterbodies are placed in corresponding categories (see definitions below).
 
 ```{r, results = 'asis'}
-cat(paste0('This ', au_type, ' Assessment Unit is ', round(au_shape$Shape_4_Summary, 3), ' ', au_shape$AU_Shape_Unit, ' and is located in HUC', au_shape$HUC10_ID ,'.'))
+cat(paste0('This ', au_type, ' Assessment Unit is ', round(au_shape$Shape_4_Summary, 3), ' ', au_shape$AU_Shape_Unit, ' and is located in the HUC', au_shape$HUC10_ID ,' watershed.'))
 ```
 
 ::: {align="center"}
@@ -41,14 +43,34 @@ cat(paste0('This ', au_type, ' Assessment Unit is ', round(au_shape$Shape_4_Summ
 
 ```{r}
 output_df_au %>%
-  mutate(AU_Name = au_shape$Name_AU) %>%
+  mutate(AU_Name = au_shape$Name_AU,
+         n = n(),
+         is_2 = sum(ifelse(Use_Category == 2, 1, 0)),
+         is_3 = sum(ifelse(Use_Category == 3, 1, 0)),
+         is_5 = sum(ifelse(Use_Category == 5, 1, 0)),
+         #If n > 1, choose worse category
+         new_Category = case_when(n > 1 & is_5 > 0 ~
+                                    5,
+                                  n > 1 & is_5 == 0 & is_2 > 0 ~
+                                    2,
+                                  n > 1 & is_5 == 0 & is_2 == 0 & is_3 > 0 ~
+                                    3,
+                                  T ~ NA),
+         new_Category = case_when(new_Category == 3 ~
+                                          'Not enough information',
+                                        new_Category == 2 ~
+                                          'Attaining',
+                                        new_Category == 5 ~
+                                          'Not attaining')) %>%
   select(
     `AU ID: ` = AUID_ATTNS,
     `AU Name: ` = AU_Name,
-    `AU Type: ` = AU_Type) %>% 
+    `AU Type: ` = AU_Type,
+    `Overall Category: ` = new_Category) %>% 
   unique() %>%
   t() %>%
-  kable() 
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
 ```
 
 <br>
@@ -91,24 +113,6 @@ leaflet() %>%
             title = 'AU ID',
             opacity = 1)
 
-
-
-# ggplot() +
-#   annotation_map_tile("osm") +
-#   geom_sf(data = au_shape, aes(color = AUID_ATTNS), linewidth = 1) +
-#   geom_sf(data = sites, aes(fill = MonitoringLocationIdentifier),
-#           shape = 21, color = 'black', size = 2.25) +
-#   # xlim(x_lim) +
-#   # ylim(y_lim) +
-#   ggtitle('Assessment Unit with Monitoring Locations') +
-#   theme_bw() +
-#   viridis::scale_fill_viridis(name = 'Monitoring Location', discrete = T, option = "mako") + 
-#   scale_color_manual(name = 'AU ID', values = c('#072f49')) + 
-#   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=0.5),
-#         legend.position = 'top',
-#         #plot.margin = margin(0.25,1,0.25,0.25, unit = 'in'),
-#         plot.title.position = 'plot')
-
 ```
 
 <br>
@@ -123,24 +127,8 @@ sites %>%
     Latitude,
     Longitude) %>% 
   unique() %>%
-  kable() 
-```
-
-<br>
-
-### Assessment Unit Location within Alaska
-
-```{r}
-# {r, fig.dim = c(4,3)}
-#Maps
-center <- st_centroid(st_make_valid(au_shape_4_map))
-
-ggplot() +
-  geom_sf(data = ak, fill = 'gray92', color = 'gray60') +
-  geom_sf(data = center, color = '#435200', fill = '#435200', size = 5) +
-  # ggtitle("Assessment Unit Location within Alaska") + 
-  theme_bw()
-  
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
 ```
 
 \newpage
@@ -158,7 +146,8 @@ output_df_au %>%
     `Use: ` = Use,
     `Use Category: `= Use_Category) %>% 
   unique() %>%
-  kable() 
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
 ```
 :::
 
@@ -183,11 +172,11 @@ output_df_au %>%
 output_df_au %>%
   filter(!is.na(n_Samples)) %>%
   mutate(Attainment = case_when(Individual_Category == 3 ~
-                                          'Insufficient data (3)',
+                                          'Not enough information',
                                         Individual_Category == 2 ~
-                                          'Not exceeding (2)',
+                                          'Attaining',
                                         Individual_Category == 5 ~
-                                          'Exceeding (5)')) %>%
+                                          'Not attaining')) %>%
     select(
     Parameter = TADA.CharacteristicName,
     `Designated Use` = Use,
@@ -195,16 +184,20 @@ output_df_au %>%
     `# of Samples` = n_Samples,
     `# of Sample Dates` = n_SampDates) %>% 
   unique() %>%
+  mutate(Parameter = case_when(Parameter == 'PH' ~
+                                 'pH',
+                               Parameter == 'DISSOLVED OXYGEN (DO)' ~
+                                 'Dissolved Oxygen (DO)',
+                               T ~ str_to_title(Parameter))) %>%
   arrange(Parameter) %>%
-  kable()
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
 ```
 :::
 
 ###### **Parameter:** Qualitative or quantitative measurements of physical, chemical, or biological attributes such as temperatures, metals, or bacteria.
 
 ###### **Designated Use:** Water quality goals of a waterbody or portion thereof, in part, by designating the use or uses to be made of the water.
-
-###### **Impairment:** Impairment means that a waterbody is persistently exceeding criteria for one or more pollutants and not supporting all designated uses.
 
 ###### **Attainment:** Achieving attainment means that a waterbody is supporting all designated uses for the pollutant parameters evaluated.
 
@@ -218,11 +211,11 @@ output_df_au %>%
 ### Distribution of Parameters
 :::
 
-The following figures depict the range of each sampled parameter at this Assessment Unit. The actual sample values are overlayed onto the boxplots to provide an additional visualization of the spread. Samples originating from different Monitoring Locations are assigned different colors. 
+The following figures depict the range of each sampled parameter at this Assessment Unit. The actual sample values are overlaid onto the boxplots to provide an additional visualization of the spread. Samples originating from different Monitoring Locations are assigned different colors. 
 
 ```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim= c(11,5)}
-plots<- AKDECtools::boxPlot(data = output_samples, WQS_table = wqs_table,
-                          AU_ID = au_loop, y_axis_log = T) 
+plots <- boxPlot(data = output_samples, WQS_table = wqs_table,
+                          AU_ID = au_loop) 
 
 ggarrange(plotlist = plots,
          ncol = 2,
@@ -239,12 +232,12 @@ ggarrange(plotlist = plots,
 ### Parameter Specific Time Series
 :::
 
-The following figures depict the temporal range of parameter samples taken in this Assessment Unit. Samples originating from different Monitoring Locations are assigned different colors.
+The following figures depict the range of results over time in this Assessment Unit. Samples originating from different Monitoring Locations are assigned different colors. This is a simple time series plot used for visualization purposes and should not be used to determine water quality trends.
 
 
-```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim= c(10,5)}
-plots2 <- AKDECtools::timeSeries(data = output_samples, WQS_table = wqs_table,
-                       AU_ID = au_loop, y_axis_log = T)
+```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim= c(11,5)}
+plots2 <- timeSeries(data = output_samples, WQS_table = wqs_table,
+                       AU_ID = au_loop)
 
 ggarrange(plotlist = plots2,
          ncol = 2,
