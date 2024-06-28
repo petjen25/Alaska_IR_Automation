@@ -1,0 +1,177 @@
+---
+title: "Summary HTML Guide"
+author: "Tetra Tech"
+date: last-modified
+date-format: "MMMM DD, YYYY"
+format: docx
+editor: visual
+---
+
+## Introduction
+
+The following user guide pertains to the [*create_summary_htmls.R*](https://github.com/KateriSalk/Alaska_IR_Automation/blob/main/Code/8_Stakeholder_Communication/create_summary_htmls.R) script and [*summary_html_template.Rmd*](https://github.com/KateriSalk/Alaska_IR_Automation/blob/main/Code/8_Stakeholder_Communication/summary_html_template.Rmd)script developed by Tetra Tech for the Alaska Department of Environmental Conservation (AK DEC). This guide assumes that the user has relatively recent versions of R and [RStudio](#0) installed and that they are familiar with the R coding language. Please direct any questions regarding the usage of these scripts to Amber Bethe Crawford, AK DEC (amber.crawford\@alaska.gov).
+
+## Purpose
+
+The purpose of the *create_summary_htmls.R* script is to cycle through the relevant AUs to produce the summary html documents needed for the ArcGIS online hub. The *summary_html_template.Rmd* script outlines how the actual html documents need to look like and gets called in the loop section of *create_summary_htmls.R.*
+
+## Required Packages
+
+The required packages for the *create_summary_htmls.R* code are [*readr*](https://cran.r-project.org/web/packages/readr/index.html)*, [dyplr](https://cran.r-project.org/web/packages/dplyr/index.html), [sf](https://cran.r-project.org/web/packages/sf/index.html),* and [*rmarkdown*](https://cran.r-project.org/web/packages/rmarkdown/index.html)*.* Below is a code chunk that demonstrates how to load these packages along with an example of how to install one.
+
+```{r}
+#| output: false
+#| eval: false
+####Load libraries####
+# install.packages('readr')
+library(readr)
+library(dplyr)
+library(sf)
+library(rmarkdown)
+```
+
+The required packages for the *summary_html_template.Rmd* code are [*tibble*](https://cran.r-project.org/web/packages/tibble/index.html)*, [knitr](https://cran.r-project.org/web/packages/knitr/index.html), [htmltools](https://cran.r-project.org/web/packages/htmltools/index.html), [ggplot2](https://cran.r-project.org/web/packages/ggplot2/index.html), [ggspatial](https://cran.r-project.org/web/packages/ggspatial/index.html), [leaflet](https://cran.r-project.org/web/packages/leaflet/index.html), [viridis](https://cran.r-project.org/web/packages/viridis/index.html), [ggpubr](https://cran.r-project.org/web/packages/ggpubr/index.html), [kableExtra](https://cran.r-project.org/web/packages/kableExtra/index.html)*, and [*stringr*](https://cran.r-project.org/web/packages/stringr/index.html)*.* Below is a code chunk that demonstrates how to load these packages along with an example of how to install one.
+
+```{r}
+#| output: false
+#| eval: false
+# install.packages('tibble')
+library(tibble)
+library(knitr)
+library(htmltools)
+library(ggplot2)
+library(ggspatial)
+library(leaflet)
+library(viridis)
+library(ggpubr)
+library(kableExtra)
+library(stringr)
+```
+
+## Required Inputs
+
+This code has specific exterior files that are required for it to run. The inputs are listed below. Most input files are loaded at the beginning of the script, except for the shapefiles which are loaded within the for loop.
+
+| File Name                               | Purpose                                                      | Source            |
+|-----------------------------------------|--------------------------------------------------------------|-------------------|
+| categorized_simplified_aus_20240621.csv | Provides necessary AU metadata and results                   | categorize_AU.R   |
+| AK_WQS_Crosswalk_20240507.csv           | Water quality standards for each constituent/use combination | AKDEC             |
+| WQ_data_trimmed_long_withAU20240509.csv | Finalized, individual samples for analysis and visualization | data_processing.R |
+| ML_AU_Crosswalk.csv                     | AU and Monitoring Location crosswalk                         | AKDEC             |
+| lakes.shp                               | Lake AU shapefiles                                           | AKDEC             |
+| rivers.shp                              | River AU shapefiles                                          | AKDEC             |
+| marine.shp                              | Marine AU shapefiles                                         | AKDEC             |
+| beaches.shp                             | Beach AU shapefiles                                          | AKDEC             |
+
+## Identify AUs for Loop
+
+Pull the unique AU IDs from the categorized AU output in order to loop through these to create the html documents.
+
+```{r}
+#| output: false
+#| eval: false
+####Find Number of AUs for loop####
+unique_AU <- output_df %>%
+  select(AUID_ATTNS) %>%
+  unique()
+
+```
+
+## Create Visualization Functions
+
+The *boxPlot* and *timeSeries* functions are designed to create box-and-whisker plots and time series plots respectively for the specific AU samples provided to them. They are defined within *create_summary_htmls.R*, but are used within *summary_html_template.Rmd*. Any changes to the figures will need to be made within these functions.
+
+## Create HTMLs with Loop
+
+The for loop cycles through each of the AUs identified within *unique_AU*. Once an AU is selected, the samples are pulled from the *output_df* variable and the proper AU shapefile is read in. Then the monitoring location sites for that AU are identified through the ml_au_crosswalk variable. If for some reason there are no monitoring locations within the AU or there is no polygon with that AU's ID, then it is denoted within the *no_html* list variable for manual intervention. The last step of the loop is to create the html file by using the render function. This function calls the *summary_html_template.Rmd* file to create the html and also specifies the output file location.
+
+```{r}
+#| output: false
+#| eval: false
+no_html <- list()
+count <- 1
+
+for (au_loop in unique_AU$AUID_ATTNS){  # for each unique episode
+  
+  # Isolate AU samples from the dataset
+  
+  output_df_au <- output_df[output_df$AUID_ATTNS == au_loop, ]  
+  au_type <- unique(output_df_au$AU_Type) %>%
+    na.omit()
+  
+  if(au_type == 'Marine') {
+    
+    au_shape <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/marine.shp') %>%
+      filter(AUID_ATTNS == au_loop) %>%
+      mutate(Shape_4_Summary = AU_Area,
+             AU_Shape_Unit = 'square miles')
+    
+  } else if(au_type == 'River') {
+    
+    au_shape <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/rivers.shp') %>%
+      filter(AUID_ATTNS == au_loop) %>%
+      st_transform(crs = st_crs(au_shape_crs)) %>%
+      mutate(Shape_4_Summary = AU_Miles,
+             AU_Shape_Unit = 'miles')
+    
+  } else if(au_type == 'Beach') {
+    
+    au_shape <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/beaches.shp') %>%
+      filter(AUID_ATTNS == au_loop) %>%
+      st_transform(crs = st_crs(au_shape_crs)) %>%
+      mutate(Shape_4_Summary = AU_Miles,
+             AU_Shape_Unit = 'miles')
+    
+  } else if(au_type == 'Lake') {
+    
+    au_shape <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/lakes.shp') %>%
+      filter(AUID_ATTNS == au_loop) %>%
+      st_transform(crs = st_crs(au_shape_crs)) %>%
+      mutate(Shape_4_Summary = AU_Area,
+             AU_Shape_Unit = 'acres')
+    
+  } else(
+    print("No AU Type Detected")
+  )
+  
+  
+  sites <- ml_au_crosswalk %>%
+    filter(AUID_ATTNS == au_loop) %>%
+    select(MonitoringLocationIdentifier, Latitude, Longitude) %>%
+    unique() %>%
+    st_as_sf(coords = c('Longitude', 'Latitude'), remove = F) %>%
+    st_set_crs(4617)  %>% #NAD83 EPSG
+    st_transform(st_crs(au_shape))
+    
+  if(dim(sites)[1] == 0) { #If no sites in AU/ML crosswalk, move on
+    no_html[count] <- au_loop
+    count <- count + 1
+    next
+  }
+  
+  if(dim(au_shape)[1] == 0) { #If no shapefile, move on
+    no_html[count] <- au_loop
+    count <- count + 1
+    next
+  }
+  
+  # Now render ('knit') the R Markdown file to html format, name it and save it
+  
+  render(
+    input = "Code/8_Stakeholder_Communication/summary_html_template.rmd",  # path to the template
+    output_file = paste0("au_", au_loop, ".html"),  # name the output
+    output_dir = "Output/results/summary_htmls"  # folder in which to put the output file
+  )
+  
+}  # end of loop
+```
+
+## Formatting the HTML File
+
+The actual content of the html file is created and formatted within the *summary_html_template.Rmd* file. An RMarkdown file (Rmd) can be viewed in either the 'Source' or 'Visual' form. For this guide, only code snippets will be shown, so the viewing form does not matter when following along. The general document formatting (font and background color) is defined by this CSS code snippet at the beginning:
+
+```{css}
+h1 {color:White; background-color:#253B64; text-align: center;}
+h3 {color:#253B64; font-weight: bold;}
+body {background-color: #F7F5F2; font-family: "Open Sans", Arial, sans-serif;}
+```
