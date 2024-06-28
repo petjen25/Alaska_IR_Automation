@@ -17,7 +17,7 @@ The purpose of the *summary_AU_table.R* script is to summarize the analysis resu
 
 ## Required Packages
 
-The required packages for the *data_processing.R* code are [*tidyverse*](https://www.tidyverse.org/)*, [readxl](https://cran.r-project.org/web/packages/readxl/index.html),* and *[sf](https://cran.r-project.org/web/packages/sf/index.html)* *.* Installation for the *tidyverse* package can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to load these packages.
+The required packages for the *summary_AU_table.R* code are [*tidyverse*](https://www.tidyverse.org/)*, [readxl](https://cran.r-project.org/web/packages/readxl/index.html),* and [*sf*](https://cran.r-project.org/web/packages/sf/index.html) *.* Installation for the these package can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to load these packages.
 
 ```{r}
 #| output: false
@@ -33,13 +33,13 @@ library(sf)
 
 This code has specific exterior files that are required for it to run. The inputs are listed below. All input files are loaded at the beginning of the script.
 
-| File Name                    | Purpose                                             | Source            |
+| File Name                    | Purpose                                    | Source            |
 |-------------------|-----------------------------------|------------------|
-| categorized_aus_20240515.csv | Provides necessary metadata for ATTAINS csv outputs | *categorize_au.R* |
-| lakes.shp                    | Lake AU shapefiles                                  | AKDEC             |
-| rivers.shp                   | River AU shapefiles                                 | AKDEC             |
-| marine.shp                   | Marine AU shapefiles                                | AKDEC             |
-| beaches.shp                  | Beach AU shapefiles                                 | AKDEC             |
+| categorized_aus_20240515.csv | Provides necessary AU metadata and results | *categorize_au.R* |
+| lakes.shp                    | Lake AU shapefiles                         | AKDEC             |
+| rivers.shp                   | River AU shapefiles                        | AKDEC             |
+| marine.shp                   | Marine AU shapefiles                       | AKDEC             |
+| beaches.shp                  | Beach AU shapefiles                        | AKDEC             |
 
 ## Join Shapefiles and Categorized AUs
 
