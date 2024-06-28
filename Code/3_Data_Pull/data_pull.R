@@ -2,10 +2,10 @@
 
 ##Written by: Hannah Ferriby
 ##Date created: 9-22-2023
-##Date updated: 10-3-2023
+##Date updated: 6-28-2024
 
 ####Set Up####
-library(TADA)
+library(EPATADA)
 library(tidyverse)
 
 startDate <- '2017-10-01'
@@ -17,8 +17,7 @@ endDate <- '2023-09-30'
 aswu_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
                                         endDate = endDate,
                                         siteType = 'Aggregate surface-water-use',
-                                        statecode = 'AK',
-                                        applyautoclean = T)
+                                        statecode = 'AK')
 
 #Estuary
 est_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
