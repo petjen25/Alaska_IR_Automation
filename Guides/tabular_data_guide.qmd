@@ -17,13 +17,15 @@ The purpose of the *summary_AU_table.R* script is to summarize the analysis resu
 
 ## Required Packages
 
-The only required packages for the *data_processing.R* code is [*tidyverse*](https://www.tidyverse.org/) *.* Installation for the *tidyverse* package can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to load these packages.
+The required packages for the *data_processing.R* code are [*tidyverse*](https://www.tidyverse.org/)*, [readxl](https://cran.r-project.org/web/packages/readxl/index.html),* and *[sf](https://cran.r-project.org/web/packages/sf/index.html)* *.* Installation for the *tidyverse* package can be found in the Data Pull Guide. Below is a code chunk that demonstrates how to load these packages.
 
 ```{r}
 #| output: false
 #| eval: false
 ####Load Packages####
 library(tidyverse)
+library(readxl)
+library(sf)
 
 ```
 
@@ -31,47 +33,30 @@ library(tidyverse)
 
 This code has specific exterior files that are required for it to run. The inputs are listed below. All input files are loaded at the beginning of the script.
 
-| File Name                                            | Purpose                                                                                              | Source            |
-|--------------------|-------------------------------------|----------------|
-| AUID_crosswalk.csv                                   | Connects previous AU IDs to current AU IDs. Required to connect to previous year ATTAINS information | AK DEC            |
-| ATTAINS_AK_AsessmentUnits_DataDownload_20240126.xlsx | Provides information from previous years ATTAINS                                                     | ATTAINS           |
-| categorized_aus_20240222.csv                         | Provides necessary metadata for ATTAINS csv outputs                                                  | *categorize_au.R* |
+| File Name                    | Purpose                                             | Source            |
+|-------------------|-----------------------------------|------------------|
+| categorized_aus_20240515.csv | Provides necessary metadata for ATTAINS csv outputs | *categorize_au.R* |
+| lakes.shp                    | Lake AU shapefiles                                  | AKDEC             |
+| rivers.shp                   | River AU shapefiles                                 | AKDEC             |
+| marine.shp                   | Marine AU shapefiles                                | AKDEC             |
+| beaches.shp                  | Beach AU shapefiles                                 | AKDEC             |
 
-## Combine all AU IDs
+## Join Shapefiles and Categorized AUs
 
-In order to connect the AU metadata to the summary, we need to use the \*AUID_crosswalk.csv\* information. The next section of code pulls previous ATTAINS information with the current AU IDs, previous AU IDs, and historical AU IDs. None of the AU ID numbers are overridden in this code. This information is then combined together to provide previous metadata to the current year's upload.
+In order to connect the AU metadata to the summary, we need to join the AU information from the shapefiles to the shortened categorized AU table. The join occurs through connected the AU IDs together in each data frame.
 
 ```{r}
 #| output: false
 #| eval: false
-#Join with previous AU ATTAINS by each AUID type
-data_current_AU <- data_cat_AUID_added %>%
-  mutate(assessmentUnitId = AUID_ATTNS) %>%
-  inner_join(previous_au_attains, by = c('assessmentUnitId'))
+#Combine aus into one large table, add HUC10 if missing
+all_aus <- lake_aus %>%
+  rbind(river_aus) %>%
+  rbind(marine_aus) %>%
+  rbind(beach_aus) 
 
-#Find retired AUs
-data_retired_AU <- data_cat_AUID_added %>%
-  mutate(assessmentUnitId = Retired_AUID) %>%
-  inner_join(previous_au_attains, by = c('assessmentUnitId'))
-
-#Find historical AUs
-data_historical_AU <- data_cat_AUID_added %>%
-  mutate(assessmentUnitId = Historical_AUID) %>%
-  inner_join(previous_au_attains, by = c('assessmentUnitId'))
-
-#Combine all together
-#This becomes the starting point for each csv export process
-data_all_AUs_listed <- data_current_AU %>%
-  rbind(data_retired_AU) %>%
-  rbind(data_historical_AU)
-
-#Find AUs not in previous ATTAINS
-data_current_AU_not_listed <- data_cat_AUID_added %>%
-  mutate(assessmentUnitId = AUID_ATTNS) %>%
-  full_join(previous_au_attains, by = c('assessmentUnitId')) %>%
-  filter(!assessmentUnitId %in% data_current_AU$assessmentUnitId) %>%
-  filter(!assessmentUnitId %in% data_retired_AU$assessmentUnitId) %>%
-  filter(!assessmentUnitId %in% data_historical_AU$assessmentUnitId)
+#Join with AU shapefile information
+data_all_AUs <- table_cat %>% 
+  left_join(all_aus, by = 'AUID_ATTNS') 
 ```
 
 ## Summarize
@@ -88,6 +73,6 @@ final_summary <- data_all_AUs %>%
                                    Use_Category == 5 ~ 'Not Supporting',
                                    T ~ NA)) %>% 
   select(AUID_ATTNS, `Waterbody Type`, Use, Use_Category, overallStatus, 
-         assessmentUnitName, locationDescription, waterSize, waterSizeUnits) %>%
+         Name_AU, Shape_4_Summary, AU_Shape_Unit) %>%
   unique() 
 ```
