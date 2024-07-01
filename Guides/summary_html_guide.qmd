@@ -9,7 +9,7 @@ editor: visual
 
 ## Introduction
 
-The following user guide pertains to the [*create_summary_htmls.R*](https://github.com/KateriSalk/Alaska_IR_Automation/blob/main/Code/8_Stakeholder_Communication/create_summary_htmls.R) script and [*summary_html_template.Rmd*](https://github.com/KateriSalk/Alaska_IR_Automation/blob/main/Code/8_Stakeholder_Communication/summary_html_template.Rmd)script developed by Tetra Tech for the Alaska Department of Environmental Conservation (AK DEC). This guide assumes that the user has relatively recent versions of R and [RStudio](#0) installed and that they are familiar with the R coding language. Please direct any questions regarding the usage of these scripts to Amber Bethe Crawford, AK DEC (amber.crawford\@alaska.gov).
+The following user guide pertains to the [*create_summary_htmls.R*](https://github.com/KateriSalk/Alaska_IR_Automation/blob/main/Code/8_Stakeholder_Communication/create_summary_htmls.R) script and [*summary_html_template.Rmd*](https://github.com/KateriSalk/Alaska_IR_Automation/blob/main/Code/8_Stakeholder_Communication/summary_html_template.Rmd) script developed by Tetra Tech for the Alaska Department of Environmental Conservation (AK DEC). This guide assumes that the user has relatively recent versions of R and [RStudio](#0) installed and that they are familiar with the R coding language. Please direct any questions regarding the usage of these scripts to Amber Bethe Crawford, AK DEC (amber.crawford\@alaska.gov).
 
 ## Purpose
 
@@ -53,7 +53,7 @@ library(stringr)
 This code has specific exterior files that are required for it to run. The inputs are listed below. Most input files are loaded at the beginning of the script, except for the shapefiles which are loaded within the for loop.
 
 | File Name                               | Purpose                                                      | Source            |
-|-----------------------------------------|--------------------------------------------------------------|-------------------|
+|----------------------|----------------------------------|----------------|
 | categorized_simplified_aus_20240621.csv | Provides necessary AU metadata and results                   | categorize_AU.R   |
 | AK_WQS_Crosswalk_20240507.csv           | Water quality standards for each constituent/use combination | AKDEC             |
 | WQ_data_trimmed_long_withAU20240509.csv | Finalized, individual samples for analysis and visualization | data_processing.R |
@@ -174,4 +174,180 @@ The actual content of the html file is created and formatted within the *summary
 h1 {color:White; background-color:#253B64; text-align: center;}
 h3 {color:#253B64; font-weight: bold;}
 body {background-color: #F7F5F2; font-family: "Open Sans", Arial, sans-serif;}
+```
+
+Any generic text (i.e. section description, table definitions) can be changed intuitively when in the 'Visual' form. The Alaska DEC logo can also be changed if needed. In order to change the link associated with the logo, select the image and click on the '...'. This opens the following pop-up where you can change the link:
+
+![](images/clipboard-1405890897.png){width="254"}
+
+## Summary Introduction Table
+
+The tables in these html documents are created using the *kable* function from the *knitr* package. The following code section calculates the overall AU category using the same process as in the *categorize_AU* function and then selects the four relevant columns, renaming them in the process. The *t* function transposes the table to fit the desired table appearance (switches rows and columns). The *kable_styling* inputs force the table to be centered on the page and only span the width of the text in the table.
+
+```{r}
+#| output: false
+#| eval: false
+output_df_au %>%
+  mutate(AU_Name = au_shape$Name_AU,
+         n = n(),
+         is_2 = sum(ifelse(Use_Category == 2, 1, 0)),
+         is_3 = sum(ifelse(Use_Category == 3, 1, 0)),
+         is_5 = sum(ifelse(Use_Category == 5, 1, 0)),
+         #If n > 1, choose worse category
+         new_Category = case_when(n > 1 & is_5 > 0 ~
+                                    5,
+                                  n > 1 & is_5 == 0 & is_2 > 0 ~
+                                    2,
+                                  n > 1 & is_5 == 0 & is_2 == 0 & is_3 > 0 ~
+                                    3,
+                                  T ~ NA),
+         new_Category = case_when(new_Category == 3 ~
+                                          'Not enough information',
+                                        new_Category == 2 ~
+                                          'Attaining',
+                                        new_Category == 5 ~
+                                          'Not attaining')) %>%
+  select(
+    `AU ID: ` = AUID_ATTNS,
+    `AU Name: ` = AU_Name,
+    `AU Type: ` = AU_Type,
+    `Overall Category: ` = new_Category) %>% 
+  unique() %>%
+  t() %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
+```
+
+The '<br>' between sections creates line breaks using html code.
+
+## AU Map with Monitoring Locations
+
+The AU map is created using the *leaflet* package which creates an interactive map where the user can zoom and move around the map. The relevant Monitoring Location sites were pulled within the loop from the Create HTMLs with Loop section and originated in the ML_AU_Crosswalk csv input. The AU and Monitoring Location shapefiles are transformed to the EPSG: 4326 (WGS 84) code just to ensure that any vector inputs are within the same CRS before mapping. The color palette for the monitoring locations within the map is defined as 'mako' from the *viridis* package.
+
+```{r}
+#| output: false
+#| eval: false
+au_shape_4_map <- st_transform(au_shape, crs = 'EPSG:4326')
+sites_4_map <- st_transform(sites, crs='EPSG:4326')
+
+
+pal <- colorFactor(
+  palette = viridis_pal(alpha = 1, begin = 0, end = 1,
+                        option = 'mako')(nrow(sites)),
+  domain = sites_4_map$MonitoringLocationIdentifier,
+  ordered = TRUE)
+```
+
+The following code function uses the *leaflet* function to create the interactive AU map. The *addTiles* and *addProviderTiles* functions add the background layer. The *addPolylines* and *addCircleMarkers* functions add the AU polygon and Monitoring Locations onto the map. The *addLegend* function adds a legend onto the map for the specified layer. A new legend needs to be added for every different layer (i.e. AU polygon, MLs).
+
+```{r}
+#| output: false
+#| eval: false
+leaflet() %>% 
+  addTiles() %>%
+  addProviderTiles(providers$Esri.NatGeoWorldMap) %>% 
+  addPolylines(data = au_shape_4_map,
+               color = '#072f95',
+               opacity  = 1) %>%
+  addCircleMarkers(data = sites_4_map,
+                   radius = 3,
+                   color = ~pal(MonitoringLocationIdentifier),
+                   opacity  = 1,
+                   label = sites_4_map$MonitoringLocationIdentifier,
+                   labelOptions = labelOptions(noHide = F)) %>%
+  addLegend("bottomright",
+            pal = pal,
+            values = sites_4_map$MonitoringLocationIdentifier,
+            title = "Monitoring Location",
+            opacity = 1) %>%
+  addLegend('bottomright',
+            color = '#072f95',
+            label = au_shape_4_map$AUID_ATTNS,
+            title = 'AU ID',
+            opacity = 1)
+```
+
+## Use and Location Tables
+
+The Monitoring Location summary table uses kable and kable_styling to show the exact locations of the AU's Monitoring Locations from the AU/ML crosswalk.
+
+```{r}
+#| output: false
+#| eval: false
+sites %>%
+  st_drop_geometry() %>%
+  select(
+    `Monitoring Location` = MonitoringLocationIdentifier,
+    Latitude,
+    Longitude) %>% 
+  unique() %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
+```
+
+The Designated Uses and Attainment table also uses nearly the exact same process to create the output table, but from the categorized AU input.
+
+```{r}
+#| output: false
+#| eval: false
+output_df_au %>%
+  select(
+    `Use: ` = Use,
+    `Use Category: `= Use_Category) %>% 
+  unique() %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
+```
+
+The Attainment by Parameter table also utilizes the categorized AU input, but redefines the categories from numeric to text. The *str_to_title* function converts the all caps parameter names into title case. This works well for almost all parameters except for pH and Dissolved Oxygen so those are manually specified. Arranging the table by parameter allows for the table to appear in alphabetical order.
+
+```{r}
+#| output: false
+#| eval: false
+output_df_au %>%
+  filter(!is.na(n_Samples)) %>%
+  mutate(Attainment = case_when(Individual_Category == 3 ~
+                                          'Not enough information',
+                                        Individual_Category == 2 ~
+                                          'Attaining',
+                                        Individual_Category == 5 ~
+                                          'Not attaining')) %>%
+    select(
+    Parameter = TADA.CharacteristicName,
+    `Designated Use` = Use,
+    Attainment,
+    `# of Samples` = n_Samples,
+    `# of Sample Dates` = n_SampDates) %>% 
+  unique() %>%
+  mutate(Parameter = case_when(Parameter == 'PH' ~
+                                 'pH',
+                               Parameter == 'DISSOLVED OXYGEN (DO)' ~
+                                 'Dissolved Oxygen (DO)',
+                               T ~ str_to_title(Parameter))) %>%
+  arrange(Parameter) %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "center")
+```
+
+## Summary Figures
+
+The box-and-whisker plots as well as the are created with the functions defined in *create_summary_htmls.R.* Both the *boxPlot* and *timeSeries* functions output a list of ggplot figures. The ggarrange function specifies that these plots should print out in multiple 1 row by 2 column iterations.
+
+```{r}
+#| output: false
+#| eval: false
+plots <- boxPlot(data = output_samples, WQS_table = wqs_table,
+                 AU_ID = au_loop) 
+
+ggarrange(plotlist = plots,
+          ncol = 2,
+          common.legend = T) 
+
+
+plots2 <- timeSeries(data = output_samples, WQS_table = wqs_table,
+                     AU_ID = au_loop)
+
+ggarrange(plotlist = plots2,
+          ncol = 2,
+          common.legend = T)
 ```
