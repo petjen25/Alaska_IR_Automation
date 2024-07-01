@@ -1,11 +1,13 @@
+#Create summary HTML documents for all relevant AUs for AKDEC
+
+#Created by: Hannah Ferriby
+#Updated on: 6/28/2024
 
 ####Load libraries####
 library(readr)
 library(dplyr)
 library(sf)
-library(AKDECtools)
 library(rmarkdown)
-library(ggplot2)
 
 
 ####Read in data####
@@ -13,28 +15,9 @@ output_df <- read_csv(file = "Output/results/categorized_simplified_aus_20240621
 wqs_table <- read_csv(file = 'Data/data_analysis/AK_WQS_Crosswalk_20240507.csv')
 output_samples <- read_csv(file = 'Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
 ml_au_crosswalk <- read_csv(file = 'Data/data_processing/ML_AU_Crosswalk.csv')
-au_shape_crs <- st_read('Data/data_GIS/Marine/marine.shp')
-
-ak <- st_read('Data/data_GIS/cb_2018_us_state_500k/cb_2018_us_state_500k.shp') %>%
-  filter(STUSPS == 'AK') %>%
-  st_transform(crs = st_crs(au_shape_crs))
 
 
 ####Find Number of AUs for loop####
-unique_AU <- output_df %>%
-  select(AUID_ATTNS) %>%
-  unique() %>%
-  head()
-
-au_num_mls <- output_samples %>%
-  select(AUID_ATTNS, MonitoringLocationName) %>%
-  unique() %>%
-  group_by(AUID_ATTNS) %>%
-  reframe(AUID_ATTNS = AUID_ATTNS,
-          n = n()) %>%
-  unique()
-
-
 unique_AU <- output_df %>%
   select(AUID_ATTNS) %>%
   unique()
@@ -165,7 +148,7 @@ timeSeries <- function(data, WQS_table, AU_ID) {
   return(results)
 }
 
-# Loop --------------------------------------------------------------------
+#### Loop ####
 # au_loop <- unique_AU$AUID_ATTNS[[2]]
 # au_loop <- 'AK_M_1030305_003'
 
@@ -174,7 +157,7 @@ count <- 1
 
 for (au_loop in unique_AU$AUID_ATTNS){  # for each unique episode
   
-  # Isolate that episode from the dataset
+  # Isolate AU samples from the dataset
   
   output_df_au <- output_df[output_df$AUID_ATTNS == au_loop, ]  
   au_type <- unique(output_df_au$AU_Type) %>%

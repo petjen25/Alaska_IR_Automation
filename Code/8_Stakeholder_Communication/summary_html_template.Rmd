@@ -4,10 +4,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-library(dplyr)
 library(tibble)
 library(knitr)
-library(AKDECtools)
 library(htmltools)
 library(ggplot2)
 library(ggspatial)
@@ -76,9 +74,7 @@ output_df_au %>%
 <br>
 
 ```{r, results = 'asis'}
-# {r, fig.dim = c(5.5,4)}
 #Map AU with monitoring sites
-#center <- st_centroid(au_shape)$geometry
 
 au_shape_4_map <- st_transform(au_shape, crs = 'EPSG:4326')
 sites_4_map <- st_transform(sites, crs='EPSG:4326')
@@ -211,22 +207,22 @@ output_df_au %>%
 ### Distribution of Parameters
 :::
 
-The following figures depict the range of each sampled parameter at this Assessment Unit. The actual sample values are overlaid onto the boxplots to provide an additional visualization of the spread. Samples originating from different Monitoring Locations are assigned different colors. 
+The following figures depict the range of each sampled parameter at this Assessment Unit. The actual sample values are overlaid onto the boxplots to provide an additional visualization of the spread. Samples originating from different Monitoring Locations are assigned different colors.
 
 ```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim= c(11,5)}
 plots <- boxPlot(data = output_samples, WQS_table = wqs_table,
-                          AU_ID = au_loop) 
+                 AU_ID = au_loop) 
 
 ggarrange(plotlist = plots,
-         ncol = 2,
-         common.legend = T) 
+          ncol = 2,
+          common.legend = T) 
 ```
 
 \newpage
 
 <br>
 
-<br> 
+<br>
 
 ::: {align="center"}
 ### Parameter Specific Time Series
@@ -234,12 +230,11 @@ ggarrange(plotlist = plots,
 
 The following figures depict the range of results over time in this Assessment Unit. Samples originating from different Monitoring Locations are assigned different colors. This is a simple time series plot used for visualization purposes and should not be used to determine water quality trends.
 
-
 ```{r, echo=FALSE,results='hide',fig.keep='all', fig.dim= c(11,5)}
 plots2 <- timeSeries(data = output_samples, WQS_table = wqs_table,
-                       AU_ID = au_loop)
+                     AU_ID = au_loop)
 
 ggarrange(plotlist = plots2,
-         ncol = 2,
-        common.legend = T)
+          ncol = 2,
+          common.legend = T)
 ```
