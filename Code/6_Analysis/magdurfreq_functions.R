@@ -56,7 +56,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     dplyr::filter(!(Constituent == 'Pentachloro-phenol' & `Waterbody Type` == 'Freshwater')) %>%
     dplyr::filter(Constituent != 'Turbidity') %>%
     dplyr::filter(!(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
-                                'Nickel', 'Silver', 'Zinc') & Use == 'Aquatic Life')) %>%
+                                'Nickel', 'Silver', 'Zinc') & Use == 'Aquatic Life' &
+                      `Waterbody Type` == 'Freshwater')) %>%
     dplyr::select(Directionality, Frequency, Duration, Details) %>%
     unique()
   
@@ -690,7 +691,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   #these constituents come back in the hardness, pH, and turbidity specific functions
   relevant_suff <- input_sufficiency %>%
     dplyr::filter(!(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
-                                                     'NICKEL', 'SILVER', 'ZINC') & Use == 'Aquatic Life')) %>%
+                                                     'NICKEL', 'SILVER', 'ZINC') & Use == 'Aquatic Life' &
+                      `Waterbody Type` == 'Freshwater')) %>%
     dplyr::filter(TADA.CharacteristicName != 'AMMONIA') %>%
     dplyr::filter(TADA.CharacteristicName != 'PENTACHLORO-PHENOL') %>%
     dplyr::filter(TADA.CharacteristicName != 'TURBIDITY')
@@ -718,6 +720,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     dplyr::filter(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
                               'Nickel', 'Silver', 'Zinc')) %>% 
     dplyr::filter(Use == 'Aquatic Life') %>%
+    dplyr::filter(`Waterbody Type` == 'Freshwater') %>%
     dplyr::filter(is.na(Magnitude_Numeric)) %>%
     dplyr::select(Directionality, Frequency, Duration, Details) %>%
     unique()
@@ -1039,7 +1042,8 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
   relevant_suff <- input_sufficiency %>%
     dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
                                      'NICKEL', 'SILVER', 'ZINC')) %>% 
-    dplyr::filter(Use == 'Aquatic Life')
+    dplyr::filter(Use == 'Aquatic Life') %>%
+    dplyr::filter(`Waterbody Type` == 'Freshwater')
   
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
@@ -1565,12 +1569,11 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turb
   output <- standard_output %>%
     rbind(hardness_output) %>%
     rbind(pH_output) %>%
-    rbind(turbidity_output) %>%
-    filter(!is.na(Constituent))
+    rbind(turbidity_output)
   
   return(output)
 }
 
 final_output <- combine_MagDurFreq(output, output_hardness, output_pH, output_turbidity)
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240515.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240621.csv')

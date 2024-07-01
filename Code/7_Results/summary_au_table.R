@@ -1,23 +1,23 @@
-#Function to create table with designated use, constituent, magnitude,
-#frequency, and duration for the relevant parameters in a given AU
+#Function to create table with AU-specific details for the ArcGIS online
+#hub page
 
 #Written by: Hannah Ferriby
+#Date updated: 6/28/2024
 
 #Required libraries
 library(tidyverse)
 library(readxl)
 library(sf)
 
-#Test data
+#Load in categorized AU information
 categorize_output <- read_csv('Output/results/categorized_aus_20240515.csv')
-au_id_crosswalk <- read_csv('Data/data_analysis/AUID_crosswalk.csv')
-previous_au_attains <- read_xlsx('Data/data_analysis/ATTAINS_AK_AsessmentUnits_DataDownload_20240126.xlsx', sheet = 2)
 
-
+#Select just the needed columns
 table_cat <- categorize_output %>% 
   select(AUID_ATTNS, `Waterbody Type`, Use, Use_Category) %>%
   unique()
 
+#Load in AU shapefiles
 lake_aus <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/lakes.shp') %>%
   select(AUID_ATTNS, Name_AU, HUC10_ID, AU_Area) %>%
   st_zm() %>%

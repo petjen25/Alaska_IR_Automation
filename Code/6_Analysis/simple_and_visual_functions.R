@@ -51,6 +51,8 @@ test_pull <- simplePull(data = input_samples, AU_ID = 'AK_B_1010203_001'
 
 #Time series function 
 timeSeries <- function(data, WQS_table, AU_ID, y_axis_log) {
+  sysfonts::font_add_google("Open Sans", family = "Open_Sans") # for fonts
+  showtext::showtext_auto() # for fonts
   
   relevant_constituents <- WQS_table %>%
     dplyr::select(TADA.Constituent) %>%
@@ -60,7 +62,7 @@ timeSeries <- function(data, WQS_table, AU_ID, y_axis_log) {
   relevant_data <- data %>%
     dplyr::filter(TADA.CharacteristicName %in% relevant_constituents) %>%
     dplyr::filter(AUID_ATTNS == AU_ID)
-    
+  
   constituents <- relevant_data %>%
     dplyr::select(TADA.CharacteristicName) %>%
     unique() %>%
@@ -77,31 +79,33 @@ timeSeries <- function(data, WQS_table, AU_ID, y_axis_log) {
       dplyr::filter(TADA.CharacteristicName == j)
     
     if(y_axis_log == F) {
-    plt<-ggplot2::ggplot() +
-      ggplot2::geom_point(data = filt,
-                          aes(x = ActivityStartDate,
-                              y = TADA.ResultMeasureValue,
-                              fill = MonitoringLocationIdentifier),
-                          color = 'black',
-                          shape = 21,
-                          size = 2,
-                          alpha = 0.8) +
-      ggplot2::xlab('Time') +
-      ggplot2::ylab(paste0(j, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')')) +
-      ggplot2::theme_bw() +
-      viridis::scale_fill_viridis(discrete = T,
-                                   option = "mako") +
-      ggplot2::labs(fill = 'Monitoring Location') +
-      ggplot2::theme(legend.position="top",
-                     text=element_text(size=22))
-    
-    results[[counter]] <- plt
+      plt<-ggplot2::ggplot() +
+        ggplot2::geom_point(data = filt,
+                            ggplot2::aes(x = ActivityStartDate,
+                                         y = TADA.ResultMeasureValue,
+                                         fill = MonitoringLocationIdentifier),
+                            color = 'black',
+                            shape = 21,
+                            size = 2,
+                            alpha = 0.8) +
+        ggplot2::xlab('Time') +
+        ggplot2::ylab(paste0(j, ' (', filt$TADA.ResultMeasure.MeasureUnitCode, ')')) +
+        ggplot2::theme_bw() +
+        viridis::scale_fill_viridis(discrete = T,
+                                    option = "mako") +
+        ggplot2::labs(fill = 'Monitoring Location') +
+        ggplot2::theme(legend.position="top"
+                       , text = ggplot2::element_text(family = "Open_Sans", size = 22)
+                       , axis.text = ggplot2::element_text(family = "Open_Sans", size = 20)) +
+        ggplot2::guides(fill = ggplot2::guide_legend(nrow = ceiling(length(unique(filt$MonitoringLocationIdentifier))/3)))
+      
+      results[[counter]] <- plt
     } else {
       plt<-ggplot2::ggplot() +
         ggplot2::geom_point(data = filt,
-                            aes(x = ActivityStartDate,
-                                y = TADA.ResultMeasureValue,
-                                fill = MonitoringLocationIdentifier),
+                            ggplot2::aes(x = ActivityStartDate,
+                                         y = TADA.ResultMeasureValue,
+                                         fill = MonitoringLocationIdentifier),
                             color = 'black',
                             shape = 21,
                             size = 2,
@@ -113,8 +117,10 @@ timeSeries <- function(data, WQS_table, AU_ID, y_axis_log) {
         viridis::scale_fill_viridis(discrete = T,
                                     option = "mako") +
         ggplot2::labs(fill = 'Monitoring Location') +
-        ggplot2::theme(legend.position="top",
-                       text=element_text(size=22))
+        ggplot2::theme(legend.position="top"
+                       , text = ggplot2::element_text(family = "Open_Sans", size = 22)
+                       , axis.text = ggplot2::element_text(family = "Open_Sans", size = 20)) +
+        ggplot2::guides(fill = ggplot2::guide_legend(nrow = ceiling(length(unique(filt$MonitoringLocationIdentifier))/3)))
       
       results[[counter]] <- plt
     }
@@ -131,6 +137,9 @@ ggsave('Output/results/test/testtime.jpg', timeseries_example[[1]], units = 'in'
 #Boxplot function 
 boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
   
+  sysfonts::font_add_google("Open Sans", family = "Open_Sans") # for fonts
+  showtext::showtext_auto() # for fonts
+  
   relevant_constituents <- WQS_table %>%
     dplyr::select(TADA.Constituent) %>%
     unique() %>%
@@ -158,12 +167,12 @@ boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
     if(y_axis_log == F) {
       plt<-ggplot2::ggplot() +
         ggplot2::geom_boxplot(data = filt,
-                              aes(x = AUID_ATTNS,
-                                  y = TADA.ResultMeasureValue),
-                            color = 'gray30') +
-        ggplot2::geom_jitter(data = filt, aes(x = AUID_ATTNS,
-                                              y = TADA.ResultMeasureValue,
-                                              fill = MonitoringLocationIdentifier),
+                              ggplot2::aes(x = AUID_ATTNS,
+                                           y = TADA.ResultMeasureValue),
+                              color = 'gray30') +
+        ggplot2::geom_jitter(data = filt, ggplot2::aes(x = AUID_ATTNS,
+                                                       y = TADA.ResultMeasureValue,
+                                                       fill = MonitoringLocationIdentifier),
                              color = 'black',
                              shape = 21,
                              size = 2,
@@ -175,19 +184,21 @@ boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
         viridis::scale_fill_viridis(discrete = T,
                                     option = "mako") +
         ggplot2::labs(fill = 'Monitoring Location') +
-        ggplot2::theme(legend.position="top",
-                       text=element_text(size=22))
+        ggplot2::theme(legend.position="top"
+                       , text = ggplot2::element_text(family = "Open_Sans", size = 22)
+                       , axis.text = ggplot2::element_text(family = "Open_Sans", size = 20)) +
+        ggplot2::guides(fill = ggplot2::guide_legend(nrow = ceiling(length(unique(filt$MonitoringLocationIdentifier))/3)))
       
       results[[counter]] <- plt
     } else {
       plt<-ggplot2::ggplot() +
         ggplot2::geom_boxplot(data = filt,
-                              aes(x = AUID_ATTNS,
-                                  y = TADA.ResultMeasureValue),
+                              ggplot2::aes(x = AUID_ATTNS,
+                                           y = TADA.ResultMeasureValue),
                               color = 'gray30') +
-        ggplot2::geom_jitter(data = filt, aes(x = AUID_ATTNS,
-                                              y = TADA.ResultMeasureValue,
-                                              fill = MonitoringLocationIdentifier),
+        ggplot2::geom_jitter(data = filt, ggplot2::aes(x = AUID_ATTNS,
+                                                       y = TADA.ResultMeasureValue,
+                                                       fill = MonitoringLocationIdentifier),
                              color = 'black',
                              shape = 21,
                              size = 2,
@@ -200,8 +211,10 @@ boxPlot <- function(data, WQS_table, AU_ID, y_axis_log) {
         viridis::scale_fill_viridis(discrete = T,
                                     option = "mako") +
         ggplot2::labs(fill = 'Monitoring Location') +
-        ggplot2::theme(legend.position="top",
-                       text=element_text(size=22))
+        ggplot2::theme(legend.position="top"
+                       , text = ggplot2::element_text(family = "Open_Sans", size = 22)
+                       , axis.text = ggplot2::element_text(family = "Open_Sans", size = 20)) +
+        ggplot2::guides(fill = ggplot2::guide_legend(nrow = ceiling(length(unique(filt$MonitoringLocationIdentifier))/3)))
       
       results[[counter]] <- plt
     }
