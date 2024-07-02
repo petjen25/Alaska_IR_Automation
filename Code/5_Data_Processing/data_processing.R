@@ -90,7 +90,7 @@ data_5b <- TADA_FlagBelowThreshold(data_5a, clean = F)
 
 #####6. Find continuous data#####
 # This function adds the TADA.AggregatedContinuousData.Flag to the dataframe.
-data_6 <- TADA_FindContinuousData(data_5b, clean = F)
+data_6 <- TADA_FlagContinuousData(data_5b, clean = F, flaggedonly = FALSE)
 
 #####7. Check method flags#####
 # This function adds the TADA.AnalyticalMethod.Flag to the dataframe.
@@ -303,6 +303,7 @@ rm(data_13, df_ColManager, Cols_data_13, QC_Check, Keep_cols, Cols_Manager)
 #                  "InvalidChar",
 #                  "MethodNeeded")
 
+
 data_16 <- data_15 %>% 
   filter(TADA.ResultUnit.Flag != "Rejected" 
          & TADA.ResultUnit.Flag != "Invalid") %>% # Step 1
@@ -321,14 +322,104 @@ data_16 <- data_15 %>%
   filter(TADA.ActivityMediaName == 'WATER') # Remove non-water samples
 # censored data are retained in this dataset.
 
+#Units check - compare sample units to WQS units
+wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240507.csv') %>%
+  select(TADA.Constituent, Units) %>%
+  unique() %>%
+  na.omit() %>%
+  mutate(Units = toupper(Units))
+
+#Join WQS units to sample data
+data_16b <- data_16 %>% 
+  left_join(wqs_table_units, by = c('TADA.CharacteristicName' = 'TADA.Constituent')) 
+
+#Nitrite and Nitrate conversion factors from:
+#https://environment.des.qld.gov.au/__data/assets/pdf_file/0022/90148/data-handling-units-and-concentrations.pdf
+
+data_16c <- data_16b %>%
+  #Convert the numeric results
+  mutate(TADA.ResultMeasureValue = case_when(TADA.ResultMeasure.MeasureUnitCode == 'MG/L' &
+                                               Units == 'UG/L' ~
+                                               TADA.ResultMeasureValue*1000,
+                                             TADA.ResultMeasure.MeasureUnitCode == 'UG/L' &
+                                               Units == 'MG/L'~
+                                               TADA.ResultMeasureValue/1000,
+                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS P' &
+                                               Units == 'UG/L'~
+                                               TADA.ResultMeasureValue*1000,
+                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L CACO3' &
+                                               Units == 'UG/L'~
+                                               TADA.ResultMeasureValue*1000,
+                                             TADA.ResultMeasure.MeasureUnitCode == 'UG/KG' & #1 ug/kg = 1 ug/L
+                                               Units == 'MG/L' ~ #ug/L to mg/L
+                                               TADA.ResultMeasureValue/1000,
+                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L ASNO3' &
+                                               Units == 'UG/L'~
+                                               (TADA.ResultMeasureValue/4.43)*1000, #1 mg/L of nitrate NO3-N = 4.43mg/L NO3
+                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L ASNO2' &
+                                               Units == 'UG/L'~
+                                               (TADA.ResultMeasureValue/3.28)*1000, #1 mg/L of nitrite NO2-N = 3.28mg/L NO2
+                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS N' &
+                                               Units == 'UG/L'~
+                                               TADA.ResultMeasureValue*1000,
+                                             T ~ TADA.ResultMeasureValue),
+         #Convert the units to match WQS
+         TADA.ResultMeasure.MeasureUnitCode = case_when(TADA.ResultMeasure.MeasureUnitCode == 'MG/L' &
+                                                          Units == 'UG/L' ~
+                                                          'UG/L',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'UG/L' &
+                                                          Units == 'MG/L'~
+                                                          'MG/L',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS P' &
+                                                          Units == 'UG/L'~
+                                                          'UG/L',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'MPN/100 ML' &
+                                                          Units == 'CFU/100ML' ~
+                                                          'CFU/100ML',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'CFU/100ML' &
+                                                          Units == 'MPN/100ML'~
+                                                          'MPN/100ML',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'MPN/100ML' &
+                                                          Units == 'CFU/100ML'~
+                                                          'CFU/100ML',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L CACO3' &
+                                                          Units == 'UG/L'~
+                                                          'UG/L',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'UG/KG' & 
+                                                          Units == 'MG/L' ~ 
+                                                          'MG/L',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L ASNO3' &
+                                                          Units == 'UG/L'~
+                                                          'UG/L', 
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L ASNO2' &
+                                                          Units == 'UG/L'~
+                                                          'UG/L',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS N' &
+                                                          Units == 'UG/L'~
+                                                          'UG/L',
+                                                        T ~ TADA.ResultMeasure.MeasureUnitCode)) 
+
+#Find which units were not fixable by simple conversion
+#Requires manual intervention
+samples_table_units_not_matching <- data_16c %>%
+  filter(TADA.ResultMeasure.MeasureUnitCode != Units) %>%
+  select(TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode, Units) %>%
+  unique()
+
+print('Check samples_table_units_not_matching variable for any sample units that do not match the WQS table.')
+
+#Grab only data whose units match
+data_16d <- data_16c %>%
+  filter(TADA.ResultMeasure.MeasureUnitCode == Units)
+
 #Export data summary
-write_csv(data_16, file = file.path('Output/data_processing'
+write_csv(data_16d, file = file.path('Output/data_processing'
                                          , paste0("WQ_data_trimmed_"
                                                   ,myDate, ".csv"))
           , na = "")
 
 #Clean up environment
-rm(data_15)
+rm(data_15, data_16, data_16b, data_16c)
 
 #####17. Visualize data distributions#####
 # NOTE: This step creates its own unique output but does not produce data_17 object.
@@ -405,7 +496,7 @@ rm(data_4loop, df_subset, logplot, plot, plot_list, counter, i
    , myPal, Unique_CharName)
 
 #####18. Ultra trim data#####
-data_18 <- data_16 %>% 
+data_18 <- data_16d %>% 
   select(OrganizationIdentifier
          ,ActivityStartDate
          ,MonitoringLocationIdentifier
@@ -439,7 +530,7 @@ blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "COLOR", "DISSOLVED OXYGE
                      , "PH", "SEDIMENT", "SULFATE", "TEMPERATURE, WATER"
                      , "TOTAL DISSOLVED SOLIDS", "TURBIDITY") # from data sufficiency table
 
-data_19_long <- left_join(data_16, df_ML_AU_Crosswalk
+data_19_long <- left_join(data_16d, df_ML_AU_Crosswalk
                           , by = "MonitoringLocationIdentifier") %>%
   select(!c(HydrologicEvent, HydrologicCondition, StatisticalBaseCode, ResultTimeBasisText, 
             ActivityEndDateTime, MonitoringLocationDescriptionText,
@@ -488,7 +579,7 @@ df_ML <- data_19 %>%
   distinct()
 
 # cleanup
-rm(data_19_long, data_16)
+rm(data_19_long, data_16d)
 
 ## create palette
 ML_Type <- factor(c("Lake, Reservoir, Impoundment"
