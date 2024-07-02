@@ -44,54 +44,54 @@ ocean_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
 
 
 #Stream
-# stream_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
-#                                           endDate = endDate,
-#                                           siteType = 'Stream',
-#                                           statecode = 'AK',
-#                                           applyautoclean = T)
-
-stream_data_pull1 <- TADA_BigDataRetrieval(startDate = '2017-10-01',
-                                          endDate = '2018-09-30',
+stream_data_pull <- TADA_BigDataRetrieval(startDate = startDate,
+                                          endDate = endDate,
                                           siteType = 'Stream',
                                           statecode = 'AK',
                                           applyautoclean = T)
 
-stream_data_pull2 <- TADA_BigDataRetrieval(startDate = '2018-10-01',
-                                           endDate = '2019-09-30',
-                                           siteType = 'Stream',
-                                           statecode = 'AK',
-                                           applyautoclean = T)
-
-stream_data_pull3 <- TADA_BigDataRetrieval(startDate = '2019-10-01',
-                                           endDate = '2020-09-30',
-                                           siteType = 'Stream',
-                                           statecode = 'AK',
-                                           applyautoclean = T)
-
-stream_data_pull4 <- TADA_BigDataRetrieval(startDate = '2020-10-01',
-                                           endDate = '2021-09-30',
-                                           siteType = 'Stream',
-                                           statecode = 'AK',
-                                           applyautoclean = T)
-
-stream_data_pull5 <- TADA_BigDataRetrieval(startDate = '2021-10-01',
-                                           endDate = '2022-09-30',
-                                           siteType = 'Stream',
-                                           statecode = 'AK',
-                                           applyautoclean = T)
-
-stream_data_pull6 <- TADA_BigDataRetrieval(startDate = '2022-10-01',
-                                           endDate = '2023-09-30',
-                                           siteType = 'Stream',
-                                           statecode = 'AK',
-                                           applyautoclean = T)
-
-stream_data_pull <- stream_data_pull1 %>%
-  rbind(stream_data_pull2) %>%
-  rbind(stream_data_pull3) %>%
-  rbind(stream_data_pull4) %>%
-  rbind(stream_data_pull5) %>%
-  rbind(stream_data_pull6)
+# stream_data_pull1 <- TADA_BigDataRetrieval(startDate = '2017-10-01',
+#                                           endDate = '2018-09-30',
+#                                           siteType = 'Stream',
+#                                           statecode = 'AK',
+#                                           applyautoclean = T)
+# 
+# stream_data_pull2 <- TADA_BigDataRetrieval(startDate = '2018-10-01',
+#                                            endDate = '2019-09-30',
+#                                            siteType = 'Stream',
+#                                            statecode = 'AK',
+#                                            applyautoclean = T)
+# 
+# stream_data_pull3 <- TADA_BigDataRetrieval(startDate = '2019-10-01',
+#                                            endDate = '2020-09-30',
+#                                            siteType = 'Stream',
+#                                            statecode = 'AK',
+#                                            applyautoclean = T)
+# 
+# stream_data_pull4 <- TADA_BigDataRetrieval(startDate = '2020-10-01',
+#                                            endDate = '2021-09-30',
+#                                            siteType = 'Stream',
+#                                            statecode = 'AK',
+#                                            applyautoclean = T)
+# 
+# stream_data_pull5 <- TADA_BigDataRetrieval(startDate = '2021-10-01',
+#                                            endDate = '2022-09-30',
+#                                            siteType = 'Stream',
+#                                            statecode = 'AK',
+#                                            applyautoclean = T)
+# 
+# stream_data_pull6 <- TADA_BigDataRetrieval(startDate = '2022-10-01',
+#                                            endDate = '2023-09-30',
+#                                            siteType = 'Stream',
+#                                            statecode = 'AK',
+#                                            applyautoclean = T)
+# 
+# stream_data_pull <- stream_data_pull1 %>%
+#   rbind(stream_data_pull2) %>%
+#   rbind(stream_data_pull3) %>%
+#   rbind(stream_data_pull4) %>%
+#   rbind(stream_data_pull5) %>%
+#   rbind(stream_data_pull6)
 
 ####Combine####
 # all <- aswu_data_pull %>% 
