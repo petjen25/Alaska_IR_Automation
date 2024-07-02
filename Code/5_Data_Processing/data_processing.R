@@ -17,7 +17,7 @@
 #9. 'cb_2018_us_state_500k.shp' US States shapefile
 
 ####Set Up####
-library(TADA) # check for latest updates (https://github.com/USEPA/TADA)!
+library(EPATADA) # check for latest updates (https://github.com/USEPA/EPATADA)!
 library(tidyverse)
 library(leaflet)
 library(scales)
