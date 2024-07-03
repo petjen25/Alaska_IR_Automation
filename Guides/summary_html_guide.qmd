@@ -52,16 +52,16 @@ library(stringr)
 
 This code has specific exterior files that are required for it to run. The inputs are listed below. Most input files are loaded at the beginning of the script, except for the shapefiles which are loaded within the for loop.
 
-| File Name                               | Purpose                                                      | Source            |
-|-----------------------------------------|--------------------------------------------------------------|-------------------|
-| categorized_simplified_aus_20240621.csv | Provides necessary AU metadata and results                   | categorize_AU.R   |
-| AK_WQS_Crosswalk_20240507.csv           | Water quality standards for each constituent/use combination | AKDEC             |
-| WQ_data_trimmed_long_withAU20240509.csv | Finalized, individual samples for analysis and visualization | data_processing.R |
-| ML_AU_Crosswalk.csv                     | AU and Monitoring Location crosswalk                         | AKDEC             |
-| lakes.shp                               | Lake AU shapefiles                                           | AKDEC             |
-| rivers.shp                              | River AU shapefiles                                          | AKDEC             |
-| marine.shp                              | Marine AU shapefiles                                         | AKDEC             |
-| beaches.shp                             | Beach AU shapefiles                                          | AKDEC             |
+| File Name                                   | Purpose                                                      | Source            |
+|----------------------|----------------------------------|----------------|
+| categorized_simplified_aus\[YYYYMMDD\].csv  | Provides necessary AU metadata and results                   | categorize_AU.R   |
+| AK_WQS_Crosswalk\_\[YYYYMMDD\].csv          | Water quality standards for each constituent/use combination | AKDEC             |
+| WQ_data_trimmed_long_withAU\[YYYYMMDD\].csv | Finalized, individual samples for analysis and visualization | data_processing.R |
+| ML_AU_Crosswalk.csv                         | AU and Monitoring Location crosswalk                         | AKDEC             |
+| lakes.shp                                   | Lake AU shapefiles                                           | AKDEC             |
+| rivers.shp                                  | River AU shapefiles                                          | AKDEC             |
+| marine.shp                                  | Marine AU shapefiles                                         | AKDEC             |
+| beaches.shp                                 | Beach AU shapefiles                                          | AKDEC             |
 
 ## Identify AUs for Loop
 
@@ -168,7 +168,7 @@ for (au_loop in unique_AU$AUID_ATTNS){  # for each unique episode
 
 ## Formatting the HTML File
 
-The actual content of the html file is created and formatted within the *summary_html_template.Rmd* file. An RMarkdown file (Rmd) can be viewed in either the 'Source' or 'Visual' form. For this guide, only code snippets will be shown, so the viewing form does not matter when following along. The general document formatting (font and background color) is defined by this CSS code snippet at the beginning:
+The actual content of the html file is created and formatted within the *summary_html_template.Rmd* file. An RMarkdown file (Rmd) can be viewed in either the 'Source' or 'Visual' form. For this guide, only code snippets will be shown, so the viewing form does not matter when following along. The general document formatting (font and background color) is defined by this CSS code snippet at the beginning, which correspond to the Alaska DEC branding guidelines:
 
 ```{css}
 h1 {color:White; background-color:#253B64; text-align: center;}
@@ -176,7 +176,7 @@ h3 {color:#253B64; font-weight: bold;}
 body {background-color: #F7F5F2; font-family: "Open Sans", Arial, sans-serif;}
 ```
 
-Any generic text (i.e. section description, table definitions) can be changed intuitively when in the 'Visual' form. The Alaska DEC logo can also be changed if needed. In order to change the link associated with the logo, select the image and click on the '...'. This opens the following pop-up where you can change the link:
+Any generic text (i.e. section description, table definitions) can be changed intuitively when in the 'Visual' form. The Alaska DEC logo can also be changed if needed, but must be stored in the 'www' folder. In order to change the link associated with the logo, select the image and click on the '...'. This opens the following pop-up where you can change the link:
 
 ![](images/clipboard-1405890897.png){width="254"}
 
@@ -222,7 +222,7 @@ The '<br>' between sections creates line breaks using html code.
 
 ## AU Map with Monitoring Locations
 
-The AU map is created using the *leaflet* package which creates an interactive map where the user can zoom and move around the map. The relevant Monitoring Location sites were pulled within the loop from the Create HTMLs with Loop section and originated in the ML_AU_Crosswalk csv input. The AU and Monitoring Location shapefiles are transformed to the EPSG: 4326 (WGS 84) code just to ensure that any vector inputs are within the same CRS before mapping. The color palette for the monitoring locations within the map is defined as 'mako' from the *viridis* package.
+The AU map is created using the *leaflet* package which creates an interactive map where the user can zoom and move around the map. The relevant Monitoring Location sites were pulled within the loop from the Create HTMLs with Loop section and originated in the ML_AU_Crosswalk csv input. The AU and Monitoring Location shapefiles are transformed to the EPSG: 4326 (WGS 84) code just to ensure that all geospatial layers are in the same coordinate system before mapping. The color palette for the monitoring locations within the map is defined as 'mako' from the *viridis* package.
 
 ```{r}
 #| output: false
