@@ -15,6 +15,7 @@
 #7. 'marine.shp' Marine AU shapefile
 #8. 'rivers.shp' Rivers AU shapefile (must be provided by user due to size limits on GitHub (05/22/2024; BenB))
 #9. 'cb_2018_us_state_500k.shp' US States shapefile
+#10. 'AK_WQS_Crosswalk_20240507.csv' water quality standards table
 
 ####Set Up####
 library(EPATADA) # check for latest updates (https://github.com/USEPA/EPATADA)!
