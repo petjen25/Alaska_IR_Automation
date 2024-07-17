@@ -90,7 +90,7 @@ data_5b <- TADA_FlagBelowThreshold(data_5a, clean = F)
 # See comment from Crstina Mullin above (Step 3)
 
 #####6. Find continuous data#####
-# This function adds the TADA.AggregatedContinuousData.Flag to the dataframe.
+# This function adds the TADA.ContinuousData.Flag to the dataframe.
 data_6 <- TADA_FlagContinuousData(data_5b, clean = F, flaggedonly = FALSE)
 
 #####7. Check method flags#####
