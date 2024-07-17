@@ -10,7 +10,7 @@ library(readxl)
 library(sf)
 
 #Load in categorized AU information
-categorize_output <- read_csv('Output/results/categorized_aus_20240515.csv')
+categorize_output <- read_csv('Output/results/categorized_aus_20240703.csv')
 
 #Select just the needed columns
 table_cat <- categorize_output %>% 
@@ -67,4 +67,4 @@ final_summary <- data_all_AUs %>%
          Name_AU, Shape_4_Summary, AU_Shape_Unit) %>%
   unique() 
 
-write_csv(final_summary, 'Output/results/summary_au_tables_20240523.csv')
+write_csv(final_summary, 'Output/results/summary_au_tables_20240717.csv')
