@@ -40,7 +40,7 @@ library(sf)
 This code has specific exterior files that are required for it to run. The inputs are listed below. Note, only the outputs from *data_pull.R* are loaded at the beginning of the script, whereas all others are loaded when needed farther into the script.
 
 | File Name                                              | Purpose                                      | Source                   |
-|-----------------------------|-------------------------|------------------|
+|--------------------------------------------------------|----------------------------------------------|--------------------------|
 | .CSV outputs (varies by site types from *data_pull.R*) | WQ data to be processed.                     | WQP (via *data_pull.R*). |
 | WQ_Column_Manager.csv                                  | Quickly subset WQ dataset fields.            | Tetra Tech               |
 | ML_AU_Crosswalk.csv                                    | Crosswalk Monitoring Locations with AUs/     | AK DEC                   |

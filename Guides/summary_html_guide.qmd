@@ -53,7 +53,7 @@ library(stringr)
 This code has specific exterior files that are required for it to run. The inputs are listed below. Most input files are loaded at the beginning of the script, except for the shapefiles which are loaded within the for loop.
 
 | File Name                                   | Purpose                                                      | Source            |
-|----------------------|----------------------------------|----------------|
+|---------------------------------------------|--------------------------------------------------------------|-------------------|
 | categorized_simplified_aus\[YYYYMMDD\].csv  | Provides necessary AU metadata and results                   | categorize_AU.R   |
 | AK_WQS_Crosswalk\_\[YYYYMMDD\].csv          | Water quality standards for each constituent/use combination | AKDEC             |
 | WQ_data_trimmed_long_withAU\[YYYYMMDD\].csv | Finalized, individual samples for analysis and visualization | data_processing.R |
