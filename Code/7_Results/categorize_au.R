@@ -6,7 +6,7 @@
 library(tidyverse)
 
 ####Load in data####
-input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240621.csv')
+input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240703.csv')
 
 options <- input_analysis %>%
   select(Exceed) %>%
@@ -69,8 +69,8 @@ categorize_AU_uses <- function(input_analysis, simplify_standards){
 output <- categorize_AU_uses(input_analysis, simplify_standards = F)
 output_simp <- categorize_AU_uses(input_analysis, simplify_standards = T)
 
-write_csv(output, 'Output/results/categorized_aus_20240621.csv')
-write_csv(output_simp, 'Output/results/categorized_simplified_aus_20240621.csv')
+write_csv(output, 'Output/results/categorized_aus_20240703.csv')
+write_csv(output_simp, 'Output/results/categorized_simplified_aus_20240703.csv')
 
 
 
