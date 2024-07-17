@@ -11,11 +11,12 @@ library(rmarkdown)
 
 
 ####Read in data####
-output_df <- read_csv(file = "Output/results/categorized_simplified_aus_20240621.csv")  # path to file
+output_df <- read_csv(file = "Output/results/categorized_simplified_aus_20240703.csv")  # path to file
 wqs_table <- read_csv(file = 'Data/data_analysis/AK_WQS_Crosswalk_20240507.csv')
-output_samples <- read_csv(file = 'Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
+output_samples <- read_csv(file = 'Output/data_processing/WQ_data_trimmed_long_withAU20240702.csv')
 ml_au_crosswalk <- read_csv(file = 'Data/data_processing/ML_AU_Crosswalk.csv')
-
+au_shape_crs <-st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/marine.shp') %>%
+  st_crs()
 
 ####Find Number of AUs for loop####
 unique_AU <- output_df %>%
