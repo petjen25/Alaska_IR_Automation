@@ -8,15 +8,15 @@ library(tidyverse)
 set.seed(42)
 
 #Load in data
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240702.csv')
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240702.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240507.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240730.csv')
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240730.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240514.csv')
 
 
 #Create reference site table for analysis
 #Reference table is blank for example
-reference_sites <- tibble(AUID_ATTNS = NA,
-                          ReferenceSites = NA)
+reference_sites <- tibble(AUID_ATTNS = "AK_R_2050512_016_003",
+                          ReferenceSites = "LS-Ref")
 
 #Remove insufficient data combinations to lessen mdf analysis
 filterCat3samples <- function(data_samples, data_sufficiency) {
@@ -391,7 +391,7 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
   
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
+    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description','Waterbody Type',
                                           'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
     dplyr::relocate(Exceed, .after = last_col()) %>%

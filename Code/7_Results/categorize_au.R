@@ -6,7 +6,7 @@
 library(tidyverse)
 
 ####Load in data####
-input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240703.csv')
+input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240806.csv')
 
 options <- input_analysis %>%
   select(Exceed) %>%
@@ -52,7 +52,7 @@ categorize_AU_uses <- function(input_analysis, simplify_standards){
   
   
   calc_overall <- mid_step %>%
-    dplyr::group_by(AUID_ATTNS, Use) %>%
+    dplyr::group_by(AUID_ATTNS, Use, `Use Description`) %>%
     dplyr::mutate(cat_5_present = length(Individual_Category[Individual_Category=='5']),
            cat_2_present = length(Individual_Category[Individual_Category=='2']),
            Use_Category = case_when(cat_5_present > 0 ~ '5',
@@ -69,8 +69,8 @@ categorize_AU_uses <- function(input_analysis, simplify_standards){
 output <- categorize_AU_uses(input_analysis, simplify_standards = F)
 output_simp <- categorize_AU_uses(input_analysis, simplify_standards = T)
 
-write_csv(output, 'Output/results/categorized_aus_20240703.csv')
-write_csv(output_simp, 'Output/results/categorized_simplified_aus_20240703.csv')
+write_csv(output, 'Output/results/categorized_aus_20240806.csv')
+write_csv(output_simp, 'Output/results/categorized_simplified_aus_20240806.csv')
 
 
 
@@ -94,3 +94,4 @@ categorize_AU <- function(input_categorized_uses){
 
 output_overall <- categorize_AU(output)
 output_simp_overall <- categorize_AU(output_simp)
+

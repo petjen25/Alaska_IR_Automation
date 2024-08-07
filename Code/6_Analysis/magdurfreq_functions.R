@@ -5,15 +5,16 @@
 #Created by Hannah Ferriby
 
 ####Set up####
+
 library(tidyverse)
 library(sf)
 library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240702.csv')
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240702.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240507.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240806.csv')
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240806.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240514.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
 
@@ -56,7 +57,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     dplyr::filter(!(Constituent == 'Pentachloro-phenol' & `Waterbody Type` == 'Freshwater')) %>%
     dplyr::filter(Constituent != 'Turbidity') %>%
     dplyr::filter(!(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
-                                'Nickel', 'Silver', 'Zinc') & Use == 'Aquatic Life' &
+                                'Nickel', 'Silver', 'Zinc') & Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE' & #dec change: use = changed from aquatic life
                       `Waterbody Type` == 'Freshwater')) %>%
     dplyr::select(Directionality, Frequency, Duration, Details) %>%
     unique()
@@ -104,7 +105,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
       dplyr::filter(Constituent != 'Pentachloro-phenol') %>%
       dplyr::filter(Constituent != 'Turbidity') %>%
       dplyr::filter(!(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
-                                         'Nickel', 'Silver', 'Zinc') & Use == 'Aquatic Life'))
+                                         'Nickel', 'Silver', 'Zinc') & Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE')) #dec change: use = changed from aquatic life
     
     #If no relevant samples, skip AU
     if(nrow(my_data_magfreqdur)==0){
@@ -691,7 +692,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   #these constituents come back in the hardness, pH, and turbidity specific functions
   relevant_suff <- input_sufficiency %>%
     dplyr::filter(!(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
-                                                     'NICKEL', 'SILVER', 'ZINC') & Use == 'Aquatic Life' &
+                                                     'NICKEL', 'SILVER', 'ZINC') & Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE' & #dec change: use = changed from aquatic life
                       `Waterbody Type` == 'Freshwater')) %>%
     dplyr::filter(TADA.CharacteristicName != 'AMMONIA') %>%
     dplyr::filter(TADA.CharacteristicName != 'PENTACHLORO-PHENOL') %>%
@@ -699,7 +700,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
+    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
                                         'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
     dplyr::relocate(Exceed, .after = last_col())
@@ -719,7 +720,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
   unique_methods <- wqs_crosswalk %>%
     dplyr::filter(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
                               'Nickel', 'Silver', 'Zinc')) %>% 
-    dplyr::filter(Use == 'Aquatic Life') %>%
+    dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE') %>% #dec change: use = changed from aquatic life
     dplyr::filter(`Waterbody Type` == 'Freshwater') %>%
     dplyr::filter(is.na(Magnitude_Numeric)) %>%
     dplyr::select(Directionality, Frequency, Duration, Details) %>%
@@ -736,7 +737,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     relevant_suff <- input_sufficiency %>%
       dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
                                                    'NICKEL', 'SILVER', 'ZINC')) %>% 
-      dplyr::filter(Use == 'Aquatic Life') %>%
+      dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE') %>% #dec change: use = changed from aquatic life
       dplyr::mutate(Exceed = NA)
     
     return(relevant_suff)
@@ -780,7 +781,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
       dplyr::select(!c(Magnitude_Text)) %>%
       dplyr::filter(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
                                        'Nickel', 'Silver', 'Zinc')) %>% 
-      dplyr::filter(Use == 'Aquatic Life')
+      dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE') #dec change: use = changed from aquatic life
     
     #If no relevant samples, skip AU
     if(nrow(my_data_magfreqdur)==0){
@@ -1042,12 +1043,12 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
   relevant_suff <- input_sufficiency %>%
     dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
                                      'NICKEL', 'SILVER', 'ZINC')) %>% 
-    dplyr::filter(Use == 'Aquatic Life') %>%
+    dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE') %>%
     dplyr::filter(`Waterbody Type` == 'Freshwater')
   
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
+    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #dec added Use Description
                                         'Fraction', 'Type'),
               relationship = "many-to-many") %>%
     dplyr::relocate(Exceed, .after = last_col())
@@ -1553,7 +1554,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
   
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Waterbody Type',
+    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added use description
                                           'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
     dplyr::relocate(Exceed, .after = last_col())
@@ -1565,15 +1566,16 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
 output_pH <-  MagDurFreq_pHDependent(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency)
 
 
-combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turbidity_output) {#Add turbidity
+combine_MagDurFreq <- function(standard_output, hardness_output, pH_output){#, turbidity_output) #Add turbidity
   output <- standard_output %>%
     rbind(hardness_output) %>%
     rbind(pH_output) %>%
-    rbind(turbidity_output)
+    #rbind(turbidity_output)
   
   return(output)
 }
 
-final_output <- combine_MagDurFreq(output, output_hardness, output_pH, output_turbidity)
+final_output <- combine_MagDurFreq(output, output_hardness, output_pH)#, output_turbidity)
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240703.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240806.csv')
+

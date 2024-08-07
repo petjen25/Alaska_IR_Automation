@@ -14,9 +14,9 @@ library(readxl)
 ####Load Data####
 previous_assessment_attains <- read_xlsx('Data/data_analysis/ATTAINS_AK_Asessments_DataDownload_20240126.xlsx', sheet = 2)
 
-samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
+samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240806.csv')
 
-categorized_aus <- read_csv('Output/results/categorized_aus_20240513.csv') %>%
+categorized_aus <- read_csv('Output/results/categorized_aus_20240806.csv') %>%
   filter(!is.na(Individual_Category))
 
 
@@ -52,29 +52,10 @@ monitoring_dates <- samples %>%
 
 uses_part1 <- categorized_aus %>%
   filter(!is.na(Use)) %>%
-  #Following mutate code from Jenny Petitt
-  mutate(ATTAINS_USE = 
-           case_when(Use == "Human Health" & `Use Description` == "Water and Aquatic Organisms" ~ "WATER SUPPLY",
-                     Use == "Human Health" & `Use Description` == "Water & Aquatic Organisms" ~ "WATER SUPPLY",
-                     Use == "Water Supply" ~ "WATER SUPPLY",    
-                     `Use Description` == "Harvesting" | `Use Description` == "Marine Harvesting" ~ "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR OTHER RAW AQUATIC LIFE",
-                     `Use Description` == "Growth and propagation" | Use == "Aquatic Life" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",
-                     `Use Description` == "Aquatic Organisms Only" | `Use Description` == "Aquatic Organisms only" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",  
-                     Use == "Primary Contact Recreation" | Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "WATER RECREATION"),
-         ATTAINS_DESCRIPTION = 
-           case_when(`Use Description` == "Water & Aquatic Organisms" | `Use Description` == "Water and Aquatic Organisms" |
-                       `Use Description` == "Drinking" | `Use Description` == "Drinking Water" | `Use Description` == "Drinking water" ~ "DRINKING, CULINARY, AND FOOD PROCESSING",
-                     `Use Description` == "Irrigation " |`Use Description` == "Agriculture" | `Use Description` == "Irrigation" | `Use Description` == "Irrigation Water" | 
-                       `Use Description` == "Stock water" | `Use Description` == "Stock Water" | `Use Description` == "Stockwater" ~ "AGRICULTURE, INCLUDING IRRIGATION AND STOCK WATERING",
-                     Use == "Primary Contact Recreation" ~ "CONTACT RECREATION",
-                     Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "SECONDARY RECREATION",
-                     `Use Description` == "Seafood Processing" ~ "SEAFOOD PROCESSING",
-                     `Use Description` == "Industrial" ~ "INDUSTRIAL",
-                     `Use Description` == "Aquaculture" ~ "AQUACULTURE"),
-         `Waterbody Type` = toupper(`Waterbody Type`), 
-         PARAM_USE_NAME = paste(`Waterbody Type`, ATTAINS_USE, ATTAINS_DESCRIPTION, sep = ' / '),
-         PARAM_USE_NAME = gsub(" / NA", "", PARAM_USE_NAME)) %>%
-  #End of Jenny code
+  rename(ATTAINS_USE = Use, ATTAINS_DESCRIPTION = `Use Description`) %>%
+  mutate(PARAM_USE_NAME = paste(`Waterbody Type`, ATTAINS_USE, ATTAINS_DESCRIPTION, sep = ' / '),
+         PARAM_USE_NAME = gsub(" / NA", "", PARAM_USE_NAME),
+         `Waterbody Type` = toupper(`Waterbody Type`)) %>%
   select(AUID_ATTNS, AUID_ATTNS, PARAM_USE_NAME, Use_Category) %>%
   left_join(monitoring_dates, by = 'AUID_ATTNS') %>%
   unique() %>%
@@ -118,60 +99,18 @@ uses_part2 <- uses_part1 %>%
          USE_MONITORING_END, USE_ASMT_DATE, USE_ASSESSOR_NAME, USE_COMMENT,
          USE_STATE_IR_CAT, USE_ORG_QUALIFIER_FLAG)
 
-##Following code for splitting uses_part2 for export
 
-uses_4_export <- uses_part2 %>%
-  group_by(ASSESSMENT_UNIT_ID) %>%
-  mutate(Cat_5s = sum(ifelse(USE_ATTAINMENT_CODE == 'N', 1, 0)),
-         Cat_2s = sum(ifelse(USE_ATTAINMENT_CODE == 'F', 1, 0)),
-         Cat_3s = sum(ifelse(USE_ATTAINMENT_CODE == 'I', 1, 0)))
-
-uses_cat2_export <- uses_4_export %>%
-  filter(Cat_5s == 0) %>%
-  filter(Cat_2s >= 1)
-
-uses_cat5_export <- uses_4_export %>%
-  filter(Cat_5s >= 1)
-
-uses_cat3_export <- uses_4_export %>%
-  filter(Cat_5s == 0) %>%
-  filter(Cat_2s == 0)
- 
-write_csv(uses_cat2_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses_Cat2.csv',
+write_csv(uses_part2, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses.csv',
           na="")
 
-write_csv(uses_cat5_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses_Cat5.csv',
-          na="")
-
-write_csv(uses_cat3_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Uses_Cat3.csv',
-          na="")
 
 ####Parameters####
 parameters <- categorized_aus %>%
   filter(!is.na(Use)) %>%
-  #Following mutate code from Jenny Petitt
-  mutate(ATTAINS_USE = 
-           case_when(Use == "Human Health" & `Use Description` == "Water and Aquatic Organisms" ~ "WATER SUPPLY",
-                     Use == "Human Health" & `Use Description` == "Water & Aquatic Organisms" ~ "WATER SUPPLY",
-                     Use == "Water Supply" ~ "WATER SUPPLY",    
-                     `Use Description` == "Harvesting" | `Use Description` == "Marine Harvesting" ~ "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR OTHER RAW AQUATIC LIFE",
-                     `Use Description` == "Growth and propagation" | Use == "Aquatic Life" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",
-                     `Use Description` == "Aquatic Organisms Only" | `Use Description` == "Aquatic Organisms only" ~ "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE",  
-                     Use == "Primary Contact Recreation" | Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "WATER RECREATION"),
-         ATTAINS_DESCRIPTION = 
-           case_when(`Use Description` == "Water & Aquatic Organisms" | `Use Description` == "Water and Aquatic Organisms" |
-                       `Use Description` == "Drinking" | `Use Description` == "Drinking Water" | `Use Description` == "Drinking water" ~ "DRINKING, CULINARY, AND FOOD PROCESSING",
-                     `Use Description` == "Irrigation " |`Use Description` == "Agriculture" | `Use Description` == "Irrigation" | `Use Description` == "Irrigation Water" | 
-                       `Use Description` == "Stock water" | `Use Description` == "Stock Water" | `Use Description` == "Stockwater" ~ "AGRICULTURE, INCLUDING IRRIGATION AND STOCK WATERING",
-                     Use == "Primary Contact Recreation" ~ "CONTACT RECREATION",
-                     Use == "Secondary Contact Recreation" | Use == "Secondary Contact recreation" ~ "SECONDARY RECREATION",
-                     `Use Description` == "Seafood Processing" ~ "SEAFOOD PROCESSING",
-                     `Use Description` == "Industrial" ~ "INDUSTRIAL",
-                     `Use Description` == "Aquaculture" ~ "AQUACULTURE"),
-         `Waterbody Type` = toupper(`Waterbody Type`), 
-         PARAM_USE_NAME = paste(`Waterbody Type`, ATTAINS_USE, ATTAINS_DESCRIPTION, sep = ' / '),
+  rename(ATTAINS_USE = Use, ATTAINS_DESCRIPTION = `Use Description`) %>%
+  mutate(`Waterbody Type` = toupper(`Waterbody Type`)) %>%
+  mutate(PARAM_USE_NAME = paste(`Waterbody Type`, ATTAINS_USE, ATTAINS_DESCRIPTION, sep = ' / '),
          PARAM_USE_NAME = gsub(" / NA", "", PARAM_USE_NAME)) %>%
-  #End of Jenny code
   select(AUID_ATTNS, TADA.CharacteristicName, PARAM_USE_NAME, Individual_Category) %>%
   group_by(AUID_ATTNS, TADA.CharacteristicName) %>%
   #Find param status for the parameter/AU combo as a group
@@ -243,29 +182,9 @@ parameters <- categorized_aus %>%
          PARAM_DELISTING_COMMENT, PARAM_DELISTING_AGENCY)
          
 
-##Following code for splitting parameters for export
-param_4_export <- parameters %>%
-  group_by(ASSESSMENT_UNIT_ID) %>%
-  mutate(Cat_5s = sum(ifelse(PARAM_STATUS_NAME == 'Cause', 1, 0)),
-         Cat_2s = sum(ifelse(PARAM_STATUS_NAME == 'Meeting criteria', 1, 0)),
-         Cat_3s = sum(ifelse(PARAM_STATUS_NAME == 'Not enough information', 1, 0)))
-
-param_cat2_export <- param_4_export %>%
-  filter(Cat_5s == 0) %>%
-  filter(Cat_2s >= 1)
-
-param_cat5_export <- param_4_export %>%
-  filter(Cat_5s >= 1)
-
-param_cat3_export <- param_4_export %>%
-  filter(Cat_5s == 0) %>%
-  filter(Cat_2s == 0)
-
-write_csv(param_cat2_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters_Cat2.csv',
+write_csv(parameters, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters.csv',
           na="")
 
-write_csv(param_cat5_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters_Cat5.csv',
-          na="")
 
-write_csv(param_cat3_export, 'Output/results/ATTAINS/Assessment_Batch_Upload/Parameters_Cat3.csv',
-          na="")
+
+

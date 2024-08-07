@@ -91,11 +91,11 @@ data_5b <- TADA_FlagBelowThreshold(data_5a, clean = F)
 
 #####6. Find continuous data#####
 # This function adds the TADA.ContinuousData.Flag to the dataframe.
-data_6 <- TADA_FlagContinuousData(data_5b, clean = F, flaggedonly = FALSE)
+#data_6 <- TADA_FlagContinuousData(data_5b, clean = F, flaggedonly = FALSE)
 
 #####7. Check method flags#####
 # This function adds the TADA.AnalyticalMethod.Flag to the dataframe.
-data_7 <- TADA_FlagMethod(data_6, clean = F)
+data_7 <- TADA_FlagMethod(data_5b, clean = F)
 
 #####8. Find potential duplicates#####
 #Buffer distance set to 50 m, can change
@@ -204,7 +204,7 @@ data_12 <- TADA_SimpleCensoredMethods(data_11b,
 
 # Eliminate any columns with all NA values
 data_13 <- data_12 %>% 
-  select(where(~sum(!is.na(.x)) > 0))
+  select(where(~sum(!is.na(.x)) > 0)) 
 
 #Export data with flags
 write_csv(data_13, file = file.path('Output/data_processing'
@@ -324,7 +324,7 @@ data_16 <- data_15 %>%
 # censored data are retained in this dataset.
 
 #Units check - compare sample units to WQS units
-wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240507.csv') %>%
+wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240514.csv') %>% #dec change
   select(TADA.Constituent, Units) %>%
   unique() %>%
   na.omit() %>%
@@ -398,7 +398,11 @@ data_16c <- data_16b %>%
                                                         TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS N' &
                                                           Units == 'UG/L'~
                                                           'UG/L',
-                                                        T ~ TADA.ResultMeasure.MeasureUnitCode)) 
+                                                        is.na(TADA.ResultMeasure.MeasureUnitCode) & # dec added 7-30-24
+                                                          Units == 'SU'~#dec added 7-30-24
+                                                          'SU',#dec added 7-30-24
+                                                        T ~ TADA.ResultMeasure.MeasureUnitCode)) #dec added 7-30-24
+
 
 #Find which units were not fixable by simple conversion
 #Requires manual intervention
@@ -427,7 +431,7 @@ rm(data_15, data_16, data_16b, data_16c)
 
 # For loop to plot distribution of TADA.CharacteristicName
 # CAUTION: This loop takes about a minute to run.
-Unique_CharName <- unique(data_16$TADA.CharacteristicName)
+Unique_CharName <- unique(data_16d$TADA.CharacteristicName)
 plot_list <- list()
 counter <- 0
 myPal <- c("Lake, Reservoir, Impoundment" = "#7fc97f"
@@ -438,7 +442,7 @@ myPal <- c("Lake, Reservoir, Impoundment" = "#7fc97f"
            , "Stream" = "#f0027f"
            , "River/Stream" = "#bf5b17")
 
-data_4loop <- data_16 %>% 
+data_4loop <- data_16d %>% #DEC change to 16d from 16. 16 removed from environment above##############
   filter(!is.na(TADA.ResultMeasureValue))%>% # remove NA values
   select(MonitoringLocationTypeName, TADA.CharacteristicName
          , TADA.ResultMeasureValue, TADA.ResultMeasure.MeasureUnitCode) %>% 
@@ -674,7 +678,7 @@ ggplot() +
 ### spatial join
 beach_SpatJoin <- sf::st_join(beach_pts, beach_shp, join = st_nearest_feature) %>% # join points and AUs
   select(MonitoringLocationIdentifier, MonitoringLocationName
-         , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10) # trim unneccessary columns
+         , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10 =HUC10_ID) # trim unneccessary columns
 
 ### determine distance (m) between points and nearest feature
 near_feat <- sf::st_nearest_feature(beach_pts, beach_shp)
@@ -998,10 +1002,9 @@ rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 #### Data sufficiency ####
 ##### 22. AU/pollutant data sufficiency #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20240117.csv")
+df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20240514.csv") #DEC edit: updated input (ATTAINS uses and drinking water chloride fraction dissolved)
 df_data_sufficiency2 <- df_data_sufficiency %>% 
-  select(-c(`Constituent Group`, Constituent, `Use Description`
-            , `Other Requirements`, `Listing methodology`, Notes)) %>% 
+  select(-c(`Constituent Group`, Constituent, `Other Requirements`, `Listing methodology`, Notes)) %>% #dec edit: removed Use_Description from select(-c())
   mutate(TADA.Fraction = toupper(Fraction)) %>% 
   select(`Waterbody Type`, TADA.Constituent, Fraction, TADA.Fraction, everything())
 
@@ -1226,16 +1229,16 @@ for(i in Unique_AUIDs){
   
   # make hardness flag if appropriate (ALU and specific constituents)
   results2 <- results1 %>% 
-    mutate(Hardness_Dependency = case_when((Use != "Aquatic Life"
+    mutate(Hardness_Dependency = case_when((Use != "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE" #dec edit
                                             | is.na(Use)
                                             |!(TADA.CharacteristicName %in% hardness_dependents))
                                                 ~ "Hardness dependency not applicable."
                                            , (hardness_check == "Yes"
-                                              & Use == "Aquatic Life"
+                                              & Use == "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE" #dec edit
                                               & TADA.CharacteristicName %in% hardness_dependents)
                                                 ~ "Hardness data available to assess data sufficiency."
                                            , (hardness_check == "No"
-                                              & Use == "Aquatic Life"
+                                              & Use == "GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE" #dec edit
                                               & TADA.CharacteristicName %in% hardness_dependents)
                                                 ~ "Hardness data not available to assess data sufficiency."))
   
@@ -1282,3 +1285,4 @@ write_csv(df_AU_missing_sufficiency
           , file = file.path('Output/data_processing'
                              , paste0("WQ_metadata_trimmed_MISSING_data_sufficiency_"
                                       ,myDate, ".csv")), na = "")
+
