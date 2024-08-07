@@ -442,7 +442,7 @@ myPal <- c("Lake, Reservoir, Impoundment" = "#7fc97f"
            , "Stream" = "#f0027f"
            , "River/Stream" = "#bf5b17")
 
-data_4loop <- data_16d %>% #DEC change to 16d from 16. 16 removed from environment above##############
+data_4loop <- data_16d %>% #DEC change to 16d from 16. 16 removed from environment above#
   filter(!is.na(TADA.ResultMeasureValue))%>% # remove NA values
   select(MonitoringLocationTypeName, TADA.CharacteristicName
          , TADA.ResultMeasureValue, TADA.ResultMeasure.MeasureUnitCode) %>% 
