@@ -415,7 +415,7 @@ print('Check samples_table_units_not_matching variable for any sample units that
 
 #Grab only data whose units match
 data_16d <- data_16c %>%
-  filter(TADA.ResultMeasure.MeasureUnitCode == Units)
+  filter(TADA.ResultMeasure.MeasureUnitCode == Units | is.na(Units)) #DEC change
 
 #Export data summary
 write_csv(data_16d, file = file.path('Output/data_processing'
@@ -518,7 +518,7 @@ data_18 <- data_16d %>%
 #### Match data to AUs ####
 #####19. ML to AUs #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk.CSV")
+df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk20240809.CSV")
 df_ML_AU_Crosswalk <- df_ML_AU_Crosswalk %>% 
   select(-c(OrganizationIdentifier)) %>% # removed to avoid duplication in join
   dplyr::rename(AU_Type = Type)
@@ -566,7 +566,8 @@ data_19_long <- left_join(data_16d, df_ML_AU_Crosswalk
                                               | TADA.CharacteristicName == "HARDNESS, CARBONATE"
                                               | TADA.CharacteristicName ==  "HARDNESS"
                                               | TADA.CharacteristicName ==  "TOTAL HARDNESS") ~ "HARDNESS"
-                                             , TRUE ~ TADA.CharacteristicName))
+                                             , TRUE ~ TADA.CharacteristicName)) %>% #added by DEC
+  filter(!is.na(TADA.ResultMeasureValue))
 
 
 #Export data summary
@@ -964,7 +965,9 @@ rm(data_18, df_ML, df_ML_AU_Crosswalk, map, missing_ML, missing_ML_map
 #### Organize data by AUs####
 ##### 21. AU data summary #####
 data_21 <- data_19 %>% 
-  filter(!is.na(AUID_ATTNS))
+  filter(!is.na(AUID_ATTNS)) %>% #added by DEC
+  filter(!is.na(TADA.ResultMeasureValue))
+
 
 # Number of monitoring locations per AU
 df_AU_summary1 <- data_21 %>% 
