@@ -12,8 +12,8 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240806.csv')
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240806.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240814.csv') 
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240814.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240514.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
@@ -58,8 +58,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     dplyr::filter(Constituent != 'Turbidity') %>%
     dplyr::filter(!(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
                                 'Nickel', 'Silver', 'Zinc') & Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE' & #dec change: use = changed from aquatic life
-                      `Waterbody Type` == 'Freshwater')) %>%
-    dplyr::select(Directionality, Frequency, Duration, Details) %>%
+                      `Waterbody Type` == 'Freshwater')) %>% #DEC change
+    dplyr::select(Directionality, Frequency, Duration, Details) %>% 
     unique()
   
   # write_csv(unique_methods, 'Output/data_analysis/wqs_unique_methods.csv')
@@ -105,7 +105,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
       dplyr::filter(Constituent != 'Pentachloro-phenol') %>%
       dplyr::filter(Constituent != 'Turbidity') %>%
       dplyr::filter(!(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
-                                         'Nickel', 'Silver', 'Zinc') & Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE')) #dec change: use = changed from aquatic life
+                                         'Nickel', 'Silver', 'Zinc') & 
+                        Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE' & #dec change: use = changed from aquatic life
+                        `Waterbody Type` == 'Freshwater' & #DEC change
+                        Type %in% c('Acute', 'Chronic'))) #DEC change
     
     #If no relevant samples, skip AU
     if(nrow(my_data_magfreqdur)==0){
@@ -619,7 +622,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
         } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
-                filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == F){
+                filter_by$Duration == '1-hour average' & is.na(filter_by$Magnitude_Numeric) == F){ 
           #Method #23 ----
           #Maximum, >=2 exceedances and >5% exceedance frequency in 3 year period, 1 hour average, magnitude listed
         
@@ -654,7 +657,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '1 in most recent 3 years' &
-                filter_by$Duration == '24-hour average'){
+                filter_by$Duration == '24-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == F){ #DEC change
         #Method #24 ----
         #Maximum, 1 in most recent 3 years, 24 hour average
         
@@ -663,7 +666,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue),
-                 bad_samp = ifelse(daily_mean >= magnitude, 1, 0)) 
+                 bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0)) #DEC change
         
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -693,7 +696,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   relevant_suff <- input_sufficiency %>%
     dplyr::filter(!(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
                                                      'NICKEL', 'SILVER', 'ZINC') & Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE' & #dec change: use = changed from aquatic life
-                      `Waterbody Type` == 'Freshwater')) %>%
+                      `Waterbody Type` == 'Freshwater' & Type %in% c('Acute', 'Chronic'))) %>% #DEC change
     dplyr::filter(TADA.CharacteristicName != 'AMMONIA') %>%
     dplyr::filter(TADA.CharacteristicName != 'PENTACHLORO-PHENOL') %>%
     dplyr::filter(TADA.CharacteristicName != 'TURBIDITY')
@@ -721,7 +724,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     dplyr::filter(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
                               'Nickel', 'Silver', 'Zinc')) %>% 
     dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE') %>% #dec change: use = changed from aquatic life
-    dplyr::filter(`Waterbody Type` == 'Freshwater') %>%
+    dplyr::filter(`Waterbody Type` == 'Freshwater') %>% 
     dplyr::filter(is.na(Magnitude_Numeric)) %>%
     dplyr::select(Directionality, Frequency, Duration, Details) %>%
     unique()
@@ -729,7 +732,8 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
   #Find just the required samples
   input_samples_filtered_relevant <- input_samples_filtered %>%
     dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
-                                          'NICKEL', 'SILVER', 'ZINC'))
+                                                  'NICKEL', 'SILVER', 'ZINC')) 
+  
   
   #Return message if no samples available
   if(nrow(input_samples_filtered_relevant) == 0) {
@@ -738,6 +742,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
       dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
                                                    'NICKEL', 'SILVER', 'ZINC')) %>% 
       dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE') %>% #dec change: use = changed from aquatic life
+      dplyr::filter(`Waterbody Type` == 'Freshwater') %>% #changed 8-13-24
       dplyr::mutate(Exceed = NA)
     
     return(relevant_suff)
@@ -781,8 +786,8 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
       dplyr::select(!c(Magnitude_Text)) %>%
       dplyr::filter(Constituent %in% c('Cadmium', 'Chromium (III)', 'Copper', 'Lead',
                                        'Nickel', 'Silver', 'Zinc')) %>% 
-      dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE') #dec change: use = changed from aquatic life
-    
+      dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE' & Type %in% c('Acute', 'Chronic')) %>% #dec change: use = changed from aquatic life, added acute chronic
+      dplyr::filter(`Waterbody Type` == 'Freshwater') #changed 8-13-24
     #If no relevant samples, skip AU
     if(nrow(my_data_magfreqdur)==0){
       next
@@ -1043,7 +1048,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
   relevant_suff <- input_sufficiency %>%
     dplyr::filter(TADA.CharacteristicName %in% c('CADMIUM', 'CHROMIUM', 'COPPER', 'LEAD',
                                      'NICKEL', 'SILVER', 'ZINC')) %>% 
-    dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE') %>%
+    dplyr::filter(Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE' & Type %in% c('Acute', 'Chronic')) %>% #DEC change
     dplyr::filter(`Waterbody Type` == 'Freshwater')
   
   data_suff_WQS <- df_AU_data_WQS %>%
@@ -1577,5 +1582,5 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output){#, t
 
 final_output <- combine_MagDurFreq(output, output_hardness, output_pH)#, output_turbidity)
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240806.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240814.csv')
 
