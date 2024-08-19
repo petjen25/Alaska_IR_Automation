@@ -62,6 +62,8 @@ final_summary <- data_all_AUs %>%
   mutate(overallStatus = case_when(Use_Category == 2 ~ 'Fully Supporting',
                                    Use_Category == 3 ~ 'Not Assessed',
                                    Use_Category == 5 ~ 'Not Supporting',
+                                   Use_Category == '4a' ~ 'Not Supporting',
+                                   Use_Category == '4b' ~ 'Not Supporting',
                                    T ~ NA)) %>% 
   select(AUID_ATTNS, `Waterbody Type`, Use, Use_Category, overallStatus, 
          Name_AU, Shape_4_Summary, AU_Shape_Unit) %>%
