@@ -45,7 +45,7 @@ output_df_au %>%
          n = n(),
          is_2 = sum(ifelse(Use_Category == 2, 1, 0)),
          is_3 = sum(ifelse(Use_Category == 3, 1, 0)),
-         is_5 = sum(ifelse(Use_Category == 5, 1, 0)),
+         is_5 = sum(ifelse(Use_Category == 5 | Use_Category == "4a", 1, 0)),
          #If n > 1, choose worse category
          new_Category = case_when(n > 1 & is_5 > 0 ~
                                     5,
@@ -171,6 +171,10 @@ output_df_au %>%
                                           'Not enough information',
                                         Individual_Category == 2 ~
                                           'Attaining',
+                                        Individual_Category == "4b" ~
+                                          'Attaining',
+                                        Individual_Category == "4a" ~
+                                          'Not Attaining',
                                         Individual_Category == 5 ~
                                           'Not attaining')) %>%
     select(
