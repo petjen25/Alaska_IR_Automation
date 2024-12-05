@@ -119,19 +119,32 @@ data_9 <- TADA_FindQCActivities(data_8b, clean = F)
 # This function adds the TADA.InvalidCoordinates.Flag to the dataframe.
 data_10 <- TADA_FlagCoordinates(data_9, clean_outsideUSA = 'no')
 
-#####11. Find any 'SUSPECT' samples#####
-# This function adds the TADA.MeasureQualifierCode.Flag to the dataframe.
-data_11a <- TADA_FlagMeasureQualifierCode(data_10, clean = F)
 
+#####11. Replace non-detects #####
+# This function adds the following columns to the dataframe:
+# TADA.CensoredMethod
+# TADA.CensoredData.Flag
+# NOTE: This function uses the method detection limit
+
+data_11 <- TADA_SimpleCensoredMethods(data_10, 
+                                      nd_method = 'multiplier',
+                                      nd_multiplier = 0.5)
+
+unique(data_11$TADA.MeasureQualifierCode.Flag)
+
+#####12. Find any 'SUSPECT' samples#####
+# This function adds the TADA.MeasureQualifierCode.Flag to the dataframe.
+data_12a <- TADA_FlagMeasureQualifierCode(data_11, clean = F)
+unique(data_12a$TADA.MeasureQualifierCode.Flag)
 # list uncategorized qualifiers in data
-(uncategorized_qualifiers <- data_11a %>% 
+(uncategorized_qualifiers <- data_12a %>% 
     select(MeasureQualifierCode, TADA.MeasureQualifierCode.Flag) %>% 
     filter(TADA.MeasureQualifierCode.Flag == "uncategorized") %>% 
     distinct())
 
 # update qualifiers using 'IR DATA QA .xlsx'
 # add any changes by making a new row below
-data_11b <- data_11a %>% 
+data_12b <- data_12a %>% 
   mutate(TADA.MeasureQualifierCode.Flag = 
            case_when(
              # The following were uncategorized by TADA
@@ -178,32 +191,25 @@ data_11b <- data_11a %>%
              , (MeasureQualifierCode == "SUS") ~ "Reject"
              , (MeasureQualifierCode == "UDQ") ~ "Suspect"
              , (MeasureQualifierCode == "UNC") ~ "Suspect"
+             , (MeasureQualifierCode == "U") ~ "Non-Detect"
              , TRUE ~ TADA.MeasureQualifierCode.Flag))
 
+unique(data_12b$TADA.MeasureQualifierCode.Flag)
+
 # re-check for uncategorized qualifiers
-(uncategorized_qualifiers <- data_11b %>% 
+(uncategorized_qualifiers <- data_12b %>% 
     select(MeasureQualifierCode, TADA.MeasureQualifierCode.Flag) %>% 
     filter(TADA.MeasureQualifierCode.Flag == "uncategorized") %>% 
     distinct())
 
-#####12. Replace non-detects #####
-# This function adds the following columns to the dataframe:
-# TADA.CensoredMethod
-# TADA.CensoredData.Flag
-# NOTE: This function uses the method detection limit
-
-data_12 <- TADA_SimpleCensoredMethods(data_11b, 
-                                      nd_method = 'multiplier',
-                                      nd_multiplier = 0.5)
-
 #####13. Identify columns with all NA values#####
 # Check whether you expect data in any of the columns listed below.
-(cols_NA <- data_12 %>% 
+(cols_NA <- data_12b %>% 
    keep(~all(is.na(.x))) %>% 
    names)
 
 # Eliminate any columns with all NA values
-data_13 <- data_12 %>% 
+data_13 <- data_12b %>% 
   select(where(~sum(!is.na(.x)) > 0)) 
 
 #Export data with flags
@@ -213,7 +219,7 @@ write_csv(data_13, file = file.path('Output/data_processing'
 
 #Clean up environment
 rm(data_1, data_2, data_3, data_4, data_5a, data_5b, data_6, data_7,data_8a
-   , data_8b, data_9, data_10, data_11a, data_11b, data_12, cols_NA
+   , data_8b, data_9, data_10, data_11, data_12a, data_12b, cols_NA
    , all_input_data, uncategorized_qualifiers)
 
 ####Evaluate and trim data ####
@@ -307,13 +313,13 @@ rm(data_13, df_ColManager, Cols_data_13, QC_Check, Keep_cols, Cols_Manager)
 
 data_16 <- data_15 %>% 
   filter(TADA.ResultUnit.Flag != "Rejected" 
-         & TADA.ResultUnit.Flag != "Invalid") %>% # Step 1
+         & TADA.ResultUnit.Flag != "Suspect") %>% # Step 1
   filter(TADA.SampleFraction.Flag != "Rejected" 
-         & TADA.SampleFraction.Flag != "Invalid") %>% # Step 2
+         & TADA.SampleFraction.Flag != "Suspect") %>% # Step 2
   filter(TADA.MethodSpeciation.Flag != "Rejected" 
-         & TADA.MethodSpeciation.Flag != "Invalid") %>% # Step 3
+         & TADA.MethodSpeciation.Flag != "Suspect") %>% # Step 3
   filter(TADA.AnalyticalMethod.Flag != "Rejected" 
-         & TADA.AnalyticalMethod.Flag != "Invalid") %>% # Step 7
+         & TADA.AnalyticalMethod.Flag != "Suspect") %>% # Step 7
   filter(TADA.SingleOrgDupGroupID == "Not a duplicate"
          | (TADA.SingleOrgDupGroupID != "Not a duplicate"
             & TADA.SingleOrgDup.Flag == "Unique")) %>% # Step 8
@@ -566,9 +572,7 @@ data_19_long <- left_join(data_16d, df_ML_AU_Crosswalk
                                               | TADA.CharacteristicName == "HARDNESS, CARBONATE"
                                               | TADA.CharacteristicName ==  "HARDNESS"
                                               | TADA.CharacteristicName ==  "TOTAL HARDNESS") ~ "HARDNESS"
-                                             , TRUE ~ TADA.CharacteristicName)) %>% #added by DEC
-  filter(!is.na(TADA.ResultMeasureValue))
-
+                                             , TRUE ~ TADA.CharacteristicName)) 
 
 #Export data summary
 write_csv(data_19_long, file = file.path('Output/data_processing'
@@ -1143,10 +1147,10 @@ data_22b <- data_22a %>%
          ActivityStartMonth = month(ActivityStartDate),
          ActivityWaterYear = ifelse(ActivityStartMonth < 10, ActivityStartYear
                                     , ActivityStartYear+1)) %>% 
-  select(AUID_ATTNS, MonitoringLocationTypeName, AU_Type, ActivityWaterYear, ActivityStartDate
+  select(AUID_ATTNS, Name_AU, MonitoringLocationTypeName, AU_Type, ActivityWaterYear, ActivityStartDate
          , TADA.CharacteristicName, TADA.ResultMeasureValue
          , TADA.ResultMeasure.MeasureUnitCode, TADA.ResultSampleFractionText_new) %>% 
-  group_by(AUID_ATTNS, MonitoringLocationTypeName, AU_Type
+  group_by(AUID_ATTNS, Name_AU, MonitoringLocationTypeName, AU_Type
            , TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode
            , TADA.ResultSampleFractionText_new) %>% 
   summarize(n_Samples = n()
