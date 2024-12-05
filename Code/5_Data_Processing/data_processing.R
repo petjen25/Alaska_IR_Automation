@@ -330,7 +330,7 @@ data_16 <- data_15 %>%
 # censored data are retained in this dataset.
 
 #Units check - compare sample units to WQS units
-wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240514.csv') %>% #dec change
+wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20241112.csv') %>% #dec change
   select(TADA.Constituent, Units) %>%
   unique() %>%
   na.omit() %>%
