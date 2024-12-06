@@ -12,8 +12,8 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240819.csv') 
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240819.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20241205.csv') 
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20241205.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20241112.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
@@ -261,8 +261,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
-          unique() %>%
-          dplyr::mutate(day_row = n(),
+          dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 9-13
+          dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)), #added 9-13
                         bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0))
@@ -329,8 +329,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
-          unique() %>%
-          dplyr::mutate(day_row = n(),
+          dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 9-13
+          dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)), #added 9-13
                         bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0))
@@ -350,8 +350,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_min = min(TADA.ResultMeasureValue)) %>%
           dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)),
-                        bad_samp = ifelse(daily_min <= filter_by$Magnitude_Numeric, 1, 0),
-                        sum = sum(bad_samp),
+                        bad_samp = ifelse(daily_min <= filter_by$Magnitude_Numeric, 1, 0)) %>%
+          dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 10/29
+          dplyr::ungroup() %>% #added 10/29
+          dplyr::mutate(sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0))
         
         bad_tot <- results %>% dplyr::ungroup() %>% dplyr::select(year, bad_year) %>% unique()
@@ -369,8 +371,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_max = max(TADA.ResultMeasureValue)) %>%
           dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)),
-                        bad_samp = ifelse(daily_max >= filter_by$Magnitude_Numeric, 1, 0),
-                        sum = sum(bad_samp),
+                        bad_samp = ifelse(daily_max >= filter_by$Magnitude_Numeric, 1, 0)) %>%
+          dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 10/29
+          dplyr::ungroup() %>% #added 10/29
+          dplyr::mutate(sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0))
         
         bad_tot <- results %>% dplyr::ungroup() %>% dplyr::select(year, bad_year) %>% unique()
@@ -1571,7 +1575,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
 output_pH <-  MagDurFreq_pHDependent(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency)
 
 
-combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turbidity_output) {
+combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turbidity_output) { 
   output <- standard_output %>%
     rbind(hardness_output) %>%
     rbind(pH_output) %>%
@@ -1580,6 +1584,6 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turb
     return(output)
 }
 
-final_output <- combine_MagDurFreq(output, output_hardness, output_pH, output_turbidity)
+final_output <- combine_MagDurFreq(output, output_hardness, output_pH, output_turbidity) 
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20240819.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20241205.csv')
