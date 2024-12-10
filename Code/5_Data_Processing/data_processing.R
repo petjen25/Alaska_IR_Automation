@@ -191,7 +191,6 @@ data_12b <- data_12a %>%
              , (MeasureQualifierCode == "SUS") ~ "Reject"
              , (MeasureQualifierCode == "UDQ") ~ "Suspect"
              , (MeasureQualifierCode == "UNC") ~ "Suspect"
-             , (MeasureQualifierCode == "U") ~ "Non-Detect"
              , TRUE ~ TADA.MeasureQualifierCode.Flag))
 
 unique(data_12b$TADA.MeasureQualifierCode.Flag)
@@ -212,7 +211,7 @@ unique(data_12b$TADA.MeasureQualifierCode.Flag)
 data_13 <- data_12b %>% 
   select(where(~sum(!is.na(.x)) > 0)) 
 
-#Export data with flags
+#Export data with flags: manual review, update, and re-import before moving to next step. 
 write_csv(data_13, file = file.path('Output/data_processing'
                                     , paste0("Original_data_with_flags_"
                                              ,myDate, ".csv")), na = "")
@@ -314,7 +313,7 @@ rm(data_13, df_ColManager, Cols_data_13, QC_Check, Keep_cols, Cols_Manager)
 data_16 <- data_15 %>% 
   filter(TADA.ResultUnit.Flag != "Rejected" 
          & TADA.ResultUnit.Flag != "Suspect") %>% # Step 1
-  filter(TADA.SampleFraction.Flag != "Rejected" 
+  filter(TADA.SampleFraction.Flag != "Rejected"  #this flags original fraction column, not the TADA harmonized fraction column used in later steps. 
          & TADA.SampleFraction.Flag != "Suspect") %>% # Step 2
   filter(TADA.MethodSpeciation.Flag != "Rejected" 
          & TADA.MethodSpeciation.Flag != "Suspect") %>% # Step 3
