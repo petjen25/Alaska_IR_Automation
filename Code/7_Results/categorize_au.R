@@ -13,7 +13,10 @@ assessments <- read_csv('Data/data_analysis/assessments.csv') %>%
          PARAM_NAME = parameterName,
          ATTAINS_USE = useName,
          PARAM_STATUS_NAME = parameterStatus,
-         PARAM_ATTAINMENT_CODE = parameterAttainment)
+         PARAM_ATTAINMENT_CODE = parameterAttainment) %>%
+  mutate(PARAM_NAME = if_else(PARAM_NAME == 'DISSOLVED OXYGEN', "DISSOLVED OXYGEN (DO)", PARAM_NAME)) %>% # 12-5
+  mutate(PARAM_NAME = if_else(PARAM_NAME == 'ESCHERICHIA COLI (E. COLI)', "ESCHERICHIA COLI", PARAM_NAME)) %>% # 12-5
+  mutate(PARAM_NAME = if_else(PARAM_NAME == 'TOTAL DISSOLVED SOLIDS (TDS)', "TOTAL DISSOLVED SOLIDS", PARAM_NAME)) # 12-5
 
 #Don't want to overwrite previous ATTAINs 2s and 5s with new 3s
 merge_uses <- input_analysis %>%
