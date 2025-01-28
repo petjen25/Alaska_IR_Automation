@@ -21,21 +21,21 @@ samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240509.
 
 ml_au_crosswalk <- read_csv('Data/data_processing/ML_AU_Crosswalk.csv')
 
-lake_aus <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/lakes.shp') %>%
+lake_aus <- st_read('Data/data_GIS/Lakes/lakes.shp') %>%
   select(AUID_ATTNS, Name_AU, HUC10_ID, AU_Area) %>%
   st_zm() %>%
   mutate(Shape_4_Summary = AU_Area,
-         AU_Shape_Unit = 'acres') %>%
+         AU_Shape_Unit = 'square miles') %>%
   select(!AU_Area)
 
-river_aus <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/rivers.shp') %>%
+river_aus <- st_read('Data/data_GIS/Rivers/rivers.shp') %>%
   select(AUID_ATTNS, Name_AU, HUC10_ID, AU_Miles) %>%
   st_zm() %>%
   mutate(Shape_4_Summary = AU_Miles,
          AU_Shape_Unit = 'miles') %>%
   select(!AU_Miles)
 
-marine_aus <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/marine.shp') %>%
+marine_aus <- st_read('Data/data_GIS/Marine/marine.shp') %>%
   select(AUID_ATTNS, Name_AU, HUC10_ID, AU_Area) %>%
   st_zm() %>%
   st_transform(crs = st_crs(lake_aus)) %>%
@@ -44,7 +44,7 @@ marine_aus <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/marine.shp
   select(!AU_Area)#Marine AU is in NAD83/Alaska Albers
 #All other shapefiles are in WGS 84/Pseudo-Mercator
 
-beach_aus <- st_read('Data/data_GIS/AU_Shapefiles_Corrected_20240328/beaches.shp') %>%
+beach_aus <- st_read('Data/data_GIS/Beaches/beaches.shp') %>%
   select(AUID_ATTNS, Name_AU, HUC10_ID, AU_Miles) %>%
   mutate(Shape_4_Summary = AU_Miles,
          AU_Shape_Unit = 'miles') %>%
@@ -63,19 +63,18 @@ all_aus <- lake_aus %>%
 
 #Find AUs info not in previous ATTAINS
 data_current_AU_not_listed <- data_sufficiency %>%
-  mutate(assessmentUnitId = AUID_ATTNS) %>%
-  anti_join(previous_au_attains, by = c('assessmentUnitId')) %>%
+  mutate(ASSESSMENT_UNIT_ID = AUID_ATTNS) %>%
+  anti_join(previous_au_attains, by = c('ASSESSMENT_UNIT_ID')) %>%
   #Join with AU shapefile information
   left_join(all_aus, by = 'AUID_ATTNS') %>%
   #Add HUC10 if missing
   mutate(HUC10_ID = ifelse(is.na(HUC10_ID),
                                  paste0('190', str_extract(AUID_ATTNS, "[0-9.]+")),
-                                 HUC10_ID))
+                                 HUC10_ID)) %>%
+  rename(Name_AU = Name_AU.x)
 
 ####Assessment Units####
 assessment_units <- data_current_AU_not_listed %>%
-  rename(ASSESSMENT_UNIT_ID = AUID_ATTNS,
-         ASSESSMENT_UNIT_NAME = Name_AU) %>%
   mutate(USE_CLASS_NAME = NA,
          LOCATION_DESCRIPTION = paste0('Located in HUC', HUC10_ID,', ',
                                        round(Shape_4_Summary, 3), ' ',
@@ -83,7 +82,7 @@ assessment_units <- data_current_AU_not_listed %>%
          ASSESSMENT_UNIT_STATE = 'AK',
          ASSESSMENT_UNIT_AGENCY = 'S', #S for state agency
          ASSESSMENT_UNIT_COMMENT = NA) %>% #ASK ABOUT COMMENTS
-  select(ASSESSMENT_UNIT_ID, ASSESSMENT_UNIT_NAME, ASSESSMENT_UNIT_STATE,
+  select(ASSESSMENT_UNIT_ID = AUID_ATTNS, ASSESSMENT_UNIT_NAME = Name_AU, ASSESSMENT_UNIT_STATE,
          ASSESSMENT_UNIT_AGENCY, ASSESSMENT_UNIT_COMMENT, LOCATION_DESCRIPTION,
          USE_CLASS_NAME) %>% #Change order to reflect template
   unique() 
