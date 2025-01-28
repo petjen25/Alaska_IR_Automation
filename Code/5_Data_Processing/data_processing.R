@@ -329,7 +329,7 @@ data_16 <- data_15 %>%
 # censored data are retained in this dataset.
 
 #Units check - compare sample units to WQS units
-wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20241112.csv') %>% #dec change
+wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250127.csv') %>% 
   select(TADA.Constituent, Units) %>%
   unique() %>%
   na.omit() %>%
@@ -523,7 +523,7 @@ data_18 <- data_16d %>%
 #### Match data to AUs ####
 #####19. ML to AUs #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk20240809.CSV")
+df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk20250110.CSV")
 df_ML_AU_Crosswalk <- df_ML_AU_Crosswalk %>% 
   select(-c(OrganizationIdentifier)) %>% # removed to avoid duplication in join
   dplyr::rename(AU_Type = Type)
@@ -1008,7 +1008,7 @@ rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 #### Data sufficiency ####
 ##### 22. AU/pollutant data sufficiency #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20240514.csv") #DEC edit: updated input (ATTAINS uses and drinking water chloride fraction dissolved)
+df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20250127.csv") #DEC edit: updated input (ATTAINS uses and drinking water chloride fraction dissolved)
 df_data_sufficiency2 <- df_data_sufficiency %>% 
   select(-c(`Constituent Group`, Constituent, `Other Requirements`, `Listing methodology`, Notes)) %>% #dec edit: removed Use_Description from select(-c())
   mutate(TADA.Fraction = toupper(Fraction)) %>% 
@@ -1088,7 +1088,7 @@ df_TAH <- data_22a %>%
   filter(TADA.CharacteristicName %in% TAH) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
            , MonitoringLocationName, MonitoringLocationTypeName
-           , TADA.ResultMeasure.MeasureUnitCode
+           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus
            , TADA.CharacteristicName, TADA.ComparableDataIdentifier
@@ -1096,7 +1096,7 @@ df_TAH <- data_22a %>%
   summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
            , MonitoringLocationName, MonitoringLocationTypeName
-           , TADA.ResultMeasure.MeasureUnitCode
+           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus) %>%
   #TADA.CharacteristicName, TADA.ResultMeasureValue, TADA.ComparableDataIdentifier
@@ -1111,7 +1111,7 @@ df_TAqH <- data_22a %>%
   filter(TADA.CharacteristicName %in% TAqH) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
            , MonitoringLocationName, MonitoringLocationTypeName
-           , TADA.ResultMeasure.MeasureUnitCode
+           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus
            , TADA.CharacteristicName, TADA.ComparableDataIdentifier
@@ -1119,7 +1119,7 @@ df_TAqH <- data_22a %>%
   summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
            , MonitoringLocationName, MonitoringLocationTypeName
-           , TADA.ResultMeasure.MeasureUnitCode
+           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus) %>%
   #TADA.CharacteristicName, TADA.ResultMeasureValue, TADA.ComparableDataIdentifier
