@@ -13,13 +13,13 @@ library(sf)
 library(stringi)
 
 ####Load Data####
-data_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240509.csv')
+data_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250115.csv')
 
-previous_au_attains <- read_xlsx('Data/data_analysis/ATTAINS_AK_AsessmentUnits_DataDownload_20240126.xlsx', sheet = 2)
+previous_au_attains <- read_xlsx('Data/data_analysis/ATTAINS_AK_AsessmentUnits_DataDownload_20250122.xlsx', sheet = 1)
 
-samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240509.csv')
+samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250115.csv')
 
-ml_au_crosswalk <- read_csv('Data/data_processing/ML_AU_Crosswalk.csv')
+ml_au_crosswalk <- read_csv('Data/data_processing/ML_AU_Crosswalk20250110.csv')
 
 lake_aus <- st_read('Data/data_GIS/Lakes/lakes.shp') %>%
   select(AUID_ATTNS, Name_AU, HUC10_ID, AU_Area) %>%
