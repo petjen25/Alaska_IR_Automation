@@ -6,8 +6,9 @@
 library(tidyverse)
 
 ####Load in data####
-input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20240819.csv')
+input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20250127.csv')
 
+#Go to ATTAINS expert query. Choose "Assessment". filter for "AK". Download. https://owapps.epa.gov/expertquery/attains/ 
 assessments <- read_csv('Data/data_analysis/assessments.csv') %>%
   select(ASSESSMENT_UNIT_ID = assessmentUnitId,
          PARAM_NAME = parameterName,
@@ -23,11 +24,12 @@ merge_uses <- input_analysis %>%
   mutate(ATTAINS_waterbody = case_when(`Waterbody Type` == 'Freshwater' ~
                                          'FRESH WATER',
                                        T ~ 'MARINE WATER'),
-         ATTAINS_USE_merge = paste0(ATTAINS_waterbody, ' / ',  Use, ' / ', `Use Description`)) %>%
-  left_join(assessments, by = c('AUID_ATTNS' = 'ASSESSMENT_UNIT_ID',
+         ATTAINS_USE_merge = paste0(ATTAINS_waterbody, ' / ',  Use, ' / ', `Use Description`),
+         ATTAINS_USE_merge = gsub(" / NA", "", ATTAINS_USE_merge)) %>%
+ left_join(assessments, by = c('AUID_ATTNS' = 'ASSESSMENT_UNIT_ID',
                                 'TADA.CharacteristicName' = 'PARAM_NAME', 
                                 'ATTAINS_USE_merge' = 'ATTAINS_USE')) %>%
-  mutate(PARAM_ATTAINMENT_CODE_new = case_when(PARAM_ATTAINMENT_CODE == "Not meeting criteria" ~ 
+    mutate(PARAM_ATTAINMENT_CODE_new = case_when(PARAM_ATTAINMENT_CODE == "Not meeting criteria" ~ 
                                              '5', 
                                              PARAM_ATTAINMENT_CODE == "Meeting criteria" ~
                                              '2', 
@@ -96,8 +98,8 @@ categorize_AU_uses <- function(input_analysis, simplify_standards){
 output <- categorize_AU_uses(merge_uses, simplify_standards = F)
 output_simp <- categorize_AU_uses(merge_uses, simplify_standards = T)
 
-write_csv(output, 'Output/results/categorized_aus_20240819.csv')
-write_csv(output_simp, 'Output/results/categorized_simplified_aus_20240819.csv')
+write_csv(output, 'Output/results/categorized_aus_20250127.csv')
+write_csv(output_simp, 'Output/results/categorized_simplified_aus_20250127.csv')
 
 
 
@@ -121,3 +123,6 @@ categorize_AU <- function(input_categorized_uses){
 
 output_overall <- categorize_AU(output)
 output_simp_overall <- categorize_AU(output_simp)
+
+write_csv(output_overall, 'Output/results/overall_categorized_aus_20250127.csv')
+write_csv(output_simp_overall, 'Output/results/overall_categorized_simplified_aus_20250127.csv')
