@@ -329,7 +329,7 @@ data_16 <- data_15 %>%
 # censored data are retained in this dataset.
 
 #Units check - compare sample units to WQS units
-wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250127.csv') %>% 
+wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250129.csv') %>% 
   select(TADA.Constituent, Units) %>%
   unique() %>%
   na.omit() %>%
@@ -1008,7 +1008,7 @@ rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 #### Data sufficiency ####
 ##### 22. AU/pollutant data sufficiency #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20250127.csv") #DEC edit: updated input (ATTAINS uses and drinking water chloride fraction dissolved)
+df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20250129.csv") #DEC edit: updated input (ATTAINS uses and drinking water chloride fraction dissolved)
 df_data_sufficiency2 <- df_data_sufficiency %>% 
   select(-c(`Constituent Group`, Constituent, `Other Requirements`, `Listing methodology`, Notes)) %>% #dec edit: removed Use_Description from select(-c())
   mutate(TADA.Fraction = toupper(Fraction)) %>% 

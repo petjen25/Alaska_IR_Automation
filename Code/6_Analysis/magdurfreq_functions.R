@@ -14,7 +14,7 @@ library(psych)
 ####Load in data####
 input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20241205.csv') 
 input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20241205.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20241112.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250129.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
 
