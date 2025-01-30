@@ -1038,7 +1038,8 @@ write_csv(df_missing_constituents
 unique(data_21$TADA.ResultSampleFractionText)
 unique(df_data_sufficiency2$TADA.Fraction)
 
-blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "COLOR", "DISSOLVED OXYGEN (DO)"
+blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "ETHYLBENZENE", "TOLUENE"
+                     , "TOTAL XYLENES", "COLOR", "DISSOLVED OXYGEN (DO)"
                      , "ENTEROCOCCUS", "ESCHERICHIA COLI", "FECAL COLIFORM"
                      , "PH", "SEDIMENT", "SULFATE", "TEMPERATURE, WATER"
                      , "TOTAL DISSOLVED SOLIDS", "TURBIDITY") # from data sufficiency table
