@@ -535,7 +535,8 @@ data_19 <- left_join(data_18, df_ML_AU_Crosswalk
 
 #Create object for export, remove columns of mostly NAs to make file small enough
 #for github
-blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "COLOR", "DISSOLVED OXYGEN (DO)"
+blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "ETHYLBENZENE", "TOLUENE"
+                     , "TOTAL XYLENES", "COLOR", "DISSOLVED OXYGEN (DO)"
                      , "ENTEROCOCCUS", "ESCHERICHIA COLI", "FECAL COLIFORM"
                      , "PH", "SEDIMENT", "SULFATE", "TEMPERATURE, WATER"
                      , "TOTAL DISSOLVED SOLIDS", "TURBIDITY") # from data sufficiency table
