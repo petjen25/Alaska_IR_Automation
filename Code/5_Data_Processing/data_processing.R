@@ -167,12 +167,13 @@ data_12b <- data_12a %>%
              # The following are AK DEC specific updates to TADA flags
              , (MeasureQualifierCode == "*") ~ "Suspect"
              , (MeasureQualifierCode == "A") ~ "Reject"
-             , (MeasureQualifierCode == "B") ~ "Suspect"
+             , (MeasureQualifierCode == "B") ~ "Pass"
              , (MeasureQualifierCode == "CAN") ~ "Reject"
              , (MeasureQualifierCode == "CBC") ~ "Reject"
              , (MeasureQualifierCode == "CNT") ~ "Suspect"
              , (MeasureQualifierCode == "EER") ~ "Reject"
              , (MeasureQualifierCode == "J-1") ~ "Suspect"
+             , (MeasureQualifierCode == "J-R") ~ "Pass"
              , (MeasureQualifierCode == "LAC") ~ "Reject"
              , (MeasureQualifierCode == "LBF") ~ "Reject"
              , (MeasureQualifierCode == "NA") ~ "Pass"
@@ -189,6 +190,7 @@ data_12b <- data_12a %>%
              , (MeasureQualifierCode == "PRE") ~ "Suspect"
              , (MeasureQualifierCode == "R") ~ "Reject"
              , (MeasureQualifierCode == "SUS") ~ "Reject"
+             , (MeasureQualifierCode == "TOC") ~ "Pass"
              , (MeasureQualifierCode == "UDQ") ~ "Suspect"
              , (MeasureQualifierCode == "UNC") ~ "Suspect"
              , TRUE ~ TADA.MeasureQualifierCode.Flag))
@@ -313,15 +315,13 @@ rm(data_13, df_ColManager, Cols_data_13, QC_Check, Keep_cols, Cols_Manager)
 data_16 <- data_15 %>% 
   filter(TADA.ResultUnit.Flag != "Rejected" 
          & TADA.ResultUnit.Flag != "Suspect") %>% # Step 1
-  filter(TADA.SampleFraction.Flag != "Rejected"  #this flags original fraction column, not the TADA harmonized fraction column used in later steps. 
-         & TADA.SampleFraction.Flag != "Suspect") %>% # Step 2
+  filter(TADA.SampleFraction.Flag != "Rejected") %>%  #this flags original fraction column, not the TADA harmonized fraction column used in later steps. 
+#         & TADA.SampleFraction.Flag != "Suspect") %>% # Step 2
   filter(TADA.MethodSpeciation.Flag != "Rejected" 
          & TADA.MethodSpeciation.Flag != "Suspect") %>% # Step 3
-  filter(TADA.AnalyticalMethod.Flag != "Rejected" 
-         & TADA.AnalyticalMethod.Flag != "Suspect") %>% # Step 7
-  filter(TADA.SingleOrgDupGroupID == "Not a duplicate"
-         | (TADA.SingleOrgDupGroupID != "Not a duplicate"
-            & TADA.SingleOrgDup.Flag == "Unique")) %>% # Step 8
+  filter(TADA.AnalyticalMethod.Flag != "Rejected") %>% 
+#         & TADA.AnalyticalMethod.Flag != "Suspect") %>% # Step 7
+  filter(TADA.SingleOrgDup.Flag == "Unique")%>% # Step 8
   filter(TADA.ActivityType.Flag == 'Non_QC') %>% # Step 9
   filter(TADA.MeasureQualifierCode.Flag != 'Suspect'
          & TADA.MeasureQualifierCode.Flag != 'Reject') %>% # Step 11
@@ -329,7 +329,7 @@ data_16 <- data_15 %>%
 # censored data are retained in this dataset.
 
 #Units check - compare sample units to WQS units
-wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250129.csv') %>% 
+wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250130.csv') %>% 
   select(TADA.Constituent, Units) %>%
   unique() %>%
   na.omit() %>%
@@ -368,6 +368,9 @@ data_16c <- data_16b %>%
                                              TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS N' &
                                                Units == 'UG/L'~
                                                TADA.ResultMeasureValue*1000,
+                                             TADA.ResultMeasure.MeasureUnitCode == 'CFU/ML' &
+                                               Units == 'CFU/100ML'~
+                                               TADA.ResultMeasureValue/100,
                                              T ~ TADA.ResultMeasureValue),
          #Convert the units to match WQS
          TADA.ResultMeasure.MeasureUnitCode = case_when(TADA.ResultMeasure.MeasureUnitCode == 'MG/L' &
@@ -403,6 +406,9 @@ data_16c <- data_16b %>%
                                                         TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS N' &
                                                           Units == 'UG/L'~
                                                           'UG/L',
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'STD UNITS' &
+                                                          Units == 'SU'~
+                                                          'SU',
                                                         is.na(TADA.ResultMeasure.MeasureUnitCode) & # dec added 7-30-24
                                                           Units == 'SU'~#dec added 7-30-24
                                                           'SU',#dec added 7-30-24
@@ -515,6 +521,7 @@ data_18 <- data_16d %>%
          ,TADA.CharacteristicName
          ,TADA.ResultMeasureValue
          ,TADA.ResultMeasure.MeasureUnitCode
+         ,StatisticalBaseCode
          ,TADA.ComparableDataIdentifier
          ,TADA.ResultSampleFractionText
          ,TADA.LatitudeMeasure
@@ -523,7 +530,7 @@ data_18 <- data_16d %>%
 #### Match data to AUs ####
 #####19. ML to AUs #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk20250110.CSV")
+df_ML_AU_Crosswalk <- read_csv("Data/data_processing/ML_AU_Crosswalk20250321.CSV")
 df_ML_AU_Crosswalk <- df_ML_AU_Crosswalk %>% 
   select(-c(OrganizationIdentifier)) %>% # removed to avoid duplication in join
   dplyr::rename(AU_Type = Type)
@@ -543,7 +550,7 @@ blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "ETHYLBENZENE", "TOLUENE"
 
 data_19_long <- left_join(data_16d, df_ML_AU_Crosswalk
                           , by = "MonitoringLocationIdentifier") %>%
-  select(!c(HydrologicEvent, HydrologicCondition, StatisticalBaseCode, ResultTimeBasisText, 
+  select(!c(HydrologicEvent, HydrologicCondition, ResultTimeBasisText, 
             ActivityEndDateTime, MonitoringLocationDescriptionText,
             SamplingDesignTypeCode, QAPPApprovedIndicator, QAPPApprovalAgencyName,
             TADA.CharacteristicNameAssumptions, ProjectDescriptionText)) %>% 
@@ -635,14 +642,14 @@ ML_in_crosswalk <- unique(df_ML_AU_Crosswalk$MonitoringLocationIdentifier)
 
 ######20a. Setup #####
 fn_shp <- file.path(getwd(), "Data", "data_GIS")
-beach_shp <- sf::st_read(dsn = paste0(fn_shp,"/Beaches"), layer = "beaches")%>% 
+beach_shp <- sf::st_read(dsn = paste0(fn_shp,"/beaches"), layer = "beaches")%>% 
   sf::st_transform(3338)
-lake_shp <- sf::st_read(dsn = paste0(fn_shp,"/Lakes"), layer = "lakes")%>% 
+lake_shp <- sf::st_read(dsn = paste0(fn_shp,"/lakes"), layer = "lakes")%>% 
   sf::st_transform(3338) %>% 
   sf::st_zm()
-marine_shp <- sf::st_read(dsn = paste0(fn_shp,"/Marine"), layer = "marine")%>% 
+marine_shp <- sf::st_read(dsn = paste0(fn_shp,"/marine"), layer = "marine")%>% 
   sf::st_transform(3338)
-river_shp <- sf::st_read(dsn = paste0(fn_shp,"/Rivers"), layer = "rivers")%>% 
+river_shp <- sf::st_read(dsn = paste0(fn_shp,"/rivers"), layer = "rivers")%>% 
   sf::st_transform(3338) %>% 
   sf::st_zm()
 USA_shp <- sf::st_read(dsn = paste0(fn_shp,"/cb_2018_us_state_500k")
@@ -863,7 +870,7 @@ ggplot() + # WARNING::takes ~1 minute to load all the rivers
 ### spatial join
 river_SpatJoin <- sf::st_join(river_pts, river_shp, join = st_nearest_feature) %>% # join points and AUs
   select(MonitoringLocationIdentifier, MonitoringLocationName
-         , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10_ID) # trim unneccessary columns
+         , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10_ID_1) # trim unneccessary columns
 
 ### determine distance (m) between points and nearest feature
 near_feat <- sf::st_nearest_feature(river_pts, river_shp)
@@ -1009,7 +1016,7 @@ rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 #### Data sufficiency ####
 ##### 22. AU/pollutant data sufficiency #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20250129.csv") #DEC edit: updated input (ATTAINS uses and drinking water chloride fraction dissolved)
+df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20250130.csv") #DEC edit: updated input (ATTAINS uses and drinking water chloride fraction dissolved)
 df_data_sufficiency2 <- df_data_sufficiency %>% 
   select(-c(`Constituent Group`, Constituent, `Other Requirements`, `Listing methodology`, Notes)) %>% #dec edit: removed Use_Description from select(-c())
   mutate(TADA.Fraction = toupper(Fraction)) %>% 
