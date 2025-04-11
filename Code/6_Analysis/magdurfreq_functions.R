@@ -1031,7 +1031,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           bad_sum <- sum(bad_tot$bad_samp)
           
           filter_by$AUID_ATTNS <- i
-          filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+          filter_by$Exceed <- ifelse(bad_sum > 1, 'Yes', 'No')
         } #End of hardness check
       } else {
         filter_by$AUID_ATTNS <- i
