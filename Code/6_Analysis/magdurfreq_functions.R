@@ -167,12 +167,18 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
             dplyr::mutate(RollingPeriod = paste0(w_year - 1, "-", w_year)) %>%
             dplyr::arrange(RollingPeriod, ActivityStartDate, ActivityStartTime.Time) %>%
             dplyr::group_by(RollingPeriod) %>%
-            dplyr::mutate(geo_mean_30d = zoo::rollapplyr(TADA.ResultMeasureValue, 
-                                                         seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
-                                                         psych::geometric.mean,
-                                                         partial = TRUE),
-                          Exceed = ifelse(geo_mean_30d >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
-            dplyr::select(!geo_mean_30d)
+            dplyr::mutate(Exceed = purrr::map_chr(ActivityStartDate, function(current_date) {
+              window_values <- TADA.ResultMeasureValue[ActivityStartDate >= (current_date - 30) & ActivityStartDate <= current_date]
+              if (length(window_values) >= 5) {
+                if (psych::geometric.mean(window_values) >= filter_by$Magnitude_Numeric) {
+                  'Yes'
+                } else {
+                  'No'
+                }
+              } else {
+                'No'  #Not enough samples = 'No' exceedance
+              }})) %>%
+            dplyr::ungroup()
           
           filter_by$AUID_ATTNS <- i
           
@@ -212,9 +218,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           #Pathogen method #3----
           results <- filt %>%
             dplyr::group_by(w_year) %>%
-            dplyr::mutate(geo_mean_1yr = psych::geometric.mean(TADA.ResultMeasureValue),
-                          Exceed = ifelse(geo_mean_1yr >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
-            dplyr::select(!geo_mean_1yr)
+            dplyr::mutate(Exceed = if_else(psych::geometric.mean(TADA.ResultMeasureValue, na.rm = TRUE) >= filter_by$Magnitude_Numeric,
+              'Yes','No')) %>%
+            dplyr::ungroup()
           
           filter_by$AUID_ATTNS <- i
           
@@ -859,7 +865,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   #Pathogen pairing exception -> if one criteria is exceeded, then both are exceeded
     group_by(AUID_ATTNS, TADA.CharacteristicName, Fraction, `Waterbody Type`, Use,
              `Use Description`) %>%
-    dplyr::mutate(Exceed = case_when( `Constituent Group` == 'Bacteria' &
+    dplyr::mutate(Exceed = case_when(`Constituent Group` == 'Bacteria' &
                                         any(Exceed == 'Yes', na.rm = TRUE) ~ 'Yes',
                                      T ~ Exceed)) %>%
     ungroup()
