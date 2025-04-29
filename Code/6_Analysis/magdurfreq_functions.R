@@ -855,7 +855,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
                                            'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
-    dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
+    dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col()) %>%
+  #Pathogen pairing exception -> if one criteria is exceeded, then both are exceeded
+    group_by(AUID_ATTNS, TADA.CharacteristicName, Fraction, `Waterbody Type`, Use,
+             `Use Description`) %>%
+    dplyr::mutate(Exceed = case_when( `Constituent Group` == 'Bacteria' &
+                                        any(Exceed == 'Yes', na.rm = TRUE) ~ 'Yes',
+                                     T ~ Exceed)) %>%
+    ungroup()
   
   return(data_suff_WQS)
   
@@ -1762,4 +1769,4 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turb
 
 final_output <- combine_MagDurFreq(output, output_hardness, output_pH, output_turbidity) 
 
-write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20241205.csv')
+write_csv(final_output, 'Output/data_analysis/final_magdurfreq_output_20250429.csv')
