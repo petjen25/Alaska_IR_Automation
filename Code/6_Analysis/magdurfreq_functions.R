@@ -350,7 +350,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_min = min(TADA.ResultMeasureValue)) %>%
           dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)),
-                        bad_samp = ifelse(daily_min <= filter_by$Magnitude_Numeric, 1, 0)) %>%
+                        bad_samp = ifelse(daily_min < filter_by$Magnitude_Numeric, 1, 0)) %>%
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 10/29
           dplyr::ungroup() %>% #added 10/29
           dplyr::mutate(sum = sum(bad_samp),
@@ -371,7 +371,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_max = max(TADA.ResultMeasureValue)) %>%
           dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)),
-                        bad_samp = ifelse(daily_max >= filter_by$Magnitude_Numeric, 1, 0)) %>%
+                        bad_samp = ifelse(daily_max > filter_by$Magnitude_Numeric, 1, 0)) %>%
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 10/29
           dplyr::ungroup() %>% #added 10/29
           dplyr::mutate(sum = sum(bad_samp),
@@ -1031,7 +1031,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           bad_sum <- sum(bad_tot$bad_samp)
           
           filter_by$AUID_ATTNS <- i
-          filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+          filter_by$Exceed <- ifelse(bad_sum > 1, 'Yes', 'No')
         } #End of hardness check
       } else {
         filter_by$AUID_ATTNS <- i
