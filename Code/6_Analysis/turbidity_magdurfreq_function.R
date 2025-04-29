@@ -428,7 +428,7 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description','Waterbody Type',
                                            'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
-    dplyr::relocate(Exceed, .after = last_col()) %>%
+    dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col()) %>%
     dplyr::select(!Magnitude_Text)
   
   return(data_suff_WQS)
