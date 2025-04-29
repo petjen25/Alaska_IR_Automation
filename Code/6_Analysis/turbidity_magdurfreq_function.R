@@ -8,9 +8,9 @@ library(tidyverse)
 set.seed(42)
 
 #Load in data
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240819.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240819.csv') 
 input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240819.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20240514.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250129.csv')
 
 
 #Create reference site table for analysis
@@ -178,6 +178,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if((stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -197,6 +199,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if((stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -209,6 +213,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         #Method #3 ----
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- 'AU not lake waters'
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -224,6 +230,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -232,6 +240,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         #Method #5 ----
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- 'Natural conditions greater than 50 NTU'
         
       }  else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -250,6 +260,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -258,6 +270,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         #Method #7 ----
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- "Natural conditions less than or equal to 50 NTU"
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -274,6 +288,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -282,6 +298,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         #Method #9 ----
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- "Natural conditions less than or equal to 50 NTU"
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -298,6 +316,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -306,6 +326,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         #Method #11 ----
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- "Natural conditions greater than 50 NTU"
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -323,6 +345,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -330,6 +354,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
                 au_reference_conditions <= 50){
         #Method #13 ----
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- "Natural conditions less than or equal to 50 NTU"
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -347,6 +373,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
@@ -354,6 +382,8 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
                 au_reference_conditions <= 50){
         #Method #15 ----
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- "Natural conditions less than or equal to 50 NTU"
         
       } else if(is.na(filter_by$Details) == T){
@@ -368,10 +398,14 @@ MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_su
         bad_sum <- sum(bad_tot$bad_samp)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else {
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- 'Method not coded!'
       } #End of methods if/else
       
