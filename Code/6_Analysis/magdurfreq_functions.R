@@ -45,8 +45,15 @@ filterCat3samples(data_samples = input_samples
                   , data_sufficiency = input_sufficiency)
 filterCat3sites(input_sufficiency)
 
-input_samples_filtered <- filterCat3samples(data_samples = input_samples, data_sufficiency = input_sufficiency)
+input_samples_filtered <- filterCat3samples(data_samples = input_samples,
+                                            data_sufficiency = input_sufficiency)
 
+#Test samples for pathogens
+# input_samples_filtered <- filterCat3samples(data_samples = input_samples,
+#                                             data_sufficiency = input_sufficiency) %>%
+#   filter(TADA.CharacteristicName %in% c('ESCHERICHIA COLI',
+#                                         'FECAL COLIFORM',
+#                                         'ENTEROCOCCUS'))
 
 MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency) {
   
@@ -118,7 +125,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     #Cycle through each parameter to calculate the mag/freq/dur
     for(j in 1:nrow(my_data_magfreqdur)) {
       counter <- counter + 1
-      #Pull relevant methods
+      #Pull relevant method
       filter_by <- my_data_magfreqdur[j,]
       
       #Pull just that constituent data
@@ -140,11 +147,84 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
       }
       
       #No decided method for analyzing sediment, set to Method not coded!
-      if (filter_by$TADA.Constituent == 'SEDIMENT') {
+      if(filter_by$TADA.Constituent == 'SEDIMENT') {
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- 'Requires manual analysis'
       }
+      #Pull Pathogens out (Bacteria)
+      else if(filter_by$`Constituent Group` == 'Bacteria') {
+        
+        if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
+           filter_by$Duration == '30-day period' &
+           stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
+          #Pathogen method #1----
+          #Calculates results for 30-day rolling period for all samples - no year requirement
+          results <- filt %>%
+            #Group into 2-year water year periods
+            dplyr::mutate(RollingPeriod = paste0(w_year - 1, "-", w_year)) %>%
+            dplyr::arrange(RollingPeriod, ActivityStartDate, ActivityStartTime.Time) %>%
+            dplyr::group_by(RollingPeriod) %>%
+            dplyr::mutate(geo_mean_30d = zoo::rollapplyr(TADA.ResultMeasureValue, 
+                                                         seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
+                                                         psych::geometric.mean,
+                                                         partial = TRUE),
+                          Exceed = ifelse(geo_mean_30d >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
+            dplyr::select(!geo_mean_30d)
+          
+          filter_by$AUID_ATTNS <- i
+          
+          bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
+          
+          filter_by$Exceed_Num <- bad
+          filter_by$Exceed_Freq <- NA
+          filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
+          
+           } 
+        else if (filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10% of samples' &
+                 filter_by$Duration == 'Water year average') {
+          #Pathogen method #2----
+          results <- filt %>%
+            #Group into 2-year water year periods
+            dplyr::mutate(RollingStart = w_year - 1,
+                          RollingEnd = w_year,
+                          RollingPeriod = paste0(RollingStart, "-", RollingEnd)) %>%
+            dplyr::group_by(RollingPeriod) %>%
+            dplyr::mutate(wyear_row = n(),
+                          bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0),
+                          sum = sum(bad_samp),
+                          bad_year = ifelse(sum/wyear_row>=0.1, 1, 0),
+                          max_freq = max(sum/wyear_row, na.rm = T))
+          
+          bad_tot <- results %>% dplyr::select(RollingPeriod, bad_year) %>% unique()
+          bad_sum <- sum(bad_tot$bad_year)
+          
+          filter_by$AUID_ATTNS <- i
+          filter_by$Exceed_Num <- NA
+          filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
+          filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
+        }
+        else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
+                filter_by$Duration == 'Water year average' &
+                stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
+          #Pathogen method #3----
+          results <- filt %>%
+            dplyr::group_by(w_year) %>%
+            dplyr::mutate(geo_mean_1yr = psych::geometric.mean(TADA.ResultMeasureValue),
+                          Exceed = ifelse(geo_mean_1yr >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
+            dplyr::select(!geo_mean_1yr)
+          
+          filter_by$AUID_ATTNS <- i
+          
+          bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
+          
+          filter_by$Exceed_Num <- bad
+          filter_by$Exceed_Freq <- NA
+          filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
+        }
+      } 
       else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
               filter_by$Duration == '30-day period' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
         #Method #1 ----
@@ -161,6 +241,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
         
+        filter_by$Exceed_Num <- bad
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
@@ -177,6 +259,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
         
+        filter_by$Exceed_Num <- bad
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
         
       }else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10% of samples' &
@@ -189,12 +273,15 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::mutate(wyear_row = n(),
                         bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
-                        bad_year = ifelse(sum/wyear_row>=0.1, 1, 0))
+                        bad_year = ifelse(sum/wyear_row>=0.1, 1, 0),
+                        max_freq = max(sum/wyear_row, na.rm = T))
         
         bad_tot <- results %>% dplyr::select(w_year, bad_year) %>% unique()
         bad_sum <- sum(bad_tot$bad_year)
         
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- max(result$max_freq)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
       } else if(filter_by$Directionality == 'Not to exceed' & filter_by$Frequency == 'Not to exceed' &
                 filter_by$Duration == '30-day period' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T){
@@ -213,7 +300,10 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
         
+        filter_by$Exceed_Num <- bad
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
+        
       } else if(filter_by$Directionality == 'Not to exceed' & filter_by$Frequency == 'Not to exceed' &
                 filter_by$Duration == 'Water year average' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
         #Method #5 ----
@@ -231,6 +321,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
         
+        filter_by$Exceed_Num <- bad
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
@@ -250,6 +342,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
         
+        filter_by$Exceed_Num <- bad
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10%' &
@@ -265,7 +359,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)), #added 9-13
                         bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
-                        bad_year = ifelse(sum/day_row>=0.1, 1, 0))
+                        bad_year = ifelse(sum/day_row>=0.1, 1, 0),
+                        max_freq = max(sum/day_row, na.rm = T))
         
         bad_tot <- results %>%
           dplyr::ungroup() %>%
@@ -274,6 +369,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         bad_sum <- sum(bad_tot$bad_year)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
         
@@ -291,11 +388,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::mutate(day_row = n(),
                         bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
-                        bad_year = ifelse(sum/day_row>=0.1, 1, 0))
+                        bad_year = ifelse(sum/day_row>=0.1, 1, 0),
+                        max_freq = max(sum/day_row, na.rm = T))
         
         bad_tot <- results %>% dplyr::ungroup() %>% dplyr::select(year, bad_year) %>% unique()
         bad_sum <- sum(bad_tot$bad_year)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
         
@@ -312,11 +412,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::mutate(day_row = n(),
                         bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
-                        bad_year = ifelse(sum/day_row>=0.1, 1, 0))
+                        bad_year = ifelse(sum/day_row>=0.1, 1, 0),
+                        max_freq = max(sum/day_row, na.rm = T))
         
         bad_tot <- results %>% dplyr::ungroup() %>% dplyr::select(year, bad_year) %>% unique()
         bad_sum <- sum(bad_tot$bad_year)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
         
@@ -333,11 +436,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)), #added 9-13
                         bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
-                        bad_year = ifelse(sum/day_row>=0.1, 1, 0))
+                        bad_year = ifelse(sum/day_row>=0.1, 1, 0),
+                        max_freq = max(sum/day_row, na.rm = T))
         
         bad_tot <- results %>% dplyr::ungroup() %>% dplyr::select(year, bad_year) %>% unique()
         bad_sum <- sum(bad_tot$bad_year)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
       } else if(filter_by$Directionality == 'Minimum' & filter_by$Frequency == '10%' &
@@ -354,11 +460,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 10/29
           dplyr::ungroup() %>% #added 10/29
           dplyr::mutate(sum = sum(bad_samp),
-                        bad_year = ifelse(sum/day_row>=0.1, 1, 0))
+                        bad_year = ifelse(sum/day_row>=0.1, 1, 0),
+                        max_freq = max(sum/day_row, na.rm = T))
         
         bad_tot <- results %>% dplyr::ungroup() %>% dplyr::select(year, bad_year) %>% unique()
         bad_sum <- sum(bad_tot$bad_year)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10%' &
@@ -375,11 +484,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 10/29
           dplyr::ungroup() %>% #added 10/29
           dplyr::mutate(sum = sum(bad_samp),
-                        bad_year = ifelse(sum/day_row>=0.1, 1, 0))
+                        bad_year = ifelse(sum/day_row>=0.1, 1, 0),
+                        max_freq = max(sum/day_row, na.rm = T))
         
         bad_tot <- results %>% dplyr::ungroup() %>% dplyr::select(year, bad_year) %>% unique()
         bad_sum <- sum(bad_tot$bad_year)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10%' &
@@ -391,11 +503,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::mutate(num_samples = n(),
                         bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
-                        bad_year = ifelse(sum/num_samples>=0.1, 1, 0))
+                        bad_year = ifelse(sum/num_samples>=0.1, 1, 0),
+                        max_freq = max(sum/num_samples, na.rm = T))
         
         bad_tot <- results %>% dplyr::select(year, bad_year) %>% unique()
         bad_sum <- sum(bad_tot$bad_year)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')  
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
@@ -409,6 +524,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
@@ -427,6 +544,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
@@ -444,6 +563,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
@@ -462,6 +583,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
@@ -491,10 +614,13 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                         #Calculate exceedance frequency
                         Exceed_Freq = Exceedances/num_samples_3yrs,
                         #Determine if exceedance criteria met
-                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
+                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0),
+                        max_freq = max(Exceedances/num_samples_3yrs, na.rm = T)) 
         
         bad_sum <- sum(bad_tot$tot_exceed)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
@@ -526,17 +652,19 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                         #Calculate exceedance frequency
                         Exceed_Freq = Exceedances/num_samples_3yrs,
                         #Determine if exceedance criteria met
-                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
+                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0),
+                        max_freq = max(Exceedances/num_samples_3yrs, na.rm = T)) 
         
         bad_sum <- sum(bad_tot$tot_exceed)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == '>=2 exceedances and >5% exceedance frequency in 3 year period' &
                 filter_by$Duration == '96-hour arithmetic average' & is.na(filter_by$Magnitude_Numeric) == F){
         #Method #20 ----
-        #PROBLEM HERE
         #Maximum, >=2 exceedances and >5% exceedance frequency in 3 year period, 96 hour average, magnitude listed
         
         results <- filt %>%
@@ -562,10 +690,13 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                         #Calculate exceedance frequency
                         Exceed_Freq = Exceedances/num_samples_3yrs,
                         #Determine if exceedance criteria met
-                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
+                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0),
+                        max_freq = max(Exceedances/num_samples_3yrs, na.rm = T)) 
         
         bad_sum <- sum(bad_tot$tot_exceed)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
@@ -585,6 +716,8 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
@@ -618,10 +751,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                         #Calculate exceedance frequency
                         Exceed_Freq = Exceedances/num_samples_3yrs,
                         #Determine if exceedance criteria met
-                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
+                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0),
+                        max_freq = ifelse(max(Exceedances/num_samples_3yrs) == -Inf,
+                                          NA,max(Exceedances/num_samples_3yrs))) 
         
         bad_sum <- sum(bad_tot$tot_exceed)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
@@ -653,10 +790,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                         #Calculate exceedance frequency
                         Exceed_Freq = Exceedances/num_samples_3yrs,
                         #Determine if exceedance criteria met
-                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
+                        tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0),
+                        max_freq = ifelse(max(Exceedances/num_samples_3yrs) == -Inf,
+                                          NA,max(Exceedances/num_samples_3yrs))) 
         
         bad_sum <- sum(bad_tot$tot_exceed)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
@@ -675,11 +816,15 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
         
+        filter_by$Exceed_Num <- bad_sum
+        filter_by$Exceed_Freq <- NA
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         
       } else {
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- 'Method not coded!'
       }
       
@@ -710,7 +855,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
                                            'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
-    dplyr::relocate(Exceed, .after = last_col())
+    dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
   
   return(data_suff_WQS)
   
@@ -843,6 +988,8 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
         #Mark result as insufficient if no hardness available
         if(nrow(hardness) == 0) {
           filter_by$AUID_ATTNS <- i
+          filter_by$Exceed_Num <- NA
+          filter_by$Exceed_Freq <- NA
           filter_by$Exceed <- "Insufficient hardness"
         } else {
           #Need to make magnitude for: Chromium (III), copper, lead, nickel, zinc - all chronic
@@ -925,10 +1072,13 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
                           #Calculate exceedance frequency
                           Exceed_Freq = Exceedances/num_samples_3yrs,
                           #Determine if exceedance criteria met
-                          tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
+                          tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0),
+                          max_freq = max(Exceedances/num_samples_3yrs, na.rm = T)) 
           
           bad_sum <- sum(bad_tot$tot_exceed)
           
+          filter_by$Exceed_Num <- bad_sum
+          filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
           filter_by$AUID_ATTNS <- i
           filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         } 
@@ -958,6 +1108,8 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
         #Mark result as insufficient if no hardness available
         if(nrow(hardness) == 0) {
           filter_by$AUID_ATTNS <- i
+          filter_by$Exceed_Num <- NA
+          filter_by$Exceed_Freq <- NA
           filter_by$Exceed <- "Insufficient hardness"
         } else {
           if(filter_by$Constituent == 'Chromium (III)'){
@@ -1030,11 +1182,15 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           
           bad_sum <- sum(bad_tot$bad_samp)
           
+          filter_by$Exceed_Num <- bad_sum
+          filter_by$Exceed_Freq <- NA
           filter_by$AUID_ATTNS <- i
           filter_by$Exceed <- ifelse(bad_sum > 1, 'Yes', 'No')
         } #End of hardness check
       } else {
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- 'Method not coded!'
       } #End of methods if/else
       
@@ -1060,7 +1216,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #dec added Use Description
                                            'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
-    dplyr::relocate(Exceed, .after = last_col())
+    dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
   
   return(data_suff_WQS)
 } #End of hardness dependent function
@@ -1126,7 +1282,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
     print(i) # print name of current AU
     
     # dplyr::filter data
-    df_subset <- input_samples_filtered_relevant %>% #CHANGE to input_samples_filtered_relevant
+    df_subset <- input_samples_filtered_relevant %>% 
       dplyr::filter(AUID_ATTNS == i) %>%
       dplyr::mutate(year = year(ActivityStartDate),
                     month = month(ActivityStartDate),
@@ -1237,6 +1393,9 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
           bad_sum <- sum(bad_tot$bad_samp)
           
+          filter_by$Exceed_Num <- bad_sum
+          filter_by$Exceed_Freq <- NA
+          
           filter_by$AUID_ATTNS <- i
           filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         }
@@ -1280,6 +1439,8 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
         
         if(nrow(match_dates) == 0) {
           filter_by$AUID_ATTNS <- i
+          filter_by$Exceed_Num <- NA
+          filter_by$Exceed_Freq <- NA
           filter_by$Exceed <- 'Insufficient dependent data'
         } else {
           #Calculate the min() part of the equation from Toxics Manual Appendix D
@@ -1313,10 +1474,13 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
                           #Calculate exceedance frequency
                           Exceed_Freq = Exceedances/num_samples_3yrs,
                           #Determine if exceedance criteria met
-                          tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0)) 
+                          tot_exceed = ifelse(Exceedances == 1 & Exceed_Freq >= 0.05, 1, 0),
+                          max_freq = max(Exceedances/num_samples_3yrs, na.rm = T)) 
           
           bad_sum <- sum(bad_tot$tot_exceed)
           
+          filter_by$Exceed_Num <- bad_sum
+          filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
           filter_by$AUID_ATTNS <- i
           filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         }
@@ -1350,6 +1514,8 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           
           if(nrow(joined) == 0) {
             filter_by$AUID_ATTNS <- i
+            filter_by$Exceed_Num <- NA
+            filter_by$Exceed_Freq <- NA
             filter_by$Exceed <- 'Insufficient dependent data'
           } else {
             
@@ -1429,6 +1595,8 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           
           if(nrow(joined) == 0) {
             filter_by$AUID_ATTNS <- i
+            filter_by$Exceed_Num <- NA
+            filter_by$Exceed_Freq <- NA
             filter_by$Exceed <- 'Insufficient dependent data'
           } else {
             
@@ -1445,6 +1613,8 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
             bad_sum <- sum(bad_tot$bad_samp)
             
             filter_by$AUID_ATTNS <- i
+            filter_by$Exceed_Num <- bad_sum
+            filter_by$Exceed_Freq <- NA
             filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
           }
           
@@ -1524,6 +1694,8 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
         
         if(nrow(joined) == 0) {
           filter_by$AUID_ATTNS <- i
+          filter_by$Exceed_Num <- NA
+          filter_by$Exceed_Freq <- NA
           filter_by$Exceed <- 'Insufficient dependent data'
         } else {
           
@@ -1539,11 +1711,15 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
           bad_sum <- sum(bad_tot$bad_samp)
           
+          filter_by$Exceed_Num <- bad_sum
+          filter_by$Exceed_Freq <- NA
           filter_by$AUID_ATTNS <- i
           filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
         } 
       } else {
         filter_by$AUID_ATTNS <- i
+        filter_by$Exceed_Num <- NA
+        filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- 'Method not coded!'
       } #End of methods if/else
       
@@ -1566,7 +1742,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added use description
                                            'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
-    dplyr::relocate(Exceed, .after = last_col())
+    dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
   
   return(data_suff_WQS)
 } #End of pH dependent function
