@@ -329,7 +329,7 @@ data_16 <- data_15 %>%
 # censored data are retained in this dataset.
 
 #Units check - compare sample units to WQS units
-wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250130.csv') %>% 
+wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250129.csv') %>% 
   select(TADA.Constituent, Units) %>%
   unique() %>%
   na.omit() %>%
@@ -516,8 +516,8 @@ data_18 <- data_16d %>%
   select(OrganizationIdentifier
          ,ActivityStartDate
          ,MonitoringLocationIdentifier
-         ,MonitoringLocationName
-         ,MonitoringLocationTypeName
+         ,TADA.MonitoringLocationName
+         ,TADA.MonitoringLocationTypeName
          ,TADA.CharacteristicName
          ,TADA.ResultMeasureValue
          ,TADA.ResultMeasure.MeasureUnitCode
