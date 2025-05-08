@@ -1,4 +1,4 @@
-?OrganizationIdentifier,MonitoringLocationIdentifier,ML_ID,ML_Name,Latitude,Longitude,HUC10_ID,Name_AU,AUID_ATTNS,Type,NavStatus
+OrganizationIdentifier,MonitoringLocationIdentifier,ML_ID,ML_Name,Latitude,Longitude,HUC10_ID,Name_AU,AUID_ATTNS,Type,NavStatus
 21AKBCH,21AKBCH-AK103349,AK103349,Hoonah Beach-Gartina Harbor Way,58.10583333,-135.4425,1901021109,Garteeni Harbor Way beach,AK_B_1021109_003,Marine,Navigable
 21AKBCH,21AKBCH-AK168123,AK168123,Ketchikan - MtnPt Surprise Beach,55.29353,-131.5475,1901010208,Mountain Pt Surprise Beach,AK_B_1010208_002,Beach,Navigable
 21AKBCH,21AKBCH-AK212340,AK212340,Ketchikan - Sunset,55.41261,-131.76505,1901010204,Sunset Beach,AK_B_1010204_003,Beach,Navigable
