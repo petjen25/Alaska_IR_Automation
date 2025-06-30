@@ -10,8 +10,8 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240819.csv') 
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240819.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250630.csv') 
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250630.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250129.csv')
 
 #Remove insufficient data combinations to lessen mdf analysis
@@ -135,12 +135,12 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
           filter(freq >= 0.1) %>%
           pull(w_year)
         
-        ### >>> IMPAIRMENT RULE <<< ###
+        ###IMPAIRMENT RULE###
         all_exceed_years <- union(geo_exceed_years, pct_exceed_years)
         unique_years_exceeded <- length(unique(all_exceed_years))
         impaired <- ifelse(unique_years_exceeded >= 2, "Yes", "No")
         
-        ### >>> FORMAT RESULTS <<< ###
+        ###FORMAT RESULTS###
         for (crit_row in list(crit1, crit2)) {
           if (nrow(crit_row) == 0) next
           counter <- counter + 1
@@ -166,11 +166,11 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
     }
   }
   
-  # Final tidy output
+  #Final output
   df_pathogen_assess <- bind_rows(output_list) %>%
     distinct()
   
   return(df_pathogen_assess)
 }
 
-t <- MagDurFreq_pathogens(input_samples_filtered, wqs_crosswalk)
+pathogens_output <- MagDurFreq_pathogens(input_samples_filtered, wqs_crosswalk)

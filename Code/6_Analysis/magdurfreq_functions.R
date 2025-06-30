@@ -356,7 +356,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                 filter_by$Duration == 'Daily average'){
         #Method #7 ----
         #Maximum, 10% of samples, daily arithmetic mean
-        
+        #####CHECK RESULTS HERE!!!!!!!!!!
         results <- filt %>%
           dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
           dplyr::group_by(ActivityStartDate) %>%
@@ -1768,6 +1768,7 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turb
   output <- standard_output %>%
     rbind(hardness_output) %>%
     rbind(pH_output) %>%
+    rbind(pathogens_output) %>%
     rbind(turbidity_output) %>% #BINOMIAL TEST
     dplyr::mutate(`Constituent Group` = ifelse(
       is.na(`Constituent Group`),

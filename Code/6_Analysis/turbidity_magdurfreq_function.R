@@ -8,15 +8,19 @@ library(tidyverse)
 set.seed(42)
 
 #Load in data
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240819.csv') 
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240819.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250630.csv') 
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250630.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250129.csv')
 
 
 #Create reference site table for analysis
 #Reference table is blank for example
+
+#Site to site comparison would be MLID mean to MLID, but watershed comparison
+#would be AUID mean to MLID or AUID!!!!!!!!!!!!
 reference_sites <- tibble(AUID_ATTNS = NA,
-                          ReferenceSites = NA)
+                          ReferenceSites = NA,
+                          Upstream_Downstream = 'Upstream')
 
 #Remove insufficient data combinations to lessen mdf analysis
 filterCat3samples <- function(data_samples, data_sufficiency) {
@@ -37,7 +41,7 @@ input_samples_filtered <- filterCat3samples(data_samples = input_samples, data_s
 
 
 #Function to output list of AUs with sufficient turbidity and their monitoring locations
-
+#ADD MANUAL INPUT INTO REFERENCE SITE -> UPSTREAM/DOWNSTREAM!!!!!!!
 findTurbidityReferenceSites <- function(input_samples_filtered) {
   
   #Find all AUs with sufficient turbidity
@@ -57,7 +61,7 @@ findTurbidityReferenceSites <- function(input_samples_filtered) {
 
 list_of_needed_sites <- findTurbidityReferenceSites(input_samples_filtered)
 
-
+#FUNCTION WOULDN'T LET REFERENCE SITE AND TEST SITE BE IN SAME AUID - FIX!!!!!!!
 #Turbidity Function
 MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency, reference_sites) {
   
