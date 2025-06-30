@@ -18,14 +18,16 @@ aswu_data_pull <- TADA_DataRetrieval(startDate = startDate,
                                      endDate = endDate,
                                      siteType = 'Aggregate surface-water-use',
                                      statecode = 'AK',
-                                     applyautoclean = T)
+                                     applyautoclean = T,
+                                     ask = F)
 
 #Estuary
 est_data_pull <- TADA_DataRetrieval(startDate = startDate,
                                     endDate = endDate,
                                     siteType = 'Estuary',
                                     statecode = 'AK',
-                                    applyautoclean = T)
+                                    applyautoclean = T,
+                                    ask = F)
 
 
 #Lake, Reservoir, Impoundment
@@ -33,7 +35,8 @@ lri_data_pull <- TADA_DataRetrieval(startDate = startDate,
                                     endDate = endDate,
                                     siteType = 'Lake, Reservoir, Impoundment',
                                     statecode = 'AK',
-                                    applyautoclean = T)
+                                    applyautoclean = T,
+                                    ask = F)
 
 
 #Ocean
@@ -41,7 +44,8 @@ ocean_data_pull <- TADA_DataRetrieval(startDate = startDate,
                                       endDate = endDate,
                                       siteType = 'Ocean',
                                       statecode = 'AK',
-                                      applyautoclean = T)
+                                      applyautoclean = T,
+                                      ask = F)
 
 
 #Stream
@@ -49,7 +53,8 @@ stream_data_pull <- TADA_DataRetrieval(startDate = startDate,
                                        endDate = endDate,
                                        siteType = 'Stream',
                                        statecode = 'AK',
-                                       applyautoclean = T)
+                                       applyautoclean = T,
+                                       ask = F)
 
 all <- est_data_pull %>%
   rbind(lri_data_pull) %>%
