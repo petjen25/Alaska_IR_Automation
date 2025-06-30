@@ -104,16 +104,18 @@ data_7 <- TADA_FlagMethod(data_5b, clean = F)
 # TADA.MultipleOrgDuplicate
 # TADA.MultipleOrgDupGroupID
 # TADA.ResultSelectedMultipleOrgs
-data_8a <- TADA_FindPotentialDuplicatesMultipleOrgs(data_7, dist_buffer = 50) # Buffer distance can be changed.
+#HF commented out due to TADA error
+# data_8a <- TADA_FindPotentialDuplicatesMultipleOrgs(data_7, dist_buffer = 50) # Buffer distance can be changed.
 
 # This function adds the following columns to the dataframe:
 # TADA.SingleOrgDupGroupID
 # TADA.SingleOrgDup.Flag
-data_8b <- TADA_FindPotentialDuplicatesSingleOrg(data_8a)
+#HF commented out due to TADA error
+# data_8b <- TADA_FindPotentialDuplicatesSingleOrg(data_8a)
 
 #####9. Find QC samples#####
 # This function adds the TADA.ActivityType.Flag to the dataframe.
-data_9 <- TADA_FindQCActivities(data_8b, clean = F)
+data_9 <- TADA_FindQCActivities(data_7, clean = F)
 
 #####10. Flag invalid coordinates#####
 # This function adds the TADA.InvalidCoordinates.Flag to the dataframe.
@@ -321,7 +323,7 @@ data_16 <- data_15 %>%
          & TADA.MethodSpeciation.Flag != "Suspect") %>% # Step 3
   filter(TADA.AnalyticalMethod.Flag != "Rejected") %>% 
 #         & TADA.AnalyticalMethod.Flag != "Suspect") %>% # Step 7
-  filter(TADA.SingleOrgDup.Flag == "Unique")%>% # Step 8
+  # filter(TADA.SingleOrgDup.Flag == "Unique")%>% # Step 8
   filter(TADA.ActivityType.Flag == 'Non_QC') %>% # Step 9
   filter(TADA.MeasureQualifierCode.Flag != 'Suspect'
          & TADA.MeasureQualifierCode.Flag != 'Reject') %>% # Step 11
@@ -411,7 +413,10 @@ data_16c <- data_16b %>%
                                                           'SU',
                                                         is.na(TADA.ResultMeasure.MeasureUnitCode) & # dec added 7-30-24
                                                           Units == 'SU'~#dec added 7-30-24
-                                                          'SU',#dec added 7-30-24
+                                                          'SU',#dec added 7-30-24,
+                                                        TADA.ResultMeasure.MeasureUnitCode == 'DEG C' &
+                                                          Units == 'DEGREES C' ~
+                                                          'DEGREES C',
                                                         T ~ TADA.ResultMeasure.MeasureUnitCode)) #dec added 7-30-24
 
 
@@ -455,7 +460,7 @@ myPal <- c("Lake, Reservoir, Impoundment" = "#7fc97f"
 
 data_4loop <- data_16d %>% #DEC change to 16d from 16. 16 removed from environment above#
   filter(!is.na(TADA.ResultMeasureValue))%>% # remove NA values
-  select(MonitoringLocationTypeName, TADA.CharacteristicName
+  select(TADA.MonitoringLocationTypeName, TADA.CharacteristicName
          , TADA.ResultMeasureValue, TADA.ResultMeasure.MeasureUnitCode) %>% 
   mutate(TADA.ResultMeasureValue_Log10 = case_when((TADA.ResultMeasureValue == 0)~ log10(0.01)
                                                    , TRUE ~ log10(TADA.ResultMeasureValue)))
@@ -469,9 +474,9 @@ for(i in Unique_CharName){
     filter(TADA.CharacteristicName == i)
   
   #boxplot
-  plot <- ggplot(data = df_subset, aes(x = MonitoringLocationTypeName
+  plot <- ggplot(data = df_subset, aes(x = TADA.MonitoringLocationTypeName
                                        , y = TADA.ResultMeasureValue
-                                       , fill = MonitoringLocationTypeName))+
+                                       , fill = TADA.MonitoringLocationTypeName))+
     geom_boxplot()+
     labs(y = df_subset$TADA.ResultMeasure.MeasureUnitCode
          , title = df_subset$TADA.CharacteristicName)+
@@ -484,9 +489,9 @@ for(i in Unique_CharName){
   counter <- counter + 1
   
   #log boxplot
-  logplot <- ggplot(data = df_subset, aes(x = MonitoringLocationTypeName
+  logplot <- ggplot(data = df_subset, aes(x = TADA.MonitoringLocationTypeName
                                           , y = TADA.ResultMeasureValue_Log10
-                                          , fill = MonitoringLocationTypeName))+
+                                          , fill = TADA.MonitoringLocationTypeName))+
     geom_boxplot()+
     labs(y = paste0(df_subset$TADA.ResultMeasure.MeasureUnitCode, " (Log10 Y-Axis)")
          , title = df_subset$TADA.CharacteristicName)+
@@ -581,17 +586,12 @@ data_19_long <- left_join(data_16d, df_ML_AU_Crosswalk
                                               | TADA.CharacteristicName ==  "TOTAL HARDNESS") ~ "HARDNESS"
                                              , TRUE ~ TADA.CharacteristicName)) 
 
-#Export data summary
-write_csv(data_19_long, file = file.path('Output/data_processing'
-                                         , paste0("WQ_data_trimmed_long_withAU"
-                                                  ,myDate, ".csv"))
-          , na = "")
 
 # interactive map for all monitoring locations
 ## subset data to unique ML info
 df_ML <- data_19 %>% 
-  select(OrganizationIdentifier, MonitoringLocationIdentifier, MonitoringLocationName
-         , MonitoringLocationTypeName, TADA.LatitudeMeasure
+  select(OrganizationIdentifier, MonitoringLocationIdentifier, TADA.MonitoringLocationName
+         , TADA.MonitoringLocationTypeName, TADA.LatitudeMeasure
          , TADA.LongitudeMeasure) %>% 
   distinct()
 
@@ -619,12 +619,12 @@ map <- leaflet() %>%
   addCircleMarkers(data = df_ML, lat = ~TADA.LatitudeMeasure
                    , lng = ~TADA.LongitudeMeasure
                    , popup = paste("MonitoringLocationIdentifier:", df_ML$MonitoringLocationIdentifier, "<br>"
-                                   ,"MonitoringLocationName:", df_ML$MonitoringLocationName, "<br>"
+                                   ,"MonitoringLocationName:", df_ML$TADA.MonitoringLocationName, "<br>"
                                    ,"OrganizationIdentifier:", df_ML$OrganizationIdentifier, "<br>"
-                                   ,"MonitoringLocationTypeName:", df_ML$MonitoringLocationTypeName)
-                   , color = "black", fillColor = ~pal(MonitoringLocationTypeName), fillOpacity = 1, stroke = TRUE
+                                   ,"MonitoringLocationTypeName:", df_ML$TADA.MonitoringLocationTypeName)
+                   , color = "black", fillColor = ~pal(TADA.MonitoringLocationTypeName), fillOpacity = 1, stroke = TRUE
   )%>%
-  addLegend("bottomright", pal = pal, values = df_ML$MonitoringLocationTypeName,
+  addLegend("bottomright", pal = pal, values = df_ML$TADA.MonitoringLocationTypeName,
             title = "ML Type", opacity = 1)
 
 map # view map
@@ -1091,12 +1091,13 @@ data_22a <- data_21 %>%
                                               | TADA.CharacteristicName ==  "TOTAL HARDNESS") ~ "HARDNESS"
                                              , TRUE ~ TADA.CharacteristicName))
 
+
 # deal with TAH and TAqH
 # NOTE: TAH and TAqH summation does not account for non-detects.
 df_TAH <- data_22a %>% 
   filter(TADA.CharacteristicName %in% TAH) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
-           , MonitoringLocationName, MonitoringLocationTypeName
+           , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
            , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus
@@ -1104,7 +1105,7 @@ df_TAH <- data_22a %>%
            , TADA.ResultSampleFractionText, TADA.ResultSampleFractionText_new) %>%
   summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
-           , MonitoringLocationName, MonitoringLocationTypeName
+           , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
            , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus) %>%
@@ -1119,7 +1120,7 @@ df_TAH <- data_22a %>%
 df_TAqH <- data_22a %>% 
   filter(TADA.CharacteristicName %in% TAqH) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
-           , MonitoringLocationName, MonitoringLocationTypeName
+           , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
            , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus
@@ -1127,7 +1128,7 @@ df_TAqH <- data_22a %>%
            , TADA.ResultSampleFractionText, TADA.ResultSampleFractionText_new) %>%
   summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
-           , MonitoringLocationName, MonitoringLocationTypeName
+           , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
            , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus) %>%
@@ -1140,6 +1141,11 @@ df_TAqH <- data_22a %>%
          , TADA.ResultSampleFractionText_new = "TOTAL")
 
 data_22a <- rbind(data_22a, df_TAH, df_TAqH)
+
+write_csv(data_22a, file = file.path('Output/data_processing'
+                                     , paste0("WQ_data_trimmed_long_withAU"
+                                              ,myDate, ".csv"))
+          , na = "")
 
 # clean environment
 rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constituents
@@ -1155,10 +1161,10 @@ data_22b <- data_22a %>%
          ActivityStartMonth = month(ActivityStartDate),
          ActivityWaterYear = ifelse(ActivityStartMonth < 10, ActivityStartYear
                                     , ActivityStartYear+1)) %>% 
-  select(AUID_ATTNS, Name_AU, MonitoringLocationTypeName, AU_Type, ActivityWaterYear, ActivityStartDate
+  select(AUID_ATTNS, Name_AU, TADA.MonitoringLocationTypeName, AU_Type, ActivityWaterYear, ActivityStartDate
          , TADA.CharacteristicName, TADA.ResultMeasureValue
          , TADA.ResultMeasure.MeasureUnitCode, TADA.ResultSampleFractionText_new) %>% 
-  group_by(AUID_ATTNS, Name_AU, MonitoringLocationTypeName, AU_Type
+  group_by(AUID_ATTNS, Name_AU, TADA.MonitoringLocationTypeName, AU_Type
            , TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode
            , TADA.ResultSampleFractionText_new) %>% 
   summarize(n_Samples = n()
