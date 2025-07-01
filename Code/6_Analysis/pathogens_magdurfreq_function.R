@@ -10,9 +10,9 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250630.csv') 
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250701.csv') 
 input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250630.csv')
-wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250129.csv')
+wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250429.csv')
 
 #Remove insufficient data combinations to lessen mdf analysis
 filterCat3samples <- function(data_samples, data_sufficiency) {
@@ -84,8 +84,10 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
       
       #Filter WQS crosswalk for this constituent and waterbody type
       relevant_criteria <- pathogen_criteria %>%
-        filter(TADA.Constituent == constituent,
-               `Waterbody Type` %in% unique(filt_df$AU_Type))
+        filter(
+          TADA.Constituent == constituent,
+          sapply(`Waterbody Type`, function(x) any(str_detect(x, filt_df$AU_Type)))
+        )
       
       #Skip if not enough criteria
       if (nrow(relevant_criteria) < 2) next
