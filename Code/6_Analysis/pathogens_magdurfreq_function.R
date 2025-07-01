@@ -56,7 +56,7 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
      select(!Magnitude_Text)
   
   pathogen_data <- input_samples_filtered %>%
-    filter(TADA.CharacteristicName %in% pathogen_criteria$TADA.Constituent) %>%
+    filter(TADA.CharacteristicName %in% unique(pathogen_criteria$TADA.Constituent)) %>%
     mutate(
       year = year(ActivityStartDate),
       month = month(ActivityStartDate),
@@ -93,8 +93,12 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
       
       if (nrow(relevant_criteria) < 2) next
       
-      for (u in unique(relevant_criteria$Use)) {
-        crit_set <- relevant_criteria %>% filter(Use == u)
+      unique_uses <- relevant_criteria %>% distinct(Use, `Use Description`)
+      
+      for (u in 1:nrow(unique_uses)) {
+        crit_set <- relevant_criteria %>%
+          filter(Use == unique_uses$Use[u]) %>%
+          filter(`Use Description` == unique_uses$`Use Description`[u])
         
         ###Criterion 1: Geomean###
         crit1 <- crit_set %>%
