@@ -53,9 +53,7 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
 
    pathogen_criteria <- wqs_crosswalk %>%
     filter(`Constituent Group` == "Bacteria") %>%
-    select(TADA.Constituent, `Waterbody Type`, Use, `Use Description`, Type, Fraction,
-           Directionality, Frequency, Duration, Details, Magnitude_Numeric) %>%
-    distinct()
+     select(!Magnitude_Text)
   
   pathogen_data <- input_samples_filtered %>%
     filter(TADA.CharacteristicName %in% pathogen_criteria$TADA.Constituent) %>%
@@ -65,10 +63,11 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
       w_year = ifelse(month < 10, year, year + 1)
     )
   
-  output_list <- list()
+  result_list <- list()
   counter <- 0
   
   for (auid in unique(pathogen_data$AUID_ATTNS)) {
+    print(auid)
     df <- pathogen_data %>% filter(AUID_ATTNS == auid)
     if (nrow(df) == 0) next
     
@@ -143,33 +142,45 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
         unique_years_exceeded <- length(unique(all_exceed_years))
         impaired <- ifelse(unique_years_exceeded >= 2, "Yes", "No")
         
+       
+        
         ###Format Output###
         for (crit_row in list(crit1, crit2)) {
           if (nrow(crit_row) == 0) next
           counter <- counter + 1
           
-          output_list[[counter]] <- tibble(
-            AUID_ATTNS = auid,
-            `TADA.Constituent` = constituent,
-            Fraction = crit_row$Fraction,
-            Type = crit_row$Type,
-            Use = crit_row$Use,
-            `Use Description` = crit_row$`Use Description`,
-            `Waterbody Type` = crit_row$`Waterbody Type`,
-            Directionality = crit_row$Directionality,
-            Frequency = crit_row$Frequency,
-            Duration = crit_row$Duration,
-            Details = crit_row$Details,
-            Exceed_Num = NA,
-            Exceed_Freq = NA,
-            Exceed = impaired
-          )
+          result_list[[counter]] <- crit_row %>%
+            mutate(AUID_ATTNS = auid,
+                   Exceed_Num = unique_years_exceeded,
+                   Exceed_Freq = NA,
+                   Exceed = impaired)
         }
       }
     }
   }
   
-  return(bind_rows(output_list) %>% distinct())
+  df_loop_results <- do.call("rbind", result_list) # combine results from for loop
+  df_AU_data_WQS <- as.data.frame(df_loop_results) # convert to data frame
+  df_AU_data_WQS <- df_AU_data_WQS %>% 
+    distinct()
+  
+  df_AU_data_WQS %>% dplyr::select(Exceed) %>% dplyr::group_by(Exceed) %>% dplyr::mutate(n = n()) %>% unique()
+  
+  #combine with relevant WQS table, removing the constituents that are calculated in other functions
+  #these constituents come back in the hardness, pH, and turbidity specific functions
+  relevant_suff <- input_sufficiency %>%
+    dplyr::filter(TADA.CharacteristicName %in% c('ESCHERICHIA COLI',
+                                                 'FECAL COLIFORM',
+                                                 'ENTEROCOCCUS'))
+  
+  data_suff_WQS <- df_AU_data_WQS %>%
+    dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
+    dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
+                                           'Fraction', 'Type'),
+                     relationship = "many-to-many") %>%
+    dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
+  
+  return(data_suff_WQS)
 }
 
 

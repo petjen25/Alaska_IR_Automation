@@ -12,8 +12,8 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20240819.csv') 
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20240819.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250701.csv') 
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250630.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250429.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
@@ -154,89 +154,13 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- 'Requires manual analysis'
       }
-      #Pull Pathogens out (Bacteria)
-      else if(filter_by$`Constituent Group` == 'Bacteria') {
-        
-        if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
-           filter_by$Duration == '30-day period' &
-           stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
-          #Pathogen method #1----
-          #Calculates results for 30-day rolling period for all samples - no year requirement
-          results <- filt %>%
-            #Group into 2-year water year periods
-            dplyr::mutate(RollingPeriod = paste0(w_year - 1, "-", w_year)) %>%
-            dplyr::arrange(RollingPeriod, ActivityStartDate, ActivityStartTime.Time) %>%
-            dplyr::group_by(RollingPeriod) %>%
-            dplyr::mutate(Exceed = purrr::map_chr(ActivityStartDate, function(current_date) {
-              window_values <- TADA.ResultMeasureValue[ActivityStartDate >= (current_date - 30) & ActivityStartDate <= current_date]
-              if (length(window_values) >= 5) {
-                if (psych::geometric.mean(window_values) >= filter_by$Magnitude_Numeric) {
-                  'Yes'
-                } else {
-                  'No'
-                }
-              } else {
-                'No'  #Not enough samples = 'No' exceedance
-              }})) %>%
-            dplyr::ungroup()
-          
-          filter_by$AUID_ATTNS <- i
-          
-          bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
-          
-          filter_by$Exceed_Num <- bad
-          filter_by$Exceed_Freq <- NA
-          filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
-          
-           } 
-        else if (filter_by$Directionality == 'Maximum' & filter_by$Frequency == '10% of samples' &
-                 filter_by$Duration == 'Water year average') {
-          #Pathogen method #2----
-          results <- filt %>%
-            #Group into 2-year water year periods
-            dplyr::mutate(RollingStart = w_year - 1,
-                          RollingEnd = w_year,
-                          RollingPeriod = paste0(RollingStart, "-", RollingEnd)) %>%
-            dplyr::group_by(RollingPeriod) %>%
-            dplyr::mutate(wyear_row = n(),
-                          bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0),
-                          sum = sum(bad_samp),
-                          bad_year = ifelse(sum/wyear_row>=0.1, 1, 0),
-                          max_freq = max(sum/wyear_row, na.rm = T))
-          
-          bad_tot <- results %>% dplyr::select(RollingPeriod, bad_year) %>% unique()
-          bad_sum <- sum(bad_tot$bad_year)
-          
-          filter_by$AUID_ATTNS <- i
-          filter_by$Exceed_Num <- NA
-          filter_by$Exceed_Freq <- max(results$max_freq, na.rm = T)
-          filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-        }
-        else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
-                filter_by$Duration == 'Water year average' &
-                stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
-          #Pathogen method #3----
-          results <- filt %>%
-            dplyr::group_by(w_year) %>%
-            dplyr::mutate(Exceed = if_else(psych::geometric.mean(TADA.ResultMeasureValue, na.rm = TRUE) >= filter_by$Magnitude_Numeric,
-              'Yes','No')) %>%
-            dplyr::ungroup()
-          
-          filter_by$AUID_ATTNS <- i
-          
-          bad <- nrow(dplyr::filter(results, Exceed == 'Yes'))
-          
-          filter_by$Exceed_Num <- bad
-          filter_by$Exceed_Freq <- NA
-          filter_by$Exceed <- ifelse(bad > 0, 'Yes', 'No')
-        }
-      } 
+      
       else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
               filter_by$Duration == '30-day period' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
         #Method #1 ----
         #Maximum, not to exceed, 30-day geometric mean
         results <- filt %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::mutate(geo_mean_30d = zoo::rollapplyr(TADA.ResultMeasureValue, 
                                                        seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
                                                        psych::geometric.mean),
@@ -287,7 +211,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         filter_by$AUID_ATTNS <- i
         filter_by$Exceed_Num <- NA
-        filter_by$Exceed_Freq <- max(result$max_freq)
+        filter_by$Exceed_Freq <- max(results$max_freq)
         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
       } else if(filter_by$Directionality == 'Not to exceed' & filter_by$Frequency == 'Not to exceed' &
                 filter_by$Duration == '30-day period' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T){
@@ -295,7 +219,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Not to exceed, 30 day geometric mean
         
         results <- filt %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::mutate(geo_mean_30d = zoo::rollapplyr(TADA.ResultMeasureValue, 
                                                        seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
                                                        psych::geometric.mean),
@@ -316,7 +240,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Maximum, not to exceed, geometric mean for water year
         
         results <- filt %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(w_year) %>%
           dplyr::mutate(geo_mean_year = psych::geometric.mean(TADA.ResultMeasureValue),
                         Exceed = ifelse(geo_mean_year >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
@@ -337,7 +261,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Maximum, not to exceed, daily arithmetic mean
         
         results <- filt %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue),
                         Exceed = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
@@ -358,7 +282,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Maximum, 10% of samples, daily arithmetic mean
         #####CHECK RESULTS HERE!!!!!!!!!!
         results <- filt %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 9-13
@@ -387,7 +311,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         results <- filt %>%
           dplyr::filter(TADA.ActivityDepthHeightMeasure.MeasureValue <= 1) %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
           unique() %>%
@@ -411,7 +335,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Minimum, 10%, daily arithmetic mean
         
         results <- filt %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
           unique() %>%
@@ -435,7 +359,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Minimum, 10%, daily arithmetic mean
         
         results <- filt %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 9-13
@@ -458,7 +382,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Minimum, 10%, daily minimum
         
         results <- filt %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_min = min(TADA.ResultMeasureValue)) %>%
           dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)),
@@ -482,7 +406,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Maximum, 10%, daily Maximum
         
         results <- filt %>%
-          dplyr::arrange(ActivityStartDate, ActivityStartTime.Time) %>%
+          dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(daily_max = max(TADA.ResultMeasureValue)) %>%
           dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)),
@@ -861,14 +785,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
                                            'Fraction', 'Type'),
                      relationship = "many-to-many") %>%
-    dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col()) %>%
-  #Pathogen pairing exception -> if one criteria is exceeded, then both are exceeded
-    group_by(AUID_ATTNS, TADA.CharacteristicName, Fraction, `Waterbody Type`, Use,
-             `Use Description`) %>%
-    dplyr::mutate(Exceed = case_when(`Constituent Group` == 'Bacteria' &
-                                        any(Exceed == 'Yes', na.rm = TRUE) ~ 'Yes',
-                                     T ~ Exceed)) %>%
-    ungroup()
+    dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
   
   return(data_suff_WQS)
   
@@ -878,6 +795,11 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
 output <- MagDurFreq(wqs_crosswalk, input_samples_filtered, input_sufficiency)
 
 
+dfList <- list(output, pathogens_output)
+dfColList <- lapply(dfList,names)
+commonCols <- Reduce(intersect,dfColList)
+
+!colnames(pathogens_output) %in% colnames(output)
 
 MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency) {
   ##Magnitude, Frequency, Duration
@@ -991,7 +913,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           dplyr::filter(TADA.CharacteristicName == "HARDNESS") %>%
           dplyr::rename(Hardness = TADA.ResultMeasureValue,
                         Hardness.Date = ActivityStartDate) %>%
-          dplyr::select(Hardness.Date, ActivityStartTime.Time, AUID_ATTNS, Hardness) %>%
+          dplyr::select(Hardness.Date, AUID_ATTNS, Hardness) %>%
           dplyr::group_by(Hardness.Date) %>%
           dplyr::reframe(Hardness.Date = Hardness.Date,
                          Hardness = mean(Hardness)) %>%
@@ -1111,7 +1033,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           dplyr::filter(TADA.CharacteristicName == "HARDNESS") %>%
           dplyr::rename(Hardness = TADA.ResultMeasureValue,
                         Hardness.Date = ActivityStartDate) %>%
-          dplyr::select(Hardness.Date, ActivityStartTime.Time, AUID_ATTNS, Hardness)%>%
+          dplyr::select(Hardness.Date, AUID_ATTNS, Hardness)%>%
           dplyr::group_by(Hardness.Date) %>%
           dplyr::reframe(Hardness.Date = Hardness.Date,
                          Hardness = mean(Hardness)) %>%
@@ -1363,7 +1285,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           dplyr::filter(TADA.CharacteristicName == "PH") %>%
           dplyr::rename(pH = TADA.ResultMeasureValue,
                         pH.Date = ActivityStartDate) %>%
-          dplyr::select(pH.Date, ActivityStartTime.Time, AUID_ATTNS, pH) %>%
+          dplyr::select(pH.Date, AUID_ATTNS, pH) %>%
           dplyr::group_by(pH.Date) %>%
           dplyr::reframe(pH.Date = pH.Date,
                          pH = mean(pH)) %>%
@@ -1424,7 +1346,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           dplyr::filter(TADA.CharacteristicName == "PH") %>%
           dplyr::rename(pH = TADA.ResultMeasureValue,
                         pH.Date = ActivityStartDate) %>%
-          dplyr::select(pH.Date, ActivityStartTime.Time, AUID_ATTNS, pH) %>%
+          dplyr::select(pH.Date, AUID_ATTNS, pH) %>%
           dplyr::group_by(pH.Date) %>%
           dplyr::reframe(pH.Date = pH.Date,
                          pH = mean(pH)) %>%
@@ -1435,7 +1357,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           dplyr::filter(TADA.CharacteristicName == "TEMPERATURE, WATER") %>%
           dplyr::rename(temp = TADA.ResultMeasureValue,
                         temp.Date = ActivityStartDate) %>%
-          dplyr::select(temp.Date, ActivityStartTime.Time, AUID_ATTNS, temp) %>%
+          dplyr::select(temp.Date, AUID_ATTNS, temp) %>%
           dplyr::group_by(temp.Date) %>%
           dplyr::reframe(temp.Date = temp.Date,
                          temp = mean(temp)) %>%
@@ -1509,7 +1431,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           dplyr::filter(TADA.CharacteristicName == "PH") %>%
           dplyr::rename(pH = TADA.ResultMeasureValue,
                         pH.Date = ActivityStartDate) %>%
-          dplyr::select(pH.Date, ActivityStartTime.Time, AUID_ATTNS, pH) %>%
+          dplyr::select(pH.Date, AUID_ATTNS, pH) %>%
           dplyr::group_by(pH.Date) %>%
           dplyr::reframe(pH.Date = pH.Date,
                          pH = mean(pH)) %>%
@@ -1554,7 +1476,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
             dplyr::filter(TADA.CharacteristicName == "TEMPERATURE, WATER") %>%
             dplyr::rename(temp = TADA.ResultMeasureValue,
                           temp.Date = ActivityStartDate) %>%
-            dplyr::select(temp.Date, ActivityStartTime.Time, AUID_ATTNS, temp) %>%
+            dplyr::select(temp.Date, AUID_ATTNS, temp) %>%
             dplyr::group_by(temp.Date) %>%
             dplyr::reframe(temp.Date = temp.Date,
                            temp = mean(temp)) %>%
@@ -1566,7 +1488,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
             dplyr::filter(TADA.CharacteristicName == "SALINITY") %>%
             dplyr::rename(salinity = TADA.ResultMeasureValue,
                           salinity.Date = ActivityStartDate) %>%
-            dplyr::select(salinity.Date, ActivityStartTime.Time, AUID_ATTNS, salinity) %>%
+            dplyr::select(salinity.Date, AUID_ATTNS, salinity) %>%
             dplyr::group_by(salinity.Date) %>%
             dplyr::reframe(salinity.Date = salinity.Date,
                            salinity = mean(salinity)) %>%
@@ -1643,7 +1565,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           dplyr::filter(TADA.CharacteristicName == "PH") %>%
           dplyr::rename(pH = TADA.ResultMeasureValue,
                         pH.Date = ActivityStartDate) %>%
-          dplyr::select(pH.Date, ActivityStartTime.Time, AUID_ATTNS, pH) %>%
+          dplyr::select(pH.Date, AUID_ATTNS, pH) %>%
           dplyr::group_by(pH.Date) %>%
           dplyr::reframe(pH.Date = pH.Date,
                          pH = mean(pH)) %>%
@@ -1653,7 +1575,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           dplyr::filter(TADA.CharacteristicName == "TEMPERATURE, WATER") %>%
           dplyr::rename(temp = TADA.ResultMeasureValue,
                         temp.Date = ActivityStartDate) %>%
-          dplyr::select(temp.Date, ActivityStartTime.Time, AUID_ATTNS, temp) %>%
+          dplyr::select(temp.Date, AUID_ATTNS, temp) %>%
           dplyr::group_by(temp.Date) %>%
           dplyr::reframe(temp.Date = temp.Date,
                          temp = mean(temp)) %>%
@@ -1665,7 +1587,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           dplyr::filter(TADA.CharacteristicName == "SALINITY") %>%
           dplyr::rename(salinity = TADA.ResultMeasureValue,
                         salinity.Date = ActivityStartDate) %>%
-          dplyr::select(salinity.Date, ActivityStartTime.Time, AUID_ATTNS, salinity) %>%
+          dplyr::select(salinity.Date, AUID_ATTNS, salinity) %>%
           dplyr::group_by(salinity.Date) %>%
           dplyr::reframe(salinity.Date = salinity.Date,
                          salinity = mean(salinity)) %>%
