@@ -49,54 +49,55 @@ input_samples_filtered <- filterCat3samples(data_samples = input_samples,
                                         'ENTEROCOCCUS'))
 
 
-
 MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
-  
-  #Filter to pathogen-related rows in WQS table
-  pathogen_criteria <- wqs_crosswalk %>%
+
+   pathogen_criteria <- wqs_crosswalk %>%
     filter(`Constituent Group` == "Bacteria") %>%
     select(TADA.Constituent, `Waterbody Type`, Use, `Use Description`, Type, Fraction,
            Directionality, Frequency, Duration, Details, Magnitude_Numeric) %>%
     distinct()
   
-  #Filter sample data to only pathogens
   pathogen_data <- input_samples_filtered %>%
     filter(TADA.CharacteristicName %in% pathogen_criteria$TADA.Constituent) %>%
     mutate(
       year = year(ActivityStartDate),
       month = month(ActivityStartDate),
       w_year = ifelse(month < 10, year, year + 1)
-      )
+    )
   
   output_list <- list()
   counter <- 0
   
-  #Loop over each AUID
   for (auid in unique(pathogen_data$AUID_ATTNS)) {
     df <- pathogen_data %>% filter(AUID_ATTNS == auid)
     if (nrow(df) == 0) next
     
+    my_AU_Type <- unique(df$AU_Type)
+    
+    # Incorporate AU_Type to Waterbody Type mapping logic
+    if (my_AU_Type %in% c("Beach", "Marine")) {
+      my_WtrBdy_Type <- "Marine"
+    } else if (my_AU_Type == "Lake") {
+      my_WtrBdy_Type <- "Freshwater"
+    } else {
+      my_WtrBdy_Type <- c("Freshwater", "Freshwater streams and rivers")
+    }
+    
     constituents <- unique(df$TADA.CharacteristicName)
     
-    #Loop over each constituent (e.g., E. coli, Enterococcus)
     for (constituent in constituents) {
       filt_df <- df %>% filter(TADA.CharacteristicName == constituent)
       
-      #Filter WQS crosswalk for this constituent and waterbody type
       relevant_criteria <- pathogen_criteria %>%
-        filter(
-          TADA.Constituent == constituent,
-          sapply(`Waterbody Type`, function(x) any(str_detect(x, filt_df$AU_Type)))
-        )
+        filter(TADA.Constituent == constituent,
+               `Waterbody Type` %in% my_WtrBdy_Type)
       
-      #Skip if not enough criteria
       if (nrow(relevant_criteria) < 2) next
       
-      #Loop over uses (e.g., Recreation, Water Supply)
       for (u in unique(relevant_criteria$Use)) {
         crit_set <- relevant_criteria %>% filter(Use == u)
         
-        ###CRITERION 1: GEOMETRIC MEAN IN 30-DAY PERIOD###
+        ###Criterion 1: Geomean###
         crit1 <- crit_set %>%
           filter(
             stringr::str_detect(tolower(Details), "geometric mean"),
@@ -121,7 +122,7 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
           distinct(w_year) %>%
           pull(w_year)
         
-        ###CRITERION 2: 10% EXCEEDANCE OF INSTANTANEOUS VALUES###
+        ###Criterion 2: 10% Exceedance###
         crit2 <- crit_set %>%
           filter(Frequency == "10% of samples",
                  Duration == "Water year average") %>%
@@ -137,12 +138,12 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
           filter(freq >= 0.1) %>%
           pull(w_year)
         
-        ###IMPAIRMENT RULE###
+        ###Impairment Rule###
         all_exceed_years <- union(geo_exceed_years, pct_exceed_years)
         unique_years_exceeded <- length(unique(all_exceed_years))
         impaired <- ifelse(unique_years_exceeded >= 2, "Yes", "No")
         
-        ###FORMAT RESULTS###
+        ###Format Output###
         for (crit_row in list(crit1, crit2)) {
           if (nrow(crit_row) == 0) next
           counter <- counter + 1
@@ -168,11 +169,8 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
     }
   }
   
-  #Final output
-  df_pathogen_assess <- bind_rows(output_list) %>%
-    distinct()
-  
-  return(df_pathogen_assess)
+  return(bind_rows(output_list) %>% distinct())
 }
+
 
 pathogens_output <- MagDurFreq_pathogens(input_samples_filtered, wqs_crosswalk)
