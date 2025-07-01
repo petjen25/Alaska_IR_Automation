@@ -331,7 +331,7 @@ data_16 <- data_15 %>%
 # censored data are retained in this dataset.
 
 #Units check - compare sample units to WQS units
-wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250129.csv') %>% 
+wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250429.csv') %>% 
   select(TADA.Constituent, Units) %>%
   unique() %>%
   na.omit() %>%
@@ -1140,9 +1140,17 @@ df_TAqH <- data_22a %>%
          , TADA.ResultSampleFractionText = NA
          , TADA.ResultSampleFractionText_new = "TOTAL")
 
-data_22a <- rbind(data_22a, df_TAH, df_TAqH)
+data_22a.2 <- rbind(data_22a, df_TAH, df_TAqH) %>%
+  #Match AU type to whats in the tables
+  mutate(AU_Type = ifelse(AU_Type == "Beach" | AU_Type == "Marine",
+                            "Marine", AU_Type),
+         AU_Type = ifelse(AU_Type == "Lake",
+                            "Freshwater", AU_Type),
+         AU_Type = ifelse(AU_Type == "River",
+                            "Freshwater streams and rivers",
+                          AU_Type))
 
-write_csv(data_22a, file = file.path('Output/data_processing'
+write_csv(data_22a.2, file = file.path('Output/data_processing'
                                      , paste0("WQ_data_trimmed_long_withAU"
                                               ,myDate, ".csv"))
           , na = "")
