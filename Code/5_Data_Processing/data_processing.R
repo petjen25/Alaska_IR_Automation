@@ -520,6 +520,7 @@ rm(data_4loop, df_subset, logplot, plot, plot_list, counter, i
 data_18 <- data_16d %>% 
   select(OrganizationIdentifier
          ,ActivityStartDate
+         ,ActivityStartTime.Time
          ,MonitoringLocationIdentifier
          ,TADA.MonitoringLocationName
          ,TADA.MonitoringLocationTypeName
@@ -1016,7 +1017,7 @@ rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 #### Data sufficiency ####
 ##### 22. AU/pollutant data sufficiency #####
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
-df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20250130.csv") #DEC edit: updated input (ATTAINS uses and drinking water chloride fraction dissolved)
+df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20250130.csv") 
 df_data_sufficiency2 <- df_data_sufficiency %>% 
   select(-c(`Constituent Group`, Constituent, `Other Requirements`, `Listing methodology`, Notes)) %>% #dec edit: removed Use_Description from select(-c())
   mutate(TADA.Fraction = toupper(Fraction)) %>% 
@@ -1096,7 +1097,7 @@ data_22a <- data_21 %>%
 # NOTE: TAH and TAqH summation does not account for non-detects.
 df_TAH <- data_22a %>% 
   filter(TADA.CharacteristicName %in% TAH) %>% 
-  group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
+  group_by(OrganizationIdentifier, ActivityStartDate, ActivityStartTime.Time, MonitoringLocationIdentifier
            , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
            , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
@@ -1104,7 +1105,7 @@ df_TAH <- data_22a %>%
            , TADA.CharacteristicName, TADA.ComparableDataIdentifier
            , TADA.ResultSampleFractionText, TADA.ResultSampleFractionText_new) %>%
   summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
-  group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
+  group_by(OrganizationIdentifier, ActivityStartDate, ActivityStartTime.Time, MonitoringLocationIdentifier
            , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
            , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
@@ -1119,7 +1120,7 @@ df_TAH <- data_22a %>%
 
 df_TAqH <- data_22a %>% 
   filter(TADA.CharacteristicName %in% TAqH) %>% 
-  group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
+  group_by(OrganizationIdentifier, ActivityStartDate, ActivityStartTime.Time, MonitoringLocationIdentifier
            , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
            , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
@@ -1127,7 +1128,7 @@ df_TAqH <- data_22a %>%
            , TADA.CharacteristicName, TADA.ComparableDataIdentifier
            , TADA.ResultSampleFractionText, TADA.ResultSampleFractionText_new) %>%
   summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
-  group_by(OrganizationIdentifier, ActivityStartDate, MonitoringLocationIdentifier
+  group_by(OrganizationIdentifier, ActivityStartDate, ActivityStartTime.Time, MonitoringLocationIdentifier
            , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
            , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
@@ -1280,7 +1281,8 @@ for(i in Unique_AUIDs){
 df_loop_results <- do.call("rbind", result_complete_list) # combine results from for loop
 df_AU_data_sufficiency <- as.data.frame(df_loop_results) # convert to data frame
 df_AU_data_sufficiency <- df_AU_data_sufficiency %>% 
-  distinct()
+  distinct() %>%
+  select(-`Dec Use`, -`DEC Use Description`)
 
 # results complete
 df_loop_results_incomplete <- do.call("rbind", result_incomplete_list) # combine results from for loop
