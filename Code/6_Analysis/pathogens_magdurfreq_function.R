@@ -68,7 +68,13 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
   
   for (auid in unique(pathogen_data$AUID_ATTNS)) {
     print(auid)
-    df <- pathogen_data %>% filter(AUID_ATTNS == auid)
+    
+    df <- pathogen_data %>%
+      filter(AUID_ATTNS == auid) %>%
+      group_by(TADA.CharacteristicName, ActivityStartDate) %>%
+      mutate(TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>%
+      unique()
+    
     if (nrow(df) == 0) next
     
     my_AU_Type <- unique(df$AU_Type)
