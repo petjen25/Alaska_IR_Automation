@@ -9,19 +9,21 @@ library(tidyverse)
 input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20250127.csv')
 
 #Go to ATTAINS expert query. Choose "Assessment". filter for "AK". Download. https://owapps.epa.gov/expertquery/attains/ 
-assessments <- read_csv('Data/data_analysis/assessments.csv') %>%
-  select(ASSESSMENT_UNIT_ID = assessmentUnitId,
-         PARAM_NAME = parameterName,
-         ATTAINS_USE = useName,
-         PARAM_STATUS_NAME = parameterStatus,
-         PARAM_ATTAINMENT_CODE = parameterAttainment) %>%
-  mutate(PARAM_NAME = if_else(PARAM_NAME == 'DISSOLVED OXYGEN', "DISSOLVED OXYGEN (DO)", PARAM_NAME)) %>% # 12-5
-  mutate(PARAM_NAME = if_else(PARAM_NAME == 'ESCHERICHIA COLI (E. COLI)', "ESCHERICHIA COLI", PARAM_NAME)) %>% # 12-5
-  mutate(PARAM_NAME = if_else(PARAM_NAME == 'TOTAL DISSOLVED SOLIDS (TDS)', "TOTAL DISSOLVED SOLIDS", PARAM_NAME)) # 12-5
+assessments <- read_csv('Data/data_analysis/parameters.csv') %>%
+  select(ASSESSMENT_UNIT_ID, 
+         PARAM_NAME, 
+         ATTAINS_USE = PARAM_USE_NAME,
+         PARAM_STATUS_NAME,
+         PARAM_ATTAINMENT_CODE) %>%
+  mutate(PARAM_NAME = if_else(PARAM_NAME == 'DISSOLVED OXYGEN', "DISSOLVED OXYGEN (DO)", PARAM_NAME)) %>% 
+  mutate(PARAM_NAME = if_else(PARAM_NAME == 'ESCHERICHIA COLI (E. COLI)', "ESCHERICHIA COLI", PARAM_NAME)) %>%
+  mutate(PARAM_NAME = if_else(PARAM_NAME == 'TOTAL DISSOLVED SOLIDS (TDS)', "TOTAL DISSOLVED SOLIDS", PARAM_NAME)) 
 
 #Don't want to overwrite previous ATTAINs 2s and 5s with new 3s
 merge_uses <- input_analysis %>%
   mutate(ATTAINS_waterbody = case_when(`Waterbody Type` == 'Freshwater' ~
+                                         'FRESH WATER',
+                                       `Waterbody Type` == 'Freshwater streams and rivers' ~
                                          'FRESH WATER',
                                        T ~ 'MARINE WATER'),
          ATTAINS_USE_merge = paste0(ATTAINS_waterbody, ' / ',  Use, ' / ', `Use Description`),
@@ -54,6 +56,7 @@ categorize_AU_uses <- function(input_analysis, simplify_standards){
                                                   Exceed == 'No' ~ '2',
                                                   Exceed == 'Insufficient hardness' ~ '3',
                                                   Exceed == 'Insufficient dependent data' ~ '3',
+                                                  Exceed == 'Admin cat 3' ~ '3',
                                            T ~ NA))
   
   if(simplify_standards == T){
