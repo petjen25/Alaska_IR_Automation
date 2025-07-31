@@ -1,0 +1,1043 @@
+AUID_ATTNS,Name_AU,TADA.MonitoringLocationTypeName,AU_Type,TADA.CharacteristicName,TADA.ResultMeasure.MeasureUnitCode,TADA.ResultSampleFractionText_new,n_Samples,n_SampDates,n_WaterYears,Waterbody Type,Fraction,Use,Use Description,Type,Minimum Assessment Period,Minimum number of data points,Min_Assess_Period_Yrs,Min_Num_Pts,Dec Use,DEC Use Description,Min_Period_Pass,Min_Data_Pass,Data_Sufficient,Hardness_Dependency
+AK_L_2030212_001,Kenai Lake,LAKE,Lake,ALUMINUM,UG/L,DISSOLVED,6,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_2030212_001,Kenai Lake,LAKE,Lake,HARDNESS,UG/L,TOTAL,6,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_2030212_001,Kenai Lake,RIVER/STREAM,Lake,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_2030212_001,Kenai Lake,RIVER/STREAM,Lake,IRON,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050110_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050110_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050110_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050110_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050110_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_003,Navarakpuk Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_003,Navarakpuk Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_003,Navarakpuk Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_003,Navarakpuk Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_003,Navarakpuk Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_003,Navarakpuk Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050215_003,Navarakpuk Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_001,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_L_6050419_002,Unnamed Lake,"LAKE, RESERVOIR, IMPOUNDMENT",Lake,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010204_000,Carlanna Creek-Frontal Tongass Narrows,OCEAN,Marine,COPPER,UG/L,TOTAL,7,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010204_000,Carlanna Creek-Frontal Tongass Narrows,OCEAN,Marine,NICKEL,UG/L,TOTAL,7,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010204_000,Carlanna Creek-Frontal Tongass Narrows,OCEAN,Marine,ZINC,UG/L,TOTAL,7,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010204_008,Ward Cove,OCEAN,Marine,COPPER,UG/L,TOTAL,22,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010204_008,Ward Cove,OCEAN,Marine,NICKEL,UG/L,TOTAL,22,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010204_008,Ward Cove,OCEAN,Marine,ZINC,UG/L,TOTAL,21,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010204_011,Tongass Narrows combined,OCEAN,Marine,COPPER,UG/L,TOTAL,92,10,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010204_011,Tongass Narrows combined,OCEAN,Marine,NICKEL,UG/L,TOTAL,92,10,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010204_011,Tongass Narrows combined,OCEAN,Marine,ZINC,UG/L,TOTAL,92,10,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010207_000,Bostwick Inlet-Frontal Nichols Passage,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010207_000,Bostwick Inlet-Frontal Nichols Passage,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010207_000,Bostwick Inlet-Frontal Nichols Passage,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010210_003,Inside Passage Gravina Island-Frontal Clarence Strait,OCEAN,Marine,COPPER,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010210_003,Inside Passage Gravina Island-Frontal Clarence Strait,OCEAN,Marine,NICKEL,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1010210_003,Inside Passage Gravina Island-Frontal Clarence Strait,OCEAN,Marine,ZINC,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020608_000,Limestone Inlet-Frontal Stephens Passage,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020608_000,Limestone Inlet-Frontal Stephens Passage,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020608_000,Limestone Inlet-Frontal Stephens Passage,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020612_000,Holkham Bay-Frontal Stephens Passage,OCEAN,Marine,COPPER,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020612_000,Holkham Bay-Frontal Stephens Passage,OCEAN,Marine,NICKEL,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020612_000,Holkham Bay-Frontal Stephens Passage,OCEAN,Marine,ZINC,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020902_005,Shoemaker Bay - Wrangell South,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020902_005,Shoemaker Bay - Wrangell South,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020902_005,Shoemaker Bay - Wrangell South,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020903_010,Stikine Strait,OCEAN,Marine,COPPER,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020903_010,Stikine Strait,OCEAN,Marine,NICKEL,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020903_010,Stikine Strait,OCEAN,Marine,ZINC,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020904_004,Wrangell Harbor,OCEAN,Marine,COPPER,UG/L,TOTAL,15,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020904_004,Wrangell Harbor,OCEAN,Marine,NICKEL,UG/L,TOTAL,15,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1020904_004,Wrangell Harbor,OCEAN,Marine,ZINC,UG/L,TOTAL,15,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021008_000,Tebenkof Bay-Frontal Chatham Strait,OCEAN,Marine,COPPER,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021008_000,Tebenkof Bay-Frontal Chatham Strait,OCEAN,Marine,NICKEL,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021008_000,Tebenkof Bay-Frontal Chatham Strait,OCEAN,Marine,ZINC,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021010_000,Petersburg Creek-Frontal Wrangell Narrows,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021010_000,Petersburg Creek-Frontal Wrangell Narrows,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021010_000,Petersburg Creek-Frontal Wrangell Narrows,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021010_008,Petersburg Marine Assessment Unit,OCEAN,Marine,COPPER,UG/L,TOTAL,13,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021010_008,Petersburg Marine Assessment Unit,OCEAN,Marine,NICKEL,UG/L,TOTAL,13,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021010_008,Petersburg Marine Assessment Unit,OCEAN,Marine,ZINC,UG/L,TOTAL,13,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021109_013,Hoonah Marine Assessment Unit,OCEAN,Marine,COPPER,UG/L,TOTAL,22,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021109_013,Hoonah Marine Assessment Unit,OCEAN,Marine,NICKEL,UG/L,TOTAL,22,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021109_013,Hoonah Marine Assessment Unit,OCEAN,Marine,ZINC,UG/L,TOTAL,22,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021201_000,Kelp Bay,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021201_000,Kelp Bay,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021201_000,Kelp Bay,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021211_000,Eastern Channel,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021211_000,Eastern Channel,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021211_000,Eastern Channel,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021211_021,Sitka Coastal Area East,OCEAN,Marine,COPPER,UG/L,TOTAL,9,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021211_021,Sitka Coastal Area East,OCEAN,Marine,NICKEL,UG/L,TOTAL,9,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021211_021,Sitka Coastal Area East,OCEAN,Marine,ZINC,UG/L,TOTAL,9,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021212_013,Sitka Coastal Area West,OCEAN,Marine,COPPER,UG/L,TOTAL,18,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021212_013,Sitka Coastal Area West,OCEAN,Marine,NICKEL,UG/L,TOTAL,18,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1021212_013,Sitka Coastal Area West,OCEAN,Marine,ZINC,UG/L,TOTAL,18,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030106_003,North Gastineau Channel,OCEAN,Marine,COPPER,UG/L,TOTAL,42,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030106_003,North Gastineau Channel,OCEAN,Marine,NICKEL,UG/L,TOTAL,42,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030106_003,North Gastineau Channel,OCEAN,Marine,ZINC,UG/L,TOTAL,42,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030107_000,Admiralty Island-Frontal Lynn Canal,OCEAN,Marine,COPPER,UG/L,TOTAL,7,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030107_000,Admiralty Island-Frontal Lynn Canal,OCEAN,Marine,NICKEL,UG/L,TOTAL,7,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030107_000,Admiralty Island-Frontal Lynn Canal,OCEAN,Marine,ZINC,UG/L,TOTAL,7,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030107_002,Auke Bay,OCEAN,Marine,COPPER,UG/L,TOTAL,15,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030107_002,Auke Bay,OCEAN,Marine,NICKEL,UG/L,TOTAL,15,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030107_002,Auke Bay,OCEAN,Marine,ZINC,UG/L,TOTAL,15,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030108_001,Lynn Canal,OCEAN,Marine,COPPER,UG/L,TOTAL,8,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030108_001,Lynn Canal,OCEAN,Marine,NICKEL,UG/L,TOTAL,8,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030108_001,Lynn Canal,OCEAN,Marine,ZINC,UG/L,TOTAL,8,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030305_002,Taiya Inlet,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030305_002,Taiya Inlet,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030305_002,Taiya Inlet,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030305_004,Skagway Harbor (entire harbor area),OCEAN,Marine,COPPER,UG/L,TOTAL,16,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030305_004,Skagway Harbor (entire harbor area),OCEAN,Marine,NICKEL,UG/L,TOTAL,16,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030305_004,Skagway Harbor (entire harbor area),OCEAN,Marine,ZINC,UG/L,TOTAL,16,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030308_000,Chilkoot Inlet-Frontal Lynn Canal,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030308_000,Chilkoot Inlet-Frontal Lynn Canal,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030308_000,Chilkoot Inlet-Frontal Lynn Canal,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030308_007,Haines Coastal Area,OCEAN,Marine,COPPER,UG/L,TOTAL,13,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030308_007,Haines Coastal Area,OCEAN,Marine,NICKEL,UG/L,TOTAL,13,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030308_007,Haines Coastal Area,OCEAN,Marine,ZINC,UG/L,TOTAL,13,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030409_000,Taku Inlet-Frontal Stephens Passage,OCEAN,Marine,COPPER,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030409_000,Taku Inlet-Frontal Stephens Passage,OCEAN,Marine,NICKEL,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1030409_000,Taku Inlet-Frontal Stephens Passage,OCEAN,Marine,ZINC,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050001_001,Stephens Passage,OCEAN,Marine,COPPER,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050001_001,Stephens Passage,OCEAN,Marine,NICKEL,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050001_001,Stephens Passage,OCEAN,Marine,ZINC,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050004_001,Frederick Sound,OCEAN,Marine,COPPER,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050004_001,Frederick Sound,OCEAN,Marine,NICKEL,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050004_001,Frederick Sound,OCEAN,Marine,ZINC,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050004_001,Fredrick Sound,OCEAN,Marine,COPPER,UG/L,TOTAL,8,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050004_001,Fredrick Sound,OCEAN,Marine,NICKEL,UG/L,TOTAL,8,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050004_001,Fredrick Sound,OCEAN,Marine,ZINC,UG/L,TOTAL,9,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050005_000,Ernest Sound,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050005_000,Ernest Sound,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050005_000,Ernest Sound,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050006_003,Icy Strait,OCEAN,Marine,COPPER,UG/L,TOTAL,7,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050006_003,Icy Strait,OCEAN,Marine,NICKEL,UG/L,TOTAL,7,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050006_003,Icy Strait,OCEAN,Marine,ZINC,UG/L,TOTAL,7,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050007_001,Chatham Strait,OCEAN,Marine,COPPER,UG/L,TOTAL,8,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050007_001,Chatham Strait,OCEAN,Marine,NICKEL,UG/L,TOTAL,8,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050007_001,Chatham Strait,OCEAN,Marine,ZINC,UG/L,TOTAL,8,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050008_001,Sumner Strait,OCEAN,Marine,COPPER,UG/L,TOTAL,8,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050008_001,Sumner Strait,OCEAN,Marine,NICKEL,UG/L,TOTAL,8,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050008_001,Sumner Strait,OCEAN,Marine,ZINC,UG/L,TOTAL,8,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050009_001,Clarence Strait,OCEAN,Marine,COPPER,UG/L,TOTAL,12,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050009_001,Clarence Strait,OCEAN,Marine,NICKEL,UG/L,TOTAL,12,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050009_001,Clarence Strait,OCEAN,Marine,ZINC,UG/L,TOTAL,12,7,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050011_000,Peril Strait,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050011_000,Peril Strait,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_1050011_000,Peril Strait,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020111_005,Port Valdez,OCEAN,Marine,COPPER,UG/L,TOTAL,8,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020111_005,Port Valdez,OCEAN,Marine,NICKEL,UG/L,TOTAL,8,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020111_005,Port Valdez,OCEAN,Marine,ZINC,UG/L,TOTAL,8,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020111_011,Port Valdez Small Boat Harbor,OCEAN,Marine,COPPER,UG/L,TOTAL,16,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020111_011,Port Valdez Small Boat Harbor,OCEAN,Marine,NICKEL,UG/L,TOTAL,16,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020111_011,Port Valdez Small Boat Harbor,OCEAN,Marine,ZINC,UG/L,TOTAL,16,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020120_000,Blackstone Bay-Frontal Port Wells,OCEAN,Marine,COPPER,UG/L,TOTAL,5,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020120_000,Blackstone Bay-Frontal Port Wells,OCEAN,Marine,NICKEL,UG/L,TOTAL,4,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020120_000,Blackstone Bay-Frontal Port Wells,OCEAN,Marine,ZINC,UG/L,TOTAL,5,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020120_011,Passage Canal (Whittier Harbor),OCEAN,Marine,COPPER,UG/L,TOTAL,16,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020120_011,Passage Canal (Whittier Harbor),OCEAN,Marine,NICKEL,UG/L,TOTAL,17,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020120_011,Passage Canal (Whittier Harbor),OCEAN,Marine,ZINC,UG/L,TOTAL,16,4,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020205_003,Upper Resurrection Bay,OCEAN,Marine,COPPER,UG/L,TOTAL,12,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020205_003,Upper Resurrection Bay,OCEAN,Marine,NICKEL,UG/L,TOTAL,12,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020205_003,Upper Resurrection Bay,OCEAN,Marine,ZINC,UG/L,TOTAL,12,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020205_004,Seward Harbor,OCEAN,Marine,COPPER,UG/L,TOTAL,22,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020205_004,Seward Harbor,OCEAN,Marine,NICKEL,UG/L,TOTAL,22,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020205_004,Seward Harbor,OCEAN,Marine,ZINC,UG/L,TOTAL,22,6,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020206_000,Resurrection Bay-Frontal Gulf of Alaska,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020206_000,Resurrection Bay-Frontal Gulf of Alaska,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020206_000,Resurrection Bay-Frontal Gulf of Alaska,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020306_000,Prince William Sound,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020306_000,Prince William Sound,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2020306_000,Prince William Sound,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2030108_000,Stariski Creek-Frontal Cook Inlet,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2030108_000,Stariski Creek-Frontal Cook Inlet,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2030108_000,Stariski Creek-Frontal Cook Inlet,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2030108_006,Homer Nearshore Area,OCEAN,Marine,COPPER,UG/L,TOTAL,13,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2030108_006,Homer Nearshore Area,OCEAN,Marine,NICKEL,UG/L,TOTAL,13,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2030108_006,Homer Nearshore Area,OCEAN,Marine,ZINC,UG/L,TOTAL,13,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2040108_003,Knik Arm,OCEAN,Marine,COPPER,UG/L,TOTAL,9,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2040108_003,Knik Arm,OCEAN,Marine,NICKEL,UG/L,TOTAL,9,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2040108_003,Knik Arm,OCEAN,Marine,ZINC,UG/L,TOTAL,9,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2040108_007,Anchorage Coast Area North,OCEAN,Marine,COPPER,UG/L,TOTAL,9,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2040108_007,Anchorage Coast Area North,OCEAN,Marine,NICKEL,UG/L,TOTAL,9,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2040108_007,Anchorage Coast Area North,OCEAN,Marine,ZINC,UG/L,TOTAL,9,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2070114_000,Afognak River-Frontal Marmot Bay,OCEAN,Marine,COPPER,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2070114_000,Afognak River-Frontal Marmot Bay,OCEAN,Marine,NICKEL,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2070114_000,Afognak River-Frontal Marmot Bay,OCEAN,Marine,ZINC,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2070115_000,Buskin River-Chiniak Bay,OCEAN,Marine,COPPER,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2070115_000,Buskin River-Chiniak Bay,OCEAN,Marine,NICKEL,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2070115_000,Buskin River-Chiniak Bay,OCEAN,Marine,ZINC,UG/L,TOTAL,3,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2070115_007,Kodiak Harbors,OCEAN,Marine,COPPER,UG/L,TOTAL,12,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2070115_007,Kodiak Harbors,OCEAN,Marine,NICKEL,UG/L,TOTAL,12,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_2070115_007,Kodiak Harbors,OCEAN,Marine,ZINC,UG/L,TOTAL,12,3,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_005,Dutch Harbor (facilities),OCEAN,Marine,COPPER,UG/L,TOTAL,4,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_005,Dutch Harbor (facilities),OCEAN,Marine,NICKEL,UG/L,TOTAL,4,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_005,Dutch Harbor (facilities),OCEAN,Marine,ZINC,UG/L,TOTAL,4,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_008,Iliuliuk Bay,OCEAN,Marine,COPPER,UG/L,TOTAL,4,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_008,Iliuliuk Bay,OCEAN,Marine,NICKEL,UG/L,TOTAL,4,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_008,Iliuliuk Bay,OCEAN,Marine,ZINC,UG/L,TOTAL,4,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_023,Dutch Harbor (entire harbor),OCEAN,Marine,COPPER,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_023,Dutch Harbor (entire harbor),OCEAN,Marine,NICKEL,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_023,Dutch Harbor (entire harbor),OCEAN,Marine,ZINC,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_024,Iliuliuk Harbor (main),OCEAN,Marine,COPPER,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_024,Iliuliuk Harbor (main),OCEAN,Marine,NICKEL,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_3010208_024,Iliuliuk Harbor (main),OCEAN,Marine,ZINC,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_5010420_000,Safety Sound-Frontal Norton Sound,OCEAN,Marine,COPPER,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_5010420_000,Safety Sound-Frontal Norton Sound,OCEAN,Marine,NICKEL,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_5010420_000,Safety Sound-Frontal Norton Sound,OCEAN,Marine,ZINC,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_5010420_003,Nome Harbor,OCEAN,Marine,COPPER,UG/L,TOTAL,8,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_5010420_003,Nome Harbor,OCEAN,Marine,NICKEL,UG/L,TOTAL,8,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_5010420_003,Nome Harbor,OCEAN,Marine,ZINC,UG/L,TOTAL,8,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_6020202_001,Utqiagvik Coastal Area,OCEAN,Marine,COPPER,UG/L,TOTAL,4,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_6020202_001,Utqiagvik Coastal Area,OCEAN,Marine,NICKEL,UG/L,TOTAL,4,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_M_6020202_001,Utqiagvik Coastal Area,OCEAN,Marine,ZINC,UG/L,TOTAL,4,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_001,Carlanna Creek,RIVER/STREAM,River,ALKALINITY,UG/L,,8,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_001,Carlanna Creek,RIVER/STREAM,River,AMMONIA,MG/L,,9,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_001,Carlanna Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,17,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_001,Carlanna Creek,RIVER/STREAM,River,HARDNESS,MG/L,,16,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_002,Hoadley Creek,RIVER/STREAM,River,ALKALINITY,UG/L,,6,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_002,Hoadley Creek,RIVER/STREAM,River,AMMONIA,MG/L,,6,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_002,Hoadley Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,14,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_002,Hoadley Creek,RIVER/STREAM,River,HARDNESS,MG/L,,14,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_003,Ketchikan Creek,RIVER/STREAM,River,ALKALINITY,UG/L,,9,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_003,Ketchikan Creek,RIVER/STREAM,River,AMMONIA,MG/L,,9,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_003,Ketchikan Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,21,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010204_003,Ketchikan Creek,RIVER/STREAM,River,HARDNESS,MG/L,,21,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010301_002,Hatchery Creek,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010301_002,Hatchery Creek,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010310_006,Shaheen Creek,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010310_006,Shaheen Creek,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010402_004,North Fork Bradfield River,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010402_004,North Fork Bradfield River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010403_003,Harding River,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010403_003,Harding River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010503_001,Blue River,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,RIVER/STREAM,River,AMMONIA,MG/L,,6,4,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,6,4,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,66,43,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,50,43,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,49,43,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,BARIUM,UG/L,DISSOLVED,50,43,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,51,44,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,BERYLLIUM,UG/L,TOTAL RECOVERABLE,26,23,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,51,44,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,49,43,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,HARDNESS,MG/L,,50,43,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,51,44,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,LEAD,UG/L,TOTAL RECOVERABLE,48,43,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,48,42,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,MANGANESE,UG/L,DISSOLVED,50,43,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,51,44,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,MERCURY,UG/L,DISSOLVED,4,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,MERCURY,UG/L,TOTAL RECOVERABLE,18,16,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,51,44,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,50,44,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,SILVER,UG/L,TOTAL RECOVERABLE,13,13,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,THALLIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,URANIUM,UG/L,DISSOLVED,50,43,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010504_005,Unuk River,STREAM,River,ZINC,UG/L,TOTAL RECOVERABLE,50,44,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010510_005,Wilson River,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010510_005,Wilson River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010513_005,Keta River,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010513_005,Keta River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,27,23,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,BARIUM,UG/L,DISSOLVED,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,BERYLLIUM,UG/L,TOTAL RECOVERABLE,21,19,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,30,27,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,HARDNESS,MG/L,,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,LEAD,UG/L,TOTAL RECOVERABLE,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,MANGANESE,UG/L,DISSOLVED,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,MERCURY,UG/L,TOTAL RECOVERABLE,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,SILVER,UG/L,TOTAL RECOVERABLE,18,16,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,URANIUM,UG/L,DISSOLVED,34,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_009,Salmon River,STREAM,River,ZINC,UG/L,TOTAL RECOVERABLE,35,31,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,BERYLLIUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,LEAD,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,SILVER,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1010601_012,Texas Creek,STREAM,River,ZINC,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_009,Shakes Slough,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_009,Shakes Slough,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,RIVER/STREAM,River,AMMONIA,MG/L,,4,4,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,38,31,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,35,32,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,BARIUM,UG/L,DISSOLVED,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,BERYLLIUM,UG/L,TOTAL RECOVERABLE,32,29,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,32,29,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,HARDNESS,MG/L,,35,32,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,LEAD,UG/L,TOTAL RECOVERABLE,35,32,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,MANGANESE,UG/L,DISSOLVED,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,MERCURY,UG/L,DISSOLVED,3,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,MERCURY,UG/L,TOTAL RECOVERABLE,26,23,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,SILVER,UG/L,TOTAL RECOVERABLE,18,16,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,URANIUM,UG/L,DISSOLVED,36,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_011,Stikine River,STREAM,River,ZINC,UG/L,TOTAL RECOVERABLE,32,29,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_012,Alpine Creek,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020709_012,Alpine Creek,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020711_005,Hooligan Slough,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1020711_005,Hooligan Slough,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1021109_005,Neka River,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1021109_005,Neka River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1021212_003,Freds Creek,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1021212_003,Freds Creek,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030103_001,Antler River,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030103_001,Antler River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030105_003,Herbert River,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030105_003,Herbert River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,18,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,ALUMINUM,UG/L,TOTAL,3,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,18,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,18,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,18,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,18,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,CHROMIUM,UG/L,TOTAL,3,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,COBALT,UG/L,TOTAL,3,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,HARDNESS,MG/L,DISSOLVED,18,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,12,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,LEAD,UG/L,TOTAL,3,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,18,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,MOLYBDENUM,UG/L,TOTAL,3,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,NITRITE,UG/L,TOTAL,10,5,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,SILVER,UG/L,TOTAL,3,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,18,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030106_014,Jordan Creek,RIVER/STREAM,River,VANADIUM,UG/L,TOTAL,3,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030311_001,Chilkat River,RIVER/STREAM,River,AMMONIA,MG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030311_001,Chilkat River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,ACENAPHTHENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,ALKALINITY,UG/L,,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,ALUMINUM,UG/L,TOTAL,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,ANTHRACENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,BENZO[A]PYRENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,CHROMIUM,UG/L,TOTAL,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,COBALT,UG/L,TOTAL,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,FLUORANTHENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,FLUORENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,IRON,UG/L,TOTAL,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,LEAD,UG/L,TOTAL,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,MERCURY,UG/L,DISSOLVED,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,MOLYBDENUM,UG/L,TOTAL,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,PYRENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,SILVER,UG/L,TOTAL,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,RIVER/STREAM,River,VANADIUM,UG/L,TOTAL,8,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,ALKALINITY,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,ALUMINUM,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,ANTIMONY,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,BARIUM,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,BERYLLIUM,UG/L,TOTAL RECOVERABLE,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,HARDNESS,MG/L,,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,LEAD,UG/L,TOTAL RECOVERABLE,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,MANGANESE,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,MERCURY,UG/L,TOTAL RECOVERABLE,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,SILVER,UG/L,TOTAL RECOVERABLE,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,URANIUM,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_003,Glacier Creek,STREAM,River,ZINC,UG/L,TOTAL RECOVERABLE,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,ACENAPHTHENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,ALKALINITY,UG/L,,11,8,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,11,8,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,ALUMINUM,UG/L,TOTAL,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,ANTHRACENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,11,8,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,11,8,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,BENZO[A]PYRENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,11,8,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,CHROMIUM,UG/L,TOTAL,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,COBALT,UG/L,TOTAL,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,FLUORANTHENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,FLUORENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,IRON,UG/L,TOTAL,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,LEAD,UG/L,TOTAL,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,11,8,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,MERCURY,UG/L,DISSOLVED,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,MOLYBDENUM,UG/L,TOTAL,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,PYRENE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,SILVER,UG/L,TOTAL,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,11,8,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,RIVER/STREAM,River,VANADIUM,UG/L,TOTAL,9,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,BARIUM,UG/L,DISSOLVED,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,BERYLLIUM,UG/L,TOTAL RECOVERABLE,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,HARDNESS,MG/L,,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,LEAD,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,MANGANESE,UG/L,DISSOLVED,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,MERCURY,UG/L,TOTAL RECOVERABLE,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,SILVER,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,URANIUM,UG/L,DISSOLVED,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030312_006,Klehini River,STREAM,River,ZINC,UG/L,TOTAL RECOVERABLE,4,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,RIVER/STREAM,River,AMMONIA,MG/L,,6,4,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,6,4,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,42,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,BARIUM,UG/L,DISSOLVED,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,40,36,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,BERYLLIUM,UG/L,TOTAL RECOVERABLE,33,29,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,CHROMIUM,UG/L,DISSOLVED,4,4,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,36,32,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,HARDNESS,MG/L,,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,LEAD,UG/L,TOTAL RECOVERABLE,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,MANGANESE,UG/L,DISSOLVED,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,MERCURY,UG/L,TOTAL RECOVERABLE,24,22,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,SILVER,UG/L,TOTAL RECOVERABLE,19,15,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,THALLIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,URANIUM,UG/L,DISSOLVED,39,35,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1030407_006,Taku River,STREAM,River,ZINC,UG/L,TOTAL RECOVERABLE,37,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,BERYLLIUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,LEAD,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,MERCURY,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,SILVER,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040421_001,Alsek River,STREAM,River,ZINC,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,28,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,BARIUM,UG/L,DISSOLVED,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,BARIUM,UG/L,TOTAL RECOVERABLE,28,27,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,BERYLLIUM,UG/L,TOTAL RECOVERABLE,22,21,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,COBALT,UG/L,TOTAL RECOVERABLE,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,COPPER,UG/L,TOTAL RECOVERABLE,24,23,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,HARDNESS,MG/L,,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,IRON,UG/L,TOTAL RECOVERABLE,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,LEAD,UG/L,TOTAL RECOVERABLE,24,23,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,LITHIUM,UG/L,TOTAL RECOVERABLE,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,MANGANESE,UG/L,DISSOLVED,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,MANGANESE,UG/L,TOTAL RECOVERABLE,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,MOLYBDENUM,UG/L,TOTAL RECOVERABLE,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,NICKEL,UG/L,TOTAL RECOVERABLE,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,SILVER,UG/L,TOTAL RECOVERABLE,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,URANIUM,UG/L,DISSOLVED,27,26,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_001,Alsek River,STREAM,River,ZINC,UG/L,TOTAL RECOVERABLE,21,20,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_007,Muddy Creek,RIVER/STREAM,River,AMMONIA,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_1040422_007,Muddy Creek,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010202_002,Gulkana River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010202_002,Gulkana River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010202_002,Gulkana River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010206_002,Gulkana River,RIVER/STREAM,River,CHLORIDE,MG/L,,5,5,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010206_002,Gulkana River,RIVER/STREAM,River,FLUORIDE,UG/L,,5,5,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010206_002,Gulkana River,RIVER/STREAM,River,NITRATE,UG/L,,5,5,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010321_016,National Creek,STREAM,River,ALKALINITY,UG/L,DISSOLVED,9,9,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010321_016,National Creek,STREAM,River,ALUMINUM,UG/L,DISSOLVED,10,10,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010321_016,National Creek,STREAM,River,BARIUM,UG/L,DISSOLVED,11,11,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010321_016,National Creek,STREAM,River,HARDNESS,MG/L,,11,11,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010321_016,National Creek,STREAM,River,MANGANESE,UG/L,DISSOLVED,4,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2010321_016,National Creek,STREAM,River,URANIUM,UG/L,DISSOLVED,11,11,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030212_002,Kenai River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030212_002,Kenai River,RIVER/STREAM,River,IRON,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030214_005,Middle Kenai River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030214_005,Middle Kenai River,RIVER/STREAM,River,IRON,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030214_007,Kenai River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,24,12,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030214_007,Kenai River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030214_007,Kenai River,RIVER/STREAM,River,HARDNESS,UG/L,TOTAL,26,14,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030214_007,Kenai River,RIVER/STREAM,River,IRON,UG/L,TOTAL,3,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030214_010,Russian River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030214_010,Russian River,RIVER/STREAM,River,IRON,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030215_002,Killey River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030215_002,Killey River,RIVER/STREAM,River,IRON,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030216_002,Moose River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030216_002,Moose River,RIVER/STREAM,River,IRON,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030217_001,Funny River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030217_001,Funny River,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030217_001,Funny River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030217_001,Funny River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030217_001,Funny River,RIVER/STREAM,River,IRON,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030217_001,Funny River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030217_001,Funny River,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030217_001,Funny River,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_001,Beaver Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_001,Beaver Creek,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_001,Beaver Creek,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_001,Beaver Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_001,Beaver Creek,RIVER/STREAM,River,IRON,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_001,Beaver Creek,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_001,Beaver Creek,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_001,Beaver Creek,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_001,Kenai River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,38,25,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_001,Kenai River,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_001,Kenai River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_001,Kenai River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_001,Kenai River,RIVER/STREAM,River,HARDNESS,UG/L,TOTAL,38,25,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_001,Kenai River,RIVER/STREAM,River,IRON,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_001,Kenai River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_001,Kenai River,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_001,Kenai River,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Kenai River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,82,31,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Kenai River,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,2,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Kenai River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,2,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Kenai River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,7,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Kenai River,RIVER/STREAM,River,HARDNESS,UG/L,TOTAL,92,31,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Kenai River,RIVER/STREAM,River,IRON,UG/L,TOTAL,8,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Kenai River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,2,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Kenai River,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,2,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Kenai River,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,2,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_002_002,Lower Kenai River,RIVER/STREAM,River,IRON,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_006,Slikok Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,9,9,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_006,Slikok Creek,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_006,Slikok Creek,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_006,Slikok Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_006,Slikok Creek,RIVER/STREAM,River,HARDNESS,UG/L,TOTAL,8,8,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_006,Slikok Creek,RIVER/STREAM,River,IRON,UG/L,TOTAL,3,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_006,Slikok Creek,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_006,Slikok Creek,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_006,Slikok Creek,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,11,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,11,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,11,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,12,7,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,16,8,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,IRON,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,10,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,NITRITE,UG/L,TOTAL,6,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,11,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_007,Soldotna Creek,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,11,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_009,Unnamed tibutary to Kenai River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_009,Unnamed tibutary to Kenai River,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_009,Unnamed tibutary to Kenai River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_009,Unnamed tibutary to Kenai River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_009,Unnamed tibutary to Kenai River,RIVER/STREAM,River,IRON,UG/L,TOTAL,3,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_009,Unnamed tibutary to Kenai River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_009,Unnamed tibutary to Kenai River,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_009,Unnamed tibutary to Kenai River,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2030218_010,Unnamed tibutary to Beaver Creek,RIVER/STREAM,River,IRON,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040104_002_001,Ship Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,5,5,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040104_002_001,Ship Creek,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,10,10,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040104_002_001,Ship Creek,RIVER/STREAM,River,NITRITE,UG/L,TOTAL,5,5,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040104_002_002,Ship Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,5,5,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040104_002_002,Ship Creek,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,10,10,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040104_002_002,Ship Creek,RIVER/STREAM,River,NITRITE,UG/L,TOTAL,4,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_001,Campbell Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,22,12,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_001,Campbell Creek,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_001,Campbell Creek,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_001,Campbell Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_001,Campbell Creek,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,22,12,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_001,Campbell Creek,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_001,Campbell Creek,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_001,Campbell Creek,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_004,Little Campbell Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,10,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_004,Little Campbell Creek,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,19,11,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040106_004,Little Campbell Creek,RIVER/STREAM,River,NITRITE,UG/L,TOTAL,9,5,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_003,Chester Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,22,13,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_003,Chester Creek,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_003,Chester Creek,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_003,Chester Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_003,Chester Creek,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,22,13,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_003,Chester Creek,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,11,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_003,Chester Creek,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_003,Chester Creek,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_022,Wasilla Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,21,12,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_022,Wasilla Creek,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_022,Wasilla Creek,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_022,Wasilla Creek,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_022,Wasilla Creek,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,22,12,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_022,Wasilla Creek,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_022,Wasilla Creek,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2040108_022,Wasilla Creek,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,12,6,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2050306_006,Talkeetna River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,21,21,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2050306_006,Talkeetna River,STREAM,River,HARDNESS,MG/L,,33,33,5,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2050512_016_005,Little Susitna River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,5,5,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2050512_016_005,Little Susitna River,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,11,11,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2050512_016_005,Little Susitna River,RIVER/STREAM,River,NITRITE,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2050512_016_009,Little Susitna River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,5,5,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2050512_016_009,Little Susitna River,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,11,11,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_2050512_016_009,Little Susitna River,RIVER/STREAM,River,NITRITE,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020311_001_002,Egegik River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020311_001_002,Egegik River,RIVER/STREAM,River,AMMONIA,MG/L,,3,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020311_001_002,Egegik River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020311_001_002,Egegik River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020311_001_002,Egegik River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020311_001_002,Egegik River,RIVER/STREAM,River,NITRITE,UG/L,TOTAL,2,2,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020311_001_002,Egegik River,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,ALUMINUM,UG/L,TOTAL,8,8,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,CHROMIUM,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,COBALT,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,IRON,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,LEAD,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,MOLYBDENUM,UG/L,TOTAL,7,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,SILVER,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020614_003,Kvichak River,RIVER/STREAM,River,VANADIUM,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,ALUMINUM,UG/L,TOTAL,8,8,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,CHROMIUM,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,COBALT,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,IRON,UG/L,TOTAL,8,8,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,LEAD,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,MOLYBDENUM,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,SILVER,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020620_001,Alagnak River,RIVER/STREAM,River,VANADIUM,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,ALUMINUM,UG/L,TOTAL,8,8,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,CHROMIUM,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,COBALT,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,IRON,UG/L,TOTAL,8,8,4,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,LEAD,UG/L,TOTAL,7,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,MOLYBDENUM,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,SILVER,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3020622_012,Unnamed Creek,RIVER/STREAM,River,VANADIUM,UG/L,TOTAL,6,6,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,1,1-TRICHLOROETHANE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,1,1-TRICHLOROETHANE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,1,2-TRICHLOROETHANE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,1,2-TRICHLOROETHANE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,1-DICHLOROETHYLENE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,1-DICHLOROETHYLENE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,2,4-TRICHLOROBENZENE",UG/L,TOTAL,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,2,4-TRICHLOROBENZENE",UG/L,,4,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,2-DICHLOROETHANE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,2-DICHLOROETHANE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,2-DICHLOROPROPANE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"1,2-DICHLOROPROPANE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"2,4,5-TRICHLOROPHENOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"2,4,5-TRICHLOROPHENOL",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"2,4-DICHLOROPHENOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"2,4-DICHLOROPHENOL",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"2,4-DIMETHYLPHENOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"2,4-DIMETHYLPHENOL",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"2,4-DINITROPHENOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"2,4-DINITROPHENOL",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,2-CHLORONAPHTHALENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,2-CHLORONAPHTHALENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"4,6-DINITRO-O-CRESOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,ACENAPHTHENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,ACENAPHTHENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,ANTHRACENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,ANTHRACENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,ANTIMONY,UG/L,,4,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,ARSENIC,UG/L,,5,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,BENZO[A]PYRENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,BENZO[A]PYRENE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,BIS(2-CHLOROISOPROPYL) ETHER,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,BUTYL BENZYL PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,BUTYL BENZYL PHTHALATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,CADMIUM,UG/L,,4,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,CARBON TETRACHLORIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,CARBON TETRACHLORIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,CHLOROBENZENE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,CHLOROBENZENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"CIS-1,2-DICHLOROETHYLENE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"CIS-1,2-DICHLOROETHYLENE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,DI(2-ETHYLHEXYL) PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,DI(2-ETHYLHEXYL) PHTHALATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,DIBUTYL PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,DIBUTYL PHTHALATE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,DIETHYL PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,DIETHYL PHTHALATE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,DIMETHYL PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,DIMETHYL PHTHALATE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,ETHYLENE DIBROMIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,ETHYLENE DIBROMIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,FLUORANTHENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,FLUORANTHENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,FLUORENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,FLUORENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,HARDNESS,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,HARDNESS,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,HEXACHLOROBENZENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,HEXACHLOROBENZENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,HEXACHLOROCYCLOPENTADIENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,HEXACHLOROCYCLOPENTADIENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,LEAD,UG/L,,4,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,MERCURY,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,MERCURY,UG/L,,5,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,METHYL BROMIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,METHYL BROMIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,METHYLENE CHLORIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,METHYLENE CHLORIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,NICKEL,UG/L,,4,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,NITROBENZENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,NITROBENZENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,PENTACHLOROPHENOL,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,PENTACHLOROPHENOL,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,PHENOL,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,PHENOL,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,PYRENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,PYRENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,STYRENE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,STYRENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,TETRACHLOROETHYLENE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,TETRACHLOROETHYLENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"TRANS-1,2-DICHLOROETHYLENE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,"TRANS-1,2-DICHLOROETHYLENE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,TRICHLOROETHYLENE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,TRICHLOROETHYLENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,VINYL CHLORIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050101_006_001,Kuskokwim River (Georgetown),RIVER/STREAM,River,VINYL CHLORIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,1,1-TRICHLOROETHANE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,1,1-TRICHLOROETHANE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,1,2-TRICHLOROETHANE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,1,2-TRICHLOROETHANE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,1-DICHLOROETHYLENE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,1-DICHLOROETHYLENE",UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,2,4-TRICHLOROBENZENE",UG/L,TOTAL,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,2,4-TRICHLOROBENZENE",UG/L,,4,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,2-DICHLOROETHANE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,2-DICHLOROETHANE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,2-DICHLOROPROPANE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"1,2-DICHLOROPROPANE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"2,4,5-TRICHLOROPHENOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"2,4,5-TRICHLOROPHENOL",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"2,4-DICHLOROPHENOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"2,4-DICHLOROPHENOL",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"2,4-DIMETHYLPHENOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"2,4-DIMETHYLPHENOL",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"2,4-DINITROPHENOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"2,4-DINITROPHENOL",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,2-CHLORONAPHTHALENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,2-CHLORONAPHTHALENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"4,6-DINITRO-O-CRESOL",UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,ACENAPHTHENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,ACENAPHTHENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,ANTHRACENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,ANTHRACENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,ANTIMONY,UG/L,,5,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,ARSENIC,UG/L,,5,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,BENZO[A]PYRENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,BENZO[A]PYRENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,BIS(2-CHLOROISOPROPYL) ETHER,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,BUTYL BENZYL PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,BUTYL BENZYL PHTHALATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,CADMIUM,UG/L,,5,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,CARBON TETRACHLORIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,CARBON TETRACHLORIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,CHLOROBENZENE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,CHLOROBENZENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"CIS-1,2-DICHLOROETHYLENE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"CIS-1,2-DICHLOROETHYLENE",UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,DI(2-ETHYLHEXYL) PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,DI(2-ETHYLHEXYL) PHTHALATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,DIBUTYL PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,DIBUTYL PHTHALATE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,DIETHYL PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,DIETHYL PHTHALATE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,DIMETHYL PHTHALATE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,DIMETHYL PHTHALATE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,ETHYLENE DIBROMIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,ETHYLENE DIBROMIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,FLUORANTHENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,FLUORANTHENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,FLUORENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,FLUORENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,HARDNESS,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,HARDNESS,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,HEXACHLOROBENZENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,HEXACHLOROBENZENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,HEXACHLOROCYCLOPENTADIENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,HEXACHLOROCYCLOPENTADIENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,LEAD,UG/L,,5,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,MERCURY,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,MERCURY,UG/L,,6,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,METHYL BROMIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,METHYL BROMIDE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,METHYLENE CHLORIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,METHYLENE CHLORIDE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,NICKEL,UG/L,,5,4,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,NITROBENZENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,NITROBENZENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,PENTACHLOROPHENOL,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,PENTACHLOROPHENOL,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,PHENOL,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,PHENOL,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,PYRENE,UG/L,TOTAL,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,PYRENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,STYRENE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,STYRENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,TETRACHLOROETHYLENE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,TETRACHLOROETHYLENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"TRANS-1,2-DICHLOROETHYLENE",UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,"TRANS-1,2-DICHLOROETHYLENE",UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,TRICHLOROETHYLENE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,TRICHLOROETHYLENE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,VINYL CHLORIDE,UG/L,TOTAL,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_3050107_005,George River,RIVER/STREAM,River,VINYL CHLORIDE,UG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,ALKALINITY,UG/L,,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,ALUMINUM,UG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,AMMONIA,MG/L,,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,BORON,UG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,COBALT,UG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,FLUORIDE,UG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,HARDNESS,UG/L,,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,IRON,UG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,LEAD,UG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,MOLYBDENUM,UG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,SILVER,UG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030101_001,Selawik River,RIVER/STREAM,River,VANADIUM,UG/L,TOTAL,5,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,ALKALINITY,UG/L,,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,ALUMINUM,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,AMMONIA,MG/L,,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,ANTIMONY,UG/L,DISSOLVED,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,BORON,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,CHLORIDE,MG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,COBALT,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,FLUORIDE,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,HARDNESS,UG/L,,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,IRON,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,LEAD,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,MOLYBDENUM,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,SILVER,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,THALLIUM,UG/L,DISSOLVED,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5030106_004,Selawik River,RIVER/STREAM,River,VANADIUM,UG/L,TOTAL,9,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5040101_004,Noatak River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5040101_004,Noatak River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5040101_004,Noatak River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5040102_006,Noatak River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5040102_006,Noatak River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5040102_006,Noatak River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5040214_006,Noatak River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5040214_006,Noatak River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_5040214_006,Noatak River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_002,Unnamed Creek,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_002,Unnamed Creek,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_002,Unnamed Creek,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_002,Unnamed Creek,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_003,Unnamed Creek,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_003,Unnamed Creek,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_003,Unnamed Creek,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_003,Unnamed Creek,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_003,Unnamed Creek,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_004,Unnamed Creek,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_004,Unnamed Creek,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_004,Unnamed Creek,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_004,Unnamed Creek,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_004,Unnamed Creek,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_004,Unnamed Creek,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_004,Unnamed Creek,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_005,Unnamed Creek,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_005,Unnamed Creek,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_005,Unnamed Creek,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_005,Unnamed Creek,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020505_005,Unnamed Creek,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020506_001,Ublutuoch River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020506_001,Ublutuoch River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020506_001,Ublutuoch River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020506_001,Ublutuoch River,STREAM,River,BARIUM,UG/L,DISSOLVED,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020506_001,Ublutuoch River,STREAM,River,HARDNESS,MG/L,,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020506_001,Ublutuoch River,STREAM,River,MANGANESE,UG/L,DISSOLVED,3,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020507_005,Blackfish Creek,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020507_005,Blackfish Creek,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020507_005,Blackfish Creek,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020507_005,Blackfish Creek,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020507_005,Blackfish Creek,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6020507_005,Blackfish Creek,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050109_001,Canning River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050109_001,Canning River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050109_001,Canning River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050109_001,Canning River,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050109_001,Canning River,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050109_001,Canning River,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050109_001,Canning River,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050111_001,Canning River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050111_001,Canning River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050111_001,Canning River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050111_001,Canning River,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050111_001,Canning River,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050111_001,Canning River,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050111_001,Canning River,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050203_001,Okerokovik River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050203_001,Okerokovik River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050203_001,Okerokovik River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050203_001,Okerokovik River,STREAM,River,BARIUM,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050203_001,Okerokovik River,STREAM,River,HARDNESS,MG/L,,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050203_001,Okerokovik River,STREAM,River,MANGANESE,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050203_001,Okerokovik River,STREAM,River,URANIUM,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050204_002,Jago River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050204_002,Jago River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050204_002,Jago River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050204_002,Jago River,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050204_002,Jago River,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050204_002,Jago River,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050204_002,Jago River,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050209_001,Hulahula River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050209_001,Hulahula River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050209_001,Hulahula River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050209_001,Hulahula River,STREAM,River,BARIUM,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050209_001,Hulahula River,STREAM,River,HARDNESS,MG/L,,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050209_001,Hulahula River,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050209_001,Hulahula River,STREAM,River,URANIUM,UG/L,DISSOLVED,3,3,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050213_001,Marsh Creek,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050213_001,Marsh Creek,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050213_001,Marsh Creek,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050213_001,Marsh Creek,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050213_001,Marsh Creek,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050213_001,Marsh Creek,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050213_001,Marsh Creek,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050214_002,Katakturuk River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050214_002,Katakturuk River,STREAM,River,ALUMINUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050214_002,Katakturuk River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050214_002,Katakturuk River,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050214_002,Katakturuk River,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050214_002,Katakturuk River,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050214_002,Katakturuk River,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050415_001,Aichilik River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050415_001,Aichilik River,STREAM,River,ANTIMONY,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050415_001,Aichilik River,STREAM,River,BARIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050415_001,Aichilik River,STREAM,River,HARDNESS,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050415_001,Aichilik River,STREAM,River,MANGANESE,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_6050415_001,Aichilik River,STREAM,River,URANIUM,UG/L,DISSOLVED,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_7050217_003,West Fork Dennison Fork,RIVER/STREAM,River,CHLORIDE,MG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_7050217_003,West Fork Dennison Fork,RIVER/STREAM,River,FLUORIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_7050217_003,West Fork Dennison Fork,RIVER/STREAM,River,NITRATE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_7050219_030,Wade Creek,RIVER/STREAM,River,CHLORIDE,MG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_7050219_030,Wade Creek,RIVER/STREAM,River,FLUORIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_7050219_030,Wade Creek,RIVER/STREAM,River,NITRATE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_7050222_010,Fortymile River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_7050222_010,Fortymile River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_7050222_010,Fortymile River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8030405_006,Delta River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8030405_006,Delta River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8030405_006,Delta River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8030606_001,Chena River,RIVER/STREAM,River,HARDNESS,MG/L,DISSOLVED,4,4,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8030606_001,Chena River,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,9,9,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8030609_003,Chena River,RIVER/STREAM,River,HARDNESS,MG/L,DISSOLVED,4,4,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8030609_003,Chena River,RIVER/STREAM,River,HARDNESS,MG/L,TOTAL,9,9,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8040102_012_002,Ikhèenjik River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8040102_012_002,Ikhèenjik River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_8040102_012_002,Ikhèenjik River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010113_004,North Fork Koyukuk River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010113_004,North Fork Koyukuk River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010113_004,North Fork Koyukuk River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010119_002,John River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010119_002,John River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010119_002,John River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010302_001,Alatna River,RIVER/STREAM,River,CHLORIDE,MG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010302_001,Alatna River,RIVER/STREAM,River,FLUORIDE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010302_001,Alatna River,RIVER/STREAM,River,NITRATE,UG/L,,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010308_001,Alatna River,RIVER/STREAM,River,CHLORIDE,MG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010308_001,Alatna River,RIVER/STREAM,River,FLUORIDE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010308_001,Alatna River,RIVER/STREAM,River,NITRATE,UG/L,,1,1,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010501_004,Koyukuk River,RIVER/STREAM,River,ALUMINUM,UG/L,DISSOLVED,6,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010501_004,Koyukuk River,RIVER/STREAM,River,AMMONIA,MG/L,,13,6,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010501_004,Koyukuk River,RIVER/STREAM,River,BARIUM,UG/L,DISSOLVED,7,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010501_004,Koyukuk River,RIVER/STREAM,River,CHROMIUM,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010501_004,Koyukuk River,RIVER/STREAM,River,MANGANESE,UG/L,DISSOLVED,7,7,3,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010501_004,Koyukuk River,RIVER/STREAM,River,NITRITE,UG/L,TOTAL,3,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010501_004,Koyukuk River,RIVER/STREAM,River,PHOSPHORUS,UG/L,DISSOLVED,2,2,1,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9010501_004,Koyukuk River,RIVER/STREAM,River,PHOSPHORUS,UG/L,TOTAL,3,3,2,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9030423_034,Yukon River,STREAM,River,ALKALINITY,UG/L,DISSOLVED,70,38,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
+AK_R_9030423_034,Yukon River,STREAM,River,HARDNESS,MG/L,,37,37,6,,,,,,,,,,,,,,,Hardness dependency not applicable.
