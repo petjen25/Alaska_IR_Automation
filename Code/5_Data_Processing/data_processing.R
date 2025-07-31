@@ -505,6 +505,7 @@ data_18 <- data_16 %>%
          ,TADA.ResultMeasureValue
          ,TADA.ResultMeasure.MeasureUnitCode
          ,StatisticalBaseCode
+         ,TADA.ActivityDepthHeightMeasure.MeasureValue
          ,TADA.ComparableDataIdentifier
          ,TADA.ResultSampleFractionText
          ,TADA.LatitudeMeasure
@@ -1076,7 +1077,7 @@ df_TAH <- data_22a %>%
   filter(TADA.CharacteristicName %in% TAH) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, ActivityStartTime.Time, MonitoringLocationIdentifier
            , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
-           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
+           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode, TADA.ActivityDepthHeightMeasure.MeasureValue
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus
            , TADA.CharacteristicName, TADA.ComparableDataIdentifier
@@ -1084,7 +1085,7 @@ df_TAH <- data_22a %>%
   summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, ActivityStartTime.Time, MonitoringLocationIdentifier
            , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
-           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
+           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode, TADA.ActivityDepthHeightMeasure.MeasureValue
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus) %>%
   #TADA.CharacteristicName, TADA.ResultMeasureValue, TADA.ComparableDataIdentifier
@@ -1099,7 +1100,7 @@ df_TAqH <- data_22a %>%
   filter(TADA.CharacteristicName %in% TAqH) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, ActivityStartTime.Time, MonitoringLocationIdentifier
            , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
-           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
+           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode, TADA.ActivityDepthHeightMeasure.MeasureValue
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus
            , TADA.CharacteristicName, TADA.ComparableDataIdentifier
@@ -1107,7 +1108,7 @@ df_TAqH <- data_22a %>%
   summarize(Avg_TADA.ResultMeasureValue = mean(TADA.ResultMeasureValue)) %>% 
   group_by(OrganizationIdentifier, ActivityStartDate, ActivityStartTime.Time, MonitoringLocationIdentifier
            , TADA.MonitoringLocationName, TADA.MonitoringLocationTypeName
-           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode
+           , TADA.ResultMeasure.MeasureUnitCode, StatisticalBaseCode, TADA.ActivityDepthHeightMeasure.MeasureValue
            , TADA.LatitudeMeasure, TADA.LongitudeMeasure, ML_ID, ML_Name
            , Latitude, Longitude, HUC10_ID, Name_AU, AUID_ATTNS, AU_Type, NavStatus) %>%
   #TADA.CharacteristicName, TADA.ResultMeasureValue, TADA.ComparableDataIdentifier
