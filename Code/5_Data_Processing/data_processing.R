@@ -215,15 +215,91 @@ unique(data_12b$TADA.MeasureQualifierCode.Flag)
 data_13 <- data_12b %>% 
   select(where(~sum(!is.na(.x)) > 0)) 
 
+
+#####13.25 Fix Units#####
+#Units check - compare sample units to WQS units
+wqs_table_units <- read_csv("Data/data_analysis/AK_WQS_Crosswalk_20250429.csv") %>%
+  select(TADA.Constituent, Units) %>%
+  filter(!is.na(TADA.Constituent), !is.na(Units)) %>%
+  mutate(TADA.Constituent = toupper(TADA.Constituent),
+         Units = toupper(Units)) %>%
+  unique()
+
+#sample units
+data_13_units <- data_13 %>%
+  mutate(TADA.CharacteristicName = toupper(TADA.CharacteristicName),
+         SampleUnit = toupper(TADA.ResultMeasure.MeasureUnitCode))
+
+#Join with compatibility filter (only units that match or can be converted)
+data_13.25 <- data_13_units %>%
+  left_join(wqs_table_units, 
+            by = c("TADA.CharacteristicName" = "TADA.Constituent")) %>%
+  mutate(
+    TADA.ResultMeasureValue = case_when(
+      SampleUnit == "MG/L" & Units == "UG/L" ~ TADA.ResultMeasureValue * 1000,
+      SampleUnit == "UG/L" & Units == "MG/L" ~ TADA.ResultMeasureValue / 1000,
+      SampleUnit == "CFU/ML" & Units == "CFU/100ML" ~ TADA.ResultMeasureValue / 100,
+      SampleUnit == "MG/L ASNO3" & Units == "UG/L" ~ (TADA.ResultMeasureValue / 4.43) * 1000,
+      SampleUnit == "MG/L ASNO2" & Units == "UG/L" ~ (TADA.ResultMeasureValue / 3.28) * 1000,
+      SampleUnit == "MG/L AS P" & Units == "UG/L" ~ TADA.ResultMeasureValue * 1000,
+      SampleUnit == "MG/L CACO3" & Units == "UG/L" ~ TADA.ResultMeasureValue * 1000,
+      SampleUnit == "UG/KG" & Units == "MG/L" ~ TADA.ResultMeasureValue / 1000,
+      TRUE ~ TADA.ResultMeasureValue  #No conversion
+    ),
+    TADA.ResultMeasure.MeasureUnitCode = case_when(
+      SampleUnit == "MG/L" & Units == "UG/L" ~ "UG/L",
+      SampleUnit == "UG/L" & Units == "MG/L" ~ "MG/L",
+      SampleUnit == "CFU/ML" & Units == "CFU/100ML" ~ "CFU/100ML",
+      SampleUnit == "MG/L ASNO3" & Units == "UG/L" ~ "UG/L",
+      SampleUnit == "MG/L ASNO2" & Units == "UG/L" ~ "UG/L",
+      SampleUnit == "MG/L AS P" & Units == "UG/L" ~ "UG/L",
+      SampleUnit == "MG/L CACO3" & Units == "UG/L" ~ "UG/L",
+      SampleUnit == "UG/KG" & Units == "MG/L" ~ "MG/L",
+      TRUE ~ SampleUnit
+    )
+  ) %>%
+  # De-duplicate to ensure no row replication
+  group_by(across(names(data_13))) %>%
+  slice(1) %>%
+  ungroup()
+
+
+#####13.5 Flag when ND x 0.5 is greater than criteria#####
+wqs_table <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250429.csv') %>%
+  select(TADA.Constituent,
+         Magnitude_Numeric,
+         Units) %>%
+  rename(Characteristic = TADA.Constituent,
+         CriteriaValue = Magnitude_Numeric,
+         CriteriaUnit = Units) %>%
+  filter(!is.na(CriteriaValue)) %>%
+  unique() %>%
+  filter(!is.na(CriteriaValue)) %>%
+  group_by(Characteristic, CriteriaUnit) %>%
+  #Keep most conservative value
+  slice_min(order_by = CriteriaValue, n = 1, with_ties = FALSE) %>%  
+  ungroup()
+
+#Match WQS to samples by name and units
+data_13.5 <- data_13.25 %>%
+  left_join(wqs_table, by = c("TADA.CharacteristicName" = "Characteristic",
+                              'TADA.DetectionQuantitationLimitMeasure.MeasureUnitCode' = 'CriteriaUnit')) %>%
+  #Calculate half ND value
+  mutate(HalfDetectionLimit = TADA.DetectionQuantitationLimitMeasure.MeasureValue * 0.5,
+         Flag.NDx0.5_ExceedsCriteria = case_when(!is.na(CriteriaValue) ~
+                                       HalfDetectionLimit > CriteriaValue,
+                                     T ~ NA)) %>%
+  select(!c(SampleUnit))
+
 #Export data with flags: manual review, update, and re-import before moving to next step. 
-write_csv(data_13, file = file.path('Output/data_processing'
+write_csv(data_13.5, file = file.path('Output/data_processing'
                                     , paste0("Original_data_with_flags_"
                                              ,myDate, ".csv")), na = "")
 
 #Clean up environment
 rm(data_1, data_2, data_3, data_4, data_5a, data_5b, data_6, data_7,data_8a
-   , data_8b, data_9, data_10, data_11, data_12a, data_12b, cols_NA
-   , all_input_data, uncategorized_qualifiers)
+   , data_8b, data_9, data_10, data_11, data_12a, data_12b, data_13, data_13.25,
+   cols_NA, all_input_data, uncategorized_qualifiers)
 
 ####Evaluate and trim data ####
 #####14. Data summary ######
@@ -233,10 +309,10 @@ rm(data_1, data_2, data_3, data_4, data_5a, data_5b, data_6, data_7,data_8a
 result_list <- list() # loop infrastructure
 counter <- 0 # loop infrastructure
 
-for(i in names(data_13)){
+for(i in names(data_13.5)){
   counter <- counter + 1 # loop infrastructure
   ColumnName <- i # obtain column name
-  data_loop <- data_13[,i] # filter data by column name
+  data_loop <- data_13.5[,i] # filter data by column name
   Class <- paste(class(data_loop), collapse = "; ") # obtain class of column
   NumberUniqueValues <- n_distinct(data_loop) # obtain number of unique values
   
@@ -280,7 +356,7 @@ Keep_cols <- df_ColManager %>%
   pull(Col_Name)
 
 # QC check for updated df_ColManager
-Cols_data_13 <- names(data_13)
+Cols_data_13 <- names(data_13.5)
 Cols_Manager <- df_ColManager$Col_Name
 
 
@@ -295,11 +371,11 @@ if(length(QC_Check) > 0){
 }# end if/else statement
 
 # filter data by Keep_cols
-data_15 <- data_13 %>% 
+data_15 <- data_13.5 %>% 
   select(one_of(Keep_cols))
 
 #Clean up environment
-rm(data_13, df_ColManager, Cols_data_13, QC_Check, Keep_cols, Cols_Manager)
+rm(data_13.5, data_13_units, df_ColManager, Cols_data_13, QC_Check, Keep_cols, Cols_Manager)
 
 #####16. Remove Flags#####
 # Flags not well explained. Vignettes don't match unique values.
@@ -327,127 +403,28 @@ data_16 <- data_15 %>%
   filter(TADA.ActivityType.Flag == 'Non_QC') %>% # Step 9
   filter(TADA.MeasureQualifierCode.Flag != 'Suspect'
          & TADA.MeasureQualifierCode.Flag != 'Reject') %>% # Step 11
-  filter(TADA.ActivityMediaName == 'WATER') # Remove non-water samples
-# censored data are retained in this dataset.
-
-#Units check - compare sample units to WQS units
-wqs_table_units <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250429.csv') %>% 
-  select(TADA.Constituent, Units) %>%
-  unique() %>%
-  na.omit() %>%
-  mutate(Units = toupper(Units))
-
-#Join WQS units to sample data
-data_16b <- data_16 %>% 
-  left_join(wqs_table_units, by = c('TADA.CharacteristicName' = 'TADA.Constituent')) 
-
-#Nitrite and Nitrate conversion factors from:
-#https://environment.des.qld.gov.au/__data/assets/pdf_file/0022/90148/data-handling-units-and-concentrations.pdf
-
-data_16c <- data_16b %>%
-  #Convert the numeric results
-  mutate(TADA.ResultMeasureValue = case_when(TADA.ResultMeasure.MeasureUnitCode == 'MG/L' &
-                                               Units == 'UG/L' ~
-                                               TADA.ResultMeasureValue*1000,
-                                             TADA.ResultMeasure.MeasureUnitCode == 'UG/L' &
-                                               Units == 'MG/L'~
-                                               TADA.ResultMeasureValue/1000,
-                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS P' &
-                                               Units == 'UG/L'~
-                                               TADA.ResultMeasureValue*1000,
-                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L CACO3' &
-                                               Units == 'UG/L'~
-                                               TADA.ResultMeasureValue*1000,
-                                             TADA.ResultMeasure.MeasureUnitCode == 'UG/KG' & #1 ug/kg = 1 ug/L
-                                               Units == 'MG/L' ~ #ug/L to mg/L
-                                               TADA.ResultMeasureValue/1000,
-                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L ASNO3' &
-                                               Units == 'UG/L'~
-                                               (TADA.ResultMeasureValue/4.43)*1000, #1 mg/L of nitrate NO3-N = 4.43mg/L NO3
-                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L ASNO2' &
-                                               Units == 'UG/L'~
-                                               (TADA.ResultMeasureValue/3.28)*1000, #1 mg/L of nitrite NO2-N = 3.28mg/L NO2
-                                             TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS N' &
-                                               Units == 'UG/L'~
-                                               TADA.ResultMeasureValue*1000,
-                                             TADA.ResultMeasure.MeasureUnitCode == 'CFU/ML' &
-                                               Units == 'CFU/100ML'~
-                                               TADA.ResultMeasureValue/100,
-                                             T ~ TADA.ResultMeasureValue),
-         #Convert the units to match WQS
-         TADA.ResultMeasure.MeasureUnitCode = case_when(TADA.ResultMeasure.MeasureUnitCode == 'MG/L' &
-                                                          Units == 'UG/L' ~
-                                                          'UG/L',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'UG/L' &
-                                                          Units == 'MG/L'~
-                                                          'MG/L',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS P' &
-                                                          Units == 'UG/L'~
-                                                          'UG/L',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'MPN/100 ML' &
-                                                          Units == 'CFU/100ML' ~
-                                                          'CFU/100ML',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'CFU/100ML' &
-                                                          Units == 'MPN/100ML'~
-                                                          'MPN/100ML',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'MPN/100ML' &
-                                                          Units == 'CFU/100ML'~
-                                                          'CFU/100ML',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L CACO3' &
-                                                          Units == 'UG/L'~
-                                                          'UG/L',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'UG/KG' & 
-                                                          Units == 'MG/L' ~ 
-                                                          'MG/L',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L ASNO3' &
-                                                          Units == 'UG/L'~
-                                                          'UG/L', 
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L ASNO2' &
-                                                          Units == 'UG/L'~
-                                                          'UG/L',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'MG/L AS N' &
-                                                          Units == 'UG/L'~
-                                                          'UG/L',
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'STD UNITS' &
-                                                          Units == 'SU'~
-                                                          'SU',
-                                                        is.na(TADA.ResultMeasure.MeasureUnitCode) & # dec added 7-30-24
-                                                          Units == 'SU'~#dec added 7-30-24
-                                                          'SU',#dec added 7-30-24,
-                                                        TADA.ResultMeasure.MeasureUnitCode == 'DEG C' &
-                                                          Units == 'DEGREES C' ~
-                                                          'DEGREES C',
-                                                        T ~ TADA.ResultMeasure.MeasureUnitCode)) #dec added 7-30-24
-
-
-#Find which units were not fixable by simple conversion
-#Requires manual intervention
-samples_table_units_not_matching <- data_16c %>%
-  filter(TADA.ResultMeasure.MeasureUnitCode != Units) %>%
-  select(TADA.CharacteristicName, TADA.ResultMeasure.MeasureUnitCode, Units) %>%
-  unique()
-
-print('Check samples_table_units_not_matching variable for any sample units that do not match the WQS table.')
-
-#Grab only data whose units match
-data_16d <- data_16c %>%
+  filter(TADA.ActivityMediaName == 'WATER') %>%# Remove non-water samples
   filter(TADA.ResultMeasure.MeasureUnitCode == Units | is.na(Units)) #DEC change
 
+# censored data are retained in this dataset.
+
+
+
 #Export data summary
-write_csv(data_16d, file = file.path('Output/data_processing'
+write_csv(data_16, file = file.path('Output/data_processing'
                                      , paste0("WQ_data_trimmed_"
                                               ,myDate, ".csv"))
           , na = "")
 
 #Clean up environment
-rm(data_15, data_16, data_16b, data_16c)
+rm(data_15)
 
 #####17. Visualize data distributions#####
 # NOTE: This step creates its own unique output but does not produce data_17 object.
 
 # For loop to plot distribution of TADA.CharacteristicName
 # CAUTION: This loop takes about a minute to run.
-Unique_CharName <- unique(data_16d$TADA.CharacteristicName)
+Unique_CharName <- unique(data_16$TADA.CharacteristicName)
 plot_list <- list()
 counter <- 0
 myPal <- c("Lake, Reservoir, Impoundment" = "#7fc97f"
@@ -458,7 +435,7 @@ myPal <- c("Lake, Reservoir, Impoundment" = "#7fc97f"
            , "Stream" = "#f0027f"
            , "River/Stream" = "#bf5b17")
 
-data_4loop <- data_16d %>% #DEC change to 16d from 16. 16 removed from environment above#
+data_4loop <- data_16 %>% #DEC change to 16d from 16. 16 removed from environment above# #TT changed back
   filter(!is.na(TADA.ResultMeasureValue))%>% # remove NA values
   select(TADA.MonitoringLocationTypeName, TADA.CharacteristicName
          , TADA.ResultMeasureValue, TADA.ResultMeasure.MeasureUnitCode) %>% 
@@ -517,7 +494,7 @@ rm(data_4loop, df_subset, logplot, plot, plot_list, counter, i
    , myPal, Unique_CharName)
 
 #####18. Ultra trim data#####
-data_18 <- data_16d %>% 
+data_18 <- data_16 %>% 
   select(OrganizationIdentifier
          ,ActivityStartDate
          ,ActivityStartTime.Time
@@ -554,7 +531,7 @@ blank_fractions <- c("AMMONIA", "ASBESTOS", "BENZENE", "ETHYLBENZENE", "TOLUENE"
                      , "PH", "SEDIMENT", "SULFATE", "TEMPERATURE, WATER"
                      , "TOTAL DISSOLVED SOLIDS", "TURBIDITY") # from data sufficiency table
 
-data_19_long <- left_join(data_16d, df_ML_AU_Crosswalk
+data_19_long <- left_join(data_16, df_ML_AU_Crosswalk
                           , by = "MonitoringLocationIdentifier") %>%
   select(!c(HydrologicEvent, HydrologicCondition, ResultTimeBasisText, 
             ActivityEndDateTime, MonitoringLocationDescriptionText,
@@ -597,7 +574,7 @@ df_ML <- data_19 %>%
   distinct()
 
 # cleanup
-rm(data_19_long, data_16d)
+rm(data_19_long, data_16)
 
 ## create palette
 ML_Type <- factor(c("Lake, Reservoir, Impoundment"
@@ -662,7 +639,7 @@ AK_shp <- USA_shp %>%
 # split by MonitoringLocationTypeName
 ######20b. Beaches #####
 miss_ML_beaches <- missing_ML %>% # filter appropriate sites
-  filter(MonitoringLocationTypeName == "BEACH Program Site-Ocean")
+  filter(TADA.MonitoringLocationTypeName == "BEACH Program Site-Ocean")
 
 ### QC check
 num_sites <- nrow(miss_ML_beaches)
@@ -690,8 +667,8 @@ ggplot() +
 
 ### spatial join
 beach_SpatJoin <- sf::st_join(beach_pts, beach_shp, join = st_nearest_feature) %>% # join points and AUs
-  select(MonitoringLocationIdentifier, MonitoringLocationName
-         , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10 =HUC10_ID) # trim unneccessary columns
+  select(MonitoringLocationIdentifier, TADA.MonitoringLocationName
+         , TADA.MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10 =HUC10_ID) # trim unneccessary columns
 
 ### determine distance (m) between points and nearest feature
 near_feat <- sf::st_nearest_feature(beach_pts, beach_shp)
@@ -721,8 +698,8 @@ rm(num_sites, beach_pts, beach_SpatJoin, beach_SpatJoin2, miss_ML_beach_results
 
 ######20c. Lakes #####
 miss_ML_lakes <- missing_ML %>%
-  filter(MonitoringLocationTypeName == "Lake"
-         |MonitoringLocationTypeName == "Lake, Reservoir, Impoundment")
+  filter(TADA.MonitoringLocationTypeName == "Lake"
+         |TADA.MonitoringLocationTypeName == "Lake, Reservoir, Impoundment")
 
 ### QC check
 num_sites <- nrow(miss_ML_lakes)
@@ -750,8 +727,8 @@ ggplot() + # takes ~15 seconds to load all the lakes
 
 ### spatial join
 lake_SpatJoin <- sf::st_join(lake_pts, lake_shp, join = st_nearest_feature) %>% # join points and AUs
-  select(MonitoringLocationIdentifier, MonitoringLocationName
-         , MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10_ID) # trim unneccessary columns
+  select(MonitoringLocationIdentifier, TADA.MonitoringLocationName
+         , TADA.MonitoringLocationTypeName, AUID_ATTNS, Name_AU, HUC10_ID) # trim unneccessary columns
 
 ### determine distance (m) between points and nearest feature
 near_feat <- sf::st_nearest_feature(lake_pts, lake_shp)
@@ -781,8 +758,8 @@ rm(num_sites, lake_pts, lake_SpatJoin, lake_SpatJoin2, miss_ML_lake_results
 
 ######20d. Marine #####
 miss_ML_marine <- missing_ML %>%
-  filter(MonitoringLocationTypeName == "Estuary"
-         |MonitoringLocationTypeName == "Ocean")
+  filter(TADA.MonitoringLocationTypeName == "Estuary"
+         |TADA.MonitoringLocationTypeName == "Ocean")
 
 ### QC check
 num_sites <- nrow(miss_ML_marine)
@@ -841,8 +818,8 @@ rm(num_sites, marine_pts, marine_SpatJoin, marine_SpatJoin2, miss_ML_marine_resu
 
 ######20e. Rivers #####
 miss_ML_rivers <- missing_ML %>%
-  filter(MonitoringLocationTypeName == "River/Stream"
-         |MonitoringLocationTypeName == "Stream")
+  filter(TADA.MonitoringLocationTypeName == "River/Stream"
+         |TADA.MonitoringLocationTypeName == "Stream")
 
 ### QC check
 num_sites <- nrow(miss_ML_rivers)
@@ -1157,7 +1134,7 @@ rm(df_data_sufficiency, constituents, WQ_CharacteristicNames, df_missing_constit
 # TADA.Constituent (TADA.CharacteristicName)
 # Waterbody Type
 # Fraction
-data_22b <- data_22a %>% 
+data_22b <- data_22a.2 %>% 
   mutate(ActivityStartYear = year(ActivityStartDate),
          ActivityStartMonth = month(ActivityStartDate),
          ActivityWaterYear = ifelse(ActivityStartMonth < 10, ActivityStartYear
@@ -1183,12 +1160,15 @@ counter <- 0
 
 hardness_dependents <- c("CADMIUM", "CHROMIUM", "COPPER", "LEAD", "NICKEL"
                          , "SILVER", "ZINC")
-hardness_constituent <- c("HARDNESS")
+hardness_constituent <- c("HARDNESS") 
 
-# df_subset <- data_22b %>% 
-#   filter(TADA.CharacteristicName == "TOTAL AROMATIC HYDROCARBONS") %>% 
-#   filter(AUID_ATTNS == "AK_R_1030106_014")
 
+######Harvesting...mollusks DS######
+#15 sample DATES
+
+
+
+######DS Loop######
 for(i in Unique_AUIDs){
   i # print name of current AU
   counter <- counter + 1
@@ -1284,7 +1264,7 @@ df_AU_data_sufficiency <- df_AU_data_sufficiency %>%
   distinct() %>%
   select(-`Dec Use`, -`DEC Use Description`)
 
-# results complete
+# results incomplete
 df_loop_results_incomplete <- do.call("rbind", result_incomplete_list) # combine results from for loop
 df_AU_missing_sufficiency <- as.data.frame(df_loop_results_incomplete) # convert to data frame
 df_AU_missing_sufficiency <- df_AU_missing_sufficiency %>% 
