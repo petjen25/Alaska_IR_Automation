@@ -1,0 +1,136 @@
+ColumnName,Class,NumberUniqueValues,UniqueValues
+CountryCode,tbl_df; tbl; data.frame,1,US
+StateCode,tbl_df; tbl; data.frame,1,02
+TADA.ResultDepthHeightMeasure.MeasureValueDataTypes.Flag,tbl_df; tbl; data.frame,1,NA - Not Available
+TADA.ActivityTopDepthHeightMeasure.MeasureValueDataTypes.Flag,tbl_df; tbl; data.frame,1,NA - Not Available
+TADA.ActivityBottomDepthHeightMeasure.MeasureValueDataTypes.Flag,tbl_df; tbl; data.frame,1,NA - Not Available
+TADA.SuspectCoordinates.Flag,tbl_df; tbl; data.frame,2,"c(""Pass""; ""Imprecise_lessthan3decimaldigits"")"
+TADA.Harmonized.Flag,tbl_df; tbl; data.frame,2,c(FALSE; TRUE)
+TADA.DetectionQuantitationLimitMeasure.MeasureValueDataTypes.Flag,tbl_df; tbl; data.frame,2,"c(""NA - Not Available""; ""Numeric"")"
+TADA.ActivityDepthHeightMeasure.MeasureValueDataTypes.Flag,tbl_df; tbl; data.frame,2,"c(""NA - Not Available""; ""Numeric"")"
+TADA.ActivityDepthHeightMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,2,"c(NA; ""m"")"
+VerticalMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,2,"c(""feet""; NA)"
+VerticalAccuracyMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,2,"c(""feet""; NA)"
+ProviderName,tbl_df; tbl; data.frame,2,"c(""NWIS""; ""STORET"")"
+CriteriaValue,tbl_df; tbl; data.frame,2,c(NA; 5)
+Flag.NDx0.5_ExceedsCriteria,tbl_df; tbl; data.frame,2,c(NA; FALSE)
+TADA.SampleFraction.Flag,tbl_df; tbl; data.frame,3,"c(""Not Reviewed""; ""Pass""; ""Suspect"")"
+TADA.MethodSpeciation.Flag,tbl_df; tbl; data.frame,3,"c(""Not Reviewed""; ""Pass""; ""Suspect"")"
+TADA.WQXResultUnitConversion,tbl_df; tbl; data.frame,3,"c(""Convert""; ""No Result Value""; ""No Target Unit"")"
+TADA.CensoredMethod,tbl_df; tbl; data.frame,3,"c(NA; ""Detection Limit Value Multiplied by 0.5""; ""Detection Limit Value Unchanged"")"
+TADA.AnalyticalMethod.Flag,tbl_df; tbl; data.frame,3,"c(""Not Reviewed""; ""Pass""; ""Suspect"")"
+SamplingDesignTypeCode,tbl_df; tbl; data.frame,3,"c(NA; ""Targeted - A targeted sample is where a \""sample\"" of the subject matter; be that people; plants/animals etc is selected using certain criteria; i.e. pregnant mothers between the ages of 25-30. Targeted samples are usually used by businesses or companies carrying out surveys on a particular group of people.""; ""Probabilistic - A probability sampling method is any method of sampling that utilizes some form of random selection. In order to have a random selection method; you must set up some process or procedure that assures that the different units in your population have equal probabilities of being chosen.""
+)"
+QAPPApprovedIndicator,tbl_df; tbl; data.frame,3,"c(NA; ""Y""; ""N"")"
+ActivityEndTime.TimeZoneCode,tbl_df; tbl; data.frame,3,"c(NA; ""AKDT""; ""AKST"")"
+ResultWeightBasisText,tbl_df; tbl; data.frame,3,"c(NA; ""Dry""; ""Sampled"")"
+ResultTemperatureBasisText,tbl_df; tbl; data.frame,3,"c(NA; ""180 deg C""; ""25 deg C"")"
+ActivityStartTime.TimeZoneCode_offset,tbl_df; tbl; data.frame,3,c(8; 9; NA)
+ActivityEndTime.TimeZoneCode_offset,tbl_df; tbl; data.frame,3,c(NA; 8; 9)
+HorizontalAccuracyMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,3,"c(""seconds""; ""Unknown""; NA)"
+VerticalCoordinateReferenceSystemDatumName,tbl_df; tbl; data.frame,3,"c(""NGVD29""; ""NAVD88""; NA)"
+DrainageAreaMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,3,"c(""sq mi""; NA; ""mi2"")"
+HorizontalCoordinateReferenceSystemDatumName,tbl_df; tbl; data.frame,4,"c(""NAD83""; ""WGS84""; ""OTHER""; ""NAD27"")"
+ResultValueTypeName,tbl_df; tbl; data.frame,4,"c(""Actual""; ""Estimated""; ""Calculated""; NA)"
+TADA.ResultValueAboveUpperThreshold.Flag,tbl_df; tbl; data.frame,4,"c(""Not Reviewed""; ""Pass""; ""Suspect""; ""NA - Not Available"")"
+TADA.ResultValueBelowLowerThreshold.Flag,tbl_df; tbl; data.frame,4,"c(""Not Reviewed""; ""Pass""; ""Suspect""; ""NA - Not Available"")"
+ResultTimeBasisText,tbl_df; tbl; data.frame,4,"c(NA; ""1 Day""; ""24 Hours""; ""Daily"")"
+ResultParticleSizeBasisText,tbl_df; tbl; data.frame,4,"c(NA; ""< 0.0625 mm""; ""<0.063 mm""; "">0.063 mm"")"
+SourceMapScaleNumeric,tbl_df; tbl; data.frame,4,c(63360; 25000; NA; 24000)
+ActivityMediaName,tbl_df; tbl; data.frame,5,"c(""Water""; ""Air""; ""Habitat""; ""Other""; ""Sediment"")"
+TADA.ActivityMediaName,tbl_df; tbl; data.frame,5,"c(""WATER""; ""AIR""; ""HABITAT""; ""OTHER""; ""SEDIMENT"")"
+TADA.ResultUnit.Flag,tbl_df; tbl; data.frame,5,"c(""Pass""; ""Not Reviewed""; NA; ""NonStandardized""; ""Suspect"")"
+ActivityDepthHeightMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,5,"c(NA; ""feet""; ""m""; ""cm""; ""ft"")"
+TADA.MeasureQualifierCode.Flag,tbl_df; tbl; data.frame,5,"c(""Pass""; ""Suspect""; ""Non-Detect""; ""Reject""; ""Over-Detect"")"
+TADA.ActivityType.Flag,tbl_df; tbl; data.frame,6,"c(""Non_QC""; ""QC_replicate""; ""Not Reviewed""; ""QC_calibration""; ""QC_duplicate""; ""QC_blank"")"
+ActivityStartTime.TimeZoneCode,tbl_df; tbl; data.frame,6,"c(""AKDT""; ""AKST""; ""AST""; ""ADT""; NA; ""PST"")"
+TADA.CensoredData.Flag,tbl_df; tbl; data.frame,6,"c(""Uncensored""; ""Non-Detect""; ""Detection condition is missing and required for censored data ID.""; ""Over-Detect""; ""Conflict between Condition and Limit""; ""Detection condition or detection limit is not documented in TADA reference tables."")"
+ActivityRelativeDepthName,tbl_df; tbl; data.frame,6,"c(NA; ""Surface""; ""Other""; ""Photic zone""; ""Midwater""; ""Sediment Water"")"
+ResultStatusIdentifier,tbl_df; tbl; data.frame,6,"c(""Accepted""; ""Preliminary""; ""Final""; ""Provisional""; ""Rejected""; ""Unreviewed"")"
+MonitoringLocationTypeName,tbl_df; tbl; data.frame,7,"c(""Stream""; ""Lake; Reservoir; Impoundment""; ""River/Stream""; ""Estuary""; ""Ocean""; ""BEACH Program Site-Ocean""; ""Lake"")"
+TADA.MonitoringLocationTypeName,tbl_df; tbl; data.frame,7,"c(""STREAM""; ""LAKE; RESERVOIR; IMPOUNDMENT""; ""RIVER/STREAM""; ""ESTUARY""; ""OCEAN""; ""BEACH PROGRAM SITE-OCEAN""; ""LAKE"")"
+QAPPApprovalAgencyName,tbl_df; tbl; data.frame,7,"c(NA; ""ADEC""; ""EPA""; ""Alaska Department of Environmental Conservation""; ""AK DEC""; ""Various""; ""DEC"")"
+ActivityMediaSubdivisionName,tbl_df; tbl; data.frame,8,"c(""Surface Water""; NA; ""Ambient Air""; ""Ocean Water""; ""Deionized Water""; ""Unknown""; ""Surface Water Sediment""; ""Surface Soil/Sediment"")"
+TADA.SpeciationAssumptions,tbl_df; tbl; data.frame,8,"c(NA; ""Assumes AS N""; ""Assumes AS P""; ""Converts speciation and result values from AS NO3 to AS N""; ""Converts speciation and result values from AS PO4 to AS P""; ""Converts speciation and result values from AS NH4 to AS N""; ""Converts speciation and result values from AS NO2 to AS N""; ""Converts speciation and result values from AS NH3 to AS N"")"
+ResultDetectionConditionText,tbl_df; tbl; data.frame,8,"c(NA; ""Not Detected""; ""Detected Not Quantified""; ""Not Detected at Reporting Limit""; ""Not Reported""; ""Not Detected at Detection Limit""; ""Present Below Quantification Limit""; ""Present Above Quantification Limit"")"
+HydrologicCondition,tbl_df; tbl; data.frame,8,"c(""Stable; normal stage""; ""Stable; low stage""; ""Rising stage""; ""Stable; high stage""; ""Falling stage""; ""Peak stage""; ""Not determined""; NA)"
+HydrologicEvent,tbl_df; tbl; data.frame,8,"c(""Routine sample""; ""Under ice cover""; ""Snowmelt""; ""Flood""; ""Glacial lake outbreak""; ""Not applicable""; ""Volcanic action""; NA)"
+TADA.CharacteristicNameAssumptions,tbl_df; tbl; data.frame,9,"c(NA; ""Assumes NITROGEN is synonymous with TOTAL NITROGEN; MIXED FORMS.""; ""Assumes oxygen as dissolved fraction equivalent to Dissolved Oxygen (DO)""; ""Assumes NITROGEN; MIXED FORMS (NH3); (NH4); ORGANIC; (NO2) AND (NO3) is synonymous to TOTAL NITROGEN; MIXED FORMS.""; ""Assumes PHOSPHORUS is synonymous to TOTAL PHOSPHORUS; MIXED FORMS.""; ""Assumes KJELDAHL NITROGEN; TOTAL is synonymous to TOTAL KJELDAHL NITROGEN (ORGANIC N & NH3); UNFILTERED.""; ""Assumes AMMONIA-NITROGEN is synonymous to AMMONIA.""; ""Assumes PHOSPHATE-PHOSPHORUS is synonymous to PHOSPHATE""; 
+""Assumes TOTAL KJELDAHL NITROGEN is synonymous to TOTAL KJELDAHL NITROGEN (ORGANIC N & NH3)."")"
+TADA.MethodSpeciationName,tbl_df; tbl; data.frame,9,"c(NA; ""AS N""; ""AS P""; ""AS CACO3""; ""AS QSE""; ""AS NO2+NO3""; ""AS NH3""; ""AS NH4""; ""AS NO3"")"
+TADA.ResultMeasureValueDataTypes.Flag,tbl_df; tbl; data.frame,9,"c(""Numeric""; ""Result Value/Unit Estimated from Detection Limit""; ""Text""; ""Percentage""; ""Less Than""; ""NA - Not Available""; ""Greater Than""; ""Coerced to NA""; ""Result Value/Unit Copied from Detection Limit"")"
+StatisticalBaseCode,tbl_df; tbl; data.frame,9,"c(NA; ""Mean""; ""mean""; ""Minimum""; ""Maximum""; ""Daily Maximum""; ""Daily Minimum""; ""Median""; ""Sum"")"
+HorizontalAccuracyMeasure.MeasureValue,tbl_df; tbl; data.frame,9,"c(""1""; ""10""; ""5""; "".1""; ""3""; ""Unknown""; "".5""; "".01""; NA)"
+HorizontalCollectionMethodName,tbl_df; tbl; data.frame,10,"c(""Interpolated from MAP.""; ""GNSS3 - Level 3 Quality Survey Grade Global Navigation Satellite System""; ""Mapping grade GPS unit (handheld accuracy range 12 to 40 ft)""; ""Interpolated from Digital MAP.""; ""GPS-Unspecified""; ""GPS Code (Pseudo Range) Differential""; ""Interpolation-Satellite""; ""Unknown""; ""Interpolation-Other""; ""Interpolation-Digital Map Source"")"
+VerticalCollectionMethodName,tbl_df; tbl; data.frame,10,"c(""Interpolated from topographic map.""; ""Survey-grade GPSF""; ""GNSS3 - Level 3 Quality Survey Grade Global Navigation Satellite System""; ""Level or other surveyed method.""; ""Unknown.""; ""Reported method of determination.""; NA; ""Differentially corrected Global Positioning System.""; ""GNSS4 - Level 4 Quality Survey Grade Global Navigation Satellite System""; ""Interpolated from Digital Elevation Model"")"
+Units,tbl_df; tbl; data.frame,10,"c(NA; ""UG/L""; ""MG/L""; ""%""; ""SU""; ""NTU""; ""MM""; ""CFU/100ML""; ""MPN/100ML""; ""DEGREES C"")"
+MethodSpeciationName,tbl_df; tbl; data.frame,11,Too Many to list!
+SampleCollectionMethod.MethodIdentifierContext,tbl_df; tbl; data.frame,11,Too Many to list!
+OrganizationIdentifier,tbl_df; tbl; data.frame,13,Too Many to list!
+OrganizationFormalName,tbl_df; tbl; data.frame,13,Too Many to list!
+ResultSampleFractionText,tbl_df; tbl; data.frame,15,Too Many to list!
+DetectionQuantitationLimitTypeName,tbl_df; tbl; data.frame,15,Too Many to list!
+VerticalAccuracyMeasure.MeasureValue,tbl_df; tbl; data.frame,15,Too Many to list!
+TADA.ResultSampleFractionText,tbl_df; tbl; data.frame,16,Too Many to list!
+ResultAnalyticalMethod.MethodIdentifierContext,tbl_df; tbl; data.frame,16,Too Many to list!
+ActivityTypeCode,tbl_df; tbl; data.frame,17,Too Many to list!
+TADA.DetectionQuantitationLimitMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,21,Too Many to list!
+TADA.FractionAssumptions,tbl_df; tbl; data.frame,24,Too Many to list!
+SampleCollectionEquipmentName,tbl_df; tbl; data.frame,26,Too Many to list!
+ActivityConductingOrganizationText,tbl_df; tbl; data.frame,26,Too Many to list!
+CountyCode,tbl_df; tbl; data.frame,29,Too Many to list!
+TADA.ResultMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,35,Too Many to list!
+DetectionQuantitationLimitMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,40,Too Many to list!
+ActivityDepthHeightMeasure.MeasureValue,tbl_df; tbl; data.frame,41,Too Many to list!
+SampleCollectionMethod.MethodDescriptionText,tbl_df; tbl; data.frame,42,Too Many to list!
+ResultLaboratoryCommentText,tbl_df; tbl; data.frame,43,Too Many to list!
+TADA.ActivityDepthHeightMeasure.MeasureValue,tbl_df; tbl; data.frame,47,Too Many to list!
+ProjectFileUrl,tbl_df; tbl; data.frame,48,Too Many to list!
+SampleCollectionMethod.MethodName,tbl_df; tbl; data.frame,50,Too Many to list!
+LaboratoryName,tbl_df; tbl; data.frame,53,Too Many to list!
+MeasureQualifierCode,tbl_df; tbl; data.frame,55,Too Many to list!
+TADA.MeasureQualifierCode.Def,tbl_df; tbl; data.frame,55,Too Many to list!
+SampleCollectionMethod.MethodIdentifier,tbl_df; tbl; data.frame,58,Too Many to list!
+ProjectDescriptionText,tbl_df; tbl; data.frame,64,Too Many to list!
+ResultMeasure.MeasureUnitCode,tbl_df; tbl; data.frame,68,Too Many to list!
+VerticalMeasure.MeasureValue,tbl_df; tbl; data.frame,69,Too Many to list!
+DrainageAreaMeasure.MeasureValue,tbl_df; tbl; data.frame,71,Too Many to list!
+HUCEightDigitCode,tbl_df; tbl; data.frame,75,Too Many to list!
+ProjectName,tbl_df; tbl; data.frame,76,Too Many to list!
+ProjectIdentifier,tbl_df; tbl; data.frame,77,Too Many to list!
+ResultAnalyticalMethod.MethodDescriptionText,tbl_df; tbl; data.frame,109,Too Many to list!
+ActivityEndDate,tbl_df; tbl; data.frame,189,Too Many to list!
+ActivityCommentText,tbl_df; tbl; data.frame,192,Too Many to list!
+MonitoringLocationDescriptionText,tbl_df; tbl; data.frame,204,Too Many to list!
+ResultAnalyticalMethod.MethodName,tbl_df; tbl; data.frame,209,Too Many to list!
+ResultAnalyticalMethod.MethodIdentifier,tbl_df; tbl; data.frame,216,Too Many to list!
+ActivityEndTime.Time,tbl_df; tbl; data.frame,411,Too Many to list!
+USGSPCode,tbl_df; tbl; data.frame,468,Too Many to list!
+MonitoringLocationName,tbl_df; tbl; data.frame,549,Too Many to list!
+TADA.MonitoringLocationName,tbl_df; tbl; data.frame,549,Too Many to list!
+DetectionQuantitationLimitMeasure.MeasureValue,tbl_df; tbl; data.frame,623,Too Many to list!
+LongitudeMeasure,tbl_df; tbl; data.frame,669,Too Many to list!
+TADA.LongitudeMeasure,tbl_df; tbl; data.frame,669,Too Many to list!
+LatitudeMeasure,tbl_df; tbl; data.frame,673,Too Many to list!
+TADA.LatitudeMeasure,tbl_df; tbl; data.frame,673,Too Many to list!
+MonitoringLocationIdentifier,tbl_df; tbl; data.frame,692,Too Many to list!
+TADA.MonitoringLocationIdentifier,tbl_df; tbl; data.frame,692,Too Many to list!
+TADA.CharacteristicName,tbl_df; tbl; data.frame,694,Too Many to list!
+TADA.DetectionQuantitationLimitMeasure.MeasureValue,tbl_df; tbl; data.frame,695,Too Many to list!
+HalfDetectionLimit,tbl_df; tbl; data.frame,695,Too Many to list!
+ResultCommentText,tbl_df; tbl; data.frame,698,Too Many to list!
+CharacteristicName,tbl_df; tbl; data.frame,699,Too Many to list!
+ActivityEndDateTime,tbl_df; tbl; data.frame,886,Too Many to list!
+ActivityLocation.LatitudeMeasure,tbl_df; tbl; data.frame,986,Too Many to list!
+ActivityLocation.LongitudeMeasure,tbl_df; tbl; data.frame,999,Too Many to list!
+ActivityStartTime.Time,tbl_df; tbl; data.frame,1072,Too Many to list!
+ActivityStartDate,tbl_df; tbl; data.frame,1140,Too Many to list!
+TADA.ComparableDataIdentifier,tbl_df; tbl; data.frame,1199,Too Many to list!
+AnalysisStartDate,tbl_df; tbl; data.frame,1401,Too Many to list!
+LastUpdated,tbl_df; tbl; data.frame,5170,Too Many to list!
+ActivityStartDateTime,tbl_df; tbl; data.frame,13268,Too Many to list!
+ResultMeasureValue,tbl_df; tbl; data.frame,38435,Too Many to list!
+ActivityIdentifier,tbl_df; tbl; data.frame,41354,Too Many to list!
+TADA.ResultMeasureValue,tbl_df; tbl; data.frame,41659,Too Many to list!
+ResultDetectionQuantitationLimitUrl,tbl_df; tbl; data.frame,60118,Too Many to list!
+ResultIdentifier,tbl_df; tbl; data.frame,184691,Too Many to list!
