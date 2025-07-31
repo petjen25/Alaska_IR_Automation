@@ -997,7 +997,7 @@ rm(df_AU_summary1, df_AU_summary2, df_AU_summary3, data_19)
 # Match using Data/data_processing/ML_AU_Crosswalk.CSV
 df_data_sufficiency <- read_csv("Data/data_processing/AK_DataSufficiency_Crosswalk_20250130.csv") 
 df_data_sufficiency2 <- df_data_sufficiency %>% 
-  select(-c(`Constituent Group`, Constituent, `Other Requirements`, `Listing methodology`, Notes)) %>% #dec edit: removed Use_Description from select(-c())
+  select(-c(Constituent, `Other Requirements`, `Listing methodology`, Notes)) %>% #dec edit: removed Use_Description from select(-c())
   mutate(TADA.Fraction = toupper(Fraction)) %>% 
   select(`Waterbody Type`, TADA.Constituent, Fraction, TADA.Fraction, everything())
 
@@ -1164,11 +1164,6 @@ hardness_dependents <- c("CADMIUM", "CHROMIUM", "COPPER", "LEAD", "NICKEL"
 hardness_constituent <- c("HARDNESS") 
 
 
-######Harvesting...mollusks DS######
-#15 sample DATES
-
-
-
 ######DS Loop######
 for(i in Unique_AUIDs){
   i # print name of current AU
@@ -1270,6 +1265,74 @@ df_loop_results_incomplete <- do.call("rbind", result_incomplete_list) # combine
 df_AU_missing_sufficiency <- as.data.frame(df_loop_results_incomplete) # convert to data frame
 df_AU_missing_sufficiency <- df_AU_missing_sufficiency %>% 
   distinct()
+
+######22c. Override Bacteria sufficiency based on use-specific logic######
+
+#Identify Bacteria constituents
+bacteria_constituents <- df_data_sufficiency2 %>%
+  filter(`Constituent Group` == "Bacteria") %>%
+  distinct(TADA.Constituent) %>%
+  pull()
+
+#Pull sample-level data for Bacteria only
+data_bacteria <- data_22a.2 %>%
+  filter(TADA.CharacteristicName %in% bacteria_constituents) %>%
+  mutate(ActivityStartYear = year(ActivityStartDate),
+         ActivityStartMonth = month(ActivityStartDate),
+         ActivityWaterYear = ifelse(ActivityStartMonth < 10, ActivityStartYear, ActivityStartYear + 1))
+
+#Join Use from data sufficiency crosswalk
+data_bacteria <- data_bacteria %>%
+  left_join(df_data_sufficiency2 %>%
+              select(TADA.Constituent, TADA.Fraction, Use),
+            by = c("TADA.CharacteristicName" = "TADA.Constituent",
+                   "TADA.ResultSampleFractionText_new" = "TADA.Fraction"))
+
+#Function to check for 5 samples in a 30-day window
+has_30day_window <- function(dates) {
+  dates <- sort(unique(dates))
+  for (i in seq_along(dates)) {
+    window_dates <- dates[dates >= dates[i] & dates <= (dates[i] + 30)]
+    if (length(window_dates) >= 5) return(TRUE)
+  }
+  return(FALSE)
+}
+
+#Summarize sample dates by year
+df_bac_summary <- data_bacteria %>%
+  group_by(AUID_ATTNS, TADA.CharacteristicName, TADA.ResultSampleFractionText_new
+           , Use, ActivityWaterYear) %>%
+  summarize(SampleDates = list(ActivityStartDate),
+            n_SampleDates = n_distinct(ActivityStartDate),
+            has30day = has_30day_window(ActivityStartDate),
+            .groups = "drop")
+
+#Evaluate bacteria rules per AU + constituent
+df_bac_eval <- df_bac_summary %>%
+  group_by(AUID_ATTNS, TADA.CharacteristicName, TADA.ResultSampleFractionText_new, Use) %>%
+  summarize(
+    n_years_30day = sum(has30day),
+    n_years_15 = sum(n_SampleDates >= 15),
+    n_years_5 = sum(n_SampleDates >= 5),
+    .groups = "drop") %>%
+  mutate(Bacteria_Sufficient = case_when(
+    Use == "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR  OTHER AQUATIC LIFE"
+    & n_years_15 >= 1 & n_years_5 >= 2 ~ "Yes",
+    Use != "HARVESTING FOR CONSUMPTION OF RAW MOLLUSKS OR  OTHER AQUATIC LIFE"
+    & n_years_30day >= 2 ~ "Yes",
+    TRUE ~ "No"
+  ))
+
+#Override Data_Sufficient for matching rows
+df_AU_data_sufficiency <- df_AU_data_sufficiency %>%
+  left_join(df_bac_eval,
+            by = c("AUID_ATTNS", "TADA.CharacteristicName", "TADA.ResultSampleFractionText_new", "Use")) %>%
+  mutate(Data_Sufficient = case_when(
+    !is.na(Bacteria_Sufficient) ~ Bacteria_Sufficient,
+    TRUE ~ Data_Sufficient
+  )) %>%
+  select(-n_years_30day, -n_years_15, -n_years_5, -Bacteria_Sufficient)
+
 
 # clean environment
 rm(data_22a, data_22b, df_data_sufficiency2, df_join, df_loop_results, 
