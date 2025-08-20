@@ -8,8 +8,8 @@ library(tidyverse)
 set.seed(42)
 
 #Load in data
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250701.csv') 
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250630.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250731.csv') 
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250731.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250429.csv')
 
 
@@ -112,6 +112,8 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
     #If there's no samples - return insufficient data
     if(nrow(test_df) == 0 | nrow(ref_df) == 0){
       
+      wqs_row$AUID_ATTNS <- group_meta %>% filter(Role == 'Test') %>%
+        select(AUID) %>% unique() %>% pull()
       wqs_row$Group <- g
       wqs_row$Method <- method
       wqs_row$Threshold <- NA
@@ -174,7 +176,8 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       #If the LCL is greater than the threshold, it's considered an exceedance (impaired)
       result <- ifelse(lcl_val > threshold_value, "Yes", "No")
       
-      
+      wqs_row$AUID_ATTNS <- group_meta %>% filter(Role == 'Test') %>%
+        select(AUID) %>% unique() %>% pull()
       wqs_row$Group <- g
       wqs_row$Method <- method
       wqs_row$Threshold <- threshold_value
@@ -191,6 +194,8 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       diff <- test_mean - ref_mean
       result <- ifelse(diff > (threshold_value - ref_mean), "Yes", "No")
       
+      wqs_row$AUID_ATTNS <- group_meta %>% filter(Role == 'Test') %>%
+        select(AUID) %>% unique() %>% pull()
       wqs_row$Group <- g
       wqs_row$Method <- method
       wqs_row$Threshold <- threshold_value
@@ -218,15 +223,17 @@ df_AU_data_WQS <- df_AU_data_WQS %>%
 relevant_suff <- input_sufficiency %>%
   dplyr::filter(TADA.CharacteristicName == 'TURBIDITY')
 
-# data_suff_WQS <- df_AU_data_WQS %>%
-#   dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-#   dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
-#                                          'Fraction', 'Type'),
-#                    relationship = "many-to-many") %>%
-#   dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
+data_suff_WQS <- df_AU_data_WQS %>%
+  dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
+  dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
+                                         'Fraction', 'Type', 'Constituent Group'),
+                   relationship = "many-to-many") %>%
+  dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col()) %>%
+  select(!c(Magnitude_Text, Group, Method, Threshold, Pctl90, LCL90, TestMean, 
+            RefMean, Difference))
 
 
-
+output_turbidity <- data_suff_WQS
 
 
 
