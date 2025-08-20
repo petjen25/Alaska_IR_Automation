@@ -186,7 +186,7 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
-                                           'Fraction', 'Type'),
+                                           'Fraction', 'Type', 'Constituent Group'),
                      relationship = "many-to-many") %>%
     dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
   

@@ -12,8 +12,8 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250701.csv') 
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250630.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250731.csv') 
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250731.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250429.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
@@ -783,7 +783,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
-                                           'Fraction', 'Type'),
+                                           'Fraction', 'Type', 'Constituent Group'),
                      relationship = "many-to-many") %>%
     dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
   
@@ -795,11 +795,11 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
 output <- MagDurFreq(wqs_crosswalk, input_samples_filtered, input_sufficiency)
 
 
-dfList <- list(output, pathogens_output)
-dfColList <- lapply(dfList,names)
-commonCols <- Reduce(intersect,dfColList)
-
-!colnames(pathogens_output) %in% colnames(output)
+# dfList <- list(output, pathogens_output)
+# dfColList <- lapply(dfList,names)
+# commonCols <- Reduce(intersect,dfColList)
+# 
+# !colnames(pathogens_output) %in% colnames(output)
 
 MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_samples_filtered, input_sufficiency) {
   ##Magnitude, Frequency, Duration
@@ -1149,7 +1149,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #dec added Use Description
-                                           'Fraction', 'Type'),
+                                           'Fraction', 'Type', 'Constituent Group'),
                      relationship = "many-to-many") %>%
     dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
   
@@ -1675,7 +1675,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
   data_suff_WQS <- df_AU_data_WQS %>%
     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added use description
-                                           'Fraction', 'Type'),
+                                           'Fraction', 'Type', 'Constituent Group'),
                      relationship = "many-to-many") %>%
     dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col())
   
