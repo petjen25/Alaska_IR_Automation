@@ -130,6 +130,7 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       wqs_row$Exceed <- "Insufficient Data"
       wqs_row$Exceed_Num <- NA
       wqs_row$Exceed_Freq <- NA
+      wqs_row$Notes <- method
       
       next
     }
@@ -149,7 +150,7 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       threshold_value <- ref_mean + threshold
     }
     
-    #Calculate Distrubution of Differences
+    #Calculate Distribution of Differences
     if (method == "DoD") {
       
       #Log-transform the daily average turbidity values for test and reference sites
@@ -194,6 +195,7 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       wqs_row$Exceed <- result
       wqs_row$Exceed_Num <- NA
       wqs_row$Exceed_Freq <- NA
+      wqs_row$Notes <- method
       
       
     } else if (method == "Avg") {
@@ -213,10 +215,10 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       wqs_row$Exceed <- result
       wqs_row$Exceed_Num <- NA
       wqs_row$Exceed_Freq <- NA
+      wqs_row$Notes <- method
       
-      
-      result_list[[counter]] <- wqs_row
     }
+    result_list[[counter]] <- wqs_row
   }
 }
 
