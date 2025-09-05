@@ -76,15 +76,23 @@ counter <- 0
 for(i in 1:nrow(wqs_crosswalk_filt)) {
   
   wqs_row <- wqs_crosswalk_filt[i,]
+  water_type <- wqs_row$`Waterbody Type`
   threshold <- wqs_row$Magnitude_Numeric
   threshold_unit <- wqs_row$Units
   
   #Loop over each unique Group in turbidity_sites
-  groups <- unique(turbidity_sites$Group)
+  groups <- turbidity_sites %>%
+    #filter for group AUs that have the same water type as the standard
+    filter(AUID %in% unique(filter(input_sufficiency, `Waterbody Type` == water_type))$AUID_ATTNS) %>%
+    select(Group) %>%
+    unique() %>%
+    pull()
+  
   for (g in groups) {
     counter <- counter + 1
     group_meta <- turbidity_sites %>% filter(Group == g)
     method <- unique(group_meta$Method)
+    
     
     #QA check
     if (length(method) != 1) stop(paste("Group", g, "has conflicting methods"))
@@ -225,7 +233,8 @@ relevant_suff <- input_sufficiency %>%
 
 data_suff_WQS <- df_AU_data_WQS %>%
   dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-  dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
+  dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName',
+                                         'Use', 'Use Description', 'Waterbody Type', #DEC added Use Description
                                          'Fraction', 'Type', 'Constituent Group'),
                    relationship = "many-to-many") %>%
   dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col()) %>%
