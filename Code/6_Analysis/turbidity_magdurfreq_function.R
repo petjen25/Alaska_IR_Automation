@@ -130,7 +130,7 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       wqs_row$Exceed <- "Insufficient Data"
       wqs_row$Exceed_Num <- NA
       wqs_row$Exceed_Freq <- NA
-      wqs_row$Notes <- method
+      wqs_row$Notes <- paste0(method, ' - Group', g)
       
       next
     }
@@ -195,7 +195,7 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       wqs_row$Exceed <- result
       wqs_row$Exceed_Num <- NA
       wqs_row$Exceed_Freq <- NA
-      wqs_row$Notes <- method
+      wqs_row$Notes <- paste0(method, ' - Group', g)
       
       
     } else if (method == "Avg") {
@@ -215,7 +215,7 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       wqs_row$Exceed <- result
       wqs_row$Exceed_Num <- NA
       wqs_row$Exceed_Freq <- NA
-      wqs_row$Notes <- method
+      wqs_row$Notes <- paste0(method, ' - Group', g)
       
     }
     result_list[[counter]] <- wqs_row
