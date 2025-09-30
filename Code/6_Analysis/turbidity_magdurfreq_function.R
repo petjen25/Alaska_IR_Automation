@@ -131,6 +131,7 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       group_by(ActivityStartDate) %>%
       summarise(daily_avg = mean(TADA.ResultMeasureValue, na.rm = TRUE), .groups = "drop")
     
+    
     #If there's no samples - return insufficient data
     if(nrow(test_df) == 0 | nrow(ref_df) == 0){
       
@@ -151,6 +152,16 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
     
     #Calculate dynamic threshold if percentage-based
     ref_mean <- mean(ref_df$daily_avg, na.rm = TRUE)
+    
+    #Skip if the reference sites is less than 50 NTU and the WQS is for 
+    #natural condition is over 50 NTU
+    if(ref_mean < 50 &
+       (grepl("natural condition is more than 50 NTU", wqs_row$Details, ignore.case = T) == T |
+        grepl("natural turbidity is greater than 50 NTU", wqs_row$Details, ignore.case = T) == T)
+       ){
+      next
+    }
+    
     if (threshold_unit == "Percent") {
       #Cap maximum increase if Magnitude_Text includes "not to exceed"
       #Otherwise apply % increase
