@@ -118,13 +118,25 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
           group_by(w_year) %>%
           group_modify(~ {
             .x %>%
-              mutate(Exceed = map_lgl(ActivityStartDate, function(d) {
-                values <- .x$TADA.ResultMeasureValue[
-                  .x$ActivityStartDate >= (d - days(30)) & .x$ActivityStartDate <= d
-                ]
-                geom <- geometric.mean(values)
-                return(!is.na(geom) && geom >= crit1$Magnitude_Numeric)
-              }))
+              mutate(
+                #map over ActivityStartDate and return BOTH value Exceed and geom_val
+                res = map(ActivityStartDate, function(d) {
+                  in_win <- .x$ActivityStartDate >= (d - days(30)) & .x$ActivityStartDate <= d
+                  
+                  n_unique_dates <- n_distinct(as.Date(.x$ActivityStartDate[in_win]))
+                  if (n_unique_dates < 5) {
+                    return(list(Exceed = FALSE, GeomVal = NA_real_))
+                  }
+                  
+                  geom_val <- psych::geometric.mean(.x$TADA.ResultMeasureValue[in_win])
+                  exceed <- !is.na(geom_val) && geom_val >= crit1$Magnitude_Numeric
+                  list(Exceed = exceed, GeomVal = geom_val)
+                }),
+                # unpack list-cols into two new columns
+                Exceed   = map_lgl(res, "Exceed"),
+                GeomVal  = map_dbl(res, "GeomVal")
+              ) %>%
+              select(-res)
           }) %>%
           ungroup() %>%
           filter(Exceed) %>%
