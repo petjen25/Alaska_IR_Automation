@@ -68,6 +68,13 @@ wqs_crosswalk_filt <- wqs_crosswalk %>%
          Units = ifelse(str_detect(Magnitude_Text, "%"),
                         "Percent",
                         Units))
+
+lake_aus <- input_samples_filtered %>%
+  filter(TADA.MonitoringLocationTypeName == 'LAKE') %>%
+  select(AUID_ATTNS) %>%
+  unique() %>%
+  pull()
+
 #Prepare results list
 result_list <- list()
 counter <- 0
@@ -88,11 +95,18 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
     unique() %>%
     pull()
   
+  
   for (g in groups) {
     counter <- counter + 1
     group_meta <- turbidity_sites %>% filter(Group == g)
     method <- unique(group_meta$Method)
     
+    
+    #Skip if there are no lake AUs present in the group and the WQS is lake-specific
+    if(grepl("lake", wqs_row$Details, ignore.case = T) == T &
+       any(!group_meta$AUID %in% lake_aus)) {
+      next
+    }
     
     #QA check
     if (length(method) != 1) stop(paste("Group", g, "has conflicting methods"))
