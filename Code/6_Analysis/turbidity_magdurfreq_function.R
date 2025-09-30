@@ -155,12 +155,16 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
     
     #Skip if the reference sites is less than 50 NTU and the WQS is for 
     #natural condition is over 50 NTU
-    if(ref_mean < 50 &
+    if(ref_mean <= 50 &
        (grepl("natural condition is more than 50 NTU", wqs_row$Details, ignore.case = T) == T |
         grepl("natural turbidity is greater than 50 NTU", wqs_row$Details, ignore.case = T) == T)
-       ){
-      next
-    }
+       ){next}
+    
+    #Skip if the reference sites is more than 50 NTU and the WQS is for 
+    #natural condition is under 50 NTU
+    if(ref_mean >= 50 &
+       grepl("natural turbidity is 50 NTU or less", wqs_row$Details, ignore.case = T) == T)
+      {next}
     
     if (threshold_unit == "Percent") {
       #Cap maximum increase if Magnitude_Text includes "not to exceed"
