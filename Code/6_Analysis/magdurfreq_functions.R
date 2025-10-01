@@ -12,8 +12,8 @@ library(zoo)
 library(psych)
 
 ####Load in data####
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250731.csv') 
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250731.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20251001.csv') 
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20251001.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250429.csv')
 #Ammonia test file
 ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
@@ -48,12 +48,6 @@ filterCat3sites(input_sufficiency)
 input_samples_filtered <- filterCat3samples(data_samples = input_samples,
                                             data_sufficiency = input_sufficiency)
 
-#Test samples for pathogens
-# input_samples_filtered <- filterCat3samples(data_samples = input_samples,
-#                                             data_sufficiency = input_sufficiency) %>%
-#   filter(TADA.CharacteristicName %in% c('ESCHERICHIA COLI',
-#                                         'FECAL COLIFORM',
-#                                         'ENTEROCOCCUS'))
 
 MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency) {
   
@@ -124,6 +118,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
     
     #Cycle through each parameter to calculate the mag/freq/dur
     for(j in 1:nrow(my_data_magfreqdur)) {
+      
       counter <- counter + 1
       #Pull relevant method
       filter_by <- my_data_magfreqdur[j,]
@@ -153,8 +148,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         filter_by$Exceed_Num <- NA
         filter_by$Exceed_Freq <- NA
         filter_by$Exceed <- 'Requires manual analysis'
-      }
-      
+      } 
       else if(filter_by$Directionality == 'Maximum' & filter_by$Frequency == 'Not to exceed' &
               filter_by$Duration == '30-day period' & stringr::str_detect(tidyr::replace_na(filter_by$Details, ''), '(?i)Geometric mean') == T) {
         #Method #1 ----
@@ -263,8 +257,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         results <- filt %>%
           dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue),
-                        Exceed = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
+          dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
+                           .groups = "drop") %>%
+          dplyr::mutate(Exceed = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
           dplyr::select(!daily_mean) %>%
           dplyr::ungroup()
         
@@ -280,13 +275,14 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
                 filter_by$Duration == 'Daily average'){
         #Method #7 ----
         #Maximum, 10% of samples, daily arithmetic mean
-        #####CHECK RESULTS HERE!!!!!!!!!!
         results <- filt %>%
           dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
+          dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
+                           .groups = "drop") %>%
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 9-13
-          dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)), #added 9-13
+          dplyr::mutate(year = lubridate::year(ActivityStartDate),
+                        day_row = length(unique(filt$ActivityStartDate)), #added 9-13
                         bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0),
@@ -313,9 +309,11 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::filter(TADA.ActivityDepthHeightMeasure.MeasureValue <= 1) %>%
           dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
+          dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
+                           .groups = "drop") %>%
           unique() %>%
-          dplyr::mutate(day_row = n(),
+          dplyr::mutate(year = lubridate::year(ActivityStartDate),
+                        day_row = n(),
                         bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0),
@@ -337,9 +335,11 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         results <- filt %>%
           dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
+          dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
+                           .groups = "drop") %>%
           unique() %>%
-          dplyr::mutate(day_row = n(),
+          dplyr::mutate(year = lubridate::year(ActivityStartDate),
+                        day_row = n(),
                         bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0),
@@ -361,9 +361,11 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         results <- filt %>%
           dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue)) %>%
+          dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
+                           .groups = "drop") %>%
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 9-13
-          dplyr::mutate(day_row = length(unique(filt$ActivityStartDate)), #added 9-13
+          dplyr::mutate(year = lubridate::year(ActivityStartDate),
+                        day_row = length(unique(filt$ActivityStartDate)), #added 9-13
                         bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0),
@@ -525,7 +527,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         results <- filt %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue), 
+          dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
+                           .groups = "drop") %>%
+          dplyr::mutate(year = lubridate::year(ActivityStartDate),
                         bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0)) 
         
         bad_tot <- results %>% 
@@ -740,8 +744,9 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         results <- filt %>%
           dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(daily_mean = mean(TADA.ResultMeasureValue),
-                        bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0)) #DEC change
+          dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
+                           .groups = "drop") %>%
+          dplyr::mutate(bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0)) #DEC change
         
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -844,8 +849,8 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
     # filter data
     df_subset <- input_samples_filtered_relevant %>% 
       dplyr::filter(AUID_ATTNS == i) %>%
-      dplyr::mutate(year = year(ActivityStartDate),
-                    month = month(ActivityStartDate),
+      dplyr::mutate(year = lubridate::year(ActivityStartDate),
+                    month = lubridate::month(ActivityStartDate),
                     w_year = ifelse(month < 10, year, year+1))
     
     # obtain AU_Type
