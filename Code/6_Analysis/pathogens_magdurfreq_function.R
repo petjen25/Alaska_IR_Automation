@@ -156,7 +156,7 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
             exceed = sum(TADA.ResultMeasureValue >= crit2$Magnitude_Numeric, na.rm = TRUE),
             freq = exceed / total
           ) %>%
-          filter(freq >= 0.1) %>%
+          filter(total >=5, freq >= 0.1) %>%
           pull(w_year)
         
         ###Impairment Rule###
