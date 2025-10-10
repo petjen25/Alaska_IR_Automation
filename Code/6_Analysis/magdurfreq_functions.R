@@ -158,7 +158,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::mutate(geo_mean_30d = zoo::rollapplyr(TADA.ResultMeasureValue, 
                                                        seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
                                                        psych::geometric.mean),
-                        Exceed = ifelse(geo_mean_30d >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
+                        Exceed = ifelse(geo_mean_30d > filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
           dplyr::select(!geo_mean_30d)
         
         filter_by$AUID_ATTNS <- i
@@ -176,7 +176,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         results <- filt %>%
           dplyr::group_by(w_year) %>%
           dplyr::mutate(geo_mean_1yr = psych::geometric.mean(TADA.ResultMeasureValue),
-                        Exceed = ifelse(geo_mean_1yr >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
+                        Exceed = ifelse(geo_mean_1yr > filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
           dplyr::select(!geo_mean_1yr)
         
         filter_by$AUID_ATTNS <- i
@@ -195,7 +195,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         results <- filt %>%
           dplyr::group_by(w_year) %>%
           dplyr::mutate(wyear_row = n(),
-                        bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0),
+                        bad_samp = ifelse(TADA.ResultMeasureValue > filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/wyear_row>=0.1, 1, 0),
                         max_freq = max(sum/wyear_row, na.rm = T))
@@ -217,7 +217,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::mutate(geo_mean_30d = zoo::rollapplyr(TADA.ResultMeasureValue, 
                                                        seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
                                                        psych::geometric.mean),
-                        Exceed = ifelse(geo_mean_30d >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
+                        Exceed = ifelse(geo_mean_30d > filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
           dplyr::select(!geo_mean_30d)
         
         filter_by$AUID_ATTNS <- i
@@ -237,7 +237,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::arrange(ActivityStartDate) %>%
           dplyr::group_by(w_year) %>%
           dplyr::mutate(geo_mean_year = psych::geometric.mean(TADA.ResultMeasureValue),
-                        Exceed = ifelse(geo_mean_year >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
+                        Exceed = ifelse(geo_mean_year > filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
           dplyr::select(!geo_mean_year) %>%
           dplyr::ungroup()
         
@@ -259,7 +259,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
                            .groups = "drop") %>%
-          dplyr::mutate(Exceed = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
+          dplyr::mutate(Exceed = ifelse(daily_mean > filter_by$Magnitude_Numeric, 'Yes', 'No')) %>%
           dplyr::select(!daily_mean) %>%
           dplyr::ungroup()
         
@@ -283,7 +283,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 9-13
           dplyr::mutate(year = lubridate::year(ActivityStartDate),
                         day_row = length(unique(filt$ActivityStartDate)), #added 9-13
-                        bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0),
+                        bad_samp = ifelse(daily_mean > filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0),
                         max_freq = max(sum/day_row, na.rm = T))
@@ -314,7 +314,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           unique() %>%
           dplyr::mutate(year = lubridate::year(ActivityStartDate),
                         day_row = n(),
-                        bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
+                        bad_samp = ifelse(daily_mean < filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0),
                         max_freq = max(sum/day_row, na.rm = T))
@@ -340,7 +340,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           unique() %>%
           dplyr::mutate(year = lubridate::year(ActivityStartDate),
                         day_row = n(),
-                        bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
+                        bad_samp = ifelse(daily_mean < filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0),
                         max_freq = max(sum/day_row, na.rm = T))
@@ -366,7 +366,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::distinct(ActivityStartDate, .keep_all = TRUE) %>% #added 9-13
           dplyr::mutate(year = lubridate::year(ActivityStartDate),
                         day_row = length(unique(filt$ActivityStartDate)), #added 9-13
-                        bad_samp = ifelse(daily_mean <= filter_by$Magnitude_Numeric, 1, 0),
+                        bad_samp = ifelse(daily_mean < filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/day_row>=0.1, 1, 0),
                         max_freq = max(sum/day_row, na.rm = T))
@@ -433,7 +433,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         
         results <- filt %>%
           dplyr::mutate(num_samples = n(),
-                        bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0),
+                        bad_samp = ifelse(TADA.ResultMeasureValue > filter_by$Magnitude_Numeric, 1, 0),
                         sum = sum(bad_samp),
                         bad_year = ifelse(sum/num_samples>=0.1, 1, 0),
                         max_freq = max(sum/num_samples, na.rm = T))
@@ -451,7 +451,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         #Maximum, not to exceed, not to exceed
         
         results <- filt %>%
-          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0))
+          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue > filter_by$Magnitude_Numeric, 1, 0))
         
         bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -471,7 +471,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         results <- filt %>%
           dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::mutate(mean_samps = mean(TADA.ResultMeasureValue), 
-                        bad_samp = ifelse(mean_samps >= filter_by$Magnitude_Numeric, 1, 0))
+                        bad_samp = ifelse(mean_samps > filter_by$Magnitude_Numeric, 1, 0))
         
         bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -490,7 +490,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::mutate(mean_30_day = zoo::rollapplyr(TADA.ResultMeasureValue, 
                                                       seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
                                                       mean), 
-                        bad_samp = ifelse(mean_30_day >= filter_by$Magnitude_Numeric, 1, 0))
+                        bad_samp = ifelse(mean_30_day > filter_by$Magnitude_Numeric, 1, 0))
         
         bad_tot <- results %>% dplyr::select(bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -510,7 +510,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::mutate(max_samps = max(TADA.ResultMeasureValue), 
-                        bad_samp = ifelse(max_samps >= filter_by$Magnitude_Numeric, 1, 0)) 
+                        bad_samp = ifelse(max_samps > filter_by$Magnitude_Numeric, 1, 0)) 
         
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -530,7 +530,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
                            .groups = "drop") %>%
           dplyr::mutate(year = lubridate::year(ActivityStartDate),
-                        bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0)) 
+                        bad_samp = ifelse(daily_mean > filter_by$Magnitude_Numeric, 1, 0)) 
         
         bad_tot <- results %>% 
           dplyr::ungroup() %>%
@@ -606,7 +606,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::arrange(ActivityStartDate) %>%
           dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate, 
                                                  ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])), 
-                        bad_samp = ifelse(roll_4day_mean >= filter_by$Magnitude_Numeric, 1, 0)) 
+                        bad_samp = ifelse(roll_4day_mean > filter_by$Magnitude_Numeric, 1, 0)) 
         
         bad_tot <- results %>% 
           dplyr::ungroup() %>%
@@ -645,7 +645,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         results <- filt %>%
           dplyr::filter(w_year >= max_year - 3) %>%
           dplyr::group_by(ActivityStartDate) %>%
-          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0)) 
+          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue > filter_by$Magnitude_Numeric, 1, 0)) 
         
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -667,7 +667,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::arrange(ActivityStartDate) %>%
           dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate, 
                                                  ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])), 
-                        bad_samp = ifelse(roll_4day_mean >= magnitude, 1, 0)) 
+                        bad_samp = ifelse(roll_4day_mean > magnitude, 1, 0)) 
         
         bad_tot <- results %>% 
           dplyr::ungroup() %>%
@@ -706,7 +706,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
         results <- filt %>%
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::arrange(ActivityStartDate) %>%
-          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= filter_by$Magnitude_Numeric, 1, 0)) 
+          dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue > filter_by$Magnitude_Numeric, 1, 0)) 
         
         bad_tot <- results %>% 
           dplyr::ungroup() %>%
@@ -746,7 +746,7 @@ MagDurFreq <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency)
           dplyr::group_by(ActivityStartDate) %>%
           dplyr::summarise(daily_mean = mean(TADA.ResultMeasureValue, na.rm = TRUE),
                            .groups = "drop") %>%
-          dplyr::mutate(bad_samp = ifelse(daily_mean >= filter_by$Magnitude_Numeric, 1, 0)) #DEC change
+          dplyr::mutate(bad_samp = ifelse(daily_mean > filter_by$Magnitude_Numeric, 1, 0)) #DEC change
         
         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
         bad_sum <- sum(bad_tot$bad_samp)
@@ -994,7 +994,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
             dplyr::arrange(ActivityStartDate) %>%
             dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate, 
                                                    ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])), 
-                          bad_samp = ifelse(roll_4day_mean >= magnitude, 1, 0)) 
+                          bad_samp = ifelse(roll_4day_mean > magnitude, 1, 0)) 
           
           bad_tot <- results %>% 
             dplyr::ungroup() %>%
@@ -1113,7 +1113,7 @@ MagDurFreq_hardnessDependent <- function(wqs_crosswalk, input_samples, input_sam
           results <- joined %>%
             dplyr::filter(w_year >= max_year - 3) %>%
             dplyr::group_by(ActivityStartDate) %>%
-            dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0))
+            dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue > magnitude, 1, 0))
           
           bad_tot <- results %>%
             dplyr::ungroup() %>%
@@ -1328,7 +1328,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
           results <- joined %>%
             dplyr::filter(w_year >= max_year - 3) %>%
             dplyr::group_by(ActivityStartDate) %>%
-            dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue >= magnitude, 1, 0)) 
+            dplyr::mutate(bad_samp = ifelse(TADA.ResultMeasureValue > magnitude, 1, 0)) 
           
           bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
           bad_sum <- sum(bad_tot$bad_samp)
@@ -1396,7 +1396,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
                           average_30_day = zoo::rollapplyr(TADA.ResultMeasureValue, 
                                                            seq_along(ActivityStartDate) - findInterval(ActivityStartDate - 30, ActivityStartDate), 
                                                            mean),
-                          bad_samp = ifelse(average_30_day >= magnitude, 1, 0))
+                          bad_samp = ifelse(average_30_day > magnitude, 1, 0))
           
           bad_tot <- joined %>% 
             dplyr::ungroup() %>%
@@ -1466,7 +1466,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
               dplyr::group_by(ActivityStartDate) %>%
               dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate,
                                                      ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])),
-                            bad_samp = ifelse(roll_4day_mean >= magnitude, 1, 0))
+                            bad_samp = ifelse(roll_4day_mean > magnitude, 1, 0))
             
             bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
             bad_sum <- sum(bad_tot$bad_samp)
@@ -1547,7 +1547,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
               dplyr::group_by(ActivityStartDate) %>%
               dplyr::mutate(roll_4day_mean = map_dbl(ActivityStartDate,
                                                      ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(4), .x)])),
-                            bad_samp = ifelse(roll_4day_mean >= Magnitude, 1, 0))
+                            bad_samp = ifelse(roll_4day_mean > Magnitude, 1, 0))
             
             bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
             bad_sum <- sum(bad_tot$bad_samp)
@@ -1646,7 +1646,7 @@ MagDurFreq_pHDependent <- function(wqs_crosswalk, input_samples, input_samples_f
             dplyr::group_by(ActivityStartDate) %>%
             dplyr::mutate(roll_30day_mean = map_dbl(ActivityStartDate,
                                                     ~mean(TADA.ResultMeasureValue[between(ActivityStartDate, .x - days(30), .x)])),
-                          bad_samp = ifelse(roll_30day_mean >= Magnitude, 1, 0))
+                          bad_samp = ifelse(roll_30day_mean > Magnitude, 1, 0))
           
           bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique() %>% stats::na.omit()
           bad_sum <- sum(bad_tot$bad_samp)
