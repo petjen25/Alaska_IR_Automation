@@ -175,7 +175,9 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       increase <- ref_mean * (threshold / 100)
       threshold_value <- ref_mean + min(increase, max_increase)
       
-    } else {
+    } else if (method == "DoD") {
+      threshold_value <- threshold
+    } else{
       threshold_value <- ref_mean + threshold
     }
     
