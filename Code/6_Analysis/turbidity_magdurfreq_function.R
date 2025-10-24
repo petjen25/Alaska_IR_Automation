@@ -122,12 +122,16 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
     #Pull test site(s) samples
     test_df <- input_samples_filtered %>%
       filter(tolower(MonitoringLocationIdentifier) %in% tolower(test_sites)) %>%
+      #remove Min, Max, Med, Daily min, & daily max
+      filter(is.na(StatisticalBaseCode) | StatisticalBaseCode == 'Mean') %>%
       group_by(ActivityStartDate) %>%
       summarise(daily_avg = mean(TADA.ResultMeasureValue, na.rm = TRUE), .groups = "drop")
     
     #Pull reference site(s) samples
     ref_df <- input_samples_filtered %>%
       filter(tolower(MonitoringLocationIdentifier) %in% tolower(ref_sites)) %>%
+      #remove Min, Max, Med, Daily min, & daily max
+      filter(is.na(StatisticalBaseCode) | StatisticalBaseCode == 'Mean') %>%
       group_by(ActivityStartDate) %>%
       summarise(daily_avg = mean(TADA.ResultMeasureValue, na.rm = TRUE), .groups = "drop")
     
