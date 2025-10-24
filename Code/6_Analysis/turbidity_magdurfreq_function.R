@@ -8,8 +8,8 @@ library(tidyverse)
 set.seed(42)
 
 #Load in data
-input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20250731.csv') 
-input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20250731.csv')
+input_samples <- read_csv('Output/data_processing/WQ_data_trimmed_long_withAU20251001.csv') 
+input_sufficiency <- read_csv('Output/data_processing/WQ_metadata_trimmed_with_data_sufficiency_20251001.csv')
 wqs_crosswalk <- read_csv('Data/data_analysis/AK_WQS_Crosswalk_20250429.csv')
 
 
@@ -121,13 +121,13 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
     
     #Pull test site(s) samples
     test_df <- input_samples_filtered %>%
-      filter(MonitoringLocationIdentifier %in% test_sites) %>%
+      filter(tolower(MonitoringLocationIdentifier) %in% tolower(test_sites)) %>%
       group_by(ActivityStartDate) %>%
       summarise(daily_avg = mean(TADA.ResultMeasureValue, na.rm = TRUE), .groups = "drop")
     
     #Pull reference site(s) samples
     ref_df <- input_samples_filtered %>%
-      filter(MonitoringLocationIdentifier %in% ref_sites) %>%
+      filter(tolower(MonitoringLocationIdentifier) %in% tolower(ref_sites)) %>%
       group_by(ActivityStartDate) %>%
       summarise(daily_avg = mean(TADA.ResultMeasureValue, na.rm = TRUE), .groups = "drop")
     
