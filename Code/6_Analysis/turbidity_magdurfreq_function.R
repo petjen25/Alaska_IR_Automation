@@ -170,20 +170,6 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
        grepl("natural turbidity is 50 NTU or less", wqs_row$Details, ignore.case = T) == T)
       {next}
     
-    if (threshold_unit == "Percent") {
-      #Cap maximum increase if Magnitude_Text includes "not to exceed"
-      #Otherwise apply % increase
-      max_increase <- ifelse(!is.na(wqs_row$Details) && str_detect(wqs_row$Details, "not to exceed .*?([0-9]+) NTU"),
-                             as.numeric(str_extract(wqs_row$Details, "[0-9]+(?= NTU)")),
-                             Inf)
-      increase <- ref_mean * (threshold / 100)
-      threshold_value <- ref_mean + min(increase, max_increase)
-      
-    } else if (method == "DoD") {
-      threshold_value <- threshold
-    } else{
-      threshold_value <- ref_mean + threshold
-    }
     
     #Calculate Distribution of Differences
     if (method == "DoD") {
@@ -218,13 +204,17 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       lcl_val <- exp(qnorm(lcl_pctile, mean = diff_mean, sd = diff_sd))
       
       #If the LCL is greater than the threshold, it's considered an exceedance (impaired)
-      result <- ifelse(lcl_val > threshold_value, "Yes", "No")
+      result <- ifelse(lcl_val > threshold, "Yes", "No")
       
-      wqs_row$AUID_ATTNS <- group_meta %>% filter(Role == 'Test') %>%
-        select(AUID) %>% unique() %>% pull()
+      wqs_row$AUID_ATTNS <- group_meta %>% 
+        filter(Role == 'Test') %>%
+        select(AUID) %>%
+        unique() %>%
+        pull()
+      
       wqs_row$Group <- g
       wqs_row$Method <- method
-      wqs_row$Threshold <- threshold_value
+      wqs_row$Threshold <- threshold
       wqs_row$Pctl90 <- pctl90
       wqs_row$LCL90 <- lcl_val
       wqs_row$Exceed <- result
@@ -234,23 +224,76 @@ for(i in 1:nrow(wqs_crosswalk_filt)) {
       
       
     } else if (method == "Avg") {
-      test_mean <- mean(test_df$daily_avg, na.rm = TRUE)
-      ref_mean <- mean(ref_df$daily_avg, na.rm = TRUE)
-      diff <- test_mean - ref_mean
-      result <- ifelse(diff > (threshold_value - ref_mean), "Yes", "No")
-      
-      wqs_row$AUID_ATTNS <- group_meta %>% filter(Role == 'Test') %>%
-        select(AUID) %>% unique() %>% pull()
-      wqs_row$Group <- g
-      wqs_row$Method <- method
-      wqs_row$Threshold <- threshold_value
-      wqs_row$TestMean <- test_mean
-      wqs_row$RefMean <- ref_mean
-      wqs_row$Difference <- diff
-      wqs_row$Exceed <- result
-      wqs_row$Exceed_Num <- NA
-      wqs_row$Exceed_Freq <- NA
-      wqs_row$Notes <- paste0(method, ' - Group', g)
+        
+        date_col <- "ActivityStartDate"
+        
+        #Pair test/ref by day (only days with both values)
+        daily_pairs <- test_df %>%
+          dplyr::select(!!date_col, test_daily_avg = daily_avg) %>%
+          dplyr::inner_join(ref_df %>% dplyr::select(!!date_col, ref_daily_avg = daily_avg),
+                            by = date_col) %>%
+          dplyr::filter(!is.na(test_daily_avg), !is.na(ref_daily_avg))
+        
+        #If no paired days, mark as insufficient and move on
+        if (nrow(daily_pairs) == 0) {
+          wqs_row$AUID_ATTNS <- group_meta %>%
+            dplyr::filter(Role == "Test") %>%
+            dplyr::select(AUID) %>%
+            unique() %>%
+            dplyr::pull()
+          
+          wqs_row$Group <- g
+          wqs_row$Method <- method
+          wqs_row$Threshold <- threshold
+          wqs_row$Pctl90 <- NA
+          wqs_row$LCL90 <- NA
+ 
+          wqs_row$Exceed <- NA
+          wqs_row$Exceed_Num <- NA
+          wqs_row$Exceed_Freq <- NA
+          wqs_row$Notes <- paste0(method, " - Group", g, " (no paired test/ref days)")
+        } else {
+          
+          #Day-specific threshold + exceedance check
+          if (threshold_unit == "Percent") {
+            #daily threshold is ref * (1 + pct)
+            daily_pairs <- daily_pairs %>%
+              dplyr::mutate(allowed_increase = ref_daily_avg * (threshold / 100),
+                            threshold_day = ref_daily_avg + allowed_increase,
+                            exceed_day = test_daily_avg > threshold_day)
+          } else {
+            #Fixed NTU criteria: ref_daily_avg + threshold (e.g., +5 NTU)
+            daily_pairs <- daily_pairs %>%
+              dplyr::mutate(threshold_day = ref_daily_avg + threshold,
+                            exceed_day = test_daily_avg > threshold_day)
+          }
+          
+          exceed_num <- sum(daily_pairs$exceed_day, na.rm = TRUE)
+          n_days <- nrow(daily_pairs)
+          exceed_freq <- exceed_num / n_days
+          
+          #Decide overall exceedance.
+          result <- ifelse(exceed_num > 0, "Yes", "No")
+          
+          wqs_row$AUID_ATTNS <- group_meta %>%
+            dplyr::filter(Role == "Test") %>%
+            dplyr::select(AUID) %>%
+            unique() %>%
+            dplyr::pull()
+          
+          wqs_row$Group <- g
+          wqs_row$Method <- method
+          
+          #For Avg, "Threshold" is not a single constant anymore; keep the criteria
+          wqs_row$Threshold <- NA
+          wqs_row$Pctl90 <- NA
+          wqs_row$LCL90 <- NA
+          wqs_row$Exceed <- result
+          wqs_row$Exceed_Num <- exceed_num
+          wqs_row$Exceed_Freq <- exceed_freq
+          wqs_row$Notes <- paste0(method, " - Group", g)
+        
+      }
       
     }
     result_list[[counter]] <- wqs_row
@@ -275,398 +318,7 @@ data_suff_WQS <- df_AU_data_WQS %>%
                                          'Fraction', 'Type', 'Constituent Group'),
                    relationship = "many-to-many") %>%
   dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col()) %>%
-  select(!c(Magnitude_Text, Group, Method, Threshold, Pctl90, LCL90, TestMean, 
-            RefMean, Difference))
+  select(!c(Magnitude_Text, Group, Method, Threshold, Pctl90, LCL90))
 
 
 output_turbidity <- data_suff_WQS
-
-
-
-
-####OLD!!!!!!!!!!####
-
-#FUNCTION WOULDN'T LET REFERENCE SITE AND TEST SITE BE IN SAME AUID - FIX!!!!!!!
-#Turbidity Function
-# MagDurFreq_turbidity <- function(wqs_crosswalk, input_samples_filtered, input_sufficiency, reference_sites) {
-#   
-#   ##Magnitude, Frequency, Duration - unique combinations
-#   #This is not used in the code, but instead used as reference for making the methods
-#   unique_methods <- wqs_crosswalk %>%
-#     dplyr::filter(Constituent == 'Turbidity') %>%
-#     dplyr::select(Directionality, Frequency, Duration, Details) %>%
-#     unique()
-#   
-#   #Filter samples for just turbidity
-#   input_samples_filtered_relevant <- input_samples_filtered %>%
-#     dplyr::filter(TADA.CharacteristicName == 'TURBIDITY')
-#   
-#   #Calculate mean turbidity at reference sites
-#   pull_reference <- input_samples_filtered_relevant %>%
-#     dplyr::filter(MonitoringLocationIdentifier %in% reference_sites$ReferenceSites) %>%
-#     dplyr::group_by(MonitoringLocationIdentifier) %>%
-#     dplyr::mutate(mean_reference = mean(TADA.ResultMeasureValue)) %>%
-#     dplyr::select(MonitoringLocationIdentifier, mean_reference) %>%
-#     unique()
-#   
-#   #Find AUs without reference site and set natural conditions = 0 NTU
-#   not_in_reference <- input_samples_filtered_relevant %>%
-#     dplyr::filter(!AUID_ATTNS %in% reference_sites$AUID_ATTNS) %>%
-#     dplyr::mutate(ReferenceSites = NA,
-#                   mean_reference = 0) %>%
-#     dplyr::select(AUID_ATTNS, ReferenceSites, mean_reference) %>%
-#     unique()
-#   
-#   #Combine means with reference sites and add on AUs with no reference
-#   reference_sites_mean <- reference_sites %>%
-#     dplyr::left_join(pull_reference, by = c('ReferenceSites' = 'MonitoringLocationIdentifier')) %>%
-#     rbind(not_in_reference) %>%
-#     dplyr::filter(!is.na(AUID_ATTNS))
-#   
-#   
-#   #Return message if no samples available
-#   if(nrow(input_samples_filtered_relevant) == 0) {
-#     #If no samples available - just return sufficiency with empty Exceed column
-#     relevant_suff <- input_sufficiency %>%
-#       dplyr::filter(TADA.CharacteristicName == 'TURBIDITY') %>%
-#       dplyr::mutate(Exceed = NA)
-#     
-#     return(relevant_suff)
-#   }
-#   
-#   # use AU_Type to choose Waterbody Type in WQS table
-#   Unique_AUIDs <- unique(reference_sites_mean$AUID_ATTNS) %>% stats::na.omit()
-#   result_list <- list()
-#   counter <- 0
-#   
-#   #Cycle by AUs
-#   for(i in Unique_AUIDs){
-#     print(i) # print name of current AU
-#     
-#     # Filter data for just AU and make water year
-#     df_subset <- input_samples_filtered_relevant %>% 
-#       dplyr::filter(AUID_ATTNS == i) %>%
-#       dplyr::filter(TADA.CharacteristicName == 'TURBIDITY') %>%
-#       mutate(year = lubridate::year(ActivityStartDate),
-#              month = lubridate::month(ActivityStartDate),
-#              w_year = ifelse(month < 10, year, year+1))
-#     
-#     # obtain AU_Type
-#     my_AU_Type <- unique(df_subset$AU_Type)
-#     
-#     # use AU_Type to choose Waterbody Type in data standards table
-#     if(my_AU_Type == "Beach" | my_AU_Type == "Marine"){
-#       my_WtrBdy_Type <- "Marine"
-#     } else if (my_AU_Type == "Lake"){
-#       my_WtrBdy_Type <- "Freshwater"
-#     } else {
-#       my_WtrBdy_Type <- c("Freshwater", "Freshwater streams and rivers")
-#     } # end if/else statement
-#     
-#     # obtain unique constituents from WQ dataset for the AU
-#     my_constituents <- unique(df_subset$TADA.CharacteristicName)
-#     
-#     # trim data WQS table to only relevant information
-#     #remove information for instances found in the special case functions
-#     my_data_magfreqdur <- wqs_crosswalk %>% 
-#       dplyr::filter(TADA.Constituent %in% my_constituents) %>% 
-#       dplyr::filter(`Waterbody Type` %in% my_WtrBdy_Type) %>%
-#       dplyr::filter(Constituent == 'Turbidity') 
-#     
-#     
-#     #If no relevant samples, skip AU
-#     if(nrow(my_data_magfreqdur)==0){
-#       next
-#     }
-#     
-#     #Pull reference value for AU
-#     au_reference_conditions <- reference_sites_mean %>%
-#       filter(AUID_ATTNS == i) %>%
-#       select(mean_reference) %>%
-#       pull()
-#     
-#     #Cycle through each parameter to calculate the mag/freq/dur
-#     for(j in 1:nrow(my_data_magfreqdur)) {
-#       counter <- counter + 1
-#       #Pull relevant methods
-#       filter_by <- my_data_magfreqdur[j,]
-#       
-#       #Pull just that constituent data
-#       filt <- df_subset %>% dplyr::filter(TADA.CharacteristicName == filter_by$TADA.Constituent)
-#       
-#       #All turbidity analysis is for maximum value, not to exceed in a 24-hour average (daily)
-#       if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                              'May not exceed 25 NTU above natural conditions') == T){
-#         #Method #1 ----
-#         results <- filt %>%
-#           dplyr::group_by(ActivityStartDate) %>%
-#           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-#                         bad_samp = ifelse(daily_avg >= (au_reference_conditions+25), 1, 0)) 
-#         
-#         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-#         bad_sum <- sum(bad_tot$bad_samp)
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- bad_sum
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#         
-#       } else if((stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                      'For lake waters, may not exceed 5 NTU above natural conditions') == T |
-#                  stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                      'For lakes, turbidity may not exceed 5 NTU above natural turbidity.') == T |
-#                  stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                      '5 NTU above natural conditions, for all lake waters') == T) &
-#                 my_AU_Type == "Lake"){
-#         #Method #2 ----
-#         results <- filt %>%
-#           dplyr::group_by(ActivityStartDate) %>%
-#           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-#                         bad_samp = ifelse(daily_avg >= (au_reference_conditions+5), 1, 0)) 
-#         
-#         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-#         bad_sum <- sum(bad_tot$bad_samp)
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- bad_sum
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#         
-#       } else if((stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                      'For lake waters, may not exceed 5 NTU above natural conditions') == T |
-#                  stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                      'For lakes, turbidity may not exceed 5 NTU above natural turbidity.') == T |
-#                  stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                      '5 NTU above natural conditions, for all lake waters') == T) &
-#                 my_AU_Type != "Lake"){
-#         #Method #3 ----
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- NA
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- 'AU not lake waters'
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     '5 NTU above natural conditions, when natural turbidity is 50 NTU or less.') == T &
-#                 au_reference_conditions <= 50){
-#         #Method #4 ----
-#         results <- filt %>%
-#           dplyr::group_by(ActivityStartDate) %>%
-#           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-#                         bad_samp = ifelse(daily_avg >= (au_reference_conditions+5), 1, 0)) 
-#         
-#         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-#         bad_sum <- sum(bad_tot$bad_samp)
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- bad_sum
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     '5 NTU above natural conditions, when natural turbidity is 50 NTU or less.') == T &
-#                 au_reference_conditions > 50){
-#         #Method #5 ----
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- NA
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- 'Natural conditions greater than 50 NTU'
-#         
-#       }  else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                      'No more than 10% increase when natural condition is more than 50 NTU, not to exceed max increase of 15 NTU') == T &
-#                  au_reference_conditions > 50){
-#         #Method #6 ----
-#         
-#         max_over <- ifelse(au_reference_conditions*0.1 >= 15, 15, au_reference_conditions*0.1)
-#         
-#         results <- filt %>%
-#           dplyr::group_by(ActivityStartDate) %>%
-#           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-#                         bad_samp = ifelse(daily_avg >= (max_over+au_reference_conditions), 1, 0)) 
-#         
-#         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-#         bad_sum <- sum(bad_tot$bad_samp)
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- bad_sum
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     'No more than 10% increase when natural condition is more than 50 NTU, not to exceed max increase of 15 NTU') == T &
-#                 au_reference_conditions <= 50){
-#         #Method #7 ----
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- NA
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- "Natural conditions less than or equal to 50 NTU"
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     'When natural condition is more than 50 NTU, not to exceed max increase of 15 NTU') == T &
-#                 au_reference_conditions > 50){
-#         #Method #8 ----
-#         
-#         results <- filt %>%
-#           dplyr::group_by(ActivityStartDate) %>%
-#           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-#                         bad_samp = ifelse(daily_avg >= (au_reference_conditions+15), 1, 0)) 
-#         
-#         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-#         bad_sum <- sum(bad_tot$bad_samp)
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- bad_sum
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     'When natural condition is more than 50 NTU, not to exceed max increase of 15 NTU') == T &
-#                 au_reference_conditions <= 50){
-#         #Method #9 ----
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- NA
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- "Natural conditions less than or equal to 50 NTU"
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     'May not exceed 10 NTU above natural conditions when natural turbidity is 50 NTU or less') == T &
-#                 au_reference_conditions <= 50){
-#         #Method #10 ----
-#         
-#         results <- filt %>%
-#           dplyr::group_by(ActivityStartDate) %>%
-#           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-#                         bad_samp = ifelse(daily_avg >= (au_reference_conditions+10), 1, 0)) 
-#         
-#         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-#         bad_sum <- sum(bad_tot$bad_samp)
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- bad_sum
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     'May not exceed 10 NTU above natural conditions when natural turbidity is 50 NTU or less') == T &
-#                 au_reference_conditions > 50){
-#         #Method #11 ----
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- NA
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- "Natural conditions greater than 50 NTU"
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     'May not exceed 20% increase in turbidity when natural turbidity is greater than 50 NTU, not to exceed a maximum increase of 15 NTU') == T &
-#                 au_reference_conditions > 50){
-#         #Method #12 ----
-#         max_over <- ifelse(au_reference_conditions*0.2 >= 15, 15, au_reference_conditions*0.1)
-#         
-#         results <- filt %>%
-#           dplyr::group_by(ActivityStartDate) %>%
-#           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-#                         bad_samp = ifelse(daily_avg >= (max_over+au_reference_conditions), 1, 0)) 
-#         
-#         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-#         bad_sum <- sum(bad_tot$bad_samp)
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- bad_sum
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     'May not exceed 20% increase in turbidity when natural turbidity is greater than 50 NTU, not to exceed a maximum increase of 15 NTU') == T &
-#                 au_reference_conditions <= 50){
-#         #Method #13 ----
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- NA
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- "Natural conditions less than or equal to 50 NTU"
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     'No more than 10% increase when natural condition is more than 50 NTU, not to exceed a maximum increase of 25 NTU.') == T &
-#                 au_reference_conditions > 50){
-#         #Method #14 ----
-#         max_over <- ifelse(au_reference_conditions*0.1 >= 25, 25, au_reference_conditions*0.1)
-#         
-#         results <- filt %>%
-#           dplyr::group_by(ActivityStartDate) %>%
-#           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-#                         bad_samp = ifelse(daily_avg >= (max_over+au_reference_conditions), 1, 0)) 
-#         
-#         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-#         bad_sum <- sum(bad_tot$bad_samp)
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- bad_sum
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#         
-#       } else if(stringr::str_detect(tidyr::replace_na(filter_by$Details, ''),
-#                                     'No more than 10% increase when natural condition is more than 50 NTU, not to exceed a maximum increase of 25 NTU.') == T &
-#                 au_reference_conditions <= 50){
-#         #Method #15 ----
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- NA
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- "Natural conditions less than or equal to 50 NTU"
-#         
-#       } else if(is.na(filter_by$Details) == T){
-#         #Method #16 ----
-#         #Marine turbidity - if 24-hour average turbidity is larger than specified magnitude
-#         results <- filt %>%
-#           dplyr::group_by(ActivityStartDate) %>%
-#           dplyr::mutate(daily_avg = mean(TADA.ResultMeasureValue),
-#                         bad_samp = ifelse(daily_avg >= filter_by$Magnitude_Numeric, 1, 0)) 
-#         
-#         bad_tot <- results %>% dplyr::select(ActivityStartDate, bad_samp) %>% unique()
-#         bad_sum <- sum(bad_tot$bad_samp)
-#         
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- bad_sum
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- ifelse(bad_sum > 0, 'Yes', 'No')
-#         
-#       } else {
-#         filter_by$AUID_ATTNS <- i
-#         filter_by$Exceed_Num <- NA
-#         filter_by$Exceed_Freq <- NA
-#         filter_by$Exceed <- 'Method not coded!'
-#       } #End of methods if/else
-#       
-#       result_list[[counter]] <- filter_by
-#     } #End of MagDurFreq loop
-#     
-#   } #End of AU loop 
-#   
-#   df_loop_results <- do.call("rbind", result_list) # combine results from for loop
-#   df_AU_data_WQS <- as.data.frame(df_loop_results) # convert to data frame
-#   df_AU_data_WQS <- df_AU_data_WQS %>% 
-#     distinct()
-#   
-#   #combine with relevant data standards table
-#   relevant_suff <- input_sufficiency %>%
-#     dplyr::filter(TADA.CharacteristicName == 'TURBIDITY')
-#   
-#   data_suff_WQS <- df_AU_data_WQS %>%
-#     dplyr::rename(TADA.CharacteristicName = TADA.Constituent) %>%
-#     dplyr::full_join(relevant_suff, by = c('AUID_ATTNS', 'TADA.CharacteristicName', 'Use', 'Use Description','Waterbody Type',
-#                                            'Fraction', 'Type'),
-#                      relationship = "many-to-many") %>%
-#     dplyr::relocate(c(Exceed_Num, Exceed_Freq, Exceed), .after = last_col()) %>%
-#     dplyr::select(!Magnitude_Text)
-#   
-#   return(data_suff_WQS)
-# } #End of turbidity function
-# 
-# output_turbidity <- MagDurFreq_turbidity(wqs_crosswalk, input_samples_filtered, input_sufficiency, turbidity_sites)
-
-
-
-
-
-
