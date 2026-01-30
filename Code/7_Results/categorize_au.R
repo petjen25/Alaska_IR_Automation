@@ -6,43 +6,45 @@
 library(tidyverse)
 
 ####Load in data####
-input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20250127.csv')
+input_analysis <- read_csv('Output/data_analysis/final_magdurfreq_output_20250429.csv')
+assessments <- read_csv('Data/data_analysis/assessments.csv')
 
-#Go to ATTAINS expert query. Choose "Assessment". filter for "AK". Download. https://owapps.epa.gov/expertquery/attains/ 
-assessments <- read_csv('Data/data_analysis/parameters.csv') %>%
-  select(ASSESSMENT_UNIT_ID, 
-         PARAM_NAME, 
-         ATTAINS_USE = PARAM_USE_NAME,
-         PARAM_STATUS_NAME,
-         PARAM_ATTAINMENT_CODE) %>%
-  mutate(PARAM_NAME = if_else(PARAM_NAME == 'DISSOLVED OXYGEN', "DISSOLVED OXYGEN (DO)", PARAM_NAME)) %>% 
-  mutate(PARAM_NAME = if_else(PARAM_NAME == 'ESCHERICHIA COLI (E. COLI)', "ESCHERICHIA COLI", PARAM_NAME)) %>%
-  mutate(PARAM_NAME = if_else(PARAM_NAME == 'TOTAL DISSOLVED SOLIDS (TDS)', "TOTAL DISSOLVED SOLIDS", PARAM_NAME)) 
 
-#Don't want to overwrite previous ATTAINs 2s and 5s with new 3s
-merge_uses <- input_analysis %>%
-  mutate(ATTAINS_waterbody = case_when(`Waterbody Type` == 'Freshwater' ~
-                                         'FRESH WATER',
-                                       `Waterbody Type` == 'Freshwater streams and rivers' ~
-                                         'FRESH WATER',
-                                       T ~ 'MARINE WATER'),
-         ATTAINS_USE_merge = paste0(ATTAINS_waterbody, ' / ',  Use, ' / ', `Use Description`),
-         ATTAINS_USE_merge = gsub(" / NA", "", ATTAINS_USE_merge)) %>%
- left_join(assessments, by = c('AUID_ATTNS' = 'ASSESSMENT_UNIT_ID',
-                                'TADA.CharacteristicName' = 'PARAM_NAME', 
-                                'ATTAINS_USE_merge' = 'ATTAINS_USE')) %>%
-    mutate(PARAM_ATTAINMENT_CODE_new = case_when(PARAM_ATTAINMENT_CODE == "Not meeting criteria" ~ 
-                                             '5', 
-                                             PARAM_ATTAINMENT_CODE == "Meeting criteria" ~
-                                             '2', 
-                                             PARAM_ATTAINMENT_CODE == "Not enough information" ~
-                                             '3', 
-                                           T ~
-                                             NA))
-
-categorize_AU_uses <- function(input_analysis, simplify_standards){ 
+categorize_AU_uses <- function(input_analysis, simplify_standards, assessments){ 
   
-  calc_individual <- input_analysis %>%
+  #Go to ATTAINS expert query. Choose "Assessment". filter for "AK". Download. https://owapps.epa.gov/expertquery/attains/ 
+  assessments <- assessments %>%
+    select(assessmentUnitId, 
+           parameterName, 
+           useName,
+           parameterStatus,
+           parameterAttainment) %>%
+    mutate(parameterName = if_else(parameterName == 'DISSOLVED OXYGEN', "DISSOLVED OXYGEN (DO)", parameterName)) %>% 
+    mutate(parameterName = if_else(parameterName == 'ESCHERICHIA COLI (E. COLI)', "ESCHERICHIA COLI", parameterName)) %>%
+    mutate(parameterName = if_else(parameterName == 'TOTAL DISSOLVED SOLIDS (TDS)', "TOTAL DISSOLVED SOLIDS", parameterName)) 
+  
+  #Don't want to overwrite previous ATTAINs 2s and 5s with new 3s
+  merge_uses <- input_analysis %>%
+    mutate(ATTAINS_waterbody = case_when(`Waterbody Type` == 'Freshwater' ~
+                                           'FRESH WATER',
+                                         `Waterbody Type` == 'Freshwater streams and rivers' ~
+                                           'FRESH WATER',
+                                         T ~ 'MARINE WATER'),
+           ATTAINS_USE_merge = paste0(ATTAINS_waterbody, ' / ',  Use, ' / ', `Use Description`),
+           ATTAINS_USE_merge = gsub(" / NA", "", ATTAINS_USE_merge)) %>%
+    left_join(assessments, by = c('AUID_ATTNS' = 'assessmentUnitId',
+                                  'TADA.CharacteristicName' = 'parameterName', 
+                                  'ATTAINS_USE_merge' = 'useName')) %>%
+    mutate(PARAM_ATTAINMENT_CODE_new = case_when(parameterAttainment == "Not meeting criteria" ~ 
+                                                   '5', 
+                                                 parameterAttainment == "Meeting criteria" ~
+                                                   '2', 
+                                                 parameterAttainment == "Not enough information" ~
+                                                   '3', 
+                                                 T ~
+                                                   NA))
+  
+  calc_individual <- merge_uses %>%
     mutate(Exceed = ifelse(is.na(Exceed) == T, 'N/A', Exceed)) %>%
     filter(Exceed != 'Requires manual analysis') %>%
     filter(Exceed != 'AU not lake waters') %>%
@@ -98,8 +100,8 @@ categorize_AU_uses <- function(input_analysis, simplify_standards){
   
 }
 
-output <- categorize_AU_uses(merge_uses, simplify_standards = F)
-output_simp <- categorize_AU_uses(merge_uses, simplify_standards = T)
+output <- categorize_AU_uses(input_analysis, assessments, simplify_standards = F)
+output_simp <- categorize_AU_uses(input_analysis, assessments, simplify_standards = T)
 
 write_csv(output, 'Output/results/categorized_aus_20250127.csv')
 write_csv(output_simp, 'Output/results/categorized_simplified_aus_20250127.csv')
