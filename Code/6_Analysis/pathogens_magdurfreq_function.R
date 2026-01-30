@@ -49,7 +49,7 @@ input_samples_filtered <- filterCat3samples(data_samples = input_samples,
                                         'ENTEROCOCCUS'))
 
 
-MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
+MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk, input_sufficiency) {
 
    pathogen_criteria <- wqs_crosswalk %>%
     filter(`Constituent Group` == "Bacteria") %>%
@@ -206,4 +206,4 @@ MagDurFreq_pathogens <- function(input_samples_filtered, wqs_crosswalk) {
 }
 
 
-pathogens_output <- MagDurFreq_pathogens(input_samples_filtered, wqs_crosswalk)
+pathogens_output <- MagDurFreq_pathogens(input_samples_filtered, wqs_crosswalk, input_sufficiency)
