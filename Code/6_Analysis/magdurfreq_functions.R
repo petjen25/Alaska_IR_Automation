@@ -22,6 +22,9 @@ ammonia_test <- read_csv('Output/data_analysis/ammonia_test_file.csv')
 filterCat3samples <- function(data_samples, data_sufficiency) {
   suff_sites <- data_sufficiency %>%
     dplyr::filter(Data_Sufficient == 'Yes') %>%
+    filter(!TADA.CharacteristicName %in% c('ESCHERICHIA COLI',
+                                          'FECAL COLIFORM',
+                                          'ENTEROCOCCUS')) %>%
     dplyr::select(AUID_ATTNS, TADA.CharacteristicName) %>%
     unique()
   
@@ -1723,6 +1726,24 @@ combine_MagDurFreq <- function(standard_output, hardness_output, pH_output, turb
                                                       8,
                                                     `Constituent Group` == 'Toxics' & Use == 'GROWTH AND PROPAGATION OF FISH, SHELLFISH, OTHER AQUATIC LIFE AND WILDLIFE' &
                                                       Type == 'Chronic' & n_Samples >= 93 ~
+                                                      9,
+                                                    `Constituent Group` == 'Turbidity' & str_detect(Notes, "Avg") & n_Samples < 10 ~
+                                                      1,
+                                                    `Constituent Group` == 'Turbidity' & str_detect(Notes, "Avg") & n_Samples >= 10 & n_Samples <= 18 ~
+                                                      2,
+                                                    `Constituent Group` == 'Turbidity' & str_detect(Notes, "Avg") & n_Samples >= 19 & n_Samples <= 22 ~
+                                                      3,
+                                                    `Constituent Group` == 'Turbidity' & str_detect(Notes, "Avg") & n_Samples >= 23 & n_Samples <= 35 ~
+                                                      4,
+                                                    `Constituent Group` == 'Turbidity' & str_detect(Notes, "Avg") & n_Samples >= 36 & n_Samples <= 49 ~
+                                                      5,
+                                                    `Constituent Group` == 'Turbidity' & str_detect(Notes, "Avg") & n_Samples >= 50 & n_Samples <= 63 ~
+                                                      6,
+                                                    `Constituent Group` == 'Turbidity' & str_detect(Notes, "Avg") & n_Samples >= 64 & n_Samples <= 78 ~
+                                                      7,
+                                                    `Constituent Group` == 'Turbidity' & str_detect(Notes, "Avg") & n_Samples >= 79 & n_Samples <= 92 ~
+                                                      8,
+                                                    `Constituent Group` == 'Turbidity' & str_detect(Notes, "Avg") & n_Samples >= 93 ~
                                                       9,
                                                     !`Constituent Group` %in% c('Toxics', 'Turbidity', 'Petroleum Hydrocarbons', 'Bacteria') &
                                                        n_Samples < 10 ~
